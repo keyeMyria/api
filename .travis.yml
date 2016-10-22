@@ -9,12 +9,12 @@ matrix:
 # Default:
 # install: "pip install -r requirements.txt"
 
-# addons:
-#   apt:
-#     # sources:
-#     #   - deadsnakes      # for python 3.5
-#     packages:
-#       - enchant
+addons:
+  apt:
+    # sources:
+    #   - deadsnakes      # for python 3.5
+    packages:
+      - nginx
 
 
 # command to run tests
