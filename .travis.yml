@@ -4,7 +4,7 @@ language: python
 # 1h - 3600
 cache:
   timeout: 3600
-  - pip
+  pip: true
 
 python:
   - "3.5"
