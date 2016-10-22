@@ -1,6 +1,0 @@
-[program:daphne]
-command=ve/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
-autostart=true
-autorestart=false
-stderr_logfile=/var/log/supervisor/daphne.err.log
-stdout_logfile=/var/log/supervisor/daphne.out.log
