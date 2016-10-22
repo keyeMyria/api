@@ -1,5 +1,11 @@
 language: python
-cache: pip
+
+# 1d - 86400
+# 1h - 3600
+cache:
+  timeout: 3600
+  - pip
+
 python:
   - "3.5"
   - "nightly" # currently points to 3.7-dev
