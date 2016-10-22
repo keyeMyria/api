@@ -27,16 +27,17 @@ addons:
 
 before_script:
   - pwd
+  - cd src && daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1 &
   - cd configs && make
-  - ls -la /etc/supervisor/conf.d/
+  # - ls -la /etc/supervisor/conf.d/
 
 
 # TESTS
 # script: nosetests
 script: echo "1"
 
-after_script:
-  - cat /etc/supervisor/conf.d/daphne.conf
+# after_script:
+#   - cat /etc/supervisor/conf.d/daphne.conf
 
 
 notifications:
