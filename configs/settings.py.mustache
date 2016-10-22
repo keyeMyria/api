@@ -7,30 +7,37 @@ from cms.core import underDjangoDebugServer
 
 dds = underDjangoDebugServer()
 
+{{#VAGRANT}}
 VAGRANT = True
+{{/VAGRANT}}
+{{^VAGRANT}}
+VAGRANT = False
+{{/VAGRANT}}
 testing = 'test' in sys.argv or '--reuse-db' in sys.argv
 DEBUG = testing or VAGRANT
+{{#DEBUG}}
 DEBUG = True
+{{/DEBUG}}
 
 SETTINGS_PATH = dirname(abspath(__file__))
 SITE_PATH = dirname(abspath(__file__))
 GIT_PATH = dirname(dirname(SETTINGS_PATH))
-GIT_PATH = '/var/www/pashinin.com'
+GIT_PATH = '/var/www/xdev'
 
 MODULE = basename(dirname(SITE_PATH))
 
 # If you have a mail server - error messages are posted to admins
 ADMINS = (
-    ('Admin', 'sergey@pashinin.com'),
+    ('Admin', '{{email}}'),
 )
 MANAGERS = ADMINS
-SERVER_EMAIL = 'Error <robot@pashinin.com>'      # "From" field
+SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 
 # Databases
 # sudo apt-get install pgbouncer
 # vim /etc/pgbouncer/pgbouncer.ini
 # [databases]
-# * = host=127.0.0.1 port=5433
+# * = host=10.254.239.1 port=5433
 # /etc/pgbouncer/userlist.txt
 # "user" "password"
 DB_ENGINE_MYSQL = 'django.db.backends.mysql'
@@ -40,22 +47,22 @@ is_sqlite = (DATABASE_ENGINE == 'django.db.backends.sqlite3')
 DATABASES = {
     'default': {
         'ENGINE': DATABASE_ENGINE,
-        # 'NAME': "test.db" if is_sqlite else "db",
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        # 'NAME': "test.db" if is_sqlite else "{{dbname}}",
+        'NAME': "{{dbname}}",
+        'USER': "{{dbuser}}",
+        'PASSWORD': "{{dbpass}}",
+        'HOST': "{{dbhost}}",
         # 'HOST': "127.0.0.1",
-        'PORT': '',
+        'PORT': '5434',
         # 'PORT': '6432',
     },
     'sentry': {
         'ENGINE': DATABASE_ENGINE,
-        'NAME': 'sentry',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': "sentry",
+        'USER': "{{dbuser}}",
+        'PASSWORD': "{{dbpass}}",
+        'HOST': "{{dbhost}}",
+        'PORT': '5434',
     },
 }
 
@@ -139,10 +146,11 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
+SECRET_KEY = '{{secret_key}}'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'solid_i18n.middleware.SolidLocaleMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -208,7 +216,7 @@ TEMPLATES = [
     },
 ]
 
-# from pashinin.celeryconfig import *
+from pashinin.celeryconfig import *
 # try:
 #     from pashinin.celeryconfig import *
 # except:
@@ -216,6 +224,16 @@ TEMPLATES = [
 
 INSTALLED_APPS = (
     'redis_cache',                 # pip install django-redis-cache
+    # 'django.contrib.sites',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'admin_tools',
+    # 'admin_tools.theming',
+    # 'admin_tools.menu',
+    # 'admin_tools.dashboard',
+    # 'grappelli',
+    # 'ws4redis',
     'channels',
     'bootstrap3',
     'cacheops',
@@ -242,6 +260,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     # 'social.apps.django_app.default',
 
+
     'pashinin',
 )
 
@@ -260,11 +279,12 @@ CHANNEL_LAYERS = {
 }
 
 # admin panel bootstrap3 renderer
-# DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
+DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
+
 
 # ./src/manage.py raven test
-RAVEN_PUBLIC = ""
-RAVEN_SECRET = ""
+RAVEN_PUBLIC = "{{raven_public}}"
+RAVEN_SECRET = "{{raven_secret}}"
 
 # http://raven.readthedocs.org/en/latest/transports/#sync
 dsn_prefix = "sync+" if DEBUG else "threaded+"
@@ -272,7 +292,7 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # the transport class to Client() instead.
 # import raven
 RAVEN_CONFIG = {
-    'dsn': 'https://:@sentry.pashinin.com/2',
+    'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.pashinin.com/2',
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
@@ -316,15 +336,15 @@ SOCIAL_AUTH_USER_MODEL = 'user.CustomUser'
 # Github
 # https://github.com/settings/applications
 # {% if sa_github_key is defined and sa_github_secret is defined %}
-# SOCIAL_AUTH_GITHUB_KEY = ""
-# SOCIAL_AUTH_GITHUB_SECRET = ""
+# SOCIAL_AUTH_GITHUB_KEY = "{{sa_github_key}}"
+# SOCIAL_AUTH_GITHUB_SECRET = "{{sa_github_secret}}"
 # {% endif %}
 
 # Facebook
 # https://developers.facebook.com/apps
 # {% if sa_facebook_key is defined and sa_facebook_secret is defined %}
-# SOCIAL_AUTH_FACEBOOK_KEY = ''
-# SOCIAL_AUTH_FACEBOOK_SECRET = ''
+# SOCIAL_AUTH_FACEBOOK_KEY = '{{sa_facebook_key}}'
+# SOCIAL_AUTH_FACEBOOK_SECRET = '{{sa_facebook_secret}}'
 # SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']  # to get email
 # {% endif %}
 
@@ -332,8 +352,8 @@ SOCIAL_AUTH_USER_MODEL = 'user.CustomUser'
 # http://vk.com/apps?act=manage
 # http://vk.com/dev/permissions
 # {% if sa_vk_key is defined and sa_vk_secret is defined %}
-# SOCIAL_AUTH_VK_OAUTH2_KEY = ''
-# SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
+# SOCIAL_AUTH_VK_OAUTH2_KEY = '{{sa_vk_key}}'
+# SOCIAL_AUTH_VK_OAUTH2_SECRET = '{{sa_vk_secret}}'
 # SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 # {% endif %}
 
@@ -341,8 +361,8 @@ SOCIAL_AUTH_USER_MODEL = 'user.CustomUser'
 # https://console.developers.google.com/project
 # Enable: Contacts API, Google+ API
 # {% if sa_google_key is defined and sa_google_secret is defined %}
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '{{sa_google_key}}'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '{{sa_google_secret}}'
 # {% endif %}
 
 SOCIAL_AUTH_PIPELINE = (
@@ -379,7 +399,7 @@ CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         # 'LOCATION': '/var/run/redis/redis-server.pid',
-        'LOCATION': ['127.0.0.1:6379'],
+        'LOCATION': ['10.254.239.1:6379'],
         # 'KEY_PREFIX': 'd' if DEBUG else '',
     }
 }
@@ -430,11 +450,11 @@ LOGGING = {
 }
 
 import redis
-r = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
+r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
 # def show_toolbar(request):
 #     return not request.is_ajax() and request.user and request.user.username == "yourusername"
 
-if r.get('ddt')==b'True' and not DEBUG:
+if r.get('ddt')==b'True' and DEBUG:
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     INSTALLED_APPS += ('debug_toolbar',)
     INTERNAL_IPS = ('127.0.0.1', '10.254.239.2', '10.92.209.1')
