@@ -9,5 +9,6 @@ matrix:
 # install: "pip install -r requirements.txt"
 # command to run tests
 # script: nosetests
+script: echo "1"
 notifications:
   email: false
