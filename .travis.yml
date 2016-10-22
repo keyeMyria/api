@@ -31,7 +31,7 @@ addons:
 before_script:
   - pwd
   - (cd src; daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1 &)
-  - cd configs && make
+  - (cd configs; make)
   - ls -la /etc/supervisor/conf.d/
   - ls -la .
 
