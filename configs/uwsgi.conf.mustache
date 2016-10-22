@@ -1,0 +1,48 @@
+# -*- mode: conf-unix -*-
+[uwsgi]
+djangoproject = /var/www/pashinin.com/src/pashinin
+# %n - this config filename
+
+# plugins = php
+#plugins = python3
+# python python26 python27
+virtualenv = /var/www/pashinin.com/tmp/ve
+chdir = %(djangoproject)
+# module = pashinin.wsgi:application
+module = wsgi:application
+
+#need-app = true
+limit-as = 700
+
+gid = www-data
+uid = www-data
+#vhost = true
+#logdate = true
+#single-interpreter
+socket = /var/tmp/uwsgi-pashinin.sock
+#socket = 127.0.0.1:3031
+
+chmod-socket = 660
+master = 1
+processes = 1
+harakiri = 20
+memory-report
+no-orphans = 1
+#buffer-size = 32768
+buffer-size = 65536
+#daemonize = /var/www/logs/uwsgi1.log
+disable-logging
+#enable-threads
+workers=1
+threads=1
+# when lots of threads - worker dies, its written to log
+# everything slows down
+
+
+touch-reload = /var/www/pashinin.com/tmp/uwsgi_reload
+
+# Number of concurrent connections (queue)
+#
+# Possible error:
+# Listen queue size is greater than the system max net.core.somaxconn (128)
+listen = 10000
