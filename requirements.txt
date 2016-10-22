@@ -1,0 +1,122 @@
+#amqp==1.4.6            # Celery dependencies
+#gevent
+#git+git://github.com/surfly/gevent.git
+#greenlet
+eventlet
+
+beautifulsoup4
+
+# https://pypi.python.org/pypi/bleach
+# >>> bleach.clean('an <script>evil()</script> example')
+# u'an &lt;script&gt;evil()&lt;/script&gt; example'
+bleach
+#bencode    # torrents parser
+
+
+
+# Sentry
+#
+django-sudo
+git+git://github.com/teserak/logan.git@django-19
+#
+
+
+chardet                # encoding detection
+
+# solid_i18n
+django-admin-bootstrapped
+django-bootstrap3
+django>=1.10.2
+# https://github.com/django/django/releases
+#git+git://github.com/django/django.git@1.7
+
+django-allauth
+django-cache-utils
+django-cacheops                # https://pypi.python.org/pypi/django-cacheops
+django-debug-toolbar>=1.2.1    # https://pypi.python.org/pypi/django-debug-toolbar
+django-dirtyfields
+django-extensions              # https://github.com/django-extensions/django-extensions
+django-hstore                  # git+git://github.com/djangonauts/django-hstore.git
+django-jinja
+#django-nose
+# git+https://github.com/django-nose/django-nose.git
+django-mptt               # git+https://github.com/django-mptt/django-mptt.git
+django-optimizations
+django-pytest                  # py.test runner
+django-redis-cache
+django-redis-sessions
+django-sendfile
+#django-polymorphic>=v0.6   # https://github.com/chrisglass/django_polymorphic
+# git+https://github.com/chrisglass/django_polymorphic.git
+django-sortedm2m           # https://pypi.python.org/pypi/django-sortedm2m
+#django-pdb
+
+# django-suit>=v.0.2.10
+# git+https://github.com/darklow/django-suit.git
+
+elasticsearch
+fabric
+flower
+#guess_language-spirit
+guess_language
+iptools
+ipython>=2.3.0
+pillow
+ply
+psycopg2
+#git+https://github.com/lericson/pylibmc.git
+pyenchant               # https://pypi.python.org/pypi/pyenchant
+pytz
+
+# Use Redis instead of Memcache
+# python3-memcached
+
+python-magic
+#pylibmc
+pyinotify               # signals instead of polling (to reload dev server)
+#PySide                 # for spynner      installed with Ansible
+pytest-django           # "--reuse-db"
+python-social-auth
+raven
+requests
+six
+tl
+tl.rename
+tornado
+uwsgi
+vine        # for celery (amqp)
+werkzeug
+# git+git://github.com/pashinin/autopy.git
+# git+git://github.com/mozilla/elasticutils.git
+#git+git://github.com/pashinin/spynner.git
+# https://github.com/pashinin/spynner/zipball/master   # headless browser control
+
+
+gitpython
+django-netfields
+django-gravatar2
+py-moneyed
+
+wikipedia
+
+# Celery
+#
+
+#
+# Celery>=3.1.19
+#django-celery          # err with py3
+#https://github.com/celery/django-celery/zipball/master
+# https://github.com/celery/celery
+#git+git://github.com/celery/celery.git@v3.1.14
+# git+git://github.com/pashinin/celery.git
+#
+# git+git://github.com/celery/celery.git
+# git+git://github.com/celery/py-amqp.git
+# git+git://github.com/celery/kombu.git
+# git+git://github.com/celery/billiard.git
+
+
+
+# channels (NOT django-channels!)
+channels
+asgi_redis
