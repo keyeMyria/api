@@ -65,7 +65,14 @@ pillow
 ply
 psycopg2
 #git+https://github.com/lericson/pylibmc.git
-pyenchant               # https://pypi.python.org/pypi/pyenchant
+
+# PyEnchant is a spellchecking library for Python, based on the excellent Enchant library.
+# https://pypi.python.org/pypi/pyenchant
+# deps:
+# apt-get install enchant
+#
+# pyenchant
+
 pytz
 
 # Use Redis instead of Memcache

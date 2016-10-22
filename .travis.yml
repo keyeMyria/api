@@ -6,7 +6,17 @@ matrix:
   allow_failures:
     - python: nightly
 
+# Default:
 # install: "pip install -r requirements.txt"
+
+# addons:
+#   apt:
+#     # sources:
+#     #   - deadsnakes      # for python 3.5
+#     packages:
+#       - enchant
+
+
 # command to run tests
 # script: nosetests
 script: echo "1"
