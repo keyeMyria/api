@@ -3,7 +3,7 @@ language: python
 # 1d - 86400
 # 1h - 3600
 cache:
-  timeout: 3600
+  timeout: 10000
   pip: true
 
 python:
@@ -24,6 +24,7 @@ addons:
       - nginx
       - supervisor
       - ruby-mustache
+      - redis-server
 
 before_script:
   - pwd
