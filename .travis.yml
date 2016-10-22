@@ -15,10 +15,22 @@ addons:
     #   - deadsnakes      # for python 3.5
     packages:
       - nginx
+      - supervisor
+      - ruby-mustache
+
+before_script:
+  - pwd
+  - cd configs && make
+  - ls -la /etc/supervisor/conf.d/
 
 
-# command to run tests
+# TESTS
 # script: nosetests
 script: echo "1"
+
+after_script:
+  - cat /etc/supervisor/conf.d/daphne.conf
+
+
 notifications:
   email: false
