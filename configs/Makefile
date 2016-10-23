@@ -15,3 +15,4 @@ templates:
 links:
 	sudo ln -sf `realpath $(output)/pashinin.com.conf` /etc/nginx/sites-enabled/pashinin.com.conf
 	sudo ln -sf `realpath $(output)/nginx.conf` /etc/nginx/nginx.conf
+	sudo ln -sf `realpath $(output)/daphne.conf` $(supervisor_confd)/daphne.conf
