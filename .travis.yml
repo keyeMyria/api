@@ -29,6 +29,7 @@ addons:
 
 
 before_install:
+  - ruby -v
   - sudo gem install mustache
 
 # Default:
