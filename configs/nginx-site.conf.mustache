@@ -1,0 +1,388 @@
+# -*- mode: nginx -*-
+{{!-*- mode: mustache -*-}}
+
+# {{#production}}
+# {{/production}}
+server {
+    listen       80;
+    server_name  www.pashinin.com;
+    return       301    https://pashinin.com$request_uri;
+}
+
+server {
+    server_name    pashinin.com;
+    listen         80;
+
+    # Redirect from an IP address to a domain name:
+    if ($host ~* ^({{ip}})$ ) {
+        return 301 https://pashinin.com$request_uri;
+    }
+    return 301 https://$host$request_uri;
+}
+
+server {
+    server_name		pashinin.com;
+
+    # Log
+    # [ debug info notice warn error crit]
+    {{#production}}
+    access_log      off;
+    {{/production}}
+    {{^production}}
+    access_log   /var/log/nginx/{{domain2}}_access.log;
+    {{/production}}
+    error_log    /var/log/nginx/{{domain2}}_error.log   error;
+    log_not_found   off;
+
+	{{#production}}
+    listen  *:443 ssl http2;
+    ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
+	ssl_session_cache shared:SSL:10m;
+	ssl_session_timeout 10m;
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK;
+    add_header Strict-Transport-Security max-age=15768000;
+    ssl_stapling on;
+    {{/production}}
+
+    location /robots.txt {
+		alias /var/www/pashinin.com/src/pashinin/static/robots.txt;
+		#deny all;
+	}
+
+	location / {
+        # for UWSGI:
+        # include uwsgi_params;
+        # uwsgi_pass unix:///var/tmp/uwsgi-pashinin.sock;
+
+        # for Django channels
+        proxy_pass http://127.0.0.1:8080/;
+        proxy_set_header   Host                 $http_host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto    $scheme;
+	}
+
+	location = /favicon.ico {
+		alias /var/www/pashinin.com/src/pashinin/static/favicon6.ico;
+	}
+
+    # proxy websockets webrtc to Asterisk http server
+    location /ws/webrtc/ {
+        # proxy_pass http://127.0.0.1:8088/ws/;
+        proxy_pass https://127.0.0.1:8089/ws/;
+        proxy_read_timeout          60000;
+        proxy_set_header   Host                 $http_host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        # proxy_set_header   X-Forwarded-Proto    $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    # error_page 502 /502.html;
+    # location = /502.html {
+    #     root  /var/www/pashinin_com/src/static;
+    # }
+
+    # error_page 404 /404.html;
+    # location = /404.html {
+    #     root  /var/www/pashinin_com/src/static;
+    # }
+
+    location /_s {
+        alias "/var/www/pashinin.com/static";
+        expires 7d;
+    }
+
+    location = /yandex_4879855c4281c5e8.txt {
+        echo "";
+    }
+
+    location = /yandex_6ee311da09ea9ea5.html {
+        default_type text/html;
+        echo "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>Verification: 6ee311da09ea9ea5</body></html>";
+    }
+
+    location = /google586e4080b1ba1d35.html {
+        default_type text/html;
+        echo "google-site-verification: google586e4080b1ba1d35.html";
+    }
+
+    location ~ ^/baumanka/sem- {
+        rewrite ^/baumanka/sem-0(.*)/(.*)$ https://pashinin.com/baumanka/IU2/sem$1/$2 permanent;
+        rewrite ^/baumanka/sem-(.*)/(.*)$ https://pashinin.com/baumanka/IU2/sem$1/$2 permanent;
+    }
+    location ~ ^/baumanka/DIPLOM {
+        rewrite ^/baumanka/DIPLOM/(.*)$ https://pashinin.com/baumanka/IU2/sem12/$1 permanent;
+    }
+    # location = /baumanka {
+    #     return 301 $uri/;
+ 	# }
+	# location /baumanka/ {
+	# 	alias "/usr/data/disk_2/file_archive/baumanka/public/";
+    #     charset utf-8;
+    #     allow all;
+    #     autoindex on;
+    #     autoindex_exact_size off;
+    #     # return 404;
+	# }
+
+    location /_file {
+        internal;
+        alias /var/www/pashinin.com/files;
+        expires 7d;
+    }
+}
+
+
+server {
+ 	listen  *:80;
+    server_name		s1.pashinin.com;
+
+ 	location /baumanka {
+        rewrite ^/baumanka(.*)$ https://pashinin.com/baumanka/ break;
+ 	}
+}
+
+
+server {
+    listen          80;
+    server_name     es.pashinin.com;
+    allow 10.254.239.0/24;
+    deny all;
+
+    location / {
+        #rewrite           ^/_plugin/head / break;
+        proxy_pass http://10.254.239.1:9200/_plugin/head/;
+        #proxy_set_header Host 10.254.239.1;
+        proxy_set_header  Host $http_host;
+    }
+    location /cmd {
+        proxy_pass http://10.254.239.1:9200/;
+    }
+}
+
+
+server {
+    listen          80;
+    server_name     trac.pashinin.com;
+
+    access_log      off;
+    #error_log       /var/log/nginx/git.pashinin.com_error.log   error;
+
+    client_max_body_size 32m;
+
+    allow 10.254.239.0/24;
+    deny all;
+
+    location / {
+        #auth_basic           "closed site";
+        #auth_basic_user_file  /var/www/htxdevp;
+        proxy_set_header REMOTE_USER $remote_user;
+        proxy_pass http://10.254.239.1:8824/;
+        proxy_set_header  Host $http_host;
+        allow 10.254.239.0/24;
+        deny all;
+    }
+}
+
+
+# ZABBIX
+server {
+    listen          *:80;
+    server_name     zabbix.pashinin.com;
+    access_log      off;
+    error_log       /var/log/nginx/pashinin.com_error.log   error;
+    log_not_found   off;
+    allow 10.254.239.0/24;
+    deny  all;
+
+    index index.php index.html index.htm;
+
+    root  /usr/share/zabbix;
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        include phpfpm_params;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # location ~ \.php$ {
+    #     include uwsgi_params;
+    #     uwsgi_modifier1 14;
+    #     # uwsgi_pass 127.0.0.1:3030;
+    #     uwsgi_pass unix:///var/tmp/uwsgi-php.sock;
+    # }
+}
+
+
+server {
+    listen          80;
+    server_name     logs.pashinin.com;
+    error_log       /var/log/nginx/pashinin.com.err.log   error;
+
+    root /var/www/kibana/;
+    #index index.html;
+
+    location / {
+        autoindex on;
+
+        root /var/www/kibana/;
+        index  index.html;
+
+        allow   10.254.239.0/24;
+        deny    all;
+
+        # location ~ .php$ {
+        #     # include phpfpm_params;
+        # }
+
+        location ~ \.php$ {
+            include uwsgi_params;
+            uwsgi_modifier1 14;
+            # uwsgi_pass 127.0.0.1:3030;
+            uwsgi_pass unix:///var/tmp/uwsgi-php.sock;
+        }
+    }
+
+    # no access to .htaccess files
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+
+server {
+    listen          80;
+    server_name     apt.pashinin.com;
+    error_log       /var/log/nginx/pashinin.com.err.log   error;
+
+    # root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
+    #index index.html;
+
+    location / {
+        # alias "/var/spool/apt-mirror/mirror/archive.ubuntu.com/";
+        # alias "/var/spool/apt-mirror/mirror/mirror.yandex.ru/";
+        alias "/var/spool/apt-mirror/mirror/";
+        charset utf-8;
+        autoindex on;
+        autoindex_exact_size off;
+
+        # root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
+        # index  index.html;
+
+        allow   10.254.239.0/24;
+        deny    all;
+    }
+}
+
+
+
+# Sentry
+# pip install -U sentry
+# sentry init /etc/sentry.conf.py
+# /pyenvs/sentry/bin/sentry --config=/etc/sentry.conf.py start
+server {
+    server_name    sentry.pashinin.com;
+
+    listen  *:443 ssl http2;
+    ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
+	ssl_session_cache shared:SSL:10m;
+	ssl_session_timeout 10m;
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK;
+    add_header Strict-Transport-Security max-age=15768000;
+    ssl_stapling on;
+
+    # Log
+    access_log      off;
+    log_not_found   off;
+
+    # keepalive + raven.js is a disaster
+    keepalive_timeout 0;
+
+    # use very aggressive timeouts
+    proxy_read_timeout 5s;
+    proxy_send_timeout 5s;
+    send_timeout 5s;
+    resolver_timeout 5s;
+    client_body_timeout 5s;
+
+    # buffer larger messages
+    client_max_body_size 150k;
+    client_body_buffer_size 150k;
+
+    location / {
+        proxy_pass    http://localhost:9000;
+        proxy_set_header   Host                 $http_host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto    $scheme;
+        proxy_redirect     off;
+
+        allow   10.254.239.0/24;
+        allow   127.0.0.1/32;
+        deny    all;
+    }
+}
+
+
+
+server {
+    server_name    celery.pashinin.com;
+    listen         80;
+    return 301 https://$host$request_uri;
+}
+# Celery flower
+server {
+    server_name    celery.pashinin.com;
+
+    listen  *:443 ssl http2;
+    ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
+	ssl_session_cache shared:SSL:10m;
+	ssl_session_timeout 10m;
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK;
+    add_header Strict-Transport-Security max-age=15768000;
+    ssl_stapling on;
+
+    # Log
+    access_log      off;
+    log_not_found   off;
+
+    # keepalive + raven.js is a disaster
+    keepalive_timeout 0;
+
+    # use very aggressive timeouts
+    proxy_read_timeout 5s;
+    proxy_send_timeout 5s;
+    send_timeout 5s;
+    resolver_timeout 5s;
+    client_body_timeout 5s;
+
+    # buffer larger messages
+    client_max_body_size 150k;
+    client_body_buffer_size 150k;
+
+    location / {
+        proxy_pass    http://localhost:5555;
+        proxy_set_header   Host                 $http_host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto    $scheme;
+        proxy_redirect     off;
+
+        allow   10.254.239.0/24;
+        allow   127.0.0.1/32;
+        deny    all;
+    }
+}

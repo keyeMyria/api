@@ -3,8 +3,10 @@
 S = secret-example.json
 supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
+output = tmp
 
 templates:
-	sudo sh -c 'mustache $(S) daphne.conf > $(supervisor_confd)/daphne.conf'
-	sudo sh -c 'mustache $(S) settings.py > ../src/pashinin/settings.py'
-	# sudo chown www-data:www-data $(settings_file)
+	mkdir $(output)
+	sudo sh -c 'mustache $(S) daphne.conf.mustache > $(output)/daphne.conf'
+	sudo sh -c 'mustache $(S) settings.py.mustache > ../src/pashinin/settings.py'
+	sudo sh -c 'mustache $(S) nginx-site.conf.mustache > $(output)/nginx-site.conf'

@@ -42,8 +42,8 @@ script:
   - echo "1"
   - curl 127.0.0.1
 
-# after_script:
-#   - cat /etc/supervisor/conf.d/daphne.conf
+after_script:
+  - git status
 
 
 notifications:
