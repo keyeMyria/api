@@ -39,6 +39,7 @@ addons:
       - nginx
       - supervisor
       - ruby-mustache
+      - ruby-dev          # dep for ruby-mustache
       - redis-server
       - realpath
 
