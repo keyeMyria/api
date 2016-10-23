@@ -39,7 +39,7 @@ addons:
       - realpath
 
 before_script:
-  - sudo service nginx restart
+  - sudo systemctl restart nginx
 
 
 # TESTS
