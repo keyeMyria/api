@@ -22,7 +22,7 @@ addons:
     packages:
       - nginx
       - supervisor
-      # - ruby-mustache
+      - ruby-mustache
       # - ruby2.3
       - redis-server
       - realpath
