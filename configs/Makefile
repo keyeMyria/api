@@ -7,8 +7,8 @@ output = tmp
 
 templates:
 	mkdir $(output)
-	sudo sh -c 'mustache $(S) daphne.conf.mustache > $(output)/daphne.conf'
-	sudo sh -c 'mustache $(S) settings.py.mustache > ../src/pashinin/settings.py'
+	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
+	mustache $(S) settings.py.mustache > ../src/pashinin/settings.py
 	sudo sh -c 'mustache $(S) nginx.conf.mustache > $(output)/nginx.conf'
 	sudo sh -c 'mustache $(S) nginx-site.conf.mustache > $(output)/pashinin.com.conf'
 

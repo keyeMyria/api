@@ -27,6 +27,7 @@ install:
   - ls -la /etc/nginx/
   - ls -la .
   - cat /etc/supervisor/conf.d/daphne.conf
+  - cat /etc/nginx/nginx.conf
   - sudo service nginx restart
   - sudo service supervisor restart
 
