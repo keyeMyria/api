@@ -13,5 +13,5 @@ templates:
 	sudo sh -c 'mustache $(S) nginx-site.conf.mustache > $(output)/pashinin.com.conf'
 
 links:
-	sudo ln -sf $(output)/pashinin.com.conf /etc/nginx/sites-enabled/pashinin.com.conf
-	sudo ln -sf $(output)/nginx.conf /etc/nginx/nginx.conf
+	sudo ln -sf `realpath $(output)/pashinin.com.conf` /etc/nginx/sites-enabled/pashinin.com.conf
+	sudo ln -sf `realpath $(output)/nginx.conf` /etc/nginx/nginx.conf
