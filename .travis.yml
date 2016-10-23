@@ -17,13 +17,13 @@ matrix:
 
 addons:
   apt:
-    sources:
+    # sources:
       #   - deadsnakes      # for python 3.5
-      - sourceline: 'ppa:brightbox/ruby-ng'
+      # - sourceline: 'ppa:brightbox/ruby-ng'
     packages:
       - nginx
       - supervisor
-      - ruby2.3
+      # - ruby2.3
       - ruby-mustache
       - redis-server
       - realpath
@@ -35,7 +35,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install ruby2.3
   - ruby -v
-  # - sudo gem install mustache
+  - sudo gem install mustache
 
 # Default:
 # install: "pip install -r requirements.txt"
