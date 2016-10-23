@@ -24,18 +24,18 @@ addons:
       - nginx
       - supervisor
       - ruby-mustache
-      # - ruby2.3
+      - ruby2.3
       - redis-server
       - realpath
 
 
 before_install:
   # - sudo apt-get -y install python-software-properties
-  - sudo apt-add-repository -y ppa:brightbox/ruby-ng
-  - sudo apt-get update
-  - sudo apt-get install ruby2.3
+  # - sudo apt-add-repository -y ppa:brightbox/ruby-ng
+  # - sudo apt-get update
+  # - sudo apt-get install ruby2.3
   - ruby -v
-  - sudo gem install mustache
+  # - sudo gem install mustache
 
 # Default:
 # install: "pip install -r requirements.txt"
