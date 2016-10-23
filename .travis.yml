@@ -17,8 +17,9 @@ matrix:
 
 addons:
   apt:
-    # sources:
-    #   - deadsnakes      # for python 3.5
+    sources:
+      #   - deadsnakes      # for python 3.5
+      - ppa:brightbox/ruby-ng
     packages:
       - nginx
       - supervisor
