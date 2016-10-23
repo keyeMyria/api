@@ -50,7 +50,8 @@ install:
   - ls -la .
   - cat /etc/supervisor/conf.d/daphne.conf
   - cat /etc/nginx/nginx.conf
-  - sudo service nginx restart
+  - sudo service nginx stop
+  - sudo service nginx start
   - sudo service supervisor restart
 
 
