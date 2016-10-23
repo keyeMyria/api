@@ -26,6 +26,7 @@ install:
   - ls -la /etc/supervisor/conf.d/
   - ls -la /etc/nginx/
   - ls -la .
+  - sudo service nginx restart
 
 addons:
   apt:
@@ -39,7 +40,7 @@ addons:
       - realpath
 
 before_script:
-  - sudo systemctl restart nginx
+  - ps -ef | grep -v grep | grep nginx
 
 
 # TESTS
@@ -54,6 +55,9 @@ after_script:
 
 after_failure:
   - df -h
+  - cat /var/log/nginx/error.log
+  - cat /etc/nginx/nginx.conf
+  - cat /etc/nginx/sites-enabled/pashinin.com.conf
 
 
 notifications:
