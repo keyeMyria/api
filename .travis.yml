@@ -36,6 +36,7 @@ addons:
       - supervisor
       - ruby-mustache
       - redis-server
+      - realpath
 
 before_script:
   - sudo service nginx restart
