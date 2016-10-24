@@ -9,8 +9,8 @@ templates:
 	mkdir $(output)
 	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) settings.py.mustache > ../src/pashinin/settings.py
-	sudo sh -c 'mustache $(S) nginx.conf.mustache > $(output)/nginx.conf'
-	sudo sh -c 'mustache $(S) nginx-site.conf.mustache > $(output)/pashinin.com.conf'
+	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
+	sudo bash -c 'mustache $(S) nginx-site.conf.mustache > $(output)/pashinin.com.conf'
 
 links:
 	sudo ln -sf `realpath $(output)/pashinin.com.conf` /etc/nginx/sites-enabled/pashinin.com.conf
