@@ -20,6 +20,7 @@ addons:
     sources:
       #   - deadsnakes      # for python 3.5
       - sourceline: 'ppa:brightbox/ruby-ng'
+      - sourceline: 'ppa:nginx/stable'
     packages:
       - nginx
       - supervisor
