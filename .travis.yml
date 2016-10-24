@@ -22,7 +22,7 @@ addons:
       - sourceline: 'ppa:brightbox/ruby-ng'
       - sourceline: 'ppa:nginx/stable'
     packages:
-      - nginx
+      - nginx-full
       - supervisor
       - ruby2.3
       - ruby-mustache
