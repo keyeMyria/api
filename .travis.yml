@@ -48,32 +48,28 @@ install:
   - ls -la /etc/supervisor/conf.d/
   - ls -la /etc/nginx/
   - ls -la .
-  - cat /etc/supervisor/conf.d/daphne.conf
-  - cat /etc/nginx/nginx.conf
   - sudo service nginx stop
   - sudo service nginx start
   - sudo service supervisor restart
 
-
 before_script:
-  - ps -ef | grep -v grep | grep nginx
   - ruby -v
 
 
 # TESTS
 # script: nosetests
 script:
-  - echo "1"
+  - ps -ef | grep -v grep | grep nginx
   - curl 127.0.0.1
 
 after_script:
   - git status
 
-
 after_failure:
   - df -h
   - cat /var/log/nginx/error.log
   - cat /etc/nginx/nginx.conf
+  - cat /etc/supervisor/conf.d/daphne.conf
   - cat /etc/nginx/sites-enabled/pashinin.com.conf
   - cat /var/log/supervisor/supervisord.log
 
