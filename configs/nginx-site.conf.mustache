@@ -5,24 +5,24 @@
 # {{/production}}
 server {
     listen       80;
-    server_name  www.pashinin.com;
-    return       301    https://pashinin.com$request_uri;
+    server_name  www.{{domain}};
+    return       301    https://{{domain}}$request_uri;
 }
 
 server {
-    server_name    pashinin.com;
+    server_name    {{domain}};
     listen         80;
 
     {{#production}}
     # Redirect from an IP address to a domain name:
     if ($host ~* ^({{ip}})$ ) {
-        return 301 https://pashinin.com$request_uri;
+        return 301 https://{{domain}}$request_uri;
     }
     return 301 https://$host$request_uri;
 }
 
 server {
-    server_name		pashinin.com;
+    server_name		{{domain}};
 
     # Log
     # [ debug info notice warn error crit]
@@ -30,15 +30,15 @@ server {
     access_log      off;
     {{/production}}
     {{^production}}
-    access_log   /var/log/nginx/{{domain2}}_access.log;
+    access_log   /var/log/nginx/{{domain}}_access.log;
     {{/production}}
-    error_log    /var/log/nginx/{{domain2}}_error.log   error;
+    error_log    /var/log/nginx/{{domain}}_error.log   error;
     log_not_found   off;
 
 
     listen  *:443 ssl http2;
-    ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{domain}}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{domain}}/privkey.pem;
 	ssl_session_cache shared:SSL:10m;
 	ssl_session_timeout 10m;
     ssl_protocols TLSv1.1 TLSv1.2;
@@ -48,7 +48,7 @@ server {
     {{/production}}
 
     location /robots.txt {
-		alias /var/www/pashinin.com/src/pashinin/static/robots.txt;
+		alias /var/www/{{domain}}/src/pashinin/static/robots.txt;
 		#deny all;
 	}
 
@@ -66,7 +66,7 @@ server {
 	}
 
 	location = /favicon.ico {
-		alias /var/www/pashinin.com/src/pashinin/static/favicon6.ico;
+		alias /var/www/{{domain}}/src/pashinin/static/favicon6.ico;
 	}
 
     # proxy websockets webrtc to Asterisk http server
@@ -117,11 +117,11 @@ server {
     }
 
     location ~ ^/baumanka/sem- {
-        rewrite ^/baumanka/sem-0(.*)/(.*)$ https://pashinin.com/baumanka/IU2/sem$1/$2 permanent;
-        rewrite ^/baumanka/sem-(.*)/(.*)$ https://pashinin.com/baumanka/IU2/sem$1/$2 permanent;
+        rewrite ^/baumanka/sem-0(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
+        rewrite ^/baumanka/sem-(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
     }
     location ~ ^/baumanka/DIPLOM {
-        rewrite ^/baumanka/DIPLOM/(.*)$ https://pashinin.com/baumanka/IU2/sem12/$1 permanent;
+        rewrite ^/baumanka/DIPLOM/(.*)$ https://{{domain}}/baumanka/IU2/sem12/$1 permanent;
     }
     # location = /baumanka {
     #     return 301 $uri/;
@@ -148,14 +148,14 @@ server {
     server_name		s1.pashinin.com;
 
  	location /baumanka {
-        rewrite ^/baumanka(.*)$ https://pashinin.com/baumanka/ break;
+        rewrite ^/baumanka(.*)$ https://{{domain}}/baumanka/ break;
  	}
 }
 
 
 server {
     listen          80;
-    server_name     es.pashinin.com;
+    server_name     es.{{domain}};
     allow 10.254.239.0/24;
     deny all;
 
@@ -173,7 +173,7 @@ server {
 
 server {
     listen          80;
-    server_name     trac.pashinin.com;
+    server_name     trac.{{domain}};
 
     access_log      off;
     #error_log       /var/log/nginx/git.pashinin.com_error.log   error;
@@ -198,9 +198,9 @@ server {
 # ZABBIX
 server {
     listen          *:80;
-    server_name     zabbix.pashinin.com;
+    server_name     zabbix.{{domain}};
     access_log      off;
-    error_log       /var/log/nginx/pashinin.com_error.log   error;
+    error_log       /var/log/nginx/{{domain}}_error.log   error;
     log_not_found   off;
     allow 10.254.239.0/24;
     deny  all;
@@ -229,8 +229,8 @@ server {
 
 server {
     listen          80;
-    server_name     logs.pashinin.com;
-    error_log       /var/log/nginx/pashinin.com.err.log   error;
+    server_name     logs.{{domain}};
+    error_log       /var/log/nginx/{{domain}}.err.log   error;
 
     root /var/www/kibana/;
     #index index.html;
@@ -265,8 +265,8 @@ server {
 
 server {
     listen          80;
-    server_name     apt.pashinin.com;
-    error_log       /var/log/nginx/pashinin.com.err.log   error;
+    server_name     apt.{{domain}};
+    error_log       /var/log/nginx/{{domain}}.err.log   error;
 
     # root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
     #index index.html;
@@ -294,7 +294,7 @@ server {
 # sentry init /etc/sentry.conf.py
 # /pyenvs/sentry/bin/sentry --config=/etc/sentry.conf.py start
 server {
-    server_name    sentry.pashinin.com;
+    server_name    sentry.{{domain}};
 
     {{#production}}
     listen  *:443 ssl http2;
@@ -343,18 +343,18 @@ server {
 
 
 server {
-    server_name    celery.pashinin.com;
+    server_name    celery.{{domain}};
     listen         80;
     return 301 https://$host$request_uri;
 }
 # Celery flower
 server {
-    server_name    celery.pashinin.com;
+    server_name    celery.{{domain}};
 
 	{{#production}}
     listen  *:443 ssl http2;
-    ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{domain}}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{domain}}/privkey.pem;
 	ssl_session_cache shared:SSL:10m;
 	ssl_session_timeout 10m;
     ssl_protocols TLSv1.1 TLSv1.2;
