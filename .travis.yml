@@ -59,6 +59,7 @@ before_script:
 # script: nosetests
 script:
   # - ps -ef | grep -v grep | grep nginx
+  - curl pashinin.com
   - curl -Is http://pashinin.com | grep "200 OK"
 
 after_script:
