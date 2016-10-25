@@ -33,7 +33,9 @@ addons:
 
 
 before_install:
+  # - umask 022
   - pwd
+  - chown -R www-data .
   - ruby -v
   - nginx -V
   - sudo gem install mustache
