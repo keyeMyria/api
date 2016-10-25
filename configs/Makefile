@@ -1,12 +1,13 @@
 # -*- Makefile -*-
 
-S = secret-example.json
+S = /tmp/conf.json
 supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
 output = tmp
 
 templates:
 	mkdir $(output)
+	./config.py secret-example.json
 	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) settings.py.mustache > ../src/pashinin/settings.py
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
