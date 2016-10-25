@@ -13,6 +13,7 @@ server {
     server_name    pashinin.com;
     listen         80;
 
+    {{#production}}
     # Redirect from an IP address to a domain name:
     if ($host ~* ^({{ip}})$ ) {
         return 301 https://pashinin.com$request_uri;
@@ -34,7 +35,7 @@ server {
     error_log    /var/log/nginx/{{domain2}}_error.log   error;
     log_not_found   off;
 
-	{{#production}}
+
     listen  *:443 ssl http2;
     ssl_certificate /etc/letsencrypt/live/pashinin.com/fullchain.pem;
 	ssl_certificate_key /etc/letsencrypt/live/pashinin.com/privkey.pem;
