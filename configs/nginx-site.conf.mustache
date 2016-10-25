@@ -99,17 +99,20 @@ server {
     }
 
     location = /yandex_4879855c4281c5e8.txt {
-        echo "";
+        # echo "";
+        return 200 "";
     }
 
     location = /yandex_6ee311da09ea9ea5.html {
         default_type text/html;
-        echo "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>Verification: 6ee311da09ea9ea5</body></html>";
+        # echo "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>Verification: 6ee311da09ea9ea5</body></html>";
+        return 200 "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>Verification: 6ee311da09ea9ea5</body></html>";
     }
 
     location = /google586e4080b1ba1d35.html {
         default_type text/html;
-        echo "google-site-verification: google586e4080b1ba1d35.html";
+        # echo "google-site-verification: google586e4080b1ba1d35.html";
+        return 200 "google-site-verification: google586e4080b1ba1d35.html";
     }
 
     location ~ ^/baumanka/sem- {
