@@ -72,6 +72,7 @@ after_failure:
   - sudo cat /etc/supervisor/conf.d/daphne.conf
   - sudo cat /etc/nginx/sites-enabled/pashinin.com.conf
   - sudo cat /var/log/supervisor/supervisord.log
+  - sudo cat /var/log/supervisor/daphne.err.log
   - sudo supervisorctl status
 
 
