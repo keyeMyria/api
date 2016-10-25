@@ -67,6 +67,7 @@ after_failure:
   - ls -la /etc/supervisor/conf.d/
   - ls -la /etc/nginx/
   - ls -la .
+  - ls -la /home/travis/build/pashinin-com/pashinin.com/src
   - df -h
   - sudo cat /var/log/nginx/error.log
   - sudo cat /etc/nginx/nginx.conf
