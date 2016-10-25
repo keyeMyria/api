@@ -34,6 +34,7 @@ addons:
 before_install:
   # - umask 022
   - pwd
+  - echo $TRAVIS_PYTHON_VERSION
   - sudo chown -R www-data .
   - ruby -v
   - nginx -V
@@ -72,6 +73,7 @@ after_failure:
   - ls -la /etc/nginx/
   - ls -la .
   - ls -la /home/travis/build/pashinin-com/pashinin.com/src
+  - ls -la /home/travis/virtualenv/python3.5.0/bin/
   - df -h
   - sudo cat /var/log/nginx/error.log
   - sudo cat /etc/nginx/nginx.conf
