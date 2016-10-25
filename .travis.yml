@@ -31,7 +31,6 @@ addons:
       - redis-server
       - realpath
 
-
 before_install:
   # - umask 022
   - pwd
