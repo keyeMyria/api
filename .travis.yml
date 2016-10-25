@@ -48,7 +48,9 @@ install:
   - (cd configs; make links)
   - sudo service nginx stop
   - sudo service nginx start
-  - sudo supervisorctl restart daphne
+  - sudo supervisorctl reread
+  - sudo supervisorctl update
+  # - sudo supervisorctl restart daphne
   - sleep 5
 
 before_script:
