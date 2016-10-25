@@ -75,7 +75,6 @@ after_failure:
   - sudo cat /var/log/supervisor/daphne.err.log
   - sudo supervisorctl status
 
-
 notifications:
   email: false
   webhooks:
