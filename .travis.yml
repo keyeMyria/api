@@ -16,6 +16,8 @@ matrix:
     - python: nightly
 
 addons:
+  hosts:
+    - pashinin.com
   apt:
     sources:
       #   - deadsnakes      # for python 3.5
@@ -55,7 +57,7 @@ before_script:
 # script: nosetests
 script:
   - ps -ef | grep -v grep | grep nginx
-  - curl 127.0.0.1
+  - curl pashinin.com
 
 after_script:
   - git status
