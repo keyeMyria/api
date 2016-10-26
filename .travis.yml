@@ -69,6 +69,7 @@ after_script:
   - git status
 
 after_failure:
+  - sudo netstat -atunpl
   - ls -la /etc/supervisor/conf.d/
   - ls -la /etc/nginx/
   - ls -la .
