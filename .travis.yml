@@ -70,6 +70,7 @@ after_script:
 
 after_failure:
   - sudo netstat -atunpl
+  - ls -la /tmp
   - ls -la /etc/supervisor/conf.d/
   - ls -la /etc/nginx/
   - ls -la .
