@@ -1,6 +1,7 @@
 # -*- mode: conf -*-
 [program:daphne]
-command={{vebin}}/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
+# command={{vebin}}/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
+command={{vebin}}/daphne -u /tmp/daphne.sock pashinin.asgi:channel_layer
 directory={{repo}}/src
 user={{www-data}}
 autostart=true
