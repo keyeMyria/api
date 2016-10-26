@@ -20,6 +20,7 @@ if __name__ == "__main__":
     data['vebin'] = os.path.dirname(sys.executable)
     data['repo'] = os.path.dirname(
         os.path.abspath(os.path.dirname(__file__)))
+    data['www-data'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
     if (sys.version_info >= (3, 5)):
         # print(sys.executable)
         pass
