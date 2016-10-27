@@ -2,7 +2,6 @@ import os
 import sys
 import functools
 from django.core.validators import URLValidator
-from .views import BaseView
 
 default_app_config = 'core.apps.CoreConfig'
 
