@@ -21,11 +21,11 @@ class EnsureCsrfCookieMixin(object):
 
 
 # class Base(EnsureCsrfCookieMixin, TemplateView):
-class Base(TemplateView):
+class BaseView(TemplateView):
     only_superuser = False
 
     def get_context_data(self, **kwargs):
-        c = super(Base, self).get_context_data(**kwargs)
+        c = super(BaseView, self).get_context_data(**kwargs)
         c['year'] = date.today().year
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG
@@ -65,7 +65,7 @@ class Base(TemplateView):
         return self.render_to_response(c, status=c['status'])
 
 
-class TreeEdit(Base):
+class TreeEdit(BaseView):
     template_name = "cms_tree_edit.jinja"
 
     def get_context_data(self, **kwargs):
