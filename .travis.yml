@@ -88,6 +88,7 @@ after_failure:
   - sudo ls -la /var/log/supervisor
   - sudo cat /var/log/supervisor/supervisord.log
   - sudo cat /var/log/supervisor/daphne.err.log
+  - sudo cat /var/log/supervisor/worker.err.log
 
 notifications:
   email: false
