@@ -40,7 +40,6 @@ before_install:
   - nginx -V
   - sudo gem install mustache
   - sudo service redis-server start
-  - sudo service redis-server status
 
 # Default:
 # install: "pip install -r requirements.txt"
@@ -48,7 +47,7 @@ install:
   - pip install -r requirements.txt
   - (cd configs; make)
   - (cd configs; make links)
-  - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
+  # - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
   - sudo service nginx stop
   - sudo service nginx start
   - sudo supervisorctl reread
@@ -64,7 +63,7 @@ before_script:
 # script: nosetests
 script:
   # - ps -ef | grep -v grep | grep nginx
-  - curl http://127.0.0.1:8080/
+  # - curl http://127.0.0.1:8080/
   - curl pashinin.com
   - curl -Is http://pashinin.com | grep "200 OK"
 
@@ -72,6 +71,8 @@ after_script:
   - git status
 
 after_failure:
+  - sudo service redis-server status
+  - sudo supervisorctl status
   - sudo netstat -atunpl
   - ls -la /tmp
   - ls -la /etc/supervisor/conf.d/
@@ -87,7 +88,6 @@ after_failure:
   - sudo ls -la /var/log/supervisor
   - sudo cat /var/log/supervisor/supervisord.log
   - sudo cat /var/log/supervisor/daphne.err.log
-  - sudo supervisorctl status
 
 notifications:
   email: false
