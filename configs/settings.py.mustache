@@ -268,7 +268,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('localhost', 6379)],
+            'hosts': [('{{redis_server}}', 6379)],
         },
         'ROUTING': 'pashinin.routing.channel_routing',
     },
@@ -396,7 +396,7 @@ CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         # 'LOCATION': '/var/run/redis/redis-server.pid',
-        'LOCATION': ['10.254.239.1:6379'],
+        'LOCATION': ['{{redis_server}}:6379'],
         # 'KEY_PREFIX': 'd' if DEBUG else '',
     }
 }
@@ -447,7 +447,7 @@ LOGGING = {
 }
 
 import redis
-r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
+r = redis.StrictRedis(host='{{redis_server}}', port=6379, db=0)
 # def show_toolbar(request):
 #     return not request.is_ajax() and request.user and request.user.username == "yourusername"
 
@@ -487,7 +487,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*1024*3
 
 
 CACHEOPS_REDIS = {
-    'host': '127.0.0.1',  # redis-server is on same machine
+    'host': '{{redis_server}}',  # redis-server is on same machine
     'port': 6379,            # default redis port
     'db': 0,                 # SELECT non-default redis database
                              # using separate redis db or redis instance
