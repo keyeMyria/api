@@ -159,7 +159,7 @@ MIDDLEWARE_CLASSES = (
     # 'django_pdb.middleware.PdbMiddleware',
 )
 
-ROOT_URLCONF = 'pashinin.urls'
+    ROOT_URLCONF = '{{app}}.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 # Default: None
@@ -212,7 +212,7 @@ TEMPLATES = [
     },
 ]
 
-from pashinin.celeryconfig import *
+from {{app}}.celeryconfig import *
 # try:
 #     from pashinin.celeryconfig import *
 # except:
@@ -257,7 +257,7 @@ INSTALLED_APPS = (
     # 'social.apps.django_app.default',
 
 
-    'pashinin',
+    '{{app}}',
 )
 
 
@@ -270,7 +270,7 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [('{{redis_server}}', 6379)],
         },
-        'ROUTING': 'pashinin.routing.channel_routing',
+        'ROUTING': '{{app}}.routing.channel_routing',
     },
 }
 
@@ -288,7 +288,7 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # the transport class to Client() instead.
 # import raven
 RAVEN_CONFIG = {
-    'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.pashinin.com/2',
+    'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
