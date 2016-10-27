@@ -1,4 +1,6 @@
+import os
 import sys
+import functools
 from django.core.validators import URLValidator
 
 default_app_config = 'core.apps.CoreConfig'
@@ -34,7 +36,6 @@ def get_client_ip(request):
     return ip
 
 
-import functools
 def travis(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
