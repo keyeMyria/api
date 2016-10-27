@@ -39,6 +39,7 @@ before_install:
   - ruby -v
   - nginx -V
   - sudo gem install mustache
+  - sudo service redis-server start
   - sudo service redis-server status
 
 # Default:
