@@ -38,8 +38,10 @@ django-dirtyfields
 django-extensions              # https://github.com/django-extensions/django-extensions
 django-hstore                  # git+git://github.com/djangonauts/django-hstore.git
 django-jinja
-#django-nose
+
+django-nose
 # git+https://github.com/django-nose/django-nose.git
+
 django-mptt               # git+https://github.com/django-mptt/django-mptt.git
 django-optimizations
 django-pytest                  # py.test runner
