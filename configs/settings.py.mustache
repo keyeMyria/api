@@ -446,12 +446,15 @@ LOGGING = {
     }
 }
 
-import redis
-r = redis.StrictRedis(host='{{redis_server}}', port=6379, db=0)
-# def show_toolbar(request):
-#     return not request.is_ajax() and request.user and request.user.username == "yourusername"
+ddt = False
+try:
+    import redis
+    r = redis.StrictRedis(host='{{redis_server}}', port=6379, db=0)
+    ddt = r.get('ddt')==b'True'
+except Exception as e:
+    print(e)
 
-if r.get('ddt')==b'True' and DEBUG:
+if ddt and DEBUG:
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     INSTALLED_APPS += ('debug_toolbar',)
     INTERNAL_IPS = ('127.0.0.1', '10.254.239.2', '10.92.209.1')
