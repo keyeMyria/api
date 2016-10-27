@@ -1,0 +1,15 @@
+# -*- mode: conf -*-
+[program:worker]
+# environment =
+#     PYTHONPATH=/var/www/xdev/tmp/ve/lib,
+#     SITE=domain1,
+#     DJANGO_SETTINGS_MODULE2 = foo.settings.local,
+#     DB_USER2=foo,
+#     DB_PASS2=bar
+command={{vebin}}/python ./manage.py runworker
+directory={{repo}}/src
+user={{www-data}}
+autostart=true
+autorestart=false
+stderr_logfile=/var/log/supervisor/worker.err.log
+stdout_logfile=/var/log/supervisor/worker.out.log
