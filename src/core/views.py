@@ -1,8 +1,7 @@
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
-from core import get_client_ip
-from ..custom.mobile import is_mobile
+from core import get_client_ip, is_mobile
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
