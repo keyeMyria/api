@@ -5,7 +5,6 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.http import HttpResponse
-from .models import P
 from .forms import Enroll
 from django.core.mail import send_mail
 # from raven.contrib.django.raven_compat.models import client
@@ -18,7 +17,6 @@ class Base(BaseView):
         c["email"] = settings.EMAIL
         c["price"] = settings.PRICE
         c["price45"] = settings.PRICE45
-        c["P"] = P
         c["menu_id"] = "services"
         c['menu'] = {
             'parent': None,
