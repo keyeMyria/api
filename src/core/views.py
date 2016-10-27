@@ -76,17 +76,3 @@ class TreeEdit(Base):
         from cms.edu.models import Category
         c['roots'] = Category.objects.all()
         return c
-
-
-def err404(request):
-    if request.method == 'GET':
-        return HttpResponseNotFound(render_to_string('404.html', locals()))
-    else:
-        return HttpResponseNotFound('404')
-
-
-def err500(request):
-    if request.method == 'GET':
-        return HttpResponseServerError(render_to_string('500.html', locals()))
-    else:
-        return HttpResponseServerError('500')
