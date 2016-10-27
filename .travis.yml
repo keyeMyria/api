@@ -44,9 +44,9 @@ before_install:
 # install: "pip install -r requirements.txt"
 install:
   - pip install -r requirements.txt
-  - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
   - (cd configs; make)
   - (cd configs; make links)
+  - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
   - sudo service nginx stop
   - sudo service nginx start
   - sudo supervisorctl reread
