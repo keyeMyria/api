@@ -44,7 +44,7 @@ before_install:
 # Default:
 # install: "pip install -r requirements.txt"
 install:
-  - pip install -r requirements.txt
+  - pip install -r docker/requirements.txt
   - (cd configs; make)
   - (cd configs; make links)
   # - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
