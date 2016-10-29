@@ -60,3 +60,19 @@ docker push pashinin/pashinin.com
 ```
 
 Your authentication credentials will be stored in the .dockercfg authentication file in your home directory.
+
+## docker-compose
+
+For managing multiple containers.
+
+Install:
+
+```bash
+curl -L "https://github.com/docker/compose/releases/download/1.8.1/docker-compose-$(uname -s)-$(uname -m)" > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+# docker-compose version: 1.8.1
+```
+
+Create docker-compose.yml:
