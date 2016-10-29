@@ -5,7 +5,7 @@ supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
 output = tmp
 
-templates: ../src/pashinin/settings.py
+templates:
 	mkdir -p $(output)
 	./config.py secret-example.json
 	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
