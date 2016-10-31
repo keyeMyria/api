@@ -30,8 +30,8 @@ services:
   dbinit:
     image: postgres
     # image: python:3-onbuild
-    working_dir: /var/www/pashinin.com/configs
-    command: ./dbinit.sh
+    working_dir: /tmp
+    command: psql -h db -U postgres -a -f /var/www/pashinin.com/configs/tmp/dbinit.sql
     volumes:
       - ../:/var/www/pashinin.com
     # links:
