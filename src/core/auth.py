@@ -1,7 +1,7 @@
 import django
 from django.contrib import auth
 from django.utils.functional import SimpleLazyObject
-from ..user.models import CustomUser as User
+from .models import User
 
 
 def get_user(request):
@@ -9,7 +9,7 @@ def get_user(request):
         request._cached_user = auth.get_user(request)
     if isinstance(request._cached_user,
                   django.contrib.auth.models.AnonymousUser):
-        request._cached_user = User.objects.get(pk=0)
+        request._cached_user = User.objects.get(pk=1)
     return request._cached_user
 
 

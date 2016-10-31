@@ -65,7 +65,7 @@ urlpatterns += i18n_patterns(
 
 # Main page
 urlpatterns += i18n_patterns(
-    url(r'^$', IT.as_view(), name="index"),
+    url(r'^$', Index.as_view(), name="index"),
     # url(r'^$', Index.as_view(), name="index"),
     prefix_default_language=False
 )

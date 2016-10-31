@@ -1,7 +1,7 @@
 import django
 from django.contrib.auth.backends import ModelBackend
 from django.core.exceptions import ImproperlyConfigured
-from ..user.models import CustomUser as User
+from .user.models import User
 from django.core.exceptions import ValidationError
 
 

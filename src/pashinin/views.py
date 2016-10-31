@@ -13,10 +13,10 @@ from django.core.mail import send_mail
 class Base(BaseView):
     def get_context_data(self, **kwargs):
         c = super(Base, self).get_context_data(**kwargs)
-        c["phone"] = settings.PHONE
-        c["email"] = settings.EMAIL
-        c["price"] = settings.PRICE
-        c["price45"] = settings.PRICE45
+        c["phone"] = '+7 (977) 801-25-41'
+        c["email"] = 'sergey@pashinin.com'
+        c["price"] = 900
+        c["price45"] = 700
         c["menu_id"] = "services"
         c['menu'] = {
             'parent': None,
@@ -25,10 +25,10 @@ class Base(BaseView):
                     'title': 'Главная',
                     'url': reverse('index'),
                 },
-                {
-                    'title': 'Контакты',
-                    'url': reverse('contacts')
-                },
+                # {
+                #     'title': 'Контакты',
+                #     'url': reverse('contacts')
+                # },
             ]
         }
         return c
@@ -49,8 +49,8 @@ class Base(BaseView):
 #         return self.render_to_response(vars, **kwargs)
 
 
-class IT(Base):
-    template_name = "repetitor_it.jinja"
+class Index(Base):
+    template_name = "pashinin_index.jinja"
 
     # def get_context_data(self, **kwargs):
     #     c = super(IT, self).get_context_data(**kwargs)
@@ -95,7 +95,7 @@ class IT(Base):
 
 
 class Contacts(Base):
-    template_name = "contacts.jinja"
+    template_name = "pashinin_contacts.jinja"
 
     def get_context_data(self, **kwargs):
         c = super(Contacts, self).get_context_data(**kwargs)
