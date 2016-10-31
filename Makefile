@@ -20,6 +20,10 @@ configs:
 vm:
 	(cd docker; make vm)
 
+psql:
+	docker exec -it --user postgres docker_db_1 psql
+# -ti --name docker_db_1 postgres psql
+
 recreatedb: stop
 	# sudo find -type d -name migrations -exec rm -rf {} \;
 	(cd docker; docker rm docker_db_1)
