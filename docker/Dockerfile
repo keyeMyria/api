@@ -5,7 +5,8 @@ COPY requirements.txt /tmp/
 RUN apt-get -y update && apt-get install -y \
 make \
 git \
-postgresql-server-dev-all
+postgresql-server-dev-all \
+postgresql-client
 # redis-server \
 # postgresql \
 
@@ -16,3 +17,4 @@ WORKDIR /var/www/pashinin.com/src
 EXPOSE 8000
 # CMD ls -la /var/www/pashinin.com/src
 CMD python3 ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
+# CMD bash

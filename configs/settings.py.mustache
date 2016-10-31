@@ -49,7 +49,7 @@ DATABASES = {
         'PASSWORD': "{{dbpass}}",
         'HOST': "{{dbhost}}",
         # 'HOST': "127.0.0.1",
-        'PORT': '5434',
+        'PORT': '{{dbport}}',
         # 'PORT': '6432',
     },
     'sentry': {
@@ -58,7 +58,7 @@ DATABASES = {
         'USER': "{{dbuser}}",
         'PASSWORD': "{{dbpass}}",
         'HOST': "{{dbhost}}",
-        'PORT': '5434',
+        'PORT': '{{dbport}}',
     },
 }
 
@@ -177,7 +177,7 @@ TEMPLATES = [
         "DIRS": [os.path.join(SITE_PATH, 'templates'), ],
         "APP_DIRS": True,
         "OPTIONS": {
-            'environment': 'cms.core.jinja.environment',
+            'environment': 'core.jinja.environment',
             'trim_blocks': False,
             # "match_extension": ".jinja",
             # "context_processors": [
@@ -328,7 +328,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.github.GithubOAuth2',
     # 'allauth.account.auth_backends.AuthenticationBackend',
 )
-SOCIAL_AUTH_USER_MODEL = 'user.CustomUser'
+SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 # Github
 # https://github.com/settings/applications
@@ -375,8 +375,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.user_details'
 )
 
-AUTH_USER_MODEL = 'user.CustomUser'
-CUSTOM_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'core.User'
+CUSTOM_USER_MODEL = 'core.qUser'
 
 MIGRATION_MODULES = {
     'auth': None,

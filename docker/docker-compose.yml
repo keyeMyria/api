@@ -5,10 +5,50 @@ services:
     tty: true
     build: .
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - ../:/var/www/pashinin.com
     depends_on:
       - redis
+      - db
+      - dbinit
+      - migration
+    # command: python manage.py migrate
+    links:
+      - db
   redis:
     image: redis
+    # restart: always
+  db:
+    image: postgres
+    # volumes:
+    #   - ../:/var/www/pashinin.com
+    # environment:
+    #   POSTGRES_USER: pashinin
+    #   POSTGRES_PASSWORD: superpass
+
+  dbinit:
+    image: postgres
+    # image: python:3-onbuild
+    working_dir: /var/www/pashinin.com/configs
+    command: ./dbinit.sh
+    volumes:
+      - ../:/var/www/pashinin.com
+    # links:
+    #   - db
+    depends_on:
+      - db
+
+  migration:
+    build: .
+    working_dir: /var/www/pashinin.com/src
+    command: ../configs/migrations.sh
+    volumes:
+      - ../:/var/www/pashinin.com
+    # links:
+    #   - db
+    depends_on:
+      - dbinit
+
+
+# restart: on-failure:10
