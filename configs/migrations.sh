@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# python manage.py migrate auth || echo "ok"
-# python manage.py migrate contenttypes || echo "ok"
+python manage.py migrate auth || echo "ok"
+python manage.py migrate contenttypes || echo "ok"
 
 # run syncdb only on first (empty) db
 python manage.py migrate --run-syncdb || echo "ok"
