@@ -8,6 +8,7 @@ docker: configs
 	(cd docker; docker-compose up -d redis db)
 	sleep 4
 	(cd docker; docker-compose up dbinit)
+	sleep 2
 	(cd docker; docker-compose up migration)
 	(cd docker; docker-compose up web)
 	# (cd docker; docker-compose up -d db redis)

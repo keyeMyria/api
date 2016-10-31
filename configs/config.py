@@ -17,6 +17,11 @@ if __name__ == "__main__":
     with open(args.file) as f:
         data = json.load(f)
 
+    # travis-ci.org fixes
+    if os.getenv('TRAVIS', '') == 'true':
+        data["redis_server"] = "127.0.0.1"
+        data["dbhost"] = "127.0.0.1"
+
     data['vebin'] = os.path.dirname(sys.executable)
     data['repo'] = os.path.dirname(
         os.path.abspath(os.path.dirname(__file__)))
