@@ -1,0 +1,134 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
+{% if favicon %}<link rel="shortcut icon" href="/favicon.ico?v={{favicon}}" />{% endif %}
+{% if jquery %}
+<script defer src="{{ static("jquery/2.2.4.min.js") }}"></script>
+<script defer src="{{ static("jquery/serialize-object.2.5.0.min.js") }}"></script>
+{% endif %}
+{% if ravenjs %}
+<script src="{{ static("ravenjs/3.2.1.js") }}"></script>
+<script>Raven.config('//{{RAVEN_PUBLIC}}@sentry.pashinin.com/2', {whitelistUrls: ['pashinin.com', 'dev.pashinin.com']}).install();</script>
+{% endif %}
+{% if DEBUG and livereload %}
+<script src="{{static("livereload.js")}}"></script>
+{% endif %}
+{% if timeago %}
+<script defer src="{{ static("js/timeago/jquery.timeago.js") }}"></script>
+{% if LANGUAGE_CODE == "ru" %}
+<script defer src="{{ static("js/timeago/locales/jquery.timeago.ru.js") }}"></script>
+{% endif %}
+<script>$.timeago.settings.allowFuture = true;</script>
+<script type="text/javascript">
+   jQuery(document).ready(function() {
+     $("time.timeago").timeago();
+   });
+</script>
+{% endif %}
+{% if user.is_superuser %}
+{# <script defer src="{{ static("SIPml-api.js") }}"></script> #}
+{# <script defer src="{{ static("jssip2.0.3.min.js") }}"></script> #}
+{# <script defer src="{{ static("sip-0.7.5.min.js") }}"></script> #}
+{% endif %}
+{% if dropzone %}
+<script defer src="{{ static("dropzone/dropzone.js") }}"></script>
+{# <script defer> #}
+{# $(document).ready(function() { #}
+{#   Dropzone.options.upload = { #}
+{#   maxFilesize: 800, #}
+{#   filesizeBase: 1024, #}
+{#     init: function() { #}
+{#       this.on("uploadprogress", function(file, progress) { #}
+{#         console.log("File progress", progress); #}
+{#       }); #}
+{#     } #}
+{#   } #}
+{# }); #}
+  {# </script> #}
+
+{% if user.is_superuser %}
+<script defer src="{{ static("dropzones/body.js") }}"></script>
+{% endif %}
+{% endif %}
+{% if ckeditor %}
+{# <link rel="stylesheet" href="js/ckeditor/dev/builder/release/ckeditor/contents.css"> #}
+  <script src="{{ static("js/ckeditor/dev/builder/release/ckeditor/ckeditor.js") }}"></script>
+{% endif %}
+{% if nouislider %}
+  <link rel="stylesheet" href="{{ static("nouislider.8.5.1/nouislider.min.css") }}">
+  <script src="{{ static("nouislider.8.5.1/nouislider.min.js") }}"></script>
+{% endif %}
+{% if katex %}
+<link rel="stylesheet" href="{{ static("katex/katex.min.css") }}">
+<script src="{{ static("katex/katex.min.js") }}"></script>
+<script>
+$(document).ready(function() {
+  $(".math, math").each(function() {
+    var texTxt = $(this).text();
+    el = $(this).get(0);
+    if(el.tagName == "DIV"){
+        addDisp = "\\displaystyle";
+    } else {
+        addDisp = "";
+    }
+    try {
+        katex.render(addDisp+texTxt, el);
+    }
+    catch(err) {
+        $(this).html("<span class='err'>"+err);
+    }
+  });
+});
+</script>
+{% endif %}
+{% if mathjax %}
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+
+    "HTML-CSS": {
+		availableFonts: ["TeX"],
+		linebreaks: { automatic: true },
+		styles: {
+			".MathJax": {
+				//"text-align": "center",
+				//margin: "0em 1em"
+			},
+		//".MathJax .merror": {
+		//   "background-color": "#FFFF88",
+		//   "color":   "#CC0000",
+		//   "border":  "1px solid #CC0000",
+		//   "padding": "1px 3px",
+		//   "font-style": "normal",
+		//   "font-size":  "90%"
+		//   }
+		}
+	},
+	SVG: { linebreaks: { automatic: true } },
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+{% endif %}
+{% if filesizejs %}
+<script src="{{ static("filesize.js/3.3.0.js") }}"></script>
+{% endif %}
+<script defer src="{{ static("js/main.js") }}?v=2"></script>
+{% if hljs %}
+<link rel="stylesheet" href="{{ static("js/hljs/src/styles/docco.css") }}">
+<script src="{{ static("js/hljs/build/highlight.pack.js") }}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{% endif %}
+{% if chartjs %}
+<script src="/_s/js/chartjs/Chart.min.js"></script>
+<script>
+ /* Chart.defaults.global.responsive = true; */
+ var g = Chart.defaults.global;
+ g.animation=false;
+ g.responsive = true;
+</script>
+{% endif %}

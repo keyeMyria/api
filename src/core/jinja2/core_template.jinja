@@ -1,0 +1,119 @@
+{% extends "core_base.jinja" %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+{{super()}}
+{# <script defer src="{{ static("ege.js") }}"></script> #}
+{% endblock %}
+
+{% block css %}
+{{super()}}
+<link rel="stylesheet" property="stylesheet" href="{{ static("css/pashinin.css") }}?v=3">
+{% endblock %}
+
+
+{% block prebody %}
+{% if user.is_superuser %}
+<div id="bodyupload" class="hide noprint" style="position:fixed; background-color: rgba(0,0,0,0.4); width:100%;height:100%;z-index:1000;padding:4rem;box-sizing:border-box;">
+  <div style="border:10px dashed #ddd; font-size:4rem;color:#ddd;padding:2rem;border-radius:1rem;box-sizing:border-box;position:fixed;bottom:2rem;right:2rem;left:2rem;top:4rem;text-align:center">Загрузить файлы</div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block header %}
+{% if self.adminmenu() and user.is_superuser and False %}
+  <div class="w">
+	{% block adminmenu %}
+	  {# <a href="{{url("adm:index")}}">Админка</a> #}
+	  {# <a href="{{url("adm:pip")}}">pip</a> #}
+	{% endblock %}
+  </div>
+{% endif %}
+{% if menu %}
+  {% set parent = menu["parent"] %}
+  {# {% if parent %} #}
+	<div class="" style="background-color:#e95420;">
+	  <div class="w">
+		<div class="padlr2">
+		  <nav class="flex {% if menu["cls"] %}menu["cls"]{% else %}grow0{% endif %}">
+			{% set root = menu["root"] %}
+			{% if parent %}
+			  <a class="parent" href="{{parent.url}}">{{parent.title}}</a>
+			{% endif %}
+			{% for item in menu["items"] %}
+			  <a href="{{item.url}}">{{item.title}}</a>
+			{% endfor %}
+		  </nav>
+		</div>
+	  </div>
+	</div>
+  {# {% endif %} #}
+{% endif %}
+{% endblock %}
+
+
+{% block main %}
+<div class="noprint" style="line-height:2.5rem;">
+  <div class="w flex">
+	<div class="padl">
+	  {% block top %}{% endblock %}
+	</div>
+	{# {% if user.is_superuser %} #}
+	{#   <div class="padr" style="flex:0 0 30%; text-align:right;position:relative"> #}
+	{# 	{% if user.is_anonymous %} #}
+	{# 	  <a href="about.asp">Войти</a> #}
+	{# 	{% else %} #}
+	{# 	  <a id="login" href="" style="text-decoration:none"> #}
+	{# 		<img class="hpad2" alt="" src="{{ user.gravatar() }}" style="border:0px solid #ccc; width:25px;"/> #}
+	{# 		<span class="ib" style="width: 0; height: 0; border:4px solid #fff; border-left-color: transparent; border-right-color: transparent; border-bottom-color: transparent;"></span> #}
+	{# 	  </a> #}
+	{# 	  <div id="loginbox" class="bred" style="position:fixed;right:0">loginbox</div> #}
+	{# 	{% endif %} #}
+	{#   </div> #}
+	{# {% endif %} #}
+  </div>
+</div>
+<div class="w flex" style="height:100%;">
+  {% if self.left() %}
+	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
+  {% endif %}
+
+  <div class="" style="position:relative;padding-top:3px">
+	{% if task and user.is_superuser %}
+	  <div class="pad noprint" style="background-color:#ddf">
+		<a target="_blank" href="{{url("admin:edu_task_change", args=[task.pk])}}">Редактировать</a>
+		<a href="{{url("admin:edu_task_change", args=[task.pk])}}">Еще задача этого типа</a>
+	  </div>
+	{% endif %}
+	<div class="marginw rtop5px" style="background-color:#fff;box-shadow: 0 0 3px #cdcdcd;">   {# #cdcdcd #}
+	  {% if self.breadcrumb() %}
+		<div class="pad" style="border-bottom:1px solid #ddd">
+		  {% block breadcrumb %}{% endblock %}
+		</div>
+	  {% endif %}
+	  {% block content %}{% endblock %}
+	</div>
+  </div>
+
+  {% if self.right() %}
+	<aside class="pad noprint" style="flex:0 0 250px;position:relative;">{% block right %}{% endblock %}</aside>
+  {% endif %}
+  </div>
+{% endblock %}
+
+
+{% block footer%}
+<div class="w noprint">
+  <div class="padlr">
+	{% block footerc %}
+	{% if user.is_superuser %}
+	  <span class="right">{{ip}}</span>
+	{% endif %}
+	<p><a href="{{url("index")}}">pashinin.com</a></p>
+	{# <p><a href="{{url("ege:sources")}}">Источники задач</a></p> #}
+	{% endblock %}
+  </div>
+</div>
+{% endblock %}

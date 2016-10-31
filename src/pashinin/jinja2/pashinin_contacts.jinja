@@ -1,0 +1,88 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block style %}
+{{super()}}
+div.c{padding-top:1em;padding-bottom:1em; border-bottom:0px solid #ddd}
+div.soc>div{text-align:center}
+{% endblock %}
+
+{% block title %}Контакты - Сергей Пашинин{% endblock %}
+
+
+{% block metadescription %}{{phone}} ·
+{{email}} ·
+https://vk.com/pashinin ·
+skype: sergey-pashinin
+{% endblock %}
+
+
+{% block breadcrumb %}
+<h1 class="nomar nopad">Контакты</h1>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="pad">
+
+{% block services %}
+  <div class="c">
+	<h3><b>{{phone}}</b></h3>
+	<span style="color:#888">Москва, Теле2</span>
+  </div>
+
+  <div class="c">
+	<h3><a href="mailto:{{email}}">{{email}}</a></h3>
+	<span style="color:#888">Email</span>
+  </div>
+
+  <div class="c flex equal soc">
+	<div><a href="https://vk.com/pashinin"><img style="max-width:60px" alt="Вконтакте" src="{{ static("vk.png") }}"/>
+		<br>
+		vk.com/pashinin
+	  </a>
+	</div>
+	<div><a href="skype:sergey-pashinin?chat"><img style="max-width:60px" alt="Skype" src="{{ static("skype.png") }}"/>
+		<br>
+		sergey-pashinin
+	  </a>
+	</div>
+	{# <div> #}
+	{#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #}
+	{# 	<br> #}
+	{# 	fb.com/pashinin #}
+	{#   </a> #}
+	{# </div> #}
+	{# <div><a href="https://youtube.com/sergeypashinin"><img alt="Youtube" src="{{ static("youtube-logo.png") }}"/></a></div> #}
+  </div>
+{% endblock %}
+</div>
+
+
+<img alt="Здание" src="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" style="width:100%"/>
+<div class="pad" style="border-top:1px solid #ddd;overflow:auto;">
+  <img class="right marr" alt="Занятия проходят тут" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/>
+  <h2>Как добраться</h2>
+  <b>СЗАО, ул. Туристская 19к1</b>
+
+  <p>
+	<b><div style="line-height:1.2em;color:red;font-size:1em;border:1px solid red;border-radius:50%;display:inline-block;width:20px;height:20px;text-align:center">М</div> Сходненская</b>, первый вагон из центра, у выхода - налево.
+  </p>
+  <p>
+	Практически любым автобусом (43, 96, 199, 212, 267, 432, 678) можно доехать до
+	ост. "Туристская улица" и далее ~5мин пешком.
+  </p>
+  <p>
+	На автобусе №96 можно проехать еще 1 остановку (до ост. "Узел
+	связи") и быть сразу почти на месте.
+  </p>
+
+  <p>
+	<a target="_blank" href="https://yandex.ru/maps/-/CZgObT-1"><img alt="Яндекс карты" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Карта</a>
+	<br/>
+	<a target="_blank" href="https://yandex.ru/maps/213/moscow/?ll=37.423959%2C55.850292&z=16&l=stv%2Csta&panorama%5Bpoint%5D=37.422127%2C55.851877&panorama%5Bdirection%5D=277.054704%2C12.745488&panorama%5Bspan%5D=120.000000%2C64.684224">
+	  <img alt="Панорама" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Панорама</a>
+  </p>
+
+</div>
+{% endblock %}

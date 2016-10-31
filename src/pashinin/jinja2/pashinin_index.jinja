@@ -1,0 +1,258 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block style %}
+{{super()}}
+.ovrl{background-color:rgba(255, 255, 255, 0.6);bottom:0;right:0;left:0;z-index:2;position:absolute;text-align:center;width:100%}
+{% endblock %}
+
+
+{% block head %}
+{{super()}}
+<script defer src="{{ static("repetitor.js") }}"></script>
+{% endblock %}
+
+
+{% block title %}Репетитор по информатике (Москва, Онлайн){% endblock %}
+
+{% block metadescription %}Занятия по информатике: подготовка к ОГЭ, ЕГЭ, разбор профессиональных задач. {{price45}}р/45мин. Индивидуальные занятия, никаких мини-групп.{% endblock %}
+
+
+{% block og %}
+<meta property="fb:app_id" content="1745714579011049" />
+<meta property="og:title" content="Репетитор по информатике (Москва, Онлайн)"/>
+<meta property="og:description" content="Занятия по информатике для школьников, студентов и всех будущих линуксойдов. Программирование, администрирование и разработка. ОГЭ, ЕГЭ."/>
+<meta property="og:image" content="https://pashinin.com{{file("1a8126d5c7799ceb0054ac40934bb1b79aec5164")}}">
+<meta property="og:type" content="article"/>
+<meta property="og:url" content= "https://pashinin.com"/>
+{% endblock %}
+
+
+{% block header %}
+{{super()}}
+<div class="block">
+  <div class="w">
+    <div class="padlr padt" style="position:relative;" itemscope itemtype="http://schema.org/Person">
+	  <div class="flex" style="10px solid red;">
+		<div class="flex0" style="flex:0 0 120px;position:relative">
+		  <img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин" src="{{ static("me2016-250.png") }}"
+				 style="box-shadow: 0px 0px 3px #000;width:120px;height:120px"/>
+		</div>
+		<div class="padl " style="position:relative">
+		  <span class="title" style="font-size:1.5rem" itemprop="telephone">{{phone}}</span>
+		  <p style="font-size:1.2rem" itemprop="name">Пашинин Сергей Александрович</p>
+		  <p>
+			<img itemprop="image" class="left" alt="МГТУ им. Баумана" src="{{ static("mgtu_w40.png") }}"
+				 style="left:0px;bottom:0;right:0;margin-right:0.5rem"/>
+			МГТУ им. Баумана <br/>
+			Информатика и системы управления
+		  </p>
+		  {# <a itemprop="email" href="mailto:{{email}}">{{email}}</a> #}
+		  <meta itemprop="email" content="{{email}}" />
+		  <meta itemprop="birthDate" content="14th August 1988" />
+		  <div itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+			<meta itemprop="streetAddress" content="ул. Туристская 19/1" />
+			<meta itemprop="addressLocality" content="Москва" />
+			<meta itemprop="postalCode" content="125459" />
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+{% endblock %}
+
+
+{# {% block top %}{% endblock %} #}
+{% block breadcrumb %}Репетитор по информатике (Москва, Онлайн){% endblock %}
+
+
+{% block content %}
+<div class="{# rtop5px #} abs2 w1002 h1002 center ib"
+	 style="background:url({{file("1a8126d5c7799ceb0054ac40934bb1b79aec5164")}});
+																			background-size: cover;
+																			{# top: 0; bottom: 0; left: 0; right: 0; #}
+																			font-size:1.2rem;">
+  <p class="upper" style="color:#ddd;font-weight:bold;text-transform:uppercase;text-shadow: 1px 1px 20px black, 0 0 1rem #000;line-height:2">
+	Подготовка к экзаменам <br/>
+	Курсы программирования <br/>
+	Для всех
+  </p>
+  <div class="pad ib">
+	<div class="pad ib" style="max-width:300px;margin:auto;background:rgba(255,255,255,0.5);border:1px solid #aaa">
+	  <form id="enrollform" action="{{request.path}}" method="POST">
+		{{ csrf_input }}
+		<input name="name" type="text" value="" placeholder="Ваше имя"
+			   {# autocomplete="off" #}
+			   />
+		<input name="phone" type="text" value="" placeholder="+7 123 456-78-90"
+			   {# autocomplete="off" #}
+			   />
+		<textarea cols="30" id="" name="message" rows="10" placeholder="С чем помочь?" style="height:5em"></textarea>
+		<div>
+		  {# <a id="enroll" class="pad ib btn" href="{{request.path}}" style="background:#e95420;border-radius:3px">Записаться</a> #}
+		  <input type="submit" name="" value="Записаться" />
+		</div>
+		{# <p style="font-size:0.7rem;line-height:1;margin-top:.5rem;margin-bottom:0"> #}
+		  {# 	Оставляя заявку, Вы соглашаетесь с условиями сайта и на обработку персональных данных #}
+		  {# </p> #}
+	  </form>
+	</div>
+  </div>
+
+  {# <div class="pad bred" style="bottom:0;left:0;right:0;position:absolute;height:50%"> #}
+    {# </div> #}
+</div>
+
+
+<div class="padt2 padb2 pad flex col950 equal" style="border-bottom:1px dotted #444;">
+  <div class="padlr">
+	<h1>Экзамены</h1>
+	Индивидуальная подготовка к ОГЭ и ЕГЭ для сдачи на высший балл.
+	<ul>
+	  <li>регулярные занятия до экзамена</li>
+	  <li>удобное для Вас расписание</li>
+	  <li>индивидуально (без групп)</li>
+	</ul>
+  </div>
+  <div class="padlr" style="border-left:1px dotted #444;border-right:1px dotted #444;">
+	<h1>Программирование</h1>
+	<ul>
+	  <li>HTML, CSS, Javascript</li>
+	  <li>Python</li>
+	  Популярнейший язык, используется почти везде.
+	  <li>Delphi и Pascal</li>
+	  Заставляют учить в школе и ВУЗе.
+	</ul>
+  </div>
+  <div class="padlr">
+	<h1>Другие задачи</h1>
+	<ul>
+	  <li>Программы на заказ</li>
+	  <li>Администрирование</li>
+	  <li>Курсы по Linux</li>
+	</ul>
+  </div>
+</div>
+
+{# About lessons #}
+<div class="pad">
+<h1>О занятиях</h1>
+<p>
+Все занятия индивидуальные, без мини-групп - как в подготовке к
+экзаменам, так и на других курсах. <br/> При этом Вы будете знать все
+основные ресурсы (где есть много других программистов).
+</p>
+
+{# Time and cost #}
+<h2>Время и стоимость</h2>
+<p>
+  <b>В любой день (по договоренности)</b>
+</p>
+<p>
+  Занятия длятся 45мин ({{price45}}р) или 60мин ({{price}}р)
+</p>
+{# FAQ: сколько мне нужно занятий? #}
+
+
+<h2 class="title2">Очное обучение</h2>
+<div class="" style="overflow:auto;">
+  <img class="left marr" alt="м. Сходненская" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/>
+  <p style="margin-bottom:1rem">Москва, ул. Туристская 19/1</p>
+  <b>Как добраться?</b>
+  <p>
+	От м. Сходненская практически любым автобусом (43, 96, 199, 212, 267, 432, 678) можно доехать до
+	ост. "Туристская улица" и далее ~5мин пешком.
+  </p>
+  <p>На №96 можно проехать еще 1
+	остановку (до ост. "Узел связи") и быть сразу почти на месте.</p>
+</div>
+</div>
+
+{# {% if mobile %} #}
+{#   <a href="https://yandex.ru/maps/?um=constructor:JyWfWr56GWB17Hlg2Q360AQ4eEja5Y75&amp;source=constructorStatic" target="_blank"> #}
+{# 	<img src="https://api-maps.yandex.ru/services/constructor/1.0/static/?sid=JyWfWr56GWB17Hlg2Q360AQ4eEja5Y75&amp;width=332&amp;height=425&amp;lang=ru_RU&amp;sourceType=constructor" alt="" style="border: 0;" /> #}
+{#   </a> #}
+{# {% else %} #}
+<div style="height:400px;width:100%">
+  {# <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=JyWfWr56GWB17Hlg2Q360AQ4eEja5Y75&amp;width=100%&amp;height=450&amp;lang=ru_RU&amp;sourceType=constructor&amp;scroll=false"></script> #}
+<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=WGDNCEBr4vlTjO5gaK_CVKvNS9eaUlWA&amp;width=100%&amp;height=400&amp;lang=ru_RU&amp;sourceType=constructor&amp;scroll=false"></script>
+</div>
+{# {% endif %} #}
+
+{# </div> #}
+{# 	  <a href="{{file("b394f41c6867a9bda81dc6c9db0a85f25a5eb0cb")}}"> #}
+  {# 		{\# <img alt="карта" src="{{file("b394f41c6867a9bda81dc6c9db0a85f25a5eb0cb")}}" style="width:100%;border-radius: 50%;"/> #\} #}
+  {# 	  {\# <div class="padtb ovrl"> #\} #}
+	{# 	  {\# 	Тут. <a href="">Подробнее...</a> #\} #}
+	{# 	  {\# </div> #\} #}
+  {# 	</div> #}
+{#   </div> #}
+
+{#   {\# <img alt="карта" src="{{file("a2e0910b7f21727130fafb7d7442f91d53a91886")}}" style="width:100%;"/> #\} #}
+{# </div> #}
+{# <div class="padl" style="flex:1;padding-right:0px;right:0;width:50%"> #}
+  {# 	  asd #}
+  {#   <div style="flex-basis:content"> #}
+	{# 	<div style="position:relative"> #}
+	  {# 	  <img class="ib" alt="Online" src="{{file("2fe43df998f8b9e38f1645a408aeb4bd72e71b18")}}" style="width:99%;border-radius: 0%;"/> #}
+	  {# 	  <div class="padtb ovrl" style="z-index:5;"> #}
+		{# 		Дистанционно. <a href="{{url("faq:learn-online")}}">Подробнее...</a> #}
+		{# 	  </div> #}
+	  {# 	</div> #}
+	{#   </div> #}
+  {# </div> #}
+{# </div> #}
+{# <p>Москва, м. Сходненская</p> #}
+
+
+<div class="pad">
+<h2>Дистанционное обучение</h2>
+<div style="overflow:auto;">
+  <img class="right ib" alt="У себя дома" src="{{static("browsing-15824_640.jpg")}}" style="width:50%"/>
+  Компьютер (ВНЕЗАПНО) позволяет бесплатно общаться, находясь даже в разных городах.
+  <p>Можно это использовать для занятий</p>
+  <ul>
+	<li>если Вы хотите сэкономить время на поездках</li>
+	<li>если Вы в другом городе</li>
+	<li>если Вы можете остаться в тихой обстановке</li>
+  </ul>
+</div>
+
+</div>
+
+{# Payment #}
+<div class="pad" style="border-top:1px dotted #444">
+  <h1 class="title2">Оплата</h1>
+  <div class="flex equal">
+	<div class="center">
+	  <img alt="При встрече" src="{{static("peace-talks.png")}}" style="max-height:60px"/>
+	  <p>При встрече</p>
+	</div>
+	<div class="center">
+	  <img alt="Сбербанк" src="{{static("sber.png")}}" style=""/>
+	  <p>Сбербанк (с карты на карту)</p>
+	</div>
+	<div class="center">
+	  <img alt="Яндекс Деньги" src="{{static("0_137264_b72f3c17_orig.png")}}" style="max-height:60px"/>
+	  <p>Яндекс деньги <br/> <span style="color:#999">41001259536194</span></p>
+	</div>
+  </div>
+  {# <a href="https://money.yandex.ru">Яндекс.Деньги</a> (41001259536194) #}
+  {# Paypal ​https://www.paypal.com - ​sergey@pashinin.com #}
+  {# Webmoney R129230658226  #}
+  {# bitcoin #}
+
+
+{# <span itemprop="priceCurrency" class="hide">RUB</span> #}
+<ul>
+  <li>{{price45}}р/45мин</li>
+  <li>{{price}}р/60мин</li>
+</ul>
+
+<p>Как Вам удобно - лично/онлайн - за одно/несколько занятий вперед.</p>
+
+</div>
+
+
+
+{% endblock %}
