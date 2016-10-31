@@ -1,0 +1,14 @@
+[
+  {
+    "model": "core.user",
+    "pk": 1,
+    "fields": {
+      "email": "anon@example.org",
+        "username": "Anonymous",
+        "is_staff": false,
+        "is_active": true,
+        "is_active": true,
+        "date_joined": "2016-10-30T13:19:37+00:00"
+    }
+  }
+]
