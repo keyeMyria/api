@@ -14,6 +14,8 @@ templates:
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
 	mustache $(S) phpfpm_params.mustache > $(output)/phpfpm_params
 	mustache $(S) nginx-site.conf.mustache > $(output)/pashinin.com.conf
+	mustache $(S) dbinit.sql.template > $(output)/dbinit.sql
+
 
 links:
 	sudo ln -sf `realpath $(output)/pashinin.com.conf` /etc/nginx/sites-enabled/pashinin.com.conf

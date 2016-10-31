@@ -1,0 +1,2 @@
+CREATE USER {{dbuser}} WITH PASSWORD '{{dbpass}}';
+CREATE DATABASE {{dbname}} WITH OWNER {{dbuser}};
