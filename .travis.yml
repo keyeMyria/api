@@ -10,7 +10,8 @@ cache:
 
 python:
   - "3.5"
-  - "nightly" # currently points to 3.7-dev
+  # - "nightly" # currently points to 3.7-dev
+  - "pypy"
 matrix:
   allow_failures:
     - python: nightly
