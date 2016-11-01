@@ -14,7 +14,7 @@ python:
   - "pypy"
 matrix:
   allow_failures:
-    - python: nightly
+    - python: pypy
 
 addons:
   hosts:
