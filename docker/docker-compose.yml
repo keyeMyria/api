@@ -1,8 +1,22 @@
 version: '2'
 services:
   web:
-    stdin_open: true
-    tty: true
+    # fixes: cannot open /dev/fuse (Operation not permitted)
+    # --cap-add SYS_ADMIN --device /dev/fuse
+    # trying this:
+    privileged: true
+    # with these not working yet:
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+
+    command: sleep infinity
+
+    # these 2 are for getting output from commands like djangos debug server
+    # stdin_open: true
+    # tty: true
+
     build: .
     ports:
       - "80:8000"
@@ -16,6 +30,8 @@ services:
     # command: python manage.py migrate
     links:
       - db
+    extra_hosts:
+      - "pashinin.com:10.254.239.1"
   redis:
     image: redis
     # restart: always
@@ -43,6 +59,7 @@ services:
     build: .
     working_dir: /var/www/pashinin.com/src
     command: ../configs/migrations.sh
+    user: www-data
     volumes:
       - ../:/var/www/pashinin.com
     # links:
