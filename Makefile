@@ -29,6 +29,10 @@ glusterfs:
 configs:
 	(cd configs; make templates)
 
+migrate:
+	docker exec -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
+	docker exec -it $(vm) ./manage.py migrate --settings=pashinin.settings
+
 vm:
 	(cd docker; make vm)
 

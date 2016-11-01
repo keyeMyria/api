@@ -20,8 +20,7 @@ def djrender(value):
 
 
 def get_file(hash):
-    return "todo"
-    # return reverse('files:file', kwargs={'sha1': hash})
+    return reverse('files:file', kwargs={'sha1': hash})
 
 
 def css(f):

@@ -2,11 +2,16 @@ import os
 import sys
 import functools
 import re
+import datetime
+from django.utils.timezone import utc
 from django.http import HttpResponseRedirect
 from django.core.validators import URLValidator
 
 default_app_config = 'core.apps.CoreConfig'
 
+
+def now():
+    return datetime.utcnow().replace(tzinfo=utc)
 
 def underDjangoDebugServer():
     if len(sys.argv) > 1:

@@ -38,6 +38,10 @@ urlpatterns = []
 #     url(r'^files/', include('cms.files.urls', namespace='files')),
 # ]
 
+urlpatterns += [
+    url(r'^_/files/', include('core.files.urls', namespace='files')),
+]
+
 urlpatterns += i18n_patterns(
     # url(r'^_/', include('cms.adm.urls', namespace='adm')),
     url(r'^_/da/', include(admin.site.urls)),

@@ -118,7 +118,7 @@ MEDIA_URL = '/_sp/uploads/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = os.path.join(GIT_PATH, "static")
-FILES_ROOT = os.path.join("mnt", "files")
+FILES_ROOT = os.path.join("/mnt", "files")
 
 
 # URL prefix for static files.
@@ -257,6 +257,7 @@ INSTALLED_APPS = (
     # 'social.apps.django_app.default',
 
     'core',
+    'core.files',
     '{{app}}',
 )
 
@@ -319,7 +320,7 @@ SKIP_SOUTH_TESTS = True      # To disable South's own unit tests
 
 # Auth
 AUTHENTICATION_BACKENDS = (
-    'cms.core.backends.EmailBackend',
+    'core.backends.EmailBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.google.GoogleOAuth2',
@@ -507,7 +508,7 @@ CACHEOPS = {
     # Automatically cache all gets and queryset fetches
     # to other django.contrib.auth models for an hour
     'auth.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
-    'cms.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
+    'core.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
     'edu.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
     'user.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
     'db.*': {'ops': 'all', 'timeout': 60*60},

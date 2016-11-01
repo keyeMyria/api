@@ -106,7 +106,7 @@ class AdminAPI(JsonWebsocketConsumer):
 
         cmd = d.get('t', None)
         if cmd == 'file':
-            from cms.files.models import File
+            from core.files.models import File
             hash = d.get('hash', None)
             comment = d.get('comment', None)
             f = File.objects.get(sha1=hash)
