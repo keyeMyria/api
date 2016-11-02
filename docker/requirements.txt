@@ -36,7 +36,11 @@ django-cacheops                # https://pypi.python.org/pypi/django-cacheops
 django-debug-toolbar>=1.2.1    # https://pypi.python.org/pypi/django-debug-toolbar
 django-dirtyfields
 django-extensions              # https://github.com/django-extensions/django-extensions
-django-hstore                  # git+git://github.com/djangonauts/django-hstore.git
+
+# django-hstore                  # git+git://github.com/djangonauts/django-hstore.git
+# Django has it's own:
+# from django.contrib.postgres.fields import HStoreField
+
 django-jinja
 
 django-nose
@@ -57,7 +61,6 @@ django-sortedm2m           # https://pypi.python.org/pypi/django-sortedm2m
 # git+https://github.com/darklow/django-suit.git
 
 elasticsearch
-fabric
 flower
 #guess_language-spirit
 guess_language
