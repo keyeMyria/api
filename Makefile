@@ -61,4 +61,4 @@ tmux:
 
 prod:
 	sudo -H -u www-data make configs
-	(cd configs; ln_nginx)
+	(cd configs; make ln_nginx)
