@@ -2,30 +2,29 @@
 #gevent
 #git+git://github.com/surfly/gevent.git
 #greenlet
-eventlet
+# eventlet
 
-beautifulsoup4
+# beautifulsoup4
 
 # https://pypi.python.org/pypi/bleach
 # >>> bleach.clean('an <script>evil()</script> example')
 # u'an &lt;script&gt;evil()&lt;/script&gt; example'
 bleach
-#bencode    # torrents parser
 
 
 
 # Sentry
 #
-django-sudo
-git+git://github.com/teserak/logan.git@django-19
+# django-sudo
+# git+git://github.com/teserak/logan.git@django-19
 #
 
 
 chardet                # encoding detection
 
 # solid_i18n
-django-admin-bootstrapped
-django-bootstrap3
+# django-admin-bootstrapped
+# django-bootstrap3
 django>=1.10.2
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
