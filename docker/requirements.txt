@@ -89,12 +89,14 @@ python-social-auth
 raven
 requests
 six
-tl
-tl.rename
+
+# tl fails with pypy
+# tl
+# tl.rename
+
 tornado
-uwsgi
-vine        # for celery (amqp)
-werkzeug
+# uwsgi
+# werkzeug
 # git+git://github.com/pashinin/autopy.git
 # git+git://github.com/mozilla/elasticutils.git
 #git+git://github.com/pashinin/spynner.git
@@ -113,6 +115,7 @@ wikipedia
 # docs -
 #
 Celery>=4.0.0rc6
+# vine        # for celery (amqp)
 #django-celery          # err with py3
 #https://github.com/celery/django-celery/zipball/master
 # https://github.com/celery/celery
