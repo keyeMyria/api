@@ -5,27 +5,44 @@ import sys
 import argparse
 import json
 
-# This program adds some variables to a supplied config file.
+# Usage:
+#
+#  ./config.py secret-example.json secret.json ...
+#
+# Description:
+#
+# This program scans all JSON files in order you give them and writes
+# final JSON settings to "output" variable, default: /tmp/conf.json
+#
+
 output = '/tmp/conf.json'
 
 if __name__ == "__main__":
+    # Parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', help='Base config file (JSON)')
+    parser.add_argument('files', nargs='+', help='JSON files with settings')
     args = parser.parse_args()
 
+    # Read all settings to "data" var
     data = {}
-    with open(args.file) as f:
-        data = json.load(f)
+    for filename in args.files:
+        try:
+            with open(filename) as f:
+                data.update(json.load(f))
+        except IOError:
+            pass
 
-    # travis-ci.org fixes
+    # Make changes if we are in travis-ci.org build
     if os.getenv('TRAVIS', '') == 'true':
         data["redis_server"] = "127.0.0.1"
         data["dbhost"] = "127.0.0.1"
 
+    # Put some additional variables
     data['vebin'] = os.path.dirname(sys.executable)
     data['repo'] = os.path.dirname(
         os.path.abspath(os.path.dirname(__file__)))
     data['www-data'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
+
     if (sys.version_info >= (3, 5)):
         # print(sys.executable)
         pass

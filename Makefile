@@ -58,3 +58,7 @@ tmux:
 	tmux send-keys -t gulp C-m 'gulp' C-m
 	tmux select-window -t runserver
 	tmux attach-session -t dev -d
+
+prod:
+	sudo -H -u www-data make configs
+	(cd configs; ln_nginx)
