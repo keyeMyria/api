@@ -270,6 +270,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
             'hosts': [('{{redis_server}}', 6379)],
+            "prefix": "{{domain}}",
         },
         'ROUTING': '{{app}}.routing.channel_routing',
     },
