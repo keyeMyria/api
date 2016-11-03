@@ -41,14 +41,6 @@ if __name__ == "__main__":
         except IOError:
             pass
 
-    if args.param:
-        try:
-            print(data[args.param], end="")
-        except:
-            pass
-        finally:
-            sys.exit(0)
-
     # Make changes if we are in travis-ci.org build
     if os.getenv('TRAVIS', '') == 'true':
         data["redis_server"] = "127.0.0.1"
@@ -62,6 +54,15 @@ if __name__ == "__main__":
         data['vebin'] = os.path.dirname(sys.executable)
     else:
         data['vebin'] = os.path.dirname(pythonbin)
+
+    # if asked for 1 param - return it and exit
+    if args.param:
+        try:
+            print(data[args.param], end="")
+        except:
+            pass
+        finally:
+            sys.exit(0)
 
     with open(output, 'w') as f:
         json.dump(data, f)
