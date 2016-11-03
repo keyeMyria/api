@@ -41,18 +41,13 @@ if __name__ == "__main__":
         except IOError:
             pass
 
-    if args.param == "python3":
-        if (sys.version_info >= (3, 5)):
-            print(sys.executable, end="")
-        else:
-            print(pythonbin, end="")
-    elif args.param:
+    if args.param:
         try:
             print(data[args.param], end="")
         except:
             pass
-    if args.param:
-        sys.exit(0)
+        finally:
+            sys.exit(0)
 
     # Make changes if we are in travis-ci.org build
     if os.getenv('TRAVIS', '') == 'true':
