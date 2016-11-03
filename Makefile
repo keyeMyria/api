@@ -1,5 +1,6 @@
 .PHONY: docker configs
 
+python = `./configs/makeve.py`
 d = `pwd`
 vm = docker_web_1
 
@@ -59,6 +60,10 @@ tmux:
 	tmux select-window -t runserver
 	tmux attach-session -t dev -d
 
+ve:
+	./configs/makeve.py
+
 prod:
 	sudo -H -u www-data make configs
 	(cd configs; make ln_nginx)
+	sudo service nginx reload

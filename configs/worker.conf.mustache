@@ -1,5 +1,5 @@
 # -*- mode: conf -*-
-[program:worker]
+[program:worker-{{domain}}]
 # environment =
 #     PYTHONPATH=/var/www/xdev/tmp/ve/lib,
 #     SITE=domain1,
@@ -11,5 +11,5 @@ directory={{repo}}/src
 user={{www-data}}
 autostart=true
 autorestart=false
-stderr_logfile=/var/log/supervisor/worker.err.log
-stdout_logfile=/var/log/supervisor/worker.out.log
+stderr_logfile=/var/log/supervisor/worker-{{domain}}.err.log
+stdout_logfile=/var/log/supervisor/worker-{{domain}}.out.log

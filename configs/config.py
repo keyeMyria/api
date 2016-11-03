@@ -16,11 +16,20 @@ import json
 #
 
 output = '/tmp/conf.json'
+repo_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+pythonbin = os.path.abspath(os.path.join(
+    repo_path,
+    "tmp",
+    "ve",
+    "bin",
+    "python"))
 
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('files', nargs='+', help='JSON files with settings')
+    parser.add_argument('-p', '--param', default=None,
+                        help="Extracts a value for a param")
+    parser.add_argument('files', nargs='*', help='JSON files with settings')
     args = parser.parse_args()
 
     # Read all settings to "data" var
@@ -32,23 +41,32 @@ if __name__ == "__main__":
         except IOError:
             pass
 
+    if args.param == "python3":
+        if (sys.version_info >= (3, 5)):
+            print(sys.executable, end="")
+        else:
+            print(pythonbin, end="")
+    elif args.param:
+        try:
+            print(data[args.param], end="")
+        except:
+            pass
+    if args.param:
+        sys.exit(0)
+
     # Make changes if we are in travis-ci.org build
     if os.getenv('TRAVIS', '') == 'true':
         data["redis_server"] = "127.0.0.1"
         data["dbhost"] = "127.0.0.1"
 
     # Put some additional variables
-    data['vebin'] = os.path.dirname(sys.executable)
-    data['repo'] = os.path.dirname(
-        os.path.abspath(os.path.dirname(__file__)))
+    data['repo'] = repo_path
     data['www-data'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
 
     if (sys.version_info >= (3, 5)):
-        # print(sys.executable)
-        pass
+        data['vebin'] = os.path.dirname(sys.executable)
     else:
-        # print('create ve')
-        pass
+        data['vebin'] = os.path.dirname(pythonbin)
 
     with open(output, 'w') as f:
         json.dump(data, f)
