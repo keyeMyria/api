@@ -1,6 +1,7 @@
 .PHONY: docker configs
 
 python = `./configs/makeve.py`
+vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret.json`
 d = `pwd`
 vm = docker_web_1
 
@@ -62,6 +63,9 @@ tmux:
 
 ve:
 	./configs/makeve.py
+
+reqs:
+	$(vebin)/pip3 install -r docker/requirements.txt
 
 prod:
 	sudo -H -u www-data make configs

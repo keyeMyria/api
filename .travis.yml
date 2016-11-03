@@ -39,7 +39,7 @@ before_install:
   - sudo chown -R www-data .
   - ruby -v
   - nginx -V
-  - sudo gem install mustache
+  - sudo gem install mustache      # <- need this one, not one form apt-get
   - sudo service redis-server start
 
 # Default:
