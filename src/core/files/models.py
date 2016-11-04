@@ -13,40 +13,10 @@ from django.http import HttpResponse
 from core.models import AddedChanged
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import TemporaryUploadedFile, InMemoryUploadedFile
+from . import CT_CHOICES
 
 
 class File(DirtyFieldsMixin, AddedChanged):
-    CT_APPLICATION = 0
-    CT_AUDIO = 1
-    CT_EXAMPLE = 2
-    CT_IMAGE = 3
-    CT_MESSAGE = 4
-    CT_MODEL = 5
-    CT_MULTIPART = 6
-    CT_TEXT = 7
-    CT_VIDEO = 8
-    CT_CHOICES = (
-        (CT_APPLICATION, 'application'),
-        (CT_AUDIO, 'audio'),
-        (CT_EXAMPLE, 'example'),
-        (CT_IMAGE, 'image'),
-        (CT_MESSAGE, 'message'),
-        (CT_MODEL, 'model'),
-        (CT_MULTIPART, 'multipart'),
-        (CT_TEXT, 'text'),
-        (CT_VIDEO, 'video'),
-    )
-    CT_CHOICES_REVERSED = {
-        'application': CT_APPLICATION,
-        'audio': CT_AUDIO,
-        'example': CT_EXAMPLE,
-        'image': CT_IMAGE,
-        'message': CT_MESSAGE,
-        'model': CT_MODEL,
-        'multipart': CT_MULTIPART,
-        'text': CT_TEXT,
-        'video': CT_VIDEO
-    }
     basename = models.CharField(max_length=200, blank=True, null=True)
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
     size = models.BigIntegerField(null=True, blank=True, editable=False)
@@ -91,8 +61,10 @@ class File(DirtyFieldsMixin, AddedChanged):
     def content_type_string(self):
         if self.content_type is None:
             return str(None)
-        return '{}/{}'.format(dict(File.CT_CHOICES)[self.content_type],
-                              self.content_subtype)
+        return '{}/{}'.format(
+            dict(CT_CHOICES)[self.content_type],
+            self.content_subtype
+        )
 
     @classmethod
     def filename_from_hash(cls, **kwargs):
