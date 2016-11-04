@@ -8,14 +8,17 @@ var gulp = require('gulp'),
 	path = require("path");
 
 // settings.py
-// var settings_template = 'configs/settings.py.mustache';
-// gulp.task('settings.py', function() {
-// 	return gulp.src(settings_template)
-// 		.pipe(shell([
-// 			'mustache s.json '+settings_template+' > src/pashinin/settings.py'
-//         ]))
-//         .pipe(livereload());
-// });
+var settings_template = 'configs/settings.py.mustache';
+gulp.task('settings.py', function() {
+	return gulp.src(settings_template)
+		.pipe(shell([
+			'mustache /tmp/conf.json '+settings_template+' > src/pashinin/settings.py'
+        ]))
+        .pipe(livereload());
+});
+gulp.task('settings', function() {
+	gulp.watch(settings_template, ['settings.py']);
+});
 
 
 // Processing SCSS
@@ -45,5 +48,5 @@ gulp.task('livereload', function() {
 gulp.task('default', [
 	'livereload',
 	'scss',
-	'templates'
+	'settings'
 ]);
