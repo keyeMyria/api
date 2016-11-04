@@ -19,29 +19,19 @@ class EmailBackend(ModelBackend):
         if is_valid_email(username):
             try:
                 user = User.objects.get(email__iexact=username)
+                if user.check_password(password):
+                    return user
             except User.DoesNotExist:
                 return None
         else:
-            # We have a non-email address username we should try username
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                return None
-        if user.check_password(password):
-            return user
-
-        return None
-        return User.objects.get(pk=0)
+            return None
+        # return User.objects.get(pk=0)
 
     def get_user(self, user_id):
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-            try:
-                return User.objects.get(pk=0)
-            except User.DoesNotExist:
-                return None
 
     @property
     def user_class(self):
