@@ -5,6 +5,7 @@ vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret
 d = `pwd`
 vm = docker_web_1
 
+
 # docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
 #docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
 docker: configs
@@ -18,6 +19,13 @@ docker: configs
 # docker-compose up --force-recreate
 # --no-deps db redis
 
+dev: dev_pkgs
+
+start: docker
+
+dev_pkgs:
+	npm install gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps
+
 bash:
 	docker exec -it $(vm) bash
 
@@ -27,6 +35,9 @@ django:
 
 glusterfs:
 	docker exec $(vm) mount.glusterfs 10.254.239.1:/v3 /mnt/files
+
+gulp:
+	docker exec $(vm) gulp
 
 configs:
 	(cd configs; make templates)
@@ -68,7 +79,23 @@ ve:
 reqs:
 	$(vebin)/pip3 install -r docker/requirements.txt
 
-prod:
+pull:
+	sudo -H -u www-data git pull
+
+# TODO: edit pg_hba.conf - put 127.0.0.1 trust
+prod: pull
 	sudo -H -u www-data make configs
 	(cd configs; make ln_nginx)
+	mkdir -p /mnt/files
+	mount.glusterfs 10.254.239.1:/v3 /mnt/files
+	psql -a -f configs/tmp/dbinit.sql -U postgres -p 5434 -h localhost
+	(cd src; ../configs/migrations.sh)
 	sudo service nginx reload
+
+
+# mkdir -p /var/www/pashinin.com
+# cd /var/www/pashinin.com
+# sudo -H -u www-data git clone https://github.com/pashinin-com/pashinin.com.git initial
+# # sudo -H -u www-data git pull
+# cd initial
+# sudo -H -u www-data make prod
