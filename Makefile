@@ -15,6 +15,9 @@ docker: configs
 	sleep 2
 	(cd docker; docker-compose up migration)
 	(cd docker; docker-compose up -d web)
+	docker exec -it $(vm) adduser user --uid `id -u` --quiet --disabled-password --gecos ""
+
+# docker exec -it docker_web_1 userdel user
 	# (cd docker; docker-compose up -d db redis)
 # docker-compose up --force-recreate
 # --no-deps db redis
@@ -31,7 +34,7 @@ bash:
 
 django:
 	docker exec -it $(vm) ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
-	# docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
+# docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 
 glusterfs:
 	docker exec $(vm) mount.glusterfs 10.254.239.1:/v3 /mnt/files
@@ -43,8 +46,9 @@ configs:
 	(cd configs; make templates)
 
 migrate:
-	docker exec -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
-	docker exec -it $(vm) ./manage.py migrate --settings=pashinin.settings
+	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb
+	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
+	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings
 
 vm:
 	(cd docker; make vm)

@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class FilesConfig(AppConfig):
     name = 'core.files'
+    label = 'corefiles'
     verbose_name = _("Files")
 
     # def ready(self):

@@ -20,7 +20,7 @@ class File(BaseView):
         download = 'd' in self.request.GET  # Download or display in a browser
         sha1 = kwargs.get('sha1', None)
         try:
-            f = F.objects.get(pk=sha1)
+            f = F.objects.get(sha1=sha1)
             return send_file(f, attachment=download)
         except F.DoesNotExist:
             if settings.DEBUG:
@@ -40,7 +40,6 @@ class File(BaseView):
 
 class Upload(BaseView):
     def post(self, request, **kwargs):
-        """Files are uploaded in POST"""
         ensure_fs_ready()
         ctx = self.get_context_data(**kwargs)
         user = ctx['user']

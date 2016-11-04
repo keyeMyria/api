@@ -47,15 +47,8 @@ class File(DirtyFieldsMixin, AddedChanged):
         'text': CT_TEXT,
         'video': CT_VIDEO
     }
-    # date_uploaded = models.DateTimeField(default=now)
-    # md5 = models.CharField(max_length=32, null=True, blank=True, editable=False)
     basename = models.CharField(max_length=200, blank=True, null=True)
-    sha1 = models.CharField(
-        max_length=40,
-        editable=False,
-        unique=True,
-        primary_key=True
-    )
+    sha1 = models.CharField(max_length=40, editable=False, unique=True)
     size = models.BigIntegerField(null=True, blank=True, editable=False)
     content_type = models.IntegerField(
         blank=True,
