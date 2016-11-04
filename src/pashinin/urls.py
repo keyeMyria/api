@@ -44,7 +44,7 @@ urlpatterns += [
 
 urlpatterns += i18n_patterns(
     # url(r'^_/', include('cms.adm.urls', namespace='adm')),
-    url(r'^_/da/', include(admin.site.urls)),
+    url(r'^_/django/', include(admin.site.urls)),
     # # url(r'^(?P<id>\d+)/(?P<slug>.+)$', ArticleView.as_view(), name="view"),
     # url(r'^articles/', include('cms.article.urls', namespace='articles')),
     prefix_default_language=False
