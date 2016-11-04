@@ -15,105 +15,6 @@ from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import TemporaryUploadedFile, InMemoryUploadedFile
 
 
-def read_in_chunks(file_object, chunk_size=1024):
-    """Lazy function (generator) to read a file piece by piece.
-    Default chunk size: 1k."""
-    while True:
-        data = file_object.read(chunk_size)
-        if not data:
-            break
-        yield data
-
-#def mymd5(f, fsize=None, hexdigest=True):
-#    """1. file size > 3Mb
-#    data = first MB + middle MB + last MB
-#    return md5(data)
-#
-#    2. file size <= 3Mb
-#    return md5(whole file)
-#"""
-#    curpos=None
-#    if fsize==None:
-#        curpos = fsize = f.tell()
-#        f.seek(0,os.SEEK_END) # at end
-#        fsize = f.tell()
-#        f.seek(curpos,os.SEEK_SET)
-#
-#    m = hashlib.md5()
-#    if fsize>3*MB:
-#        f.seek(0)
-#        piece = f.read(MB)
-#        m.update(piece)
-#
-#        f.seek(int(fsize/2))
-#        piece = f.read(MB)
-#        m.update(piece)
-#
-#        f.seek(-MB, os.SEEK_END)
-#        piece = f.read(MB)
-#        m.update(piece)
-#    else:
-#        for piece in read_in_chunks(f):
-#            #process_data(piece)
-#            m.update(piece)
-#
-#    #m.update("Nobody inspects")
-#    #m.update(" the spammish repetition")
-#    return m.hexdigest()
-#
-
-
-# from polymorphic import PolymorphicModel
-
-
-class Data(models.Model):
-    md5 = models.CharField(max_length=32, null=True, blank=True, editable=False)
-    size = models.IntegerField(null=True, blank=True, editable=False)
-
-    class Meta:
-        # db_table = 'data'
-        verbose_name = _("Bin data")
-        verbose_name_plural = _("Bin data")
-        unique_together = (("md5", "size"),)
-        # abstract = True
-
-    @classmethod
-    def from_bytes(cls, b):
-        hasher = hashlib.md5()
-        hasher.update(b)
-        o, created = cls.objects.get_or_create(md5=hasher.hexdigest(), size=len(b))
-        return o
-
-    @classmethod
-    def from_file(cls, f):
-        o, created = cls.objects.get_or_create(md5=File.get_md5(f), size=os.path.getsize(f))
-        return o
-
-    @property
-    def file(self):
-        """Return a File model with current md5 and size (if any) or None"""
-        return None
-
-    def __str__(self):
-        return str(self.md5)
-
-
-mime_extensions = {
-    'image/jpeg': '.jpg'
-}
-
-mime_icons = {
-    'image/jpeg': 'image-jpeg.png',
-    'image/gif': 'image-gif.png',
-    'application/pdf': 'application-pdf.png',
-    'application/x-bittorrent': 'torrent.png',
-    'application/x-debian-package': 'application-x-deb.png',
-    'video/quicktime': 'video.png',
-}
-
-
-# Content-types:
-# http://www.iana.org/assignments/media-types/media-types.xhtml
 class File(DirtyFieldsMixin, AddedChanged):
     CT_APPLICATION = 0
     CT_AUDIO = 1
@@ -180,6 +81,7 @@ class File(DirtyFieldsMixin, AddedChanged):
         verbose_name = _("File")
         verbose_name_plural = _('Files')
         index_together = (("content_type", "content_subtype"), )
+        default_permissions = ()
 
     def publish(self):
         ext = mime_extensions.get(self.content_type_string, '')
