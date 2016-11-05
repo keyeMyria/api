@@ -134,7 +134,7 @@ server {
 
     location /_file {
         internal;
-        alias /var/www/pashinin.com/files;
+        alias {{FILES_ROOT}};
         expires 7d;
     }
 }

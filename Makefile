@@ -93,9 +93,10 @@ prod: pull
 	mkdir -p /mnt/files
 	mount.glusterfs 10.254.239.1:/v3 /mnt/files
 	psql -a -f configs/tmp/dbinit.sql -U postgres -p 5434 -h localhost
-	(cd src; ../configs/migrations.sh)
+	(cd src; ./manage.py makemigrations; ./manage.py migrate)
 	sudo service nginx reload
 
+# (cd src; ../configs/migrations.sh)
 
 # mkdir -p /var/www/pashinin.com
 # cd /var/www/pashinin.com
