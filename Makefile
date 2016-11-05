@@ -104,3 +104,9 @@ prod: pull
 # # sudo -H -u www-data git pull
 # cd initial
 # sudo -H -u www-data make prod
+
+collectstatic:
+	(cd src; ./manage.py collectstatic)
+
+collectstatic-in-dcoker:
+	docker exec --user user -it $(vm) ./manage.py collectstatic

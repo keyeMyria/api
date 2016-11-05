@@ -38,7 +38,9 @@ class File(BaseView):
                 # TODO: run task to add file info to DB
                 return send_file(filename, attachment=download)
             else:
-                return HttpResponseNotFound("No such file")
+                return HttpResponseNotFound(
+                    "No such file {}".format(
+                        filename if settings.DEBUG else ""))
 
 
 # c['uploads'] = UploadFile.objects.all().annotate(
