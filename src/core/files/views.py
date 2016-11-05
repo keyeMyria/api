@@ -23,15 +23,22 @@ class File(BaseView):
             f = F.objects.get(sha1=sha1)
             return send_file(f, attachment=download)
         except F.DoesNotExist:
-            if settings.DEBUG:
-                return send_file(os.path.join(
-                    settings.FILES_ROOT,
-                    sha1[:3],
-                    sha1[3:6],
-                    sha1[6:]
-                ), attachment=download)
-            return HttpResponseNotFound("No such file")
-            # print(os.path.join(settings.FILES_ROOT, path))
+            #
+            # If there is no info in a DB about this file return file
+            # anyway (if exists) and then run a task to process file and
+            # add to DB.
+            #
+            filename = os.path.join(
+                settings.FILES_ROOT,
+                sha1[:3],
+                sha1[3:6],
+                sha1[6:]
+            )
+            if os.path.isfile(filename):
+                # TODO: run task to add file info to DB
+                return send_file(filename, attachment=download)
+            else:
+                return HttpResponseNotFound("No such file")
 
 
 # c['uploads'] = UploadFile.objects.all().annotate(
