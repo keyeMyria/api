@@ -18,9 +18,8 @@ DEBUG = True
 SETTINGS_PATH = dirname(abspath(__file__))
 SITE_PATH = dirname(abspath(__file__))
 GIT_PATH = dirname(dirname(SETTINGS_PATH))
-GIT_PATH = '/var/www/xdev'
 
-MODULE = basename(dirname(SITE_PATH))
+EMAIL_HOST = '10.254.239.1'
 
 # If you have a mail server - error messages are posted to admins
 ADMINS = (
@@ -104,10 +103,6 @@ USE_L10N = False       # needs to be False for DATETIME_FORMAT to work
 USE_TZ = True
 DATETIME_FORMAT = "Y-m-d H:i:sO"
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(GIT_PATH, 'files', 'uploads/')
-
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
@@ -119,6 +114,11 @@ MEDIA_URL = '/_sp/uploads/'
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = os.path.join(GIT_PATH, "static")
 FILES_ROOT = os.path.join("/mnt", "files")
+
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/var/www/example.com/media/"
+MEDIA_ROOT = os.path.join(FILES_ROOT, 'uploads/')
 
 
 # URL prefix for static files.
@@ -482,7 +482,7 @@ if ddt and DEBUG:
 
 
 # Directories for uploaded files
-FILE_UPLOAD_TEMP_DIR = os.path.join(GIT_PATH, "files", "uploads")
+# FILE_UPLOAD_TEMP_DIR = os.path.join(GIT_PATH, "tmp", "uploads")
 max_download_size = 1024*1024*4
 
 SENDFILE_ROOT = FILES_ROOT

@@ -30,8 +30,7 @@ sitemaps = {
     'static': StaticViewSitemap,
 }
 
-urlpatterns = []
-urlpatterns += [
+urlpatterns = [
 #     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
 #         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
@@ -39,31 +38,11 @@ urlpatterns += [
 ]
 
 urlpatterns += i18n_patterns(
-    # url(r'^_/', include('cms.adm.urls', namespace='adm')),
+    url(r'^contacts$', Contacts.as_view(), name='contacts'),
     url(r'^_/django/', include(admin.site.urls)),
-    # # url(r'^(?P<id>\d+)/(?P<slug>.+)$', ArticleView.as_view(), name="view"),
-    # url(r'^articles/', include('cms.article.urls', namespace='articles')),
     prefix_default_language=False
 )
 
-# from repetitor import views
-# urlpatterns += i18n_patterns(
-#     # url(r'^repetitor/', include('repetitor.urls', namespace='repetitor')),
-#     url(r'^contacts$', views.Contacts.as_view(), name='contacts'),
-#     # url(r'^contacts$', views.IT.as_view(), name='contacts'),
-#     # url(r'^exams$', views.Exams.as_view(), name='exams'),
-#     # url(r'^enroll$', views.Contacts.as_view(), name='enroll'),
-#     # url(r'^courses/', include('repetitor.courses.urls',
-#     #                           namespace='courses')),
-#     prefix_default_language=False
-# )
-
-# urlpatterns += [
-#     url(r'^faq/', include('repetitor.faq.urls', namespace='faq')),
-#     url(r'^students$', views.Students.as_view(), name='students'),
-# ]
-
-# Main page
 urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
     # url(r'^$', Index.as_view(), name="index"),
