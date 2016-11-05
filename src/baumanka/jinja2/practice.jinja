@@ -1,0 +1,19 @@
+{% extends "baumanka_base.jinja" %}
+
+{% block style %}
+{{super()}}
+div.k{padding-top:1rem}
+{% endblock %}
+
+{% block title %}Бауманка - {{kafname}} - Практика{% endblock %}
+
+{% block top %}<a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> - Практика{% endblock %}
+
+
+{% block content %}
+<div class="pad">
+<h2>Практика на {{kafname}}</h2>
+
+{% include [kafurl+'/practice.jinja', 'baumanka_no_practice.jinja'] %}
+</div>
+{% endblock %}

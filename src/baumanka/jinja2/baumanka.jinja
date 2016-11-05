@@ -1,0 +1,33 @@
+{% extends "baumanka_base.jinja" %}
+
+{% block style %}
+{{super()}}
+div.k{padding-top:1rem}
+{% endblock %}
+
+
+{% block title %}Бауманка (ботва, лекции, экзамены){% endblock %}
+
+
+{% block metadescription %}Лекции, РК, чертежи, экзамены - вся ботва для разных кафедр и факультетов.
+{% for F in ['IU', 'RL', 'RK', 'BMT'] %}
+{{FS[F].code}}{% if not loop.last %}, {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+<div class="pad">
+{% for F in ['IU', 'RL', 'RK', 'BMT'] %}
+<div>
+  <h2>{{FS[F].code}} - {{FS[F].title}}</h2>
+{% for K in FS[F].get('kafs', []) %}
+  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
+{% endfor %}
+</div>
+{% if not loop.last %}
+  <hr/>
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

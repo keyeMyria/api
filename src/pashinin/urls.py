@@ -31,14 +31,10 @@ sitemaps = {
 }
 
 urlpatterns = []
-# urlpatterns = [
+urlpatterns += [
 #     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
 #         name='django.contrib.sitemaps.views.sitemap'),
-#     url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
-#     url(r'^files/', include('cms.files.urls', namespace='files')),
-# ]
-
-urlpatterns += [
+    url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
     url(r'^_/files/', include('core.files.urls', namespace='files')),
 ]
 

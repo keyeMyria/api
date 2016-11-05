@@ -1,0 +1,44 @@
+{% extends "baumanka_base.jinja" %}
+
+{% block style %}
+{{super()}}
+div.k{padding-top:1rem}
+{% endblock %}
+
+{% block title %}{{kafname}} - {% if sem == '12' %}Диплом{% else %}ботва за {{sem}} семестр{% endif %}{% for level in levels %} - {{level}}{% endfor %}{% endblock %}
+
+{% block metadescription %}Лекции, РК, чертежи, экзамены за {{sem}} семестр для {{kafname}}.{% endblock %}
+
+
+{% block breadcrumb %}<a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> -
+{% if levels|length > 0 %}
+  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> -
+{% else %}
+  {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}
+{% endif %}
+
+{% for level in levels %}
+  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
+{% if not loop.last %}
+  -
+{% endif %}
+{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+<div class="pad">
+{% if not dirs and not files %}
+No files {% if DEBUG %}in {{dir}}{% endif %}
+{% endif %}
+{% for d in dirs %}
+<a href="{{d}}/">{{d}}/</a><br/>
+{% else %}
+{% endfor %}
+
+{% for f in files %}
+<a href="{{f.name}}">{{f.name}}</a> ({{f.size|filesizeformat}})<br/>
+{% else %}
+{% endfor %}
+</div>
+{% endblock %}
