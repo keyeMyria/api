@@ -4,6 +4,7 @@ python = `./configs/makeve.py`
 vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret.json`
 d = `pwd`
 vm = docker_web_1
+manage = $(python) src/manage.py
 
 
 # docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
@@ -23,6 +24,9 @@ docker: configs
 # --no-deps db redis
 
 dev: dev_pkgs
+
+
+# $(manage) collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
 
 start: docker
 
@@ -106,9 +110,21 @@ prod: pull
 # sudo -H -u www-data make prod
 
 collectstatic:
-	(cd src; ./manage.py collectstatic)
+	sudo -H -u www-data $(python) ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map)
+
+collectstatic-dev:
+	docker exec --user user -it $(vm) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 
 collectstatic-in-dcoker:
 	docker exec --user user -it $(vm) ./manage.py collectstatic
+
+# Look for all .scss files not starting with "_"
+# Exclude folders: ./node_modules, ./static
+css: sass
+	find . -type f -name "*.scss" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
+-print | parallel --no-notice sass --cache-location /tmp/sass --style compressed {} {.}.css
+
+sass:
+	sass -v > /dev/null || sudo su -c "gem install sass"
