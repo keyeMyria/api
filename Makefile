@@ -108,5 +108,7 @@ prod: pull
 collectstatic:
 	(cd src; ./manage.py collectstatic)
 
+# sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
+
 collectstatic-in-dcoker:
 	docker exec --user user -it $(vm) ./manage.py collectstatic
