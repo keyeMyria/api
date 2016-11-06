@@ -1,3 +1,4 @@
+*.map
 /static
 **/static/**/*.css
 tmp
