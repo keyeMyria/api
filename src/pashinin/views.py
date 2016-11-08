@@ -26,8 +26,12 @@ class Base(BaseView):
                     'url': reverse('index'),
                 },
                 {
+                    'title': 'Вопросы',
+                    'url': reverse('faq'),
+                },
+                {
                     'title': 'Контакты',
-                    'url': reverse('contacts')
+                    'url': reverse('contacts'),
                 },
             ]
         }
@@ -67,4 +71,13 @@ class Contacts(Base):
     def get_context_data(self, **kwargs):
         c = super(Contacts, self).get_context_data(**kwargs)
         c["menu_id"] = "contacts"
+        return c
+
+
+class FAQ(Base):
+    template_name = "pashinin_faq.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(FAQ, self).get_context_data(**kwargs)
+        c["exp"] = datetime.datetime.now() - datetime.datetime(2013, 1, 1)
         return c

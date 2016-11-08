@@ -20,7 +20,7 @@ register('myjson', my_dumps, my_loads,
 
 
 # CELERY_RESULT_BACKEND = 'redis://'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://{{redis_server}}:6379/0'
 
 # Tell celery to use your new serializer:
 CELERY_ACCEPT_CONTENT = ['myjson']

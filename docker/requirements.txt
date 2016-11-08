@@ -49,7 +49,10 @@ django-mptt               # git+https://github.com/django-mptt/django-mptt.git
 django-optimizations
 django-pytest                  # py.test runner
 django-redis-cache
+
+# https://github.com/martinrusev/django-redis-sessions
 django-redis-sessions
+
 django-sendfile
 #django-polymorphic>=v0.6   # https://github.com/chrisglass/django_polymorphic
 # git+https://github.com/chrisglass/django_polymorphic.git

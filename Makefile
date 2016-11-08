@@ -108,6 +108,9 @@ prod: pull
 # cd initial
 # sudo -H -u www-data make prod
 
+dbinit-docker:
+	docker exec -it $(vm) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
+
 collectstatic:
 	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
 

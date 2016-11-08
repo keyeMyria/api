@@ -45,6 +45,7 @@ urlpatterns += i18n_patterns(
 
 urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
+    url(r'^faq$', FAQ.as_view(), name="faq"),
     # url(r'^$', Index.as_view(), name="index"),
     prefix_default_language=False
 )
