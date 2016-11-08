@@ -36,7 +36,7 @@ bash:
 	docker exec -it $(vm) bash
 
 django:
-	docker exec --user user -it $(vm) ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
+	docker exec --user www-data -it $(vm) ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 # docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 
 glusterfs:

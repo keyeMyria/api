@@ -5,6 +5,7 @@ from celery import shared_task
 from django.conf import settings
 from raven.contrib.django.raven_compat.models import client
 # from tempfile import mkstemp, mkdtemp
+from . import CT_CHOICES_REVERSED
 
 
 class FileSystemNotReady(Exception):
@@ -38,7 +39,7 @@ def process_file(f):
         m = magic.from_file(f.filename, mime=True).decode("utf-8")
         if len(m.split('/')) == 2:
             t, subt = m.split('/')
-            f.content_type = File.CT_CHOICES_REVERSED.get(t)
+            f.content_type = CT_CHOICES_REVERSED.get(t)
             f.content_subtype = subt
 
     if f.is_dirty():
@@ -76,10 +77,10 @@ def move_upload_to_files(upload):
     # Set Content-type for a file
     if f.content_type is None or f.content_subtype is None:
         import magic
-        m = magic.from_file(f.filename, mime=True).decode("utf-8")
+        m = magic.from_file(f.filename, mime=True)
         if len(m.split('/')) == 2:
             t, subt = m.split('/')
-            f.content_type = File.CT_CHOICES_REVERSED.get(t)
+            f.content_type = CT_CHOICES_REVERSED.get(t)
             f.content_subtype = subt
         f.save()
 

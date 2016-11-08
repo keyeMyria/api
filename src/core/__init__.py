@@ -11,7 +11,8 @@ default_app_config = 'core.apps.CoreConfig'
 
 
 def now():
-    return datetime.utcnow().replace(tzinfo=utc)
+    return datetime.datetime.utcnow().replace(tzinfo=utc)
+
 
 def underDjangoDebugServer():
     if len(sys.argv) > 1:
