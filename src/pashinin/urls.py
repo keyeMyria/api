@@ -35,6 +35,7 @@ urlpatterns = [
 #         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
     url(r'^_/file/', include('core.files.urls', namespace='files')),
+    url(r'^_/', include('core.urls', namespace='core')),
 ]
 
 urlpatterns += i18n_patterns(
