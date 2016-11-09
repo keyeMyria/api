@@ -32,10 +32,11 @@ class Travis(APIView):
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
         d = urllib.parse.parse_qs(s)      # dict
+        payload = d["payload"]
         # urllib.parse.unquote(request.body.decode("utf-8"))
         send_mail(
             "travis hook",
-            str(d["payload"]),
+            str(len(payload))+str(json.loads(payload[0])),
             "Travis hook <ROBOT@pashinin.com>",
             ["sergey@pashinin.com"])
         return HttpResponse("ok")
