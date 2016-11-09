@@ -148,7 +148,7 @@ SECRET_KEY = '{{SECRET_KEY}}'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'solid_i18n.middleware.SolidLocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -159,6 +159,14 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django_pdb.middleware.PdbMiddleware',
+)
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'github.com',
+    'localhost',
+    '127.0.0.1'
 )
 
 ROOT_URLCONF = '{{app}}.urls'
@@ -235,6 +243,7 @@ INSTALLED_APPS = (
     'channels',
     # 'bootstrap3',
     'cacheops',
+    'corsheaders',
     'django.contrib.auth',
     # 'polymorphic',
     'django.contrib.contenttypes',
@@ -250,6 +259,7 @@ INSTALLED_APPS = (
     'sortedm2m',
     # 'djcelery',
     'django_extensions',
+    'rest_framework',
     'django_nose',
     # 'django_jinja',
     'mptt',
@@ -264,6 +274,16 @@ INSTALLED_APPS = (
     'baumanka',
 )
 
+
+REST_FRAMEWORK = {
+    # TokenAuthentication needed to remove CSRF errors
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
 
 WEBSOCKET_URL = '/_/ws/'
 

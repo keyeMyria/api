@@ -40,6 +40,16 @@ django-extensions              # https://github.com/django-extensions/django-ext
 # Django has it's own:
 # from django.contrib.postgres.fields import HStoreField
 
+# CSRF errors
+# django-cors-headers
+
+# Mixins for Django
+django-braces
+
+
+djangorestframework
+
+
 django-jinja
 
 django-nose

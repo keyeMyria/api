@@ -83,7 +83,7 @@ ve:
 	./configs/makeve.py
 # TODO: upgrade pip
 
-reqs:
+pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
 
 pull:
