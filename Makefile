@@ -89,6 +89,14 @@ pip:
 pull:
 	sudo -H -u www-data git pull
 
+
+update:
+	sudo -H -u www-data git pull
+	sudo -H -u www-data make configs
+	(cd src; ./manage.py migrate)
+	sudo supervisorctl restart worker-pashinin.com
+	sudo service nginx reload
+
 # TODO: edit pg_hba.conf - put 127.0.0.1 trust
 prod: pull
 	sudo -H -u www-data make configs
