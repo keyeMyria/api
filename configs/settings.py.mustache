@@ -415,8 +415,9 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 AUTH_USER_MODEL = 'core.User'
-CUSTOM_USER_MODEL = 'core.qUser'
+CUSTOM_USER_MODEL = 'core.User'
 
+# TODO: why is it here?
 MIGRATION_MODULES = {
     'auth': None,
     # 'contenttypes': None,
