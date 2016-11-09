@@ -31,7 +31,7 @@ class Travis(APIView):
         # c = self.get_context_data(**kwargs)
         send_mail(
             "travis hook",
-            "body",
+            str(type(request.body))+"\n"+request.body,
             "Travis hook <ROBOT@pashinin.com>",
             ["sergey@pashinin.com"])
         return HttpResponse("ok")
