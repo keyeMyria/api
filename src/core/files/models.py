@@ -31,7 +31,7 @@ class File(DirtyFieldsMixin, AddedChanged):
         help_text=_("Anyone can access this file")
     )
     uploader = models.ForeignKey(
-        'core.User',
+        settings.AUTH_USER_MODEL,
         default=None,
         null=True,
         blank=True,
@@ -234,7 +234,7 @@ class UploadedFile(models.Model):
 
     file = models.FileField(upload_to='%Y/%m/%d')
     uploader = models.ForeignKey(
-        'core.User',
+        settings.AUTH_USER_MODEL,
         default=None,
         null=True,
         blank=True,
