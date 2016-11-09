@@ -16,11 +16,11 @@ class Github(APIView):
 
     def post(self, request, **kwargs):
         # c = self.get_context_data(**kwargs)
-        send_mail(
-            "github hook",
-            "body",
-            "{Github hook} <ROBOT@pashinin.com>",
-            ["sergey@pashinin.com"])
+        # send_mail(
+        #     "github hook",
+        #     "body",
+        #     "{Github hook} <ROBOT@pashinin.com>",
+        #     ["sergey@pashinin.com"])
         return HttpResponse("ok")
 
 
