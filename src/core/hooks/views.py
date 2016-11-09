@@ -1,6 +1,7 @@
 import json
 import os
 import redis
+import urllib
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.db.models import Count
 from django.conf import settings
@@ -27,11 +28,14 @@ class Github(APIView):
 class Travis(APIView):
     renderer_classes = [renderers.JSONRenderer]
 
+    #
+    # request.body - bytes
+    # request.body.decode("utf-8") - string
     def post(self, request, **kwargs):
-        # c = self.get_context_data(**kwargs)
+
         send_mail(
             "travis hook",
-            str(type(request.body))+"\n"+str(request.body),
+            str(urllib.parse.unquote(request.body.decode("utf-8"))),
             "Travis hook <ROBOT@pashinin.com>",
             ["sergey@pashinin.com"])
         return HttpResponse("ok")
