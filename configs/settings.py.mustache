@@ -274,7 +274,6 @@ INSTALLED_APPS = (
     'baumanka',
 )
 
-
 REST_FRAMEWORK = {
     # TokenAuthentication needed to remove CSRF errors
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -283,6 +282,19 @@ REST_FRAMEWORK = {
    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+
+    # Disable API web view (GET request) globally
+    # For 1 APIView add "renderer_classes = [renderers.JSONRenderer]"
+    # to this view
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+    # TODO:
+    # pip install ujson
+    # pip install drf_ujson
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #    'drf_ujson.renderers.UJSONRenderer',
+    # )
 }
 
 WEBSOCKET_URL = '/_/ws/'
@@ -293,6 +305,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
             'hosts': [('{{redis_server}}', 6379)],
+            # "prefix" is needed when you have several "Django channels"
+            # powered projects on the same host (same redis db)
             "prefix": "{{domain}}",
         },
         'ROUTING': '{{app}}.routing.channel_routing',
