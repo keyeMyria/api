@@ -92,7 +92,9 @@ pull:
 
 update:
 	sudo -H -u www-data git pull
+	make pip
 	sudo -H -u www-data make configs
+	(cd configs; make ln_nginx)
 	(cd src; ./manage.py migrate)
 	sudo supervisorctl restart worker-pashinin.com
 	sudo service nginx reload
