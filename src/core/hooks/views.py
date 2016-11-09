@@ -32,11 +32,18 @@ class Travis(APIView):
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
         d = urllib.parse.parse_qs(s)      # dict
-        payload = d["payload"]
-        # urllib.parse.unquote(request.body.decode("utf-8"))
-        send_mail(
-            "travis hook",
-            str(len(payload))+str(json.loads(payload[0])),
-            "Travis hook <ROBOT@pashinin.com>",
-            ["sergey@pashinin.com"])
+
+        # d["payload"]    is a list with 1 item - a string
+        # This string contains JSON object described here:
+        # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
+        payload = json.loads(d["payload"][0])
+        if payload['result'] == 0:  # Travis build SUCCEDED
+            commit_sha1 = payload['commit']
+            send_mail(
+                "travis hook",
+                commit_sha1,
+                "Travis hook <ROBOT@pashinin.com>",
+                ["sergey@pashinin.com"])
+        else:  # Travis build FAILED
+            pass
         return HttpResponse("ok")
