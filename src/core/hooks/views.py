@@ -28,14 +28,14 @@ class Github(APIView):
 class Travis(APIView):
     renderer_classes = [renderers.JSONRenderer]
 
-    #
-    # request.body - bytes
-    # request.body.decode("utf-8") - string
     def post(self, request, **kwargs):
-
+        # request.body - bytes
+        s = request.body.decode("utf-8")  # string
+        d = urllib.parse.parse_qs(s)      # dict
+        # urllib.parse.unquote(request.body.decode("utf-8"))
         send_mail(
             "travis hook",
-            str(urllib.parse.unquote(request.body.decode("utf-8"))),
+            str(d["payload"]),
             "Travis hook <ROBOT@pashinin.com>",
             ["sergey@pashinin.com"])
         return HttpResponse("ok")
