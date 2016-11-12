@@ -29,7 +29,6 @@ django>=1.10.2
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
 
-django-allauth
 django-cache-utils
 django-cacheops                # https://pypi.python.org/pypi/django-cacheops
 django-debug-toolbar>=1.2.1    # https://pypi.python.org/pypi/django-debug-toolbar
@@ -100,7 +99,13 @@ python-magic
 pyinotify               # signals instead of polling (to reload dev server)
 #PySide                 # for spynner      installed with Ansible
 pytest-django           # "--reuse-db"
+
+# What is better?
+# 1. python-social-auth
+# 2. django-allauth
 python-social-auth
+# django-allauth
+
 raven
 requests
 six
