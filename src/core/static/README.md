@@ -5,7 +5,28 @@ https://customelements.io/ - Custom web elements
 
 ## Upload files
 
-[https://github.com/enyo/dropzone/releases](dropzone) - 33.6 kb (min)
+[dropzone](https://github.com/enyo/dropzone/releases) - 33.6 kb (no Jquery)
+
+[FileAPI](https://github.com/mailru/FileAPI) - 34 kb (html5 version)
 
 
-https://github.com/mailru/FileAPI
+# CSS framework
+
+[primer](https://github.com/primer) - Github uses it
+
+
+
+# More stuff
+
+To install some libs `bower` can be used:
+
+```bash
+sudo npm install -g bower
+
+vim .bowerrc
+{
+    "directory": "src/core/static/bower"
+}
+
+bower init
+```

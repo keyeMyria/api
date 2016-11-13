@@ -3,14 +3,9 @@ import os
 import sys
 from os.path import dirname, abspath, basename
 
-{{#VAGRANT}}
-VAGRANT = True
-{{/VAGRANT}}
-{{^VAGRANT}}
-VAGRANT = False
-{{/VAGRANT}}
+
 testing = 'test' in sys.argv or '--reuse-db' in sys.argv
-DEBUG = testing or VAGRANT
+DEBUG = testing
 {{#DEBUG}}
 DEBUG = True
 {{/DEBUG}}
@@ -26,6 +21,7 @@ ADMINS = (
     ('Admin', '{{email}}'),
 )
 MANAGERS = ADMINS
+DOMAIN = "{{domain}}"
 SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 
 # Databases
@@ -353,10 +349,9 @@ if testing:
 SOUTH_TESTS_MIGRATE = False  # To disable migrations and use syncdb instead
 SKIP_SOUTH_TESTS = True      # To disable South's own unit tests
 
-# http://vk.com/apps?act=manage
-
-
-# Auth
+#
+# Authentication
+#
 AUTHENTICATION_BACKENDS = (
     'core.backends.EmailBackend',
     # 'social.backends.google.GoogleOpenId',
@@ -364,7 +359,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.google.GoogleOAuth2',
     # 'social.backends.google.GoogleOAuth',
     'social.backends.vk.VKOAuth2',
-    'social.backends.github.GithubOAuth2',
+    # 'social.backends.github.GithubOAuth2',
     # 'allauth.account.auth_backends.AuthenticationBackend',
 )
 SOCIAL_AUTH_USER_MODEL = 'core.User'

@@ -26,10 +26,10 @@ class BaseView(TemplateView):
 
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
+        c["domain"] = settings.DOMAIN
         c['year'] = date.today().year
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG
-        c['VAGRANT'] = settings.VAGRANT
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC
         c['INSTALLED_APPS'] = settings.INSTALLED_APPS
 

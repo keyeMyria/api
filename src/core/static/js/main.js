@@ -25,64 +25,96 @@ function url_params(){
 	return res;
 }
 
-function getCookie(name) {
-	var c, cookie, cookieValue, cookies, _i, _len;
-	cookieValue = null;
-	if (document.cookie && document.cookie !== '') {
-		cookies = document.cookie.split(';');
-		for (_i = 0, _len = cookies.length; _i < _len; _i++) {
-			c = cookies[_i];
-			cookie = c.trim();
-			if (cookie.substring(0, name.length + 1) === (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-};
+// ?a=1&b=2
+// myvar = getURLParameter('a');
+function getURLParameter(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
 
-$.ajaxSetup({  // MUST be in document.ready()
-	beforeSend: function(xhr, settings) {
-		function sameOrigin(url) {
-			// url could be relative or scheme relative or absolute
-			var host = document.location.host; // host + port
-			var protocol = document.location.protocol;
-			var sr_origin = '//' + host;
-			var origin = protocol + sr_origin;
-			// Allow absolute or scheme relative URLs to same origin
-			return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-				(url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-				// or any other URL that isn't scheme relative or absolute i.e relative.
-				!(/^(\/\/|http:|https:).*/.test(url));
-		}
-		// if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-		// 	return xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-		// }
-		function safeMethod(method) {
-			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
-		if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
-			xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-		}
-		return null;
-	}
+
+// 3 following blocks are taken from django's docs to fix csrf errors
+// https://docs.djangoproject.com/en/dev/ref/csrf/
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    }
 });
 
+
+
 function showFormErrors(errors, form) {
-	// errors - {formfield1: ["error1", "error2"], ...}
+	// "errors" is a dictionary of form:
+	// {formfield1: ["error1", "error2"], ...}
 	form.find("[class^=ERR]").remove();
-	for (var name in errors) {
-		let msgs = errors[name];
+	// fields errors
+	for (var field in errors) {
+		let msgs = errors[field];
 		var msg0 = msgs[0];
-		var input = form.find("[name="+name+"]");
-		var cls = 'ERR'+name;
+		var input = form.find("[name="+field+"]");
+		var cls = 'ERR'+field;
 		var err_block = form.find("div.{0}".format(cls));
 		if (!err_block.length){
-			err_block = $( '<div class="{0}"></div>'.format(cls) ).css({"font-size":"0.7rem","color":"red","text-align":"left"});
+			err_block = $( '<div class="{0}"></div>'.format(cls) ).css({"font-size":"0.7rem","color":"#f96430","text-align":"left"});
 		}
 		err_block.empty();
 		err_block.append(document.createTextNode(msg0));
 		err_block.insertBefore(input);
 	}
+
+	// form errors
+	// special field "__all__"
+	let form_errors = errors['__all__'];
+	if (form_errors){
+		for (let err in form_errors) {
+			alert(form_errors[err]);
+		}
+	}
 };
+
+$(document).ready(function() {
+	$("a#profile").click(function(){
+		$("#loginbox").toggleClass("hide");
+		return false;
+	});
+
+	// hide popup menus when clicked elsewhere
+	$(document).click(function(event) {
+		if (!$(event.target).closest(".popup").length) {
+			$(".popup").addClass("hide");
+		}
+	});
+	$("#exit").click(function(){
+		$.ajax({
+			type: 'POST',
+			url: $(this).attr('href'),
+			data: {'logout':true},
+			context: this,
+			dataType: 'json',
+			success: function(d){
+				location.reload();
+			}
+		});
+		return false;
+	});
+});

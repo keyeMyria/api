@@ -1,23 +1,25 @@
 import django
 from django.contrib import auth
 from django.utils.functional import SimpleLazyObject
-from .models import User
+# from .models import User
+
+#
+# Taken from the official Django Auth Middleware:
+# https://github.com/django/django/blob/master/django/contrib/auth/middleware.py
+#
 
 
+# def get_user(request):
+#     if not hasattr(request, '_cached_user'):
+#         request._cached_user = auth.get_user(request)
+#     return request._cached_user
 def get_user(request):
     if not hasattr(request, '_cached_user'):
         request._cached_user = auth.get_user(request)
-    if isinstance(request._cached_user,
-                  django.contrib.auth.models.AnonymousUser):
-        request._cached_user = User.objects.get(pk=1)
+    # if isinstance(request._cached_user,
+    #               django.contrib.auth.models.AnonymousUser):
+    #     request._cached_user = User.objects.get(pk=1)
     return request._cached_user
-
-
-class LazyUser(object):
-    def __get__(self, request, obj_type=None):
-        if not hasattr(request, '_cached_user'):
-            request._cached_user = get_user(request)
-        return request._cached_user
 
 
 class AuthenticationMiddleware(object):

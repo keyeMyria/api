@@ -86,6 +86,9 @@ ve:
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
 
+pip-docker:
+	docker exec -it $(vm) pip3 install -r ../docker/requirements.txt
+
 pull:
 	sudo -H -u www-data git pull
 
@@ -122,10 +125,10 @@ dbinit-docker:
 	docker exec -it $(vm) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
 
 collectstatic:
-	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
+	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 
 collectstatic-dev:
-	docker exec --user user -it $(vm) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
+	docker exec --user user -it $(vm) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 

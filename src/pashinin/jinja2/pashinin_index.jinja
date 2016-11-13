@@ -30,80 +30,58 @@
 {% block header %}
 {{super()}}
 <div class="block">
-  <div class="w">
-    <div class="padlr padt" style="position:relative;" itemscope itemtype="http://schema.org/Person">
-	  <div class="flex" style="10px solid red;">
-		<div class="flex0" style="flex:0 0 120px;position:relative">
-		  <img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
-				 style="box-shadow: 0px 0px 3px #000;width:120px;height:120px"/>
-		</div>
-		<div class="padl " style="position:relative">
-		  <span class="title" style="font-size:1.5rem" itemprop="telephone">{{phone}}</span>
-		  <p style="font-size:1.2rem" itemprop="name">Пашинин Сергей Александрович</p>
-		  <p>
-			<img itemprop="image" class="left" alt="МГТУ им. Баумана" src="{{ file("cb5766f0333ebeb9f3cdb0efad36e141566fa67f") }}"
-				 style="left:0px;bottom:0;right:0;margin-right:0.5rem"/>
-			МГТУ им. Баумана <br/>
-			Информатика и системы управления
-		  </p>
-		  {# <a itemprop="email" href="mailto:{{email}}">{{email}}</a> #}
-		  <meta itemprop="email" content="{{email}}" />
-		  <meta itemprop="birthDate" content="14th August 1988" />
-		  <div itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
-			<meta itemprop="streetAddress" content="ул. Туристская 19/1" />
-			<meta itemprop="addressLocality" content="Москва" />
-			<meta itemprop="postalCode" content="125459" />
+
+
+
+{# 57f203b9cf1ef10a4be793b0003d2be47f1f5159 #}
+{# 1a8126d5c7799ceb0054ac40934bb1b79aec5164 old #}
+<div class="{# rtop5px #} abs2 {# w1002 h1002 #} center ib"
+	style="background:url({{file("57f203b9cf1ef10a4be793b0003d2be47f1f5159")}});
+		   background-size: cover;
+		   padding-top:7rem;
+		   padding-bottom:7rem;
+		   color:#fff;
+		   {# top: 0; bottom: 0; left: 0; right: 0; #}
+		   font-size:1.2rem;">
+  <div class="w" style="text-shadow:0 1px 1px rgba(0,0,0,1),0 10px 25px rgba(0,0,0,1);">
+	<div class="flex equal">
+	  <div class="padl" style="text-align:left;font-size:1.0em">
+		<h1 class="nopad" style="line-height:2;">
+		  Подготовка к экзаменам<br/>
+		  Курсы программирования<br/>
+		  Для всех
+		</h1>
+		Программирование и другие задачи. <br/>
+		Для школьников, студентов и взрослых.
+	  </div>
+	  <div>
+		<div class="ib">
+		  <div class="ib" style="max-width:300px;background:rgba(255,255,255,0.0);border:0px solid #aaa">
+			<p>Запишитесь сейчас и получите скидку 5% при онлайн обучении!</p>
+			<form id="enrollform" action="{{request.path}}" method="POST">
+			  {{ csrf_input }}
+			  <input name="name" type="text" value="" placeholder="Ваше имя"/>
+			  <input name="phone" type="text" value="" placeholder="Телефон / ВК / Email"/>
+			  <textarea cols="30" id="" name="message" rows="10" placeholder="С чем помочь?" style="height:5em"></textarea>
+			  <input class="btn btn-primary btn-large mart w100" type="submit" name="" value="Записаться" />
+			</form>
 		  </div>
 		</div>
 	  </div>
-	</div>
-  </div>
-</div>
-{% endblock %}
-
-
-{# {% block top %}{% endblock %} #}
-{% block breadcrumb %}Репетитор по информатике (Москва, Онлайн){% endblock %}
-
-
-{% block content %}
-<div class="{# rtop5px #} abs2 w1002 h1002 center ib"
-	 style="background:url({{file("1a8126d5c7799ceb0054ac40934bb1b79aec5164")}});
-																			background-size: cover;
-																			{# top: 0; bottom: 0; left: 0; right: 0; #}
-																			font-size:1.2rem;">
-  <p class="upper" style="color:#ddd;font-weight:bold;text-transform:uppercase;text-shadow: 1px 1px 20px black, 0 0 1rem #000;line-height:2">
-	Подготовка к экзаменам <br/>
-	Курсы программирования <br/>
-	Для всех
-  </p>
-  <div class="pad ib">
-	<div class="pad ib" style="max-width:300px;margin:auto;background:rgba(255,255,255,0.5);border:1px solid #aaa">
-	  <form id="enrollform" action="{{request.path}}" method="POST">
-		{{ csrf_input }}
-		<input name="name" type="text" value="" placeholder="Ваше имя"
-			   {# autocomplete="off" #}
-			   />
-		<input name="phone" type="text" value="" placeholder="+7 123 456-78-90"
-			   {# autocomplete="off" #}
-			   />
-		<textarea cols="30" id="" name="message" rows="10" placeholder="С чем помочь?" style="height:5em"></textarea>
-		<div>
-		  {# <a id="enroll" class="pad ib btn" href="{{request.path}}" style="background:#e95420;border-radius:3px">Записаться</a> #}
-		  <input type="submit" name="" value="Записаться" />
-		</div>
-		{# <p style="font-size:0.7rem;line-height:1;margin-top:.5rem;margin-bottom:0"> #}
-		  {# 	Оставляя заявку, Вы соглашаетесь с условиями сайта и на обработку персональных данных #}
-		  {# </p> #}
-	  </form>
 	</div>
   </div>
 
   {# <div class="pad bred" style="bottom:0;left:0;right:0;position:absolute;height:50%"> #}
     {# </div> #}
 </div>
+</div>
+{% endblock %}
 
 
+{# {% block breadcrumb %}Репетитор по информатике (Москва, Онлайн){% endblock %} #}
+
+
+{% block content %}
 <div class="padt2 padb2 pad flex col950 equal" style="border-bottom:1px dotted #444;">
   <div class="padlr">
 	<h1>Экзамены</h1>
@@ -230,7 +208,7 @@
 	</div>
 	<div class="center">
 	  <img alt="Сбербанк" src="{{file("812d93a3f5226eb848faa922b28f12fdd7273d40")}}" style=""/>
-	  <p>Сбербанк (с карты на карту)</p>
+	  <p>Сбербанк <br/> <span style="color:#999">с карты на карту</span> <br/> <span style="color:#999">по номеру телефона</span></p>
 	</div>
 	<div class="center">
 	  <img alt="Яндекс Деньги" src="{{file("cfb2b878c84b7eed89293d607ea0c917add954fb")}}" style="max-height:60px"/>

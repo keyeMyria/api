@@ -2,7 +2,7 @@
 
 {% block css %}
 {{super()}}
-{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("pashinin_core.css") }}?v=4">{% endif %}
+{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("pashinin_core.css") }}?v=5">{% endif %}
 {% endblock %}
 
 {% block style %}
@@ -18,6 +18,10 @@
 
 {% block header %}
 {{super()}}
+{% endblock %}
+
+{% block topleft %}
+Репетитор по информатике (Москва, Онлайн)
 {% endblock %}
 
 
