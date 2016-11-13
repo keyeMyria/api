@@ -22,10 +22,10 @@ class Baumanka(Base):
             #     'url': reverse("baumanka:index")
             # },
             'items': [
-                {
-                    'title': 'Бауманка',
-                    'url': reverse("baumanka:index"),
-                }
+                # {
+                #     'title': 'Бауманка',
+                #     'url': reverse("baumanka:index"),
+                # }
             ]
         }
         return c
@@ -38,10 +38,10 @@ class Kafedra(Base):
         c = super(Kafedra, self).get_context_data(**kwargs)
         # c["comments"] = Comment.objects.all()
         c['menu']['items'] = [
-            {
-                'title': 'Бауманка',
-                'url': reverse("baumanka:index"),
-            }
+            # {
+            #     'title': 'Бауманка',
+            #     'url': reverse("baumanka:index"),
+            # }
         ]
         if kwargs.get('F') != kwargs.get('F').upper():
             pass

@@ -16,7 +16,6 @@ class MyEncoder(json.JSONEncoder):
         if callable(getattr(obj, "json", None)):
             return obj.json()
 
-
         # If Django model - try primary key
         if issubclass(obj.__class__, models.Model):
             if obj.pk is not None:
