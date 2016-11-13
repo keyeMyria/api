@@ -94,6 +94,8 @@ div.bot{flex-grow: 0;}
 			display:none;
 		}
 	}
+	.hide-if-less-800{@media (max-width : 800px){display:none}}
+	.centered-if-less-800{@media (max-width : 800px){text-align:center}}
 }
 
 .flex{
@@ -129,6 +131,11 @@ div.bot{flex-grow: 0;}
 	}
 	&.col950{
 		@media only screen and (max-width: 950px) {
+			flex-direction:column;
+		}
+	}
+	&.column-if-less-800{
+		@media only screen and (max-width: 800px) {
 			flex-direction:column;
 		}
 	}

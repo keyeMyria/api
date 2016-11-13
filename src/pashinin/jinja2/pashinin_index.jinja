@@ -38,25 +38,27 @@
 <div class="{# rtop5px #} abs2 {# w1002 h1002 #} center ib"
 	style="background:url({{file("57f203b9cf1ef10a4be793b0003d2be47f1f5159")}});
 		   background-size: cover;
-		   padding-top:7rem;
-		   padding-bottom:7rem;
+		   padding-top:4rem;
+		   padding-bottom:4rem;
 		   color:#fff;
 		   {# top: 0; bottom: 0; left: 0; right: 0; #}
 		   font-size:1.2rem;">
   <div class="w" style="text-shadow:0 1px 1px rgba(0,0,0,1),0 10px 25px rgba(0,0,0,1);">
-	<div class="flex equal">
-	  <div class="padl" style="text-align:left;font-size:1.0em">
-		<h1 class="nopad" style="line-height:2;">
+	<div class="flex equal column-if-less-800">
+	  <div style="text-align:left;font-size:1.0em">
+		<h1 class="nopad centered-if-less-800" style="line-height:2;">
 		  Подготовка к экзаменам<br/>
 		  Курсы программирования<br/>
 		  Для всех
 		</h1>
-		Программирование и другие задачи. <br/>
-		Для школьников, студентов и взрослых.
+		<p class="hide-if-less-800">
+		  Программирование и другие задачи. <br/>
+		  Для школьников, студентов и взрослых.
+		</p>
 	  </div>
 	  <div>
 		<div class="ib">
-		  <div class="ib" style="max-width:300px;background:rgba(255,255,255,0.0);border:0px solid #aaa">
+		  <div class="ib" style="max-width:400px;background:rgba(255,255,255,0.0);border:0px solid #aaa">
 			<p>Запишитесь сейчас и получите скидку 5% при онлайн обучении!</p>
 			<form id="enrollform" action="{{request.path}}" method="POST">
 			  {{ csrf_input }}
