@@ -1,4 +1,7 @@
 // compile
+@import "variables.scss";
+
+
 $c_border: #e2e2e2;
 $article_width: 854px;
 $left_color: #FFF;	/* #4E78C2, #325DA7 */
@@ -29,6 +32,7 @@ $dark: #5171a9;
 	border-top-right-radius:5px;
 	border-top-left-radius:5px;
 }
+.r5{border-radius:5px}
 
 header{
 	flex-grow:0 !important;
@@ -141,13 +145,15 @@ div.bot{flex-grow: 0;}
 
 
 textarea:focus,
-input[type=text]:focus{
+input[type=text]:focus,
+input[type=password]:focus{
 	border-color: #889;
 	transition: all 0.1s linear;
 }
 
 textarea:hover,
-input[type=text]:hover{
+input[type=text]:hover,
+input[type=password]:hover{
 	// border-color: #00f;
 	border-color: #aab;
 	box-shadow: 0px 0px 2px #aab;
@@ -155,7 +161,8 @@ input[type=text]:hover{
 }
 
 textarea,
-input[type=text]{
+input[type=text],
+input[type=password]{
 	font-size:1rem;
 	background-color:#fff;
 	color:#333;
@@ -584,13 +591,13 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: Ubuntu, Arial, 'libra sans', sans-serif;
+	// font-family: Ubuntu, Arial, 'libra sans', sans-serif;
+	font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	background: none;
 	font-weight: normal;
 	margin: 0;
-	overflow: hidden;
 	padding-top: .5em;
-	padding-bottom: .15em;	/*.17*/
+	padding-bottom: .15em;
 	width: auto;
 }
 
@@ -643,4 +650,415 @@ h2 {
 }
 h3, h4, h5 {
 	margin-bottom: .3em;
+}
+
+#loginbox{
+	min-width:100px;
+	text-align:left;
+	padding-top:.5em;
+	padding-bottom:.5em;
+	border-radius:5px;
+	box-shadow: 0px 0px 9px #888888;
+	&:before{
+		font-size: 14px;
+		line-height: 1.5;
+		content:"";
+		top: -16px;
+		right: 20px;
+		left: auto;
+		border: 8px solid transparent;
+		position: absolute;
+		display: inline-block;
+		// border-bottom-color: rgba(0,0,0,0.15);
+		border-bottom-color: #fff;
+	}
+	a{
+		padding-top:.4em;
+		padding-bottom:.4em;
+		border-left:3px solid transparent;
+		width:100%;
+		&:hover{
+			border-color:#00f;
+		}
+	}
+}
+
+
+
+
+// stylelint-disable selector-no-type
+
+// Base button styles
+.btn {
+	position: relative;
+	display: inline-block;
+	padding: 6px 12px;
+	font-size: $body-font-size;
+	// font-weight: $font-weight-bold;
+	font-weight: 500;
+	line-height: 20px;  // Specifically not inherit our `<body>` default
+	color: $text-gray-dark;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	user-select: none;
+	background-color: #eee;
+	background-image: linear-gradient(#fcfcfc, #eee);
+	border: 1px solid #d5d5d5;
+	border-radius: 3px;
+	appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	i {
+		font-style: normal;
+		font-weight: 500;
+		opacity: 0.6;
+	}
+
+	.octicon {
+		vertical-align: text-top;
+	}
+
+	// Darken for just a tad more contrast against the button background
+	.counter {
+		color: #666;
+		text-shadow: none;
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	&:focus {
+		text-decoration: none;
+		border-color: #51a7e8; // Blue glow for focus
+		outline: none;
+		box-shadow: 0 0 5px rgba(81, 167, 232, 0.5); // Blue glow for focus
+	}
+
+	&:focus:hover,
+	&.selected:focus {
+		border-color: #51a7e8; // Blue glow for focus
+	}
+
+	&:hover,
+	&:active,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		text-decoration: none;
+		background-color: #ddd;
+		background-image: linear-gradient(#eee, #ddd);
+		border-color: #ccc;
+	}
+
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-active {
+		background-color: #dcdcdc;
+		background-image: none;
+		border-color: #b5b5b5;
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	&.selected:hover {
+		background-color: darken(#dcdcdc, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: rgba(102, 102, 102, 0.5);
+			cursor: default;
+			background-color: rgba(229, 229, 229, 0.5);
+			background-image: none;
+			border-color: rgba(197, 197, 197, 0.5);
+			box-shadow: none;
+		}
+	}
+}
+
+
+
+// Button color generator for primary and themed buttons
+
+@mixin solid-btn($foreground: $text-gray-dark, $background: #eee) {
+	color: $foreground;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+	background-color: $background;
+	background-image: linear-gradient(saturate(lighten($background, 13%), 8%), saturate(darken($background, 9%), 5%));
+	border: 1px solid darken($background, 8%);
+
+	.counter {
+		color: saturate(darken($background, 9%), 5%);
+		background: $foreground;
+	}
+
+	&:hover,
+	&:active,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		background-color: darken($background, 10%);
+		background-image: linear-gradient(lighten($background, 8%), darken($background, 13%));
+		border-color: darken($background, 12%);
+	}
+
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-active {
+		background-color: darken($background, 15%);
+		background-image: none;
+		border-color: darken($background, 20%);
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	&.selected:hover {
+		background-color: darken($background, 20%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: $foreground;
+			cursor: default;
+			background-color: mix(#fff, $background, 50%);
+			background-image: linear-gradient(mix(#fff, $background, 60%), mix(#fff, darken($background, 5%), 45%));
+			border-color: mix(#fff, $background, 40%);
+			box-shadow: none;
+		}
+	}
+}
+
+// Button color generator for default-y buttons with grey bgs and colored text, like btn-danger
+
+@mixin inverse-hover-btn($foreground: $text-gray-dark) {
+	color: $foreground;
+
+	&:hover {
+		color: $text-white;
+		background-color: $foreground;
+		background-image: linear-gradient(lighten($foreground, 30%), lighten($foreground, 10%));
+		border-color: $foreground;
+	}
+
+	&:active,
+	&.selected {
+		color: $text-white;
+		background-color: darken($foreground, 5%);
+		background-image: none;
+		border-color: darken($foreground, 8%);
+	}
+
+	&.selected:hover {
+		background-color: darken($foreground, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: mix(#fff, $foreground, 50%);
+			background-color: #efefef;
+			background-image: linear-gradient(#fefefe, #efefef);
+			border-color: #e1e1e1;
+		}
+	}
+
+	&:hover,
+	&:active,
+	&.selected {
+		.counter {
+			color: $text-white;
+		}
+	}
+}
+
+// Outline color generator for btn-outline to make the hover state inverse the text and bg colors.
+
+@mixin outline-btn($text-color: $text-blue, $bg-color: $bg-white) {
+	color: $text-color;
+	background-color: $bg-color;
+	background-image: none;
+	border: 1px solid $border-gray;
+
+	.counter {
+		background-color: rgba(0, 0, 0, 0.07);
+	}
+
+	&:hover,
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		color: $bg-color;
+		background-color: $text-color;
+		background-image: none;
+		border-color: $text-color;
+
+		.counter {
+			color: $text-color;
+			background-color: $bg-color;
+		}
+	}
+
+	&.selected:hover {
+		background-color: darken($text-color, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: $text-gray;
+			background-color: $bg-white;
+			background-image: none;
+			border-color: $border-gray;
+		}
+	}
+}
+
+
+// Green primary button
+.btn-primary {
+	@include solid-btn($white, $green);
+}
+
+// Red danger button
+.btn-danger {
+	@include inverse-hover-btn($flash-text-red);
+}
+
+// Outline button
+//
+// For when we need a linky-action that's not too heavy in busier
+// areas like conversation timelines.
+.btn-outline {
+	@include outline-btn($text-blue);
+}
+
+
+// Social button count
+.btn-with-count {
+	float: left;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+// Minibutton overrides
+//
+// Tweak `line-height` to make them smaller.
+.btn-sm {
+	padding: 3px 10px;
+	font-size: $font-size-small;
+	line-height: 20px;
+}
+
+// Large button adds more padding around text. Use font-size utils to increase font-size.. e.g, <p class="text-gamma"><button class="btn btn-large btn-primary" type="button">Big green button</button></p>
+.btn-large {
+	padding: 0.75em 1.25em;
+	font-size: inherit;
+	border-radius: 6px;
+}
+
+// Hidden text button
+//
+// Use `.hidden-text-expander` to indicate and expand hidden text.
+.hidden-text-expander {
+	display: block;
+
+	&.inline {
+		position: relative;
+		top: -1px;
+		display: inline-block;
+		margin-left: 5px;
+		line-height: 0;
+	}
+}
+
+.hidden-text-expander a,
+.ellipsis-expander {
+	display: inline-block;
+	height: 12px;
+	padding: 0 5px 5px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 6px;
+	color: #555;
+	text-decoration: none;
+	vertical-align: middle;
+	background: #ddd;
+	border: 0;
+	border-radius: 1px;
+
+	&:hover {
+		text-decoration: none;
+		background-color: #ccc;
+	}
+
+	&:active {
+		color: $text-white;
+		background-color: #4183c4;
+	}
+}
+
+// Social count bubble
+//
+// A container that is used for social bubbles counts.
+.social-count {
+	float: left;
+	padding: 3px 7px;
+	font-size: $font-size-small;
+	font-weight: $font-weight-bold;
+	line-height: 20px;
+	color: $text-gray-dark;
+	vertical-align: middle;
+	background-color: $bg-white;
+	border: 1px solid #ddd;
+	border-left: 0;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+
+	&:hover,
+	&:active {
+		text-decoration: none;
+	}
+
+	&:hover {
+		color: $text-blue;
+		cursor: pointer;
+	}
+}
+
+// Full-width button
+//
+// These buttons expand to the full width of their parent container
+.btn-block {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+// Radio buttons
+//
+// Buttons backed by radio or checkbox control. Requires the use of `.hidden`
+// on the `input` to properly hide it.
+.btn-link {
+	display: inline-block;
+	padding: 0;
+	font-size: inherit;
+	color: $text-blue;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	background-color: transparent;
+	border: 0;
+	appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:disabled {
+		color: $text-gray;
+		pointer-events: none;
+		cursor: default;
+	}
 }
