@@ -44,7 +44,7 @@ server {
     {{/production}}
 
     location /robots.txt {
-		alias /var/www/{{domain}}/src/pashinin/static/robots.txt;
+		alias /var/www/{{domain}}/initial/src/pashinin/static/robots.txt;
 		#deny all;
 	}
 
@@ -63,7 +63,7 @@ server {
 	}
 
 	location = /favicon.ico {
-		alias /var/www/{{domain}}/src/pashinin/static/favicon6.ico;
+		alias /var/www/{{domain}}/initial/src/pashinin/static/favicon.ico;
 	}
 
     # proxy websockets webrtc to Asterisk http server
