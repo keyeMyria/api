@@ -1,5 +1,6 @@
 import os
-import mimetypes
+# import mimetypes   # mimetypes based on filenames
+import magic         # mimetypes based on content (better)
 from django.http import HttpResponse, HttpResponseNotFound
 from django.conf import settings
 from core import underDjangoDebugServer
@@ -50,17 +51,17 @@ def send_file(f, *args, **kwargs):
     response = HttpResponse()
 
     # Set Content-type
-    if isinstance(f, File) and f.content_type is not None and f.content_subtype:
+    if isinstance(f, File) and f.content_type is not None and f.content_subtype:  # noqa
         response['Content-type'] = f.content_type_string
     else:
         # Always need to set a content type
         # Big binary file can hang up a browser (if try to parse)
         try:
-            ext = os.path.splitext(filename)[1]
-            mimetypes.init()
-            response['Content-type'] = mimetypes.types_map[ext.lower()]
-            # file --mime-type -b filename
-        except:
+            mime = magic.Magic(mime=True)
+            response['Content-type'] = mime.from_file(filename)
+        except Exception as e:
+            if settings.DEBUG:
+                print(e)
             response['Content-type'] = "application/octet-stream"
 
     if response['Content-type'] in (
