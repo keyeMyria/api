@@ -95,6 +95,7 @@ div.bot{flex-grow: 0;}
 		}
 	}
 	.hide-if-less-800{@media (max-width : 800px){display:none}}
+	.hide-if-less-360{@media (max-width : 360px){display:none}}
 	.centered-if-less-800{@media (max-width : 800px){text-align:center}}
 }
 
@@ -608,7 +609,13 @@ h6 {
 	width: auto;
 }
 
-h1 { font-size: 188%; }
+
+h1 {
+	@media (max-width: 600px){font-size:1.6em}
+	@media (min-width: 600px){font-size:1.9em}
+}
+
+
 h1 .editsection { font-size: 53%; }
 h2 { font-size: 150%; }
 h2 .editsection { font-size: 67%; font-weight: normal }
@@ -1068,4 +1075,25 @@ h3, h4, h5 {
 		pointer-events: none;
 		cursor: default;
 	}
+}
+
+
+
+div#index{
+	background-size: cover;
+	padding-top:10vh;
+	padding-bottom:10vh;
+	@media (max-width: 800px){
+		padding-top:5vh;
+		padding-bottom:5vh;
+	}
+	@media (max-width: 600px){
+		padding-top:0;
+		padding-bottom:0;
+	}
+	@media (min-width: 800px){
+		padding-top:10vh;
+		padding-bottom:10vh;
+	}
+	color:#fff;
 }
