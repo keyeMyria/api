@@ -16,18 +16,35 @@ div.k{padding-top:1rem}
 {% endblock %}
 
 
-{% block content %}
-<div class="pad">
-{% for F in ['IU', 'RL', 'RK', 'BMT'] %}
-<div>
-  <h2>{{FS[F].code}} - {{FS[F].title}}</h2>
-{% for K in FS[F].get('kafs', []) %}
-  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
-{% endfor %}
+{% block header %}
+{{super()}}
+<div class="pad-sm w flex padt">
+  <div>
+	<h1 style="margin-top:0;padding-top:0">МГТУ им. Баумана</h1>
+	<span style="color:#777">Россия, Москва</span>
+  </div>
+  {# <div style="text-align:right"> #}
+  {# 	<input class="btn btn-primary btn-large" type="submit" name="" value="+ Добавить факультет" />  #}
+  {# </div> #}
 </div>
-{% if not loop.last %}
-  <hr/>
-{% endif %}
-{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+<div class="pad-sm">
+  {% for F in ['IU', 'RL', 'RK', 'BMT'] %}
+	<div{% if not loop.first %} class="padt"{% endif %}>
+	  <h2 class="nomar">Факультет {{FS[F].code}}</h2>
+	  <div><h3>{{FS[F].title}}</h3></div>
+	  <div class="padt">
+		{% for K in FS[F].get('kafs', []) %}
+		  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
+		{% endfor %}
+	  </div>
+	</div>
+	{% if not loop.last %}
+	  {# <hr/> #}
+	{% endif %}
+  {% endfor %}
 </div>
 {% endblock %}

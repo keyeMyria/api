@@ -39,12 +39,12 @@ nav{overflow: hidden;margin-bottom:1em;margin-top:0em;font-size:1.1em}
 </head><body>
 {% block prebody %}{% endblock %}
 <div class="flex01a flex 0 col">
-<header style="">{% block header %}{% endblock %}</header>
+<header style="border-bottom: 1px solid rgba(0,0,0,0.075);">{% block header %}{% endblock %}</header>
 <main>{% block main %}{% endblock %}</main>
 </div>
 <footer style="background:#f7f7f7;">{% block footer %}{% endblock %}
 <div class="w">
-  <div class="pad">
+  <div class="pad-sm">
 	© {{year}} {{_("Sergey Pashinin")}}
 	<div class="right">
 	  <a href="https://vk.com/pashinin"><img alt="{{email}}" src="{{ file("bd6c8ee12d69a89e9d24a7d2646407f880286926") }}"/></a>

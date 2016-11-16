@@ -9,25 +9,44 @@ div.k{padding-top:1rem}
 
 {% block metadescription %}Лекции, РК, чертежи, экзамены за {{sem}} семестр для {{kafname}}.{% endblock %}
 
+{% block topleft %}
+  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}} - {{kaf.title}}</a>
+{% endblock %}
 
-{% block breadcrumb %}<a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> -
-{% if levels|length > 0 %}
-  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> -
-{% else %}
-  {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}
-{% endif %}
 
-{% for level in levels %}
-  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
-{% if not loop.last %}
-  -
-{% endif %}
-{% endfor %}
+{% block header %}
+{{super()}}
+<div class="">
+  <div class="w pad-sm">
+	<h1 class="nomar">
+	  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a>
+	</h1>
+  </div>
+  <div class="w pad-sm">
+	{% if levels|length > 0 %}
+	  {# <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
+	{% else %}
+	  {# {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %} #}
+	{% endif %}
+
+	{% for level in levels %}
+	  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
+	  {% if not loop.last %}
+		-
+	  {% endif %}
+	{% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+
+{% block breadcrumb2 %}
+{# <a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> - #}
 {% endblock %}
 
 
 {% block content %}
-<div class="pad">
+<div class="pad-sm">
 {% if not dirs and not files %}
 No files {% if DEBUG %}in {{dir}}{% endif %}
 {% endif %}
@@ -40,5 +59,21 @@ No files {% if DEBUG %}in {{dir}}{% endif %}
 <a href="{{f.name}}">{{f.name}}</a> ({{f.size|filesizeformat}})<br/>
 {% else %}
 {% endfor %}
+
+
+
+{# <div class="upload noprint padt" style=""> #}
+{#   <div> #}
+{# 	Предметы в {{sem}} семетсре: #}
+{#   </div> #}
+{#   {% for s in subjects %} #}
+{# 	{{s}} #}
+{#   {% else %} #}
+{# 	Добавить предмет #}
+{#   {% endfor %} #}
+{#   <form action=""> #}
+{#   </form> #}
+{# </div> #}
+
 </div>
 {% endblock %}

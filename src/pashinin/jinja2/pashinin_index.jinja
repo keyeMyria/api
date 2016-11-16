@@ -59,7 +59,7 @@
 			<form id="enrollform" action="{{request.path}}" method="POST">
 			  {{ csrf_input }}
 			  <input name="name" type="text" value="" placeholder="Ваше имя"/>
-			  <input name="phone" type="text" value="" placeholder="Телефон / ВК / Email"/>
+			  <input name="phone" type="text" value="" placeholder="Skype / Телефон / Email"/>
 			  <textarea cols="30" id="" name="message" rows="10" placeholder="С чем помочь?" style="height:5em"></textarea>
 			  <input class="btn btn-primary btn-large mart w100" type="submit" name="" value="Записаться" />
 			</form>
@@ -199,14 +199,16 @@
 {# Payment #}
 <div class="pad" style="border-top:1px dotted #444">
   <h1 class="title2">Оплата</h1>
-  <div class="flex equal">
+  <div class="flex equal col-if-less-w500">
 	<div class="center">
 	  <img alt="При встрече" src="{{file("c204399abd1e5440d3ce5d3a5896867ebfd3ea6f")}}" style="max-height:60px"/>
 	  <p>При встрече</p>
 	</div>
 	<div class="center">
 	  <img alt="Сбербанк" src="{{file("812d93a3f5226eb848faa922b28f12fdd7273d40")}}" style=""/>
-	  <p>Сбербанк <br/> <span style="color:#999">с карты на карту</span> <br/> <span style="color:#999">по номеру телефона</span></p>
+	  <p>Сбербанк <br/>
+		<span style="color:#999">на карту:<br/>4276 3801 6222 4047</span> <br/>
+		<span style="color:#999">на телефон: <br/>{{phone}}</span></p>
 	</div>
 	<div class="center">
 	  <img alt="Яндекс Деньги" src="{{file("cfb2b878c84b7eed89293d607ea0c917add954fb")}}" style="max-height:60px"/>

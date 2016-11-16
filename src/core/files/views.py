@@ -79,7 +79,10 @@ class Upload(BaseView):
         # jpegtran -copy none -optimize -perfect inputimage.jpg > outputimage.jpg
 
                 # user.avatar = Image.from_file(f)
-            return HttpResponse(json.dumps({'url': f.get_absolute_url()}))
+            return HttpResponse(json.dumps({
+                'url': f.get_absolute_url(),
+                'id': f.pk
+            }))
         return HttpResponse("fail")
 
         for key in request.FILES:

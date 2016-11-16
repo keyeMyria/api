@@ -5,6 +5,8 @@ from . import faculties
 from django.conf import settings
 # from core.models import Comment
 from django.core.urlresolvers import reverse
+from .models import EduMaterial
+
 
 baumanka_dir = '/mnt/files/baumanka/'
 
@@ -96,6 +98,8 @@ class Sem(Kafedra, DirView):
                     }),
                 }
             ]
+        c['menu'] = None
+        # c['subjects'] = EduMaterial.objects.all()
         return c
 
     def get(self, request, **kwargs):

@@ -16,6 +16,7 @@ $dark: #0064be;
 $dark: #517191;
 $dark: #5171a9;
 
+*{box-sizing: border-box;}
 .table{display:table;border-collapse: collapse;}
 .row{display:table-row}
 .cell{display:table-cell}
@@ -42,8 +43,10 @@ header{
 div.top{flex-grow: 0;}
 div.bot{flex-grow: 0;}
 
+$pad: 1em;
 .hpad{padding:.5em}
 .pad{padding:1em}
+.pad-sm{padding:$pad*0.5}
 .padtb{padding-top:1em;padding-bottom:1em}
 .padt{padding-top:1em;}
 .padt2{padding-top:2em;}
@@ -51,6 +54,7 @@ div.bot{flex-grow: 0;}
 .padtlr{padding-top:1em;padding-left:1em;padding-right:1em}
 .padr{padding-right:1em}
 .padl{padding-left:1em}
+.padl-sm{padding-left:$pad*0.5}
 .padb{padding-bottom:1em}
 .padb2{padding-bottom:2em}
 
@@ -125,6 +129,11 @@ div.bot{flex-grow: 0;}
 	// 	margin-right:0;
 	// }
 
+	&.col-if-less-w500{
+		@media only screen and (max-width: 500px) {
+			flex-direction:column;
+		}
+	}
 	&.col500{
 		@media only screen and (max-width: 500px) {
 			flex-direction:column;
@@ -617,7 +626,11 @@ h1 {
 
 
 h1 .editsection { font-size: 53%; }
-h2 { font-size: 150%; }
+// h2 { font-size: 150%; }
+h2 {
+	@media (max-width: 600px){font-size:1.3em}
+	@media (min-width: 600px){font-size:1.5em}
+}
 h2 .editsection { font-size: 67%; font-weight: normal }
 h3,
 h4,

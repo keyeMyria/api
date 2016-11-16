@@ -28,7 +28,7 @@
 <div class="" style="background-color:#f5f5f5;overflow:visible;border-bottom:1px solid #e5e5e5;z-index:2;">
   <div class="w" style="overflow:visible;padding-top:.3em;padding-bottom:.3em">
 	<div class="flex" style="overflow:visible;">
-	  <div style="padding-left:.3em">
+	  <div class="padl-sm">
 		{% block topleft %}{% endblock %}
 	  </div>
 	  <div class="" style="text-align:right;position:relative;height:100%;height:100%;overflow:visible;padding-right:.3em">
@@ -79,10 +79,10 @@
 	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
   {% endif %}
 
-  <div class="" style="position:relative;padding-top:3px">
-	<div class="marginw rtop5px" style="background-color:#fff;box-shadow: 0 0 0px #cdcdcd;">   {# #cdcdcd #}
+  <div class="" style="position:relative;padding-top:0px">
+	<div class="rtop5px" style="background-color:#fff;">   {# #cdcdcd #}
 	  {% if self.breadcrumb() %}
-		<div class="pad" style="border-bottom:0px solid #ddd">
+		<div class="pad-sm" style="border-bottom:0px solid #ddd">
 		  {% block breadcrumb %}{% endblock %}
 		</div>
 	  {% endif %}
@@ -98,12 +98,10 @@
 
 
 {% block footer%}
-<div class="w noprint">
-  <div class="padlr padt">
-	{% block footerc %}
-	  {% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
-	  <p><a href="{{url("index")}}">pashinin.com</a></p>
-	{% endblock %}
-  </div>
+<div class="w noprint pad-sm">
+  {% block footerc %}
+	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
+	<p><a href="{{url("index")}}">pashinin.com</a></p>
+  {% endblock %}
 </div>
 {% endblock %}

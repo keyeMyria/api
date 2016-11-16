@@ -1,6 +1,7 @@
 {% extends "pashinin_base.jinja" %}
 
-{% block topleft %}Бауманка{% endblock %}
+{% block topleft %}<a href="{{url("baumanka:index")}}">Бауманка</a>{% endblock %}
+
 
 {% block footerc %}
   {% if user.is_superuser %}

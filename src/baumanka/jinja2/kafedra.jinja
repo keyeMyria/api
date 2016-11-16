@@ -12,56 +12,62 @@ div.k{padding-top:1rem}
 {% block title %}Ботва для {{kafname}}{% endblock %}
 
 
-{% block breadcrumb %}<a href="{{url("baumanka:index")}}">Бауманка</a> - {{kafname}}{% endblock %}
+{% block topleft %}<a href="{{url("baumanka:index")}}">МГТУ им. Баумана</a>{% endblock %}
+
+
+{% block header %}
+{{super()}}
+<div class="pad-sm w padt">
+  <h1>Кафедра {{kafname}}</h1>
+  <h2>{{kaf.title}}</h2>
+</div>
+{% endblock %}
+
+
+{% block breadcrumb %}
+  {# <a href="{{url("baumanka:index")}}">Бауманка</a> - {{kafname}} #}
+{% if kaf %}
+  {# <h1>{{kafname}} - {{kaf.title}}</h1> #}
+{% endif %}
+{% endblock %}
 
 
 {% block content %}
-<div class="pad">
+<div class="pad-sm">
 {% if kaf %}
-{{kaf.title}}
-
 {% for sem in sems %}
   {% if sem.have_data %}
 	<p><a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem.i})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>
   {% endif %}
 {% endfor %}
 
-<hr/>
-
-
-Если тут ничего (или чего-то) нет - я не нашел ботву или она запрятана
-за закрытыми ссылками. Напишите откуда можно скачать лекции, рк, ответы
-к экзаменам, а главное в какой семестр это запихнуть.
-
-
-<hr/>
 
 <div class="padtb">
   <a href="practice">Практика на {{kafname}}</a>
 </div>
 
 
-<hr/>
+{# <hr/> #}
 
-<h2>А как мне открыть ... ?</h2>
-<pre>
-.djvu - <a target="_blank" href="http://windjview.sourceforge.net">windjview</a>
-.cdw  - чертеж в КОМПАСе (torrents)
+{# <h2>А как мне открыть ... ?</h2> #}
+{# <pre> #}
+{# .djvu - <a target="_blank" href="http://windjview.sourceforge.net">windjview</a> #}
+{# .cdw  - чертеж в КОМПАСе (torrents) #}
 
-.ods \
-.odt  - открывать в <a target="_blank" href="http://www.libreoffice.org/">LibreOffice</a>
-.odp /
+{# .ods \ #}
+{# .odt  - открывать в <a target="_blank" href="http://www.libreoffice.org/">LibreOffice</a> #}
+{# .odp / #}
 
-.doc  - используйте .odt
-.docx - убейтесь ап стенку, используйте .odt
+{# .doc  - используйте .odt #}
+{# .docx - убейтесь ап стенку, используйте .odt #}
 
-.m    - файл MATLAB (обычный текст)
-.nb   - Mathematica
+{# .m    - файл MATLAB (обычный текст) #}
+{# .nb   - Mathematica #}
 
-.7z   - архив, открывать в 7zip (http://www.7-zip.org/)
-.zip  - не используйте этот формат (он ущербный, не вдаваясь в детали)
-.rar  - не используйте этот формат (он платный и на этом его достоинства закончились)
-</pre>
+{# .7z   - архив, открывать в 7zip (http://www.7-zip.org/) #}
+{# .zip  - не используйте этот формат (он ущербный, не вдаваясь в детали) #}
+{# .rar  - не используйте этот формат (он платный и на этом его достоинства закончились) #}
+{# </pre> #}
 
 {% if comments_on %}
 <h2>Комментарии:</h2>

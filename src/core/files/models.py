@@ -38,13 +38,12 @@ class File(DirtyFieldsMixin, AddedChanged):
         db_column='uploader'
     )
     comment = models.CharField(max_length=200, null=True, blank=True)
-    # https://github.com/ahupp/python-magic
 
     class Meta:
+        default_permissions = ()
         verbose_name = _("File")
         verbose_name_plural = _('Files')
         index_together = (("content_type", "content_subtype"), )
-        default_permissions = ()
 
     def publish(self):
         ext = mime_extensions.get(self.content_type_string, '')
@@ -227,6 +226,22 @@ class File(DirtyFieldsMixin, AddedChanged):
 
     def __str__(self):
         return self.sha1
+
+
+class UpToDateFile(AddedChanged):
+    basename = models.CharField(max_length=200, blank=True, null=True)
+    current_file = models.ForeignKey(File)
+    # groups = models.ManyToManyField(Group)
+
+    class Meta:
+        default_permissions = ()
+
+
+class UpToDateFileSet(AddedChanged):
+    files = models.ManyToManyField(UpToDateFile)
+
+    class Meta:
+        default_permissions = ()
 
 
 class UploadedFile(models.Model):
