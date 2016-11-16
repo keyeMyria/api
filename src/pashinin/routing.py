@@ -1,10 +1,10 @@
 from channels.routing import route, route_class
-from .consumers import AdminAPI
+from .consumers import *  # noqa
 
 
 channel_routing = [
     # Called when WebSockets connect
-    route_class(AdminAPI)
+    # route_class(AdminAPI)
     # route("websocket.connect", ws_connect),
 
     # Called when WebSockets get sent a data frame
@@ -20,4 +20,6 @@ channel_routing = [
     # Custom handler for message sending (see Room.send_message).
     # Can't go in the include above as it's not got a `path` attribute to match on.
     # include("chat.routing.custom_routing"),
+
+    route('send-me-lead', send_lead),
 ]

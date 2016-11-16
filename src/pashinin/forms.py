@@ -24,3 +24,10 @@ class Enroll(forms.Form):
         # user.username = user.email
         # user.save()
         # return user
+
+    def json(self):
+        return {
+            "name": self.cleaned_data['name'],
+            "phone": self.cleaned_data['phone'],
+            "message": self.cleaned_data['message']
+        }

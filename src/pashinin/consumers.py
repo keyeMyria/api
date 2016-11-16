@@ -1,4 +1,5 @@
 import json
+import datetime
 from django.http import HttpResponse
 from channels.handler import AsgiHandler
 from channels.auth import channel_session_user_from_http
@@ -9,6 +10,27 @@ import threading
 import subprocess
 import redis
 from django.core.cache import cache
+from django.core.mail import send_mail
+
+
+# Send form from main page
+# Form: name, phone, message
+def send_lead(f):
+    body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
+        datetime.datetime.now(),
+        f['name'],
+        f['phone'],
+        f['message']
+    )
+    send_mail(
+        "Заявка от {}, тел.: {}".format(
+            f['name'],
+            f['phone']
+        ),
+        body,
+        "{} <ROBOT@pashinin.com>".format(f['name']),
+        ["sergey@pashinin.com"]
+    )
 
 
 def popenAndCall(ws, popenArgs):
@@ -36,8 +58,8 @@ def http_request_consumer(message):
         message.reply_channel.send(chunk)
 
 
-class AdminAPI(JsonWebsocketConsumer):
 # class AdminAPI(WebsocketConsumer):
+class AdminAPI(JsonWebsocketConsumer):
     http_user = True
 
     # method_mapping = {
@@ -133,8 +155,6 @@ class AdminAPI(JsonWebsocketConsumer):
                 v = channels_run_worker()
                 self.r.set(k, v)
                 # self.send(str(p))
-
-
 
     def disconnect(self, message, **kwargs):
         """

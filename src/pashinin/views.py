@@ -7,7 +7,6 @@ from django.conf import settings
 from django.http import HttpResponse
 from .forms import Enroll
 from core.forms import Login as LoginForm
-from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 # from django.utils.decorators import method_decorator
 # from raven.contrib.django.raven_compat.models import client
@@ -16,6 +15,7 @@ from django.contrib.auth import login
 from rest_framework.views import APIView
 from django.contrib.auth import logout
 from core.views import EnsureCsrfCookieMixin
+from channels import Channel
 
 
 class Base(BaseView):
@@ -52,20 +52,7 @@ class Index(Base):
     def post(self, request, **kwargs):
         f = Enroll(request.POST)
         if f.is_valid():
-            body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
-                datetime.datetime.now(),
-                f.cleaned_data['name'],
-                f.cleaned_data['phone'],
-                f.cleaned_data['message']
-            )
-            send_mail(
-                "Заявка от {}, тел.: {}".format(
-                    f.cleaned_data['name'],
-                    f.cleaned_data['phone']
-                ),
-                body,
-                "{} <ROBOT@pashinin.com>".format(f.cleaned_data['name']),
-                ["sergey@pashinin.com"])
+            Channel('send-me-lead').send(f.json())
             return HttpResponse(json.dumps({'code': 0}))
         else:
             return HttpResponse(json.dumps({
