@@ -47,8 +47,26 @@ class Travis(APIView):
 
 class Telegram(APIView):
     def post(self, request, **kwargs):
+        token = kwargs.get('token', None)
+
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
+        j = json.loads(s)
+        message = j['message']
+        text = message['text']
+
+        from telepot import Bot
+        bot = Bot(token)
+        bot.sendMessage(
+            message['chat']['id'],  # chat_id,
+            "echo: "+text,  # text,
+            # parse_mode=None,
+            # disable_web_page_preview=None,
+            # disable_notification=None,
+            # reply_to_message_id=None,
+            # reply_markup=None
+        )
+
         send_mail(
             "telegram hook",
             s,

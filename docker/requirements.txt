@@ -152,3 +152,7 @@ Celery>=4.0.0rc6
 # channels (NOT django-channels!)
 channels
 asgi_redis
+
+
+# Telegram bot
+telepot
