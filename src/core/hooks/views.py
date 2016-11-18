@@ -66,11 +66,4 @@ class Telegram(APIView):
             # reply_to_message_id=None,
             # reply_markup=None
         )
-
-        send_mail(
-            "telegram hook",
-            s,
-            "Telegram hook <ROBOT@pashinin.com>",
-            ["sergey@pashinin.com"]
-        )
         return HttpResponse("ok")
