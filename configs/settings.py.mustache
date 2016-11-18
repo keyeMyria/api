@@ -279,12 +279,16 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
 
-    # Disable API web view (GET request) globally
-    # For 1 APIView add "renderer_classes = [renderers.JSONRenderer]"
+    # REST: Disable GET API web view (GET request) globally
+    #
+    # 1. For 1 APIView add "renderer_classes = [renderers.JSONRenderer]"
     # to this view
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    #
+    # 2. For all views:
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # )
+
     # TODO:
     # pip install ujson
     # pip install drf_ujson
@@ -292,6 +296,10 @@ REST_FRAMEWORK = {
     #    'drf_ujson.renderers.UJSONRenderer',
     # )
 }
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+        'rest_framework.renderers.JSONRenderer',
+    )
 
 WEBSOCKET_URL = '/_/ws/'
 

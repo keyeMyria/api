@@ -13,8 +13,6 @@ from rest_framework import renderers
 
 
 class Github(APIView):
-    renderer_classes = [renderers.JSONRenderer]
-
     def post(self, request, **kwargs):
         # c = self.get_context_data(**kwargs)
         # send_mail(
@@ -26,8 +24,6 @@ class Github(APIView):
 
 
 class Travis(APIView):
-    renderer_classes = [renderers.JSONRenderer]
-
     def post(self, request, **kwargs):
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
@@ -46,4 +42,17 @@ class Travis(APIView):
                 ["sergey@pashinin.com"])
         else:  # Travis build FAILED
             pass
+        return HttpResponse("ok")
+
+
+class Telegram(APIView):
+    def post(self, request, **kwargs):
+        # request.body - bytes
+        s = request.body.decode("utf-8")  # string
+        send_mail(
+            "telegram hook",
+            s,
+            "Telegram hook <ROBOT@pashinin.com>",
+            ["sergey@pashinin.com"]
+        )
         return HttpResponse("ok")
