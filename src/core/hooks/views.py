@@ -45,6 +45,7 @@ class Travis(APIView):
         return HttpResponse("ok")
 
 
+# telepot: https://github.com/nickoala/telepot
 class Telegram(APIView):
     def post(self, request, **kwargs):
         token = kwargs.get('token', None)
