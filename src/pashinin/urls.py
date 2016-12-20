@@ -33,6 +33,7 @@ sitemaps = {
 urlpatterns = [
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     #     name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^articles/',  include('articles.urls', namespace='articles')),
     url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
     url(r'^_/file/', include('core.files.urls', namespace='files')),
     url(r'^_/', include('core.urls', namespace='core')),

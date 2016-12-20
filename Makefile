@@ -8,7 +8,8 @@ manage = $(python) src/manage.py
 
 
 # docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
-#docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
+# docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
+# All Docker VMs are described in docker/docker-compose.yml
 docker: configs
 	(cd docker; docker-compose up -d redis db)
 	sleep 4
@@ -48,6 +49,13 @@ gulp:
 configs:
 	(cd configs; make templates)
 
+# For new app (no migrations, no changes detected) - create app with
+# manage.py!
+#
+# docker exec --user user -it docker_web_1 ./manage.py startapp articles
+#
+# docker exec --user user -it $(vm) ./manage.py makemigrations your_app_label
+# docker exec --user user -it docker_web_1 ./manage.py makemigrations articles
 migrate:
 	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb
 	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
@@ -82,6 +90,9 @@ tmux:
 ve:
 	./configs/makeve.py
 # TODO: upgrade pip
+
+link_debug_parser:
+	ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.5/rparser
 
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
@@ -132,9 +143,6 @@ collectstatic-dev:
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 
-collectstatic-in-dcoker:
-	docker exec --user user -it $(vm) ./manage.py collectstatic
-
 # Look for all .scss files not starting with "_"
 # Exclude folders: ./node_modules, ./static
 # TODO: install apt: parallel
@@ -144,3 +152,20 @@ css: sass
 
 sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
+
+# python setup.py install develop
+# pip uninstall your-local-repo-egg
+# docker exec -it $(vm) pip3 install rparser -vvvv --no-index --find-links file:///var/www/parser
+# --upgrade --force-reinstall
+# build_rust
+# docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py install --force'
+parser:
+	docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py build_rust'
+
+# docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py bdist_wheel'
+# docker exec -it $(vm) python3 -m pip wheel /var/www/parser/ -w /wheelhouse/
+wheel:
+	python3 -m pip wheel . -w /wheelhouse/
+
+parsertest:
+	docker exec -it $(vm) python3 -c 'import rparser;rparser.html("asd")'

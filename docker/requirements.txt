@@ -25,7 +25,7 @@ chardet                # encoding detection
 # solid_i18n
 # django-admin-bootstrapped
 # django-bootstrap3
-django>=1.10.2
+django>=1.10.4
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
 
@@ -148,6 +148,11 @@ Celery>=4.0.0rc6
 # git+git://github.com/celery/billiard.git
 
 
+# Transliteration (for slug in URL)
+# https://pypi.python.org/pypi/Unidecode
+unidecode
+
+
 
 # channels (NOT django-channels!)
 channels
@@ -156,3 +161,5 @@ asgi_redis
 
 # Telegram bot
 telepot
+
+setuptools>=30.4.0

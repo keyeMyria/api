@@ -10,10 +10,11 @@ if __name__ == "__main__":
     # ERROR: virtualenv is not compatible with this system or executable
     # TODO: pip install --upgrade virtualenv
 
-    if (sys.version_info >= (3, 5)):
+    if (sys.version_info >= (3, 5) and not sys.executable=="/usr/local/bin/python"):
         print(sys.executable, end="")
         sys.exit(0)
 
+    # path to virtualenv
     ve = os.path.abspath(os.path.join(
         repo_path,
         "tmp",

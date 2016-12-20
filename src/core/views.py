@@ -3,7 +3,6 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from core import get_client_ip, is_mobile
 from django.utils.translation import ugettext as _
-from django.template.loader import render_to_string
 from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -60,8 +59,16 @@ class BaseView(TemplateView):
 
     def get(self, request, **kwargs):
         c = self.get_context_data(**kwargs)
+
+        # Redirects
+        redirect = c.get("redirect", None)
+        if redirect:
+            return HttpResponseRedirect(redirect)
+
+        # Pages for superuser only
         if self.only_superuser and not c['user'].is_superuser:
             return HttpResponseNotFound('')
+
         return self.render_to_response(c, status=c['status'])
 
 

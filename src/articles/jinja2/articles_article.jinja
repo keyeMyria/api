@@ -1,0 +1,53 @@
+{% extends "articles_base.jinja" %}
+
+{% block title %}{% if article %}{{article.title}}{% endif %}{% endblock %}
+
+{# {% block breadcrumb %}<a href="{{url("articles:index")}}">{{_("Articles")}}</a> - #}
+{# {% if article %}{{article.title}}{% endif %} #}
+{# {% endblock %} #}
+
+
+{% block header %}
+{{super()}}
+<div class="pad-sm padt w">
+  <h1>{{article.title}}</h1>
+</div>
+{% endblock %}
+
+
+
+{# {% block controls %} #}
+{# <div class="left"> #}
+{# <time class="timeago" title="Modification date" datetime="{{article.changed_on}}">{{article.changed_on}}</time> #}
+{# {% if article.pdf %}<a href="?pdf" style="">Download pdf</a>{% endif %} #}
+{# {% if not article.category %} #}
+{# <a href="">{{ gettext("Choose category...") }}</a> #}
+{# {% endif %} #}
+{# </div> #}
+{# {% if user.is_superuser %} #}
+{# <div style="margin: 0 auto; display: inline-block; border:0px solid red"> #}
+{# 	<ul class="group"> #}
+{#         <li><a id="view_btn" class="active" href="#">{{ _('View') }}</a></li> #}
+{# 		<li><a id="save_btn" style="display:none" href="#">{{ _("Save") }}</a></li> #}
+{# 		<li><a id="cancel_btn" style="display:none" href="#">{{ _("Cancel") }}</a></li> #}
+{#         <li><a id="edit_btn" href="#">{{ _("Edit") }}</a></li> #}
+{# 	</ul> #}
+{# </div> #}
+{# {% endif %} #}
+{# <div class="right"> #}
+{# 	<a id="lang_switcher" href="#">{{ article.lng }}</a> #}
+{# </div> #}
+{# {% endblock %} #}
+
+
+{% block content %}
+{% if article %}
+<div class="pad-sm">
+  {{article.as_html|safe}}
+</div>
+{% else %}
+  Что-то нет такой статьи
+{% endif %}
+{% endblock %}
+
+{# {% block footer %}{% endblock %} #}

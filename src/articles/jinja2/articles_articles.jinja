@@ -1,0 +1,47 @@
+{% extends "articles_base.jinja" %}
+
+{% block title %}{{_("Articles")}}{% endblock %}
+
+
+{% block header %}
+{{super()}}
+<div class="pad-sm w flex padt">
+  <div>
+	<h1>Все статьи</h1>
+  </div>
+  {% if user.is_superuser %}
+	<div>
+	  <p style="margin-top:0;padding-top:0">Информация по статьям</p>
+	  {# <span style="color:#777">Россия, Москва</span> #}
+	  <div class="flex grow0 col">
+		<div>Всего {{stats.count}}</div>
+		<div>Черновиков {{stats.drafts}}</div>
+	  </div>
+	</div>
+  {% endif %}
+  {# <div style="text-align:right"> #}
+  {# 	<input class="btn btn-primary btn-large" type="submit" name="" value="+ Добавить факультет" />  #}
+  {# </div> #}
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="pad-sm">
+
+{% for a in articles %}
+<div>
+  <a href="{{a.get_absolute_url()}}">{{a.title}}</a>
+  {% if not a.published %}
+	(черновик)
+  {% endif %}
+</div>
+{% else %}
+No articles
+{% endfor %}
+</div>
+{% endblock %}
+
+
+{# {% block footer %}{% endblock %} #}
