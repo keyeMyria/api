@@ -163,3 +163,5 @@ asgi_redis
 telepot
 
 setuptools>=30.4.0
+
+rparser
