@@ -7,7 +7,7 @@ from datetime import timedelta
 
 # Celery settings
 # BROKER_URL = 'amqp://guest:guest@localhost//'
-BROKER_URL = 'redis://10.254.239.1:6379/0'
+BROKER_URL = 'redis://{{redis_server}}:6379/0'
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
 
