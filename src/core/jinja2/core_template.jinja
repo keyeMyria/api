@@ -37,7 +37,7 @@
 			<img class="hpad2" alt="" src="{{ user.gravatar() }}" style="border:0px solid #ccc; width:20px;"/>
 			<span class="ib" style="width: 0; height: 0; border:4px solid #000; border-left-color: transparent; border-right-color: transparent; border-bottom-color: transparent;"></span>
 		  </a>
-		  <div id="loginbox" class="hide popup" style="position:absolute;right:0;background:#fff;margin-right:3px;border:1px solid #aaa;margin-top:15px">
+		  <div id="loginbox" class="hide popup">
 			<a id="exit" class="padlr" href="{{url("logout")}}">Выход</a>
 		  </div>
 		{% else %}{# user is not authenticated #}
