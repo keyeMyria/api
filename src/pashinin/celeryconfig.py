@@ -4,12 +4,7 @@
 #
 from celery.schedules import crontab
 from datetime import timedelta
-
-# Celery settings
-# BROKER_URL = 'amqp://guest:guest@localhost//'
-BROKER_URL = 'redis://{{redis_server}}:6379/0'
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
+from django.conf import settings
 
 # Register our serializer methods into kombu
 from kombu.serialization import register
@@ -20,7 +15,8 @@ register('myjson', my_dumps, my_loads,
 
 
 # CELERY_RESULT_BACKEND = 'redis://'
-CELERY_RESULT_BACKEND = 'redis://{{redis_server}}:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://{{redis_server}}:6379/0'
+CELERY_RESULT_BACKEND = settings.BROKER_URL
 
 # Tell celery to use your new serializer:
 CELERY_ACCEPT_CONTENT = ['myjson']

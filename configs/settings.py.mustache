@@ -218,11 +218,15 @@ TEMPLATES = [
     },
 ]
 
+
+# Celery settings
+# BROKER_URL = 'amqp://guest:guest@localhost//'
+BROKER_URL = 'redis://{{redis_server}}:6379/0'
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
 from {{app}}.celeryconfig import *
-# try:
-#     from pashinin.celeryconfig import *
-# except:
-#     print("celery (settings.py) import error!!!")
+
+
 
 INSTALLED_APPS = (
     'redis_cache',                 # pip install django-redis-cache
