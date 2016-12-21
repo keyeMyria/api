@@ -13,6 +13,7 @@ templates:
 	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
+	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
 	mustache $(S) settings.py.mustache > ../src/pashinin/settings.py
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
 	mustache $(S) phpfpm_params.mustache > $(output)/phpfpm_params
@@ -29,6 +30,7 @@ links: ln_nginx ln_nginxmain
 	sudo ln -sf $(dir)/daphne.conf $(supervisor_confd)/daphne-$(domain).conf
 	sudo ln -sf $(dir)/worker.conf $(supervisor_confd)/worker-$(domain).conf
 	sudo ln -sf $(dir)/celery.conf $(supervisor_confd)/celery-$(domain).conf
+	sudo ln -sf $(dir)/celery_flower.conf $(supervisor_confd)/celery_flower-$(domain).conf
 	sudo ln -sf $(dir)/phpfpm_params /etc/nginx/phpfpm_params
 
 removelinks:
