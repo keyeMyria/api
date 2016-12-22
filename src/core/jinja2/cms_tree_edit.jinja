@@ -1,0 +1,65 @@
+{% extends "cms_template.jinja" %}
+
+
+{% block head %}
+{{super()}}
+<script src="{{ static("cms_tree_edit.js") }}"></script>
+{% endblock %}
+
+
+{% block title %}
+/
+{% endblock %}
+
+
+
+{% block top %}
+<a href="/tree">../</a>
+
+{% for node in tree_path %}
+  <a id="n{{node.id}}" href="">{{ node }}</a>
+  /
+{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+<div id="tree">
+<template class="node">
+<div class="treeitem" style="margin-left:0rem">
+  <a id="n" class="name" href=""></a>
+  <span class="hidden hover" style="font-size:0.8em">
+	<a id="add" href="">Добавить</a>
+	<a id="edit" href="">Редактировать</a>
+	<a id="del" href="" style="color:red">Удалить</a>
+  </span>
+</div>
+</template>
+<span style="font-size:0.7em">
+{% for node in tree_path %}
+{{ node }}
+  /
+{% endfor %}
+</span>
+{% for node in roots2 recursive %}
+  {% set children = node.get_children() %}
+  <div class="treeitem" style="margin-left:{{loop.depth0}}rem">
+	<a id="n{{node.id}}" class="name" href="{% if len(ids)>0 %}{{request.path}}/{{node.id}}{% else %}{{request.path}}{{node.id}}{% endif %}">{{ node }}</a>
+	{# <br/> #}
+	<span class="hidden hover" style="font-size:0.8em">
+	  <a id="add{{node.id}}" href="">Добавить</a>
+	  <a id="edit{{node.id}}" href="">Редактировать</a>
+	  <a id="del{{node.id}}" href="" style="color:red">Удалить</a>
+	</span>
+  </div>
+  {% if children %}
+    {{ loop(children) }}
+  {% endif %}
+{% else %}
+  {# <form method="POST" id="newitem" action="{{request.path}}"> #}
+  {# 	{{csrf_input}} #}
+  {# 	<input name="topic" type="text" value="" placeholder="Категория"/> #}
+  {# </form> #}
+</div>
+{% endfor %}
+{% endblock %}

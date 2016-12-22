@@ -16,6 +16,7 @@ def is_valid_email(email):
 
 class EmailBackend(ModelBackend):
     def authenticate(self, username=None, password=None):
+        """This function checks (username, password) pair at login"""
         if is_valid_email(username):
             try:
                 user = User.objects.get(email__iexact=username)
@@ -23,11 +24,11 @@ class EmailBackend(ModelBackend):
                     return user
             except User.DoesNotExist:
                 return None
-        else:
-            return None
-        # return User.objects.get(pk=0)
+        return None
 
     def get_user(self, user_id):
+        """Try to get a user
+        If failed - return an anonymous user (return None)"""
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:

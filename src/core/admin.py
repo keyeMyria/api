@@ -98,3 +98,110 @@ class UserAdmin(UserAdmin):
 #         verbose_name_plural = User._meta.verbose_name_plural
 
 # admin.site.register(ProxyUser, UserAdmin)
+
+# from django.contrib import admin
+# from .models import *
+# from .forms import URLForm, URLAddForm
+
+
+# @admin.register(FullName)
+# class FullnameAdmin(admin.ModelAdmin):
+#     list_display = ('__str__', 'first', 'last', 'ok')
+#     search_fields = ('first__name', 'last__name')
+#     # ordering = ('name', )
+
+
+# @admin.register(Name)
+# class NameAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'ok')
+#     ordering = ('name', 'ok')
+
+
+# @admin.register(Person)
+# class PersonAdmin(admin.ModelAdmin):
+#     # search_fields = ('name', )
+#     list_display = ('name', )
+#     ordering = ('name',)
+
+
+# @admin.register(Comment)
+# class CommentAdmin(admin.ModelAdmin):
+#     pass
+#     # search_fields = ('name', )
+#     # list_display = ('name', )
+#     # ordering = ('name',)
+
+
+# @admin.register(Language)
+# class LanguageAdmin(admin.ModelAdmin):
+#     list_display = ('name_en', 'name', 'code')
+#     ordering = ('name_en',)
+
+
+# @admin.register(Country)
+# class CountryAdmin(admin.ModelAdmin):
+#     list_display = ('name_en', 'name_ru', 'code')
+#     ordering = ('name_en',)
+
+
+# @admin.register(ReleaseDate)
+# class ReleaseDateAdmin(admin.ModelAdmin):
+#     list_display = ('date', 'place')
+#     ordering = ('date',)
+
+
+# # @admin.register(WikiPage)
+# # class WikiPageAdmin(admin.ModelAdmin):
+# #     list_display = ('url_title', 'lng', 'response_code',)
+# #     ordering = ('url_title',)
+
+
+# class UnitInline(admin.TabularInline):
+#     model = Hostname
+
+
+# @admin.register(Domain)
+# class DomainAdmin(admin.ModelAdmin):
+#     inlines = [UnitInline]
+#     list_display = ('name',)
+#     ordering = ('name',)
+
+
+# @admin.register(Hostname)
+# class HostnameAdmin(admin.ModelAdmin):
+#     # inlines = [UnitInline]
+#     list_display = ('name', 'domain')
+#     ordering = ('domain',)
+
+
+# @admin.register(URL)
+# class URLAdmin(admin.ModelAdmin):
+#     form = URLForm
+#     # exclude
+#     list_display = ('__str__', 'redirect', 'scheme', 'host', 'path_str', 'query',
+#                     'fragment')
+#     # list_display = ('url', 'redirect', 'scheme', 'host', 'image', 'query', 'fragment')
+#     # ordering = ('host',)
+#     list_filter = ('scheme', )
+#     raw_id_fields = ('redirect', 'host')
+#     search_fields = ('url', 'scheme__name', 'host__domain__name', 'redirect__url',
+#                      'redirect__scheme__name',
+#                      'redirect__host__domain__name')
+#     # filter_horizontal = ('scheme',)
+
+#     def get_form(self, request, obj=None, **kwargs):
+#         if obj is None:
+#             return URLAddForm
+#         else:
+#             return super(URLAdmin, self).get_form(request, obj, **kwargs)
+
+
+# class URLObjAdmin(admin.ModelAdmin):
+#     list_display = ('url', 'obj')
+#     raw_id_fields = ('url',)
+# admin.site.register(UrlObject, URLObjAdmin)
+
+
+# @admin.register(IP)
+# class IPAdmin(admin.ModelAdmin):
+#     pass
