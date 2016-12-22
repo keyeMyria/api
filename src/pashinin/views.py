@@ -34,6 +34,10 @@ class Base(BaseView):
                     'url': reverse('index'),
                 },
                 {
+                    'title': 'Статьи',
+                    'url': reverse('articles:index'),
+                } if c['user'].is_superuser else None,
+                {
                     'title': 'Вопросы',
                     'url': reverse('faq'),
                 },

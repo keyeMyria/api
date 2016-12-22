@@ -94,6 +94,7 @@ function showFormErrors(errors, form) {
 
 $(document).ready(function() {
 	$("a#profile").click(function(){
+		$("#profile").toggleClass("pressed");
 		$("#loginbox").toggleClass("hide");
 		return false;
 	});
@@ -101,6 +102,7 @@ $(document).ready(function() {
 	// hide popup menus when clicked elsewhere
 	$(document).click(function(event) {
 		if (!$(event.target).closest(".popup").length) {
+			$("#profile").removeClass("pressed");
 			$(".popup").addClass("hide");
 		}
 	});
