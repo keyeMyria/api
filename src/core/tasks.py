@@ -14,7 +14,8 @@ from subprocess import call, Popen, PIPE
 
 @shared_task
 def supervisor(jobname, cmd):
-    return call(['sudo', 'supervisorctl', cmd, jobname])
+    # return call(['sudo', 'supervisorctl', cmd, jobname])
+    return Popen(['sudo', 'supervisorctl', cmd, jobname])
 
 
 @shared_task

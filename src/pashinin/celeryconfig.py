@@ -18,6 +18,9 @@ register('myjson', my_dumps, my_loads,
 # CELERY_RESULT_BACKEND = 'redis://{{redis_server}}:6379/0'
 CELERY_RESULT_BACKEND = settings.BROKER_URL
 
+# Add a one-minute timeout to all Celery tasks.
+CELERYD_TASK_SOFT_TIME_LIMIT = 60
+
 # Tell celery to use your new serializer:
 CELERY_ACCEPT_CONTENT = ['myjson']
 # CELERY_ACCEPT_CONTENT = ['application/json']
