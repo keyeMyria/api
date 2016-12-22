@@ -1,4 +1,9 @@
 # -*- mode: conf -*-
+#
+# Official example of Supervisor config for Celery:
+#
+# https://github.com/celery/celery/blob/master/extra/supervisord/celeryd.conf
+#
 [program:celery]
 # [program:daphne-{{domain}}]
 command={{vebin}}/celery -A pashinin worker --loglevel=ERROR --pidfile={{repo}}/tmp/celery.pid

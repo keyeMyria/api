@@ -1,5 +1,6 @@
 # import re
 # import time
+import os
 from celery import shared_task
 # from raven.contrib.django.raven_compat.models import client
 # from datetime import timedelta
@@ -15,7 +16,16 @@ from subprocess import call, Popen, PIPE
 @shared_task
 def supervisor(jobname, cmd):
     # return call(['sudo', 'supervisorctl', cmd, jobname])
-    return Popen(['sudo', 'supervisorctl', cmd, jobname])
+    # return Popen(['sudo', 'supervisorctl', cmd, jobname])
+    # kill -HUP $pid
+    # {{repo}}/tmp/celery.pid
+    from django.conf import settings
+    return Popen([
+        'sudo',
+        'kill',
+        "-HUP",
+        os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
+    ])
 
 
 @shared_task
