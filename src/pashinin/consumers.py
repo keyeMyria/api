@@ -13,9 +13,12 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 
 
-# Send form from main page
-# Form: name, phone, message
+# "f" is a Form user fills
+# f["name"] - user name
+# f["phone"] - user phone
+# f["message"] - additional message
 def send_lead(f):
+    """Send a form from main page"""
     body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
         datetime.datetime.now(),
         f['name'],

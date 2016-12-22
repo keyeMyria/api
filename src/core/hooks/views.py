@@ -35,11 +35,13 @@ class Travis(APIView):
         payload = json.loads(d["payload"][0])
         if payload['result'] == 0:  # Travis build SUCCEDED
             commit_sha1 = payload['commit']
-            send_mail(
-                "travis hook",
-                commit_sha1,
-                "Travis hook <ROBOT@pashinin.com>",
-                ["sergey@pashinin.com"])
+            # send_mail(
+            #     "travis hook",
+            #     commit_sha1,
+            #     "Travis hook <ROBOT@pashinin.com>",
+            #     ["sergey@pashinin.com"])
+            from core.tasks import project_update
+            project_update.delay(commit_sha1)
         else:  # Travis build FAILED
             pass
         return HttpResponse("ok")
