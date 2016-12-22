@@ -9,10 +9,17 @@ from celery import shared_task
 # from celery import group, chord
 # from .models import *
 from django.core.mail import send_mail
+from subprocess import call, Popen, PIPE
+
+
+@shared_task
+def supervisor(jobname, cmd):
+    return call(['sudo', 'supervisorctl', cmd, jobname])
 
 
 @shared_task
 def project_update(commit_sha1):
+    # restart supervisor jobs
     body = "test"
     send_mail(
         commit_sha1,
@@ -20,3 +27,4 @@ def project_update(commit_sha1):
         "update robot <ROBOT@pashinin.com>",
         ["sergey@pashinin.com"]
     )
+    supervisor.delay("celery", "restart")
