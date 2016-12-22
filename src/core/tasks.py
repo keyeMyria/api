@@ -20,12 +20,13 @@ def supervisor(jobname, cmd):
     # kill -HUP $pid
     # {{repo}}/tmp/celery.pid
     from django.conf import settings
-    return Popen([
+    Popen([
         'sudo',
         'kill',
         "-HUP",
         os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
     ])
+    return "ok"
 
 
 @shared_task
