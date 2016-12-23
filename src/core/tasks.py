@@ -115,6 +115,21 @@ def collect_static(*args):
 
 
 @shared_task
+def get_project_at_commit(commit_sha1):
+    # clone a repo into a new destination
+    dest = os.path.join(
+        os.path.basename(settings.GIT_PATH),
+        commit_sha1
+    )
+    call([
+        'git', 'clone', '--depth=1',
+        'https://github.com/pashinin-com/pashinin.com.git',
+        dest
+    ])
+    return commit_sha1
+
+
+@shared_task
 def project_update(commit_sha1):
     # restart supervisor jobs
     body = ""
@@ -123,6 +138,7 @@ def project_update(commit_sha1):
     #     link=collect_static.s()
     # )
     chain(
+        get_project_at_commit.s(commit_sha1),
         build_css.s(),
         collect_static.s(),
         migrate.s(),
