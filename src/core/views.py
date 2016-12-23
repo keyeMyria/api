@@ -1,11 +1,14 @@
+import os
+import json
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
 from core import get_client_ip, is_mobile
 from django.utils.translation import ugettext as _
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.cache import cache
 
 
 class EnsureCsrfCookieMixin(object):
@@ -91,9 +94,43 @@ class Celery(BaseView):
     def get_context_data(self, **kwargs):
         c = super(Celery, self).get_context_data(**kwargs)
         from celery.task.control import inspect
-        c['inspect'] = inspect()
-        c['is_running'] = inspect().stats() is not None
+        # c['inspect'] = inspect()
+
+        c['celery_is_running'] = cache.get('celery_is_running', False)
+
+        # stats = cache.get_or_set(
+        #     'celery_stats',
+        #     lambda: inspect().stats(),
+        #     100
+        # )
+        # c['celery_is_running'] = stats is not None
         return c
+
+    def post(self, request, **kwargs):
+        c = self.get_context_data(**kwargs)
+        if not c['user'].is_superuser:
+            return HttpResponse('{}')
+        res = {}
+
+        # Is Supervisor installed?
+        if not os.path.isdir('/etc/supervisor/conf.d'):
+            res['no_supervisor'] = True
+
+        # Celery Supervisor config file
+        sv_config = '/etc/supervisor/conf.d/celery-{}.conf'.format(
+            settings.DOMAIN
+        )
+        if not os.path.isfile(sv_config):
+            res['no_supervisor_config'] = True
+        else:
+            import configparser
+            config = configparser.ConfigParser()
+            # config.sections()
+            config.read(sv_config)
+            # config.sections()
+            res['sections'] = config.sections()
+        return HttpResponse(json.dumps(res))
+
 
 # def err404(request):
 #     if request.method == 'GET':

@@ -1,12 +1,17 @@
 {% extends "pashinin_base.jinja" %}
 
+{% block head %}
+{{super()}}
+<script defer src="{{ static("js/core_celery.js") }}"></script>
+{% endblock %}
+
 {% block header %}
   {{super()}}
 
 <div class="w pad-sm">
   <img class="" alt="Celery" width="64px"
 	   src="{{file("beec0e35eb960de1b0159276c7d5f4026145aa5d")}}"/>
-  {% if not is_running %}
+  {% if not celery_is_running %}
 	Celery is NOT running
   {% endif %}
 </div>
@@ -14,6 +19,10 @@
 
 {% block content %}
 <div class="pad-sm">
-  {{inspect.stats()}}
+  {# {{inspect.stats()}} #}
+
+  <div>
+	<a id="run_celery" href="{{url("core:celery")}}">Run Celery</a>
+  </div>
 </div>
 {% endblock %}
