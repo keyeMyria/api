@@ -93,11 +93,18 @@ after_failure:
   - sudo cat /var/log/supervisor/daphne.err.log
   - sudo cat /var/log/supervisor/worker.err.log
 
+# To use encrypted variables:
+#
+# sudo gem install travis
+# travis encrypt "secret"
+# travis encrypt MY_SECRET_ENV=super_secret --add env.matrix
+# travis encrypt MY_SECRET_ENV=super_secret -r pashinin-com/parser
 notifications:
   email: false
   webhooks:
     urls:
-      - https://pashinin.com/_/hooks/travis
+      secure: "TvGWdiWk20Fg/d80ys6+Am9K7SmuwQ99WE6/EqW24TuykdjRylzz4gNNecYUz3ABuZAZxPUeoGXk3dDftKfTMs3mV6AJG9kygN2w3BfKMM0BUP4rl1Lzw1lfNbSUWP9i0UCc1PNN03DCHQHVZTgAEKUG7+m2VCwn76Fvh5PoY9cG64mAmlviOr2HL+5GsUDYwnwizhDuZC0SdikfDfxwnlGANQ9LtGjxseh7LYJQ4GU6qvYFKK9zBXNG8p+43/TvDPBgxVctDdo/b72WnqVE+lT37MjoKdSjZyEBk0KICoXY95d50mFU00POvMKMfbfVGXgiEo3CGelElBElTx2EstaNpbhNX55hpO8r7Md1mUbj+fxea50ZBz34Ebys/h8Vzmtz+VwLto9ks7anh7R0JCRKieTrC+wQ9dAoRdARDH9Td+1eg8pqhUjwTyY7imk991qyRcuqVjOlhRBChXxdyskjdetCDsnQvricYTZtdez3gRUHO6GmKdu2sooaQGnWcwA+tmv3lqYhTfZr6kNzQabb1nRKSZ6QxcKao2c6XgR0pQ9MLEMTAnBydsYzvChthOiDsG6nJW1msERxClawlUS1q3rwoaXz09OagS7FOkHS0YzhGroFH9anVvyy+rNWLc+MeHniQUaF93gveXoggZHsfGcYv4JIAENYJBhNcoU="
+    # - https://pashinin.com/_/hooks/travis
     # on_success: [always|never|change] # default: always
     # on_failure: [always|never|change] # default: always
     # on_start: [always|never|change] # default: never

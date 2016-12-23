@@ -103,16 +103,13 @@ def collect_static(*args):
 #     ])
 
 
+
+
 @shared_task
 def project_update(commit_sha1):
     # restart supervisor jobs
-    body = "test"
-    send_mail(
-        commit_sha1,
-        body,
-        "update robot <ROBOT@pashinin.com>",
-        ["sergey@pashinin.com"]
-    )
+    body = ""
+
 
     # make css (as www-data)
     # make collectstatic
@@ -121,6 +118,17 @@ def project_update(commit_sha1):
     build_css.apply_async(
         link=collect_static.s()
     )
+
+    # from git import Repo
+    # repo = Repo(d)
+
+    send_mail(
+        commit_sha1,
+        body,
+        "update robot <ROBOT@pashinin.com>",
+        ["sergey@pashinin.com"]
+    )
+
     # collect_static.delay()
     # res = add.apply_async((2, 2), link=mul.s(16))
     # res.get()

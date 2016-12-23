@@ -25,6 +25,16 @@ class Github(APIView):
 
 class Travis(APIView):
     def post(self, request, **kwargs):
+        # Security check
+        # Check not anyone can run update but only Travis
+        secret = kwargs.get('secret', None)
+        TRAVIS_SECRET = settings.TRAVIS_SECRET
+        if not TRAVIS_SECRET or TRAVIS_SECRET != secret:
+            return HttpResponse("")
+
+        # We are sure it's Travis now
+        # Do the job
+
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
         d = urllib.parse.parse_qs(s)      # dict
@@ -33,18 +43,15 @@ class Travis(APIView):
         # This string contains JSON object described here:
         # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
         payload = json.loads(d["payload"][0])
-        if payload['result'] == 0:  # Travis build SUCCEDED
+        SUCCEDED = payload['result'] == 0
+        if SUCCEDED:
             commit_sha1 = payload['commit']
-            # send_mail(
-            #     "travis hook",
-            #     commit_sha1,
-            #     "Travis hook <ROBOT@pashinin.com>",
-            #     ["sergey@pashinin.com"])
             from core.tasks import project_update
             project_update.delay(commit_sha1)
-        else:  # Travis build FAILED
+        else:
+            # Travis build FAILED
             pass
-        return HttpResponse("ok")
+        return HttpResponse("")
 
 
 # telepot: https://github.com/nickoala/telepot
