@@ -30,9 +30,9 @@ def supervisor(jobname, cmd):
     return "ok"
 
 
-@shared_task
-def restart_celery():
-    return
+# @shared_task
+# def restart_celery():
+#     return
 
 
 @shared_task
@@ -62,19 +62,19 @@ def build_css():
 
 
 # @task_postrun.connect()
-@task_postrun.connect(sender=restart_celery)
-def task_postrun(signal=None, sender=None, task_id=None, task=None,
-                 args=None, kwargs=None, retval=None, state=None):
-    # note that this hook runs even when there has been an exception
-    # thrown by the task
-    # print "post run {0} ".format(task)
-    from django.conf import settings
-    Popen([
-        'sudo',
-        'kill',
-        "-HUP",
-        os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
-    ])
+# @task_postrun.connect(sender=restart_celery)
+# def task_postrun(signal=None, sender=None, task_id=None, task=None,
+#                  args=None, kwargs=None, retval=None, state=None):
+#     # note that this hook runs even when there has been an exception
+#     # thrown by the task
+#     # print "post run {0} ".format(task)
+#     from django.conf import settings
+#     Popen([
+#         'sudo',
+#         'kill',
+#         "-HUP",
+#         os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
+#     ])
 
 
 @shared_task
@@ -91,5 +91,5 @@ def project_update(commit_sha1):
     # make css (as www-data)
     # make collectstatic
     build_css.delay()
-    # supervisor.delay("celery", "restart")
-    restart_celery.delay()
+    supervisor.delay("celery", "restart")
+    # restart_celery.delay()
