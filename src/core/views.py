@@ -83,6 +83,18 @@ class TreeEdit(BaseView):
         c['roots'] = Category.objects.all()
         return c
 
+
+class Celery(BaseView):
+    template_name = "core_celery.jinja"
+    only_superuser = True
+
+    def get_context_data(self, **kwargs):
+        c = super(Celery, self).get_context_data(**kwargs)
+        from celery.task.control import inspect
+        c['inspect'] = inspect()
+        c['is_running'] = inspect().stats() is not None
+        return c
+
 # def err404(request):
 #     if request.method == 'GET':
 #         return HttpResponseNotFound(render_to_string('404.html', locals()))

@@ -38,6 +38,11 @@
 			<span class="ib" style="width: 0; height: 0; border:4px solid transparent; border-top-color: #000;"></span>
 		  </a>
 		  <div id="loginbox" class="hide popup">
+			{# Add some superuser menu items: #}
+			{% if user.is_superuser %}
+			  <a class="padlr" href="{{url("core:celery")}}">Celery</a>
+			{% endif %}
+
 			<a id="exit" class="padlr" href="{{url("logout")}}">Выход</a>
 		  </div>
 		{% else %}{# user is not authenticated #}

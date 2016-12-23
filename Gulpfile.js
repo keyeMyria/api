@@ -21,6 +21,23 @@ gulp.task('settings', function() {
 });
 
 
+// config data (secret files)
+var secret = 'configs/secret.json';
+gulp.task('secret', function() {
+	return gulp.src(secret)
+		.pipe(shell([
+			'python configs/config.py configs/secret-example.json configs/secret.json'
+        ]))
+        .pipe(livereload());
+});
+gulp.task('watch-secrets', function() {
+	gulp.watch(secret, ['secret', 'settings']);
+});
+
+
+// ./config.py secret-example.json secret.json
+
+
 // Processing SCSS
 gulp.task('css', function() {
 	return gulp.src('src/**/*.scss', {base: "./"})
@@ -48,5 +65,6 @@ gulp.task('livereload', function() {
 gulp.task('default', [
 	'livereload',
 	'scss',
-	'settings'
+	'settings',
+	'watch-secrets'
 ]);

@@ -1,0 +1,19 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block header %}
+  {{super()}}
+
+<div class="w pad-sm">
+  <img class="" alt="Celery" width="64px"
+	   src="{{file("beec0e35eb960de1b0159276c7d5f4026145aa5d")}}"/>
+  {% if not is_running %}
+	Celery is NOT running
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="pad-sm">
+  {{inspect.stats()}}
+</div>
+{% endblock %}
