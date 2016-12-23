@@ -71,7 +71,7 @@ def build_css():
 
 
 @shared_task
-def collect_static():
+def collect_static(*args):
     # tmp/ve/bin/python ./src/manage.py collectstatic --noinput
     # -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
     cmd = [
