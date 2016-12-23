@@ -35,6 +35,32 @@ def restart_celery():
     return
 
 
+@shared_task
+def build_css():
+    # find . -type f -name "*.scss" -not -name "_*" \
+    # -not -path "./node_modules/*" -not -path "./static/*" -print \
+    # | parallel --no-notice sass --cache-location /tmp/sass \
+    # --style compressed {} {.}.css
+    from django.conf import settings
+    import subprocess
+    # find scss
+    cmd1 = [
+        "find", settings.GIT_PATH, "-type", "f", "-name", '"*.scss"',
+        '-not', '-name', '"_*"', '-not', '-path', '"./node_modules/*"',
+        '-not', '-path', '"./static/*"', '-print'
+    ]
+    # compile css
+    cmd2 = [
+        "parallel", "--no-notice", "sass", '--cache-location',
+        '/tmp/sass', '--style', 'compressed', '{}', '{.}.css'
+    ]
+    p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(cmd2, stdin=p1.stdout, stdout=subprocess.PIPE)
+    p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+    output, err = p2.communicate()
+    return output
+
+
 # @task_postrun.connect()
 @task_postrun.connect(sender=restart_celery)
 def task_postrun(signal=None, sender=None, task_id=None, task=None,
@@ -61,5 +87,9 @@ def project_update(commit_sha1):
         "update robot <ROBOT@pashinin.com>",
         ["sergey@pashinin.com"]
     )
+
+    # make css (as www-data)
+    # make collectstatic
+    build_css.delay()
     # supervisor.delay("celery", "restart")
     restart_celery.delay()

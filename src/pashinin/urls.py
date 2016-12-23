@@ -41,6 +41,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
+    url(r'^admin/',  include('articles.urls', namespace='admin')),
     url(r'^contacts$', Contacts.as_view(), name='contacts'),
     url(r'^faq$', FAQ.as_view(), name="faq"),
     url(r'^login$', Login.as_view(), name='login'),
