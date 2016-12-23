@@ -13,6 +13,8 @@ DEBUG = True
 SETTINGS_PATH = dirname(abspath(__file__))
 SITE_PATH = dirname(abspath(__file__))
 GIT_PATH = dirname(dirname(SETTINGS_PATH))
+VEPYTHON = os.path.join(settings.GIT_PATH, "tmp", "ve", "bin", "python")
+
 
 EMAIL_HOST = '10.254.239.1'
 
