@@ -33,11 +33,15 @@ def supervisor(jobname, cmd):
 
 @shared_task
 def restart_celery():
+    pidfile = os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
+    pid = ''
+    with open(pidfile) as f:
+        pid = f.read().strip()
     Popen([
         'sudo',
         'kill',
         "-HUP",
-        os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
+        pid
     ])
     return "ok"
 
