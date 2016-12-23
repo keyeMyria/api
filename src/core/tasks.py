@@ -2,6 +2,7 @@
 # import time
 import os
 from celery import shared_task
+from celery import chain
 # from raven.contrib.django.raven_compat.models import client
 # from datetime import timedelta
 # from six.moves.urllib.parse import urljoin
@@ -17,22 +18,22 @@ from django.conf import settings
 
 @shared_task
 def supervisor(jobname, cmd):
-    # return call(['sudo', 'supervisorctl', cmd, jobname])
+    return call(['sudo', 'supervisorctl', cmd, jobname])
     # return Popen(['sudo', 'supervisorctl', cmd, jobname])
     # kill -HUP $pid
     # {{repo}}/tmp/celery.pid
-    from django.conf import settings
-    Popen([
-        'sudo',
-        'kill',
-        "-HUP",
-        os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
-    ])
-    return "ok"
+    # from django.conf import settings
+    # Popen([
+    #     'sudo',
+    #     'kill',
+    #     "-HUP",
+    #     os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
+    # ])
+    # return "ok"
 
 
 @shared_task
-def restart_celery():
+def restart_celery(*args):
     pidfile = os.path.join(settings.GIT_PATH, "tmp", "celery.pid")
     pid = ''
     with open(pidfile) as f:
@@ -47,7 +48,7 @@ def restart_celery():
 
 
 @shared_task
-def build_css():
+def build_css(*args):
     """Find scss files and compile them to css"""
     # find . -type f -name "*.scss" -not -name "_*" \
     # -not -path "./node_modules/*" -not -path "./static/*" -print \
@@ -72,6 +73,16 @@ def build_css():
     p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
     output, err = p2.communicate()
     return output
+
+
+@shared_task
+def migrate(*args):
+    cmd = [
+        settings.VEPYTHON,
+        os.path.join(settings.GIT_PATH, 'src', 'manage.py'),
+        'migrate'
+    ]
+    return call(cmd)
 
 
 @shared_task
@@ -103,20 +114,18 @@ def collect_static(*args):
 #     ])
 
 
-
-
 @shared_task
 def project_update(commit_sha1):
     # restart supervisor jobs
     body = ""
 
-
-    # make css (as www-data)
-    # make collectstatic
-    # build_css.delay()
-    # collect_static.delay()
-    build_css.apply_async(
-        link=collect_static.s()
+    # build_css.apply_async(
+    #     link=collect_static.s()
+    # )
+    chain(
+        build_css.s(),
+        collect_static.s(),
+        migrate.s(),
     )
 
     # from git import Repo
@@ -129,8 +138,12 @@ def project_update(commit_sha1):
         ["sergey@pashinin.com"]
     )
 
+    # migrate.delay()
     # collect_static.delay()
-    # res = add.apply_async((2, 2), link=mul.s(16))
-    # res.get()
-    # supervisor.delay("celery", "restart")
-    restart_celery.delay()
+
+    chain(
+        supervisor.s("worker-"+settings.DOMAIN, "restart"),
+        restart_celery.s()
+    )
+    # supervisor.delay("worker-"+settings.DOMAIN, "restart")
+    # restart_celery.delay()
