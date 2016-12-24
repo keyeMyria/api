@@ -113,7 +113,8 @@ class Celery(JsonWebsocketConsumer):
         self.c = message.content
         for k in message.keys():
             log.debug(k)
-        self.user = message.user
+        if not message.user.is_superuser:
+            self.disconnect(message, **kwargs)
         # self.r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
         # self.send(r.get(k))
         self.send('{"asd":123}')
@@ -122,11 +123,7 @@ class Celery(JsonWebsocketConsumer):
         """
         Called with a decoded WebSocket frame.
         """
-        if not self.user.is_superuser:
-            return
-
-        # self.send(text=text, bytes=bytes)
-        self.send(json.dumps({'superuser': self.user.is_superuser}))
+        self.send(text)
 
         d = {}
         try:
