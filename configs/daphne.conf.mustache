@@ -1,7 +1,17 @@
 # -*- mode: conf -*-
 [program:daphne-{{domain}}]
+
+#
+# usage: daphne [-h] [-p PORT] [-b HOST] [-u UNIX_SOCKET] [--fd FILE_DESCRIPTOR]
+#               [-v VERBOSITY] [-t HTTP_TIMEOUT] [--access-log ACCESS_LOG]
+#               [--ping-interval PING_INTERVAL] [--ping-timeout PING_TIMEOUT]
+#               [--ws-protocol [WS_PROTOCOLS [WS_PROTOCOLS ...]]]
+#               [--root-path ROOT_PATH]
+#               channel_layer
+#
 # command={{vebin}}/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
 command={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
+
 directory={{repo}}/src
 user={{www-data}}
 autostart=true

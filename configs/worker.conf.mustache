@@ -6,7 +6,25 @@
 #     DJANGO_SETTINGS_MODULE2 = foo.settings.local,
 #     DB_USER2=foo,
 #     DB_PASS2=bar
-command={{vebin}}/python ./manage.py runworker
+#
+# Example command:
+#
+# command={{vebin}}/python ./manage.py runworker --threads 2 --exclude-channels=root.*
+#
+#
+# Worker arguments:
+#
+# [--layer LAYER]
+# [--only-channels ONLY_CHANNELS]
+# [--exclude-channels EXCLUDE_CHANNELS]
+# [--threads THREADS]
+#
+# Note about speed and threads from the author of channels:
+#
+# Got channels from being twice as slow as old Django runserver to being
+# almost twice as fast with one weird trick (don't use threads).
+
+command={{vebin}}/python ./manage.py runworker --exclude-channels=root.*
 directory={{repo}}/src
 user={{www-data}}
 autostart=true

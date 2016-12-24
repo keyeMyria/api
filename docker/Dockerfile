@@ -7,7 +7,8 @@ make \
 git \
 postgresql-server-dev-all \
 postgresql-client \
-glusterfs-client
+glusterfs-client \
+supervisor
 # redis-server \
 # postgresql \
 

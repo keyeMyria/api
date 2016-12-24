@@ -36,6 +36,7 @@ dev_pkgs:
 bash:
 	docker exec -it $(vm) bash
 
+# --noworker - runserver will NOT start workers
 django:
 	docker exec --user www-data -it $(vm) ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 # docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
@@ -86,6 +87,16 @@ tmux:
 	tmux send-keys -t gulp C-m 'gulp' C-m
 	tmux select-window -t runserver
 	tmux attach-session -t dev -d
+# tmux select-window -t worker1 || tmux new-window -n worker1
+# tmux send-keys -t worker1 C-m 'make worker1' C-m
+# tmux select-window -t worker2 || tmux new-window -n worker2
+# tmux send-keys -t worker2 C-m 'make worker2' C-m
+
+worker1:
+	docker exec --user www-data -it $(vm) ./manage.py runworker --exclude-channels=root.* --threads 4
+
+worker2:
+	docker exec -it $(vm) ./manage.py runworker --only-channels=root.*
 
 ve:
 	./configs/makeve.py
@@ -146,9 +157,12 @@ collectstatic-dev:
 # Look for all .scss files not starting with "_"
 # Exclude folders: ./node_modules, ./static
 # TODO: install apt: parallel
+#
+# sass --help
+# --sourcemap=TYPE   [auto(default),none]
 css: sass
 	find . -type f -name "*.scss" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
--print | parallel --no-notice sass --cache-location /tmp/sass --style compressed {} {.}.css
+-print | parallel --no-notice sass --cache-location /tmp/sass --style compressed --sourcemap=none {} {.}.css
 
 sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"

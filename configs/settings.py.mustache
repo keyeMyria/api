@@ -461,11 +461,18 @@ if DEBUG:
         }
     }
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+#
+# version - ?
+# disable_existing_loggers -
+#
+# levels:
+# DEBUG: Low level system information for debugging purposes
+# INFO: General system information
+# WARNING: Information describing a minor problem that has occurred.
+# ERROR: Information describing a major problem that has occurred.
+# CRITICAL: Information describing a critical problem that has occurred.
 LOGGING_CONFIG = 'logging.config.dictConfig'
 LOGGING = {
     'version': 1,
@@ -480,6 +487,9 @@ LOGGING = {
         }
     },
     'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -491,10 +501,19 @@ LOGGING = {
         #    #'class': 'raven.contrib.django.handlers.SentryHandler',
         # },
     },
+    # propagate
+    #
+    # Propagate or not messages. This means that log messages written to
+    # "core.views" will not be handled by the "core" logger.
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'core': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     }

@@ -9,6 +9,9 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRespo
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class EnsureCsrfCookieMixin(object):
@@ -108,13 +111,24 @@ class Celery(BaseView):
 
     def post(self, request, **kwargs):
         c = self.get_context_data(**kwargs)
+
         if not c['user'].is_superuser:
             return HttpResponse('{}')
         res = {}
 
         # Is Supervisor installed?
         if not os.path.isdir('/etc/supervisor/conf.d'):
-            res['no_supervisor'] = True
+            # TODO: install supervisor
+            from subprocess import call, Popen, PIPE
+            try:
+                call(['sudo', 'apt-get', 'install', 'supervisor'])
+            except Exception as e:
+                if not os.path.isdir('/etc/supervisor/conf.d'):
+                    log.debug('Installing Supervisor failed with: {}'.format(
+                        str(e)
+                    ))
+                    # raise ValueError("still no Supervisor")
+                res['no_supervisor'] = True
 
         # Celery Supervisor config file
         sv_config = '/etc/supervisor/conf.d/celery-{}.conf'.format(
@@ -122,13 +136,19 @@ class Celery(BaseView):
         )
         if not os.path.isfile(sv_config):
             res['no_supervisor_config'] = True
+            # TODO: create sv config file
         else:
             import configparser
             config = configparser.ConfigParser()
             # config.sections()
             config.read(sv_config)
             # config.sections()
-            res['sections'] = config.sections()
+            # res['sections'] = config.sections()
+
+            # Supervisor config params for Celery
+            if "program:celery" in config:
+                params = config["program:celery"]
+                res['params'] = dict(params)
         return HttpResponse(json.dumps(res))
 
 

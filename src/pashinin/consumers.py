@@ -1,8 +1,60 @@
+"""This module describes all consumers.
+
+A consumer is actually what does the job. It's a function which is
+assigned to a channel later (in routing.py) OR a class-based consumer in
+which your write this channel->method mapping.
+
+For example if you have:
+
+    class Consumer1(BaseConsumer):
+        method_mapping = {
+            "mylongtasks.all": "dothejob",
+        }
+
+    def dothejob(self, message, **kwargs):
+        pass
+
+then all tasks that go to "mylongtasks.all" channel will be executed
+with `dothejob()` method of Consumer1 class.
+
+About methods and functions:
+
+def dothejob(self, message, **kwargs):
+    pass
+
+
+Message
+=======
+
+<channels.message.Message object at 0x7fc6b0049dd8>
+
+>>> message.keys()
+>>> dict_keys(['server', 'reply_channel', 'query_string', 'client',
+'headers', 'method', 'order', 'path'])
+
+"message" is a dict with these keys:
+
+    content: The actual message content, as a dict. See the ASGI spec or
+    protocol message definition document for how this is structured.
+
+    channel: A Channel object, representing the channel this message was
+    received on. Useful if one consumer handles multiple channels.
+
+    reply_channel: A Channel object, representing the unique reply
+    channel for this message, or None if there isn’t one.
+
+    channel_layer: A ChannelLayer object, representing the underlying
+    channel layer this was received on. This can be useful in projects
+    that have more than one layer to identify where to send messages the
+    consumer generates (you can pass it to the constructor of Channel or
+    Group)
+
+"""
+
 import json
 import datetime
 from django.http import HttpResponse
 from channels.handler import AsgiHandler
-from channels.auth import channel_session_user_from_http
 from channels.generic import BaseConsumer
 from channels.channel import Group
 from channels.generic.websockets import WebsocketConsumer, JsonWebsocketConsumer
@@ -11,14 +63,17 @@ import subprocess
 import redis
 from django.core.cache import cache
 from django.core.mail import send_mail
+import logging
+log = logging.getLogger(__name__)
 
 
-# "f" is a Form user fills
-# f["name"] - user name
-# f["phone"] - user phone
-# f["message"] - additional message
 def send_lead(f):
-    """Send a form from main page"""
+    """Send a form from main page
+
+    f - a Django form with 3 params:
+    f["name"] - user name
+    f["phone"] - user phone
+    f["message"] - additional message"""
     body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
         datetime.datetime.now(),
         f['name'],
@@ -36,88 +91,43 @@ def send_lead(f):
     )
 
 
-def popenAndCall(ws, popenArgs):
-    """
-    Runs the given args in a subprocess.Popen, and then calls the function
-    onExit when the subprocess completes.
-    onExit is a callable object, and popenArgs is a list/tuple of args that
-    would give to subprocess.Popen.
-    """
-    def runInThread(ws, popenArgs):
-        proc = subprocess.Popen(*popenArgs)
-        proc.wait()
-        ws.send('asd')
-        return
-    thread = threading.Thread(target=runInThread, args=(ws, popenArgs))
-    thread.start()
-    # returns immediately after the thread starts
-    return thread
-
-
-def http_request_consumer(message):
-    # print(message.content)
-    response = HttpResponse('Hello world! You asked for %s' % message.content['path'])
-    for chunk in AsgiHandler.encode_response(response):
-        message.reply_channel.send(chunk)
-
-
-# class AdminAPI(WebsocketConsumer):
-class AdminAPI(JsonWebsocketConsumer):
+class Root(BaseConsumer):
     http_user = True
 
-    # method_mapping = {
-    #     "websocket.connect": "method_name",
-    # }
+    method_mapping = {
+        "root.call": "call",
+    }
 
-    # def raw_receive(self, message, **kwargs):
-    #     self.receive(message['text'], **kwargs)
+    def call(self, message, **kwargs):
+        import getpass
+        # getpass.getuser()
+        self.send(getpass.getuser())
 
-    # def raw_receive(self, message, **kwargs):
-    #     if "text" in message:
-    #         try:
-    #             self.receive(json.loads(message['text']), **kwargs)
-    #         except:
-    #             self.receive(json.loads(message['bytes'].encode('utf-8')), **kwargs)
-    #     else:
-    #         self.receive(json.loads(message['bytes'].encode('utf-8')), **kwargs)
-    #         # raise ValueError("No text section for incoming WebSocket frame!")
 
-    # def raw_connect(self, message, **kwargs):
-    #     """
-    #     Called when a WebSocket connection is opened. Base level so you don't
-    #     need to call super() all the time.
-    #     """
-    #     for group in self.connection_groups(**kwargs):
-    #         Group(group, channel_layer=message.channel_layer).add(message.reply_channel)
-    #     channel_session_user_from_http(self.connect)(message, **kwargs)
-
-    def popen(self, args):
-        def runInThread(ws, args):
-            proc = subprocess.Popen(*args)
-            proc.wait()
-            ws.send(str(ws.user))
-            return
-
-        thread = threading.Thread(target=runInThread, args=(self, args))
-        thread.start()
-        return thread
-
+# class API(WebsocketConsumer):
+class Celery(JsonWebsocketConsumer):
+    http_user = True
 
     def connect(self, message, **kwargs):
         # print(self.method_mapping[message.channel.name])
         self.c = message.content
-        # print(message.keys())
+        for k in message.keys():
+            log.debug(k)
         self.user = message.user
-        self.r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
+        # self.r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
         # self.send(r.get(k))
-        # print(message.user)
-        # self.popen(["ls"])
-
+        self.send('{"asd":123}')
 
     def receive(self, text=None, bytes=None, **kwargs):
         """
         Called with a decoded WebSocket frame.
         """
+        if not self.user.is_superuser:
+            return
+
+        # self.send(text=text, bytes=bytes)
+        self.send(json.dumps({'superuser': self.user.is_superuser}))
+
         d = {}
         try:
             d = json.loads(text)
