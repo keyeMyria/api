@@ -28,7 +28,7 @@
   {# .cmdline - ['/usr/sbin/glusterfs', '--volfile-server=10.254.239.1', '--volfile-id=/v3', '/mnt/files'] #}
   {# .exe()   - '/usr/sbin/glusterfs' #}
   {% for p in psutil.process_iter() %}
-	<div>{{p.cmdline()}}</div>
+	<div>{{p.exe()}}</div>
   {% endfor %}
   </div>
 
