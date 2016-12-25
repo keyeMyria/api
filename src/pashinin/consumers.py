@@ -91,6 +91,14 @@ def send_lead(f):
     )
 
 
+class SuperuserConsumer(JsonWebsocketConsumer):
+    http_user = True
+
+    def connect(self, message, **kwargs):
+        if not message.user.is_superuser:
+            self.close()
+
+
 class Root(BaseConsumer):
     http_user = True
 
@@ -104,25 +112,9 @@ class Root(BaseConsumer):
         self.send(getpass.getuser())
 
 
-# class API(WebsocketConsumer):
-class Celery(JsonWebsocketConsumer):
-    http_user = True
-
-    def connect(self, message, **kwargs):
-        # print(self.method_mapping[message.channel.name])
-        self.c = message.content
-        for k in message.keys():
-            log.debug(k)
-        if not message.user.is_superuser:
-            self.disconnect(message, **kwargs)
-        # self.r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
-        # self.send(r.get(k))
-        self.send('{"asd":123}')
-
+class Celery(SuperuserConsumer):
     def receive(self, text=None, bytes=None, **kwargs):
-        """
-        Called with a decoded WebSocket frame.
-        """
+        """Called with a decoded WebSocket frame."""
         self.send(text)
         return
         d = {}
