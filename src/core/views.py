@@ -105,8 +105,11 @@ class Celery(BaseView):
         c['plist'] = []
         for p in psutil.process_iter():
             try:
-                c['plist'] += [p.exe()]
-                if p.exe() == c['celery_exe']:
+                c['plist'] += [p.cmdline()]
+            except:
+                pass
+            try:
+                if p.cmdline()[1] == c['celery_exe']:
                     running = True
                     break
             except Exception as e:
