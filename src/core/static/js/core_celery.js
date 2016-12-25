@@ -15,9 +15,7 @@ $(document).ready(function() {
 		try {
 			$("#log").val($("#log").val()+d["logline"]);
 		} catch (err) {
-
 			// обработка ошибки
-
 		}
 	};
 	ws.onerror = function(e) {

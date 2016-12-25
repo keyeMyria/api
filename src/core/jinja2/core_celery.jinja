@@ -19,7 +19,19 @@
 
 {% block content %}
 <div class="pad-sm">
+  {{celery_exe}}
   {# {{inspect.stats()}} #}
+
+  <div class="padtb">
+  Processes:
+  {# .name()  - 'glusterfs' #}
+  {# .cmdline - ['/usr/sbin/glusterfs', '--volfile-server=10.254.239.1', '--volfile-id=/v3', '/mnt/files'] #}
+  {# .exe()   - '/usr/sbin/glusterfs' #}
+  {% for p in psutil.process_iter() %}
+	<div>{{p.cmdline()}}</div>
+  {% endfor %}
+  </div>
+
 
   Registered tasks:
   {% for task in registered_tasks %}

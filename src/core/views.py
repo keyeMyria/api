@@ -98,11 +98,26 @@ class Celery(BaseView):
         c = super(Celery, self).get_context_data(**kwargs)
         from celery.task.control import inspect
         from itertools import chain
+        import psutil
+        running = cache.get('celery_is_running', False)
+
+        c['celery_exe'] = os.path.join(settings.VEBIN, 'celery')
+        for p in psutil.process_iter():
+            try:
+                if p.exe() == c['celery_exe']:
+                    running = True
+                    break
+            except Exception as e:
+                log.debug("Error finding celery process: {}".format(
+                    str(e)
+                ))
+
+        c['psutil'] = psutil
 
         # Default values:
         c['registered_tasks'] = []
 
-        running = cache.get('celery_is_running', False)
+
         c['celery_is_running'] = running
         if not running:
             return c
