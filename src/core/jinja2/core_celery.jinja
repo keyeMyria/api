@@ -21,6 +21,13 @@
 <div class="pad-sm">
   {# {{inspect.stats()}} #}
 
+  Registered tasks:
+  {% for task in registered_tasks %}
+	<div>{{task}}</div>
+  {% else %}
+	none
+  {% endfor %}
+
   <div>
 	<a id="run_celery" href="{{url("core:celery")}}">Run Celery</a>
 

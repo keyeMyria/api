@@ -97,16 +97,29 @@ class Celery(BaseView):
     def get_context_data(self, **kwargs):
         c = super(Celery, self).get_context_data(**kwargs)
         from celery.task.control import inspect
-        # c['inspect'] = inspect()
+        from itertools import chain
 
-        c['celery_is_running'] = cache.get('celery_is_running', False)
+        # Default values:
+        c['registered_tasks'] = []
+
+        running = cache.get('celery_is_running', False)
+        c['celery_is_running'] = running
+        if not running:
+            return c
+
+        i = inspect()
+
+        registered_tasks = i.registered_tasks()
+        if registered_tasks is not None:
+            c['registered_tasks'] = set(chain.from_iterable(
+                registered_tasks.values()))
+        # c['registered_tasks'] = i.registered_tasks()
 
         # stats = cache.get_or_set(
         #     'celery_stats',
         #     lambda: inspect().stats(),
         #     100
         # )
-        # c['celery_is_running'] = stats is not None
         return c
 
     def post(self, request, **kwargs):
