@@ -102,8 +102,10 @@ class Celery(BaseView):
         running = cache.get('celery_is_running', False)
 
         c['celery_exe'] = os.path.join(settings.VEBIN, 'celery')
+        c['plist'] = []
         for p in psutil.process_iter():
             try:
+                c['plist'] += [p.exe()]
                 if p.exe() == c['celery_exe']:
                     running = True
                     break
@@ -116,7 +118,6 @@ class Celery(BaseView):
 
         # Default values:
         c['registered_tasks'] = []
-
 
         c['celery_is_running'] = running
         if not running:
