@@ -5,9 +5,20 @@ $(document).ready(function() {
 	var ws = new WebSocket(ws_path);
 	ws.onopen = function() {
 		console.log("websocket connected");
+		$("#log").val("");
 	};
 	ws.onmessage = function(e) {
-		console.log("Received: " + e.data);
+		let data = JSON.parse(e.data),
+			stream = data['s'],  // stream
+			d = data['p'];    // payload
+		// console.log(e.data);
+		try {
+			$("#log").val($("#log").val()+d["logline"]);
+		} catch (err) {
+
+			// обработка ошибки
+
+		}
 	};
 	ws.onerror = function(e) {
 		console.error(e);
@@ -17,7 +28,8 @@ $(document).ready(function() {
 	};
 
 	$("a#run_celery").click(function(){
-		ws.send('{"key": "value"}');
+		ws.send(JSON.stringify({"p": {"key": "value"}, "s": ""}));
+		// ws.send(JSON.stringify({"payload": {"key": "value"}, "stream": "0"}));
 		// $.ajax({
 		// 	type: 'POST',
 		// 	url: $(this).attr('href'),

@@ -73,6 +73,9 @@ def my_dumps(obj):
     return json.dumps(obj, cls=MyEncoder)
 
 
+dumps = my_dumps
+
+
 # Decoder function
 def my_loads(obj):
     try:
@@ -82,3 +85,6 @@ def my_loads(obj):
     except:
         client.captureException()
         return []
+
+
+loads = my_loads

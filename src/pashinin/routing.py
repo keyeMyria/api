@@ -35,9 +35,29 @@ when defining CHANNEL_LAYERS:
 
 from channels.routing import route, route_class
 from .consumers import *  # noqa
+from channels.generic.websockets import WebsocketDemultiplexer
+
+
+# WebsocketDemultiplexer doesn't work with class-based consumers
+class Demultiplexer(WebsocketDemultiplexer):
+    # Mapping
+    # stream -> channel
+    # Javascript sends data through WS like this:
+    # {'stream': 'search', 'payload': {data here}}
+    mapping = {
+        "0": "websocket",
+        # "intval": "binding.intval",
+        # "stats": "internal.stats",
+    }
+
 
 channel_routing = [
+    # route_class(Demultiplexer),
     route_class(Celery, path=r"^/admin/celery$"),
+
+    # default at the end
+    route_class(Default),
+
     # route("websocket.connect", ws_connect),
 
     # Called when WebSockets get sent a data frame

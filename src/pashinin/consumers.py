@@ -51,18 +51,22 @@ Message
 
 """
 
-import json
+# import json
+import core.json as json
 import datetime
 from django.http import HttpResponse
 from channels.handler import AsgiHandler
 from channels.generic import BaseConsumer
 from channels.channel import Group
-from channels.generic.websockets import WebsocketConsumer, JsonWebsocketConsumer
+from channels.generic.websockets import WebsocketConsumer, \
+    JsonWebsocketConsumer as JSONC
 import threading
 import subprocess
 import redis
 from django.core.cache import cache
 from django.core.mail import send_mail
+from subprocess import Popen
+from core.consumers import JsonWebsocketConsumer, SuperuserConsumer
 import logging
 log = logging.getLogger(__name__)
 
@@ -91,75 +95,45 @@ def send_lead(f):
     )
 
 
-class SuperuserConsumer(JsonWebsocketConsumer):
-    http_user = True
+def execute(cmd):
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                             universal_newlines=True)
+    for stdout_line in iter(popen.stdout.readline, ""):
+        yield stdout_line
 
-    def connect(self, message, **kwargs):
-        if not message.user.is_superuser:
-            self.close()
+    popen.stdout.close()
+    return_code = popen.wait()
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, cmd)
 
 
-class Root(BaseConsumer):
-    http_user = True
+class Default(JsonWebsocketConsumer):
+    """Default websockets consumer (for anyone)"""
 
-    method_mapping = {
-        "root.call": "call",
-    }
+    def receive(self, stream, payload, **kwargs):
+        """Called with decoded JSON content."""
+        if 'celery' == stream:
+            pass
 
-    def call(self, message, **kwargs):
-        import getpass
-        # getpass.getuser()
-        self.send(getpass.getuser())
+        else:
+            # no specific stream
+            pass
+        self.send({'s': 'def'})
 
 
 class Celery(SuperuserConsumer):
-    def receive(self, text=None, bytes=None, **kwargs):
-        """Called with a decoded WebSocket frame."""
-        self.send(text)
-        return
-        d = {}
-        try:
-            d = json.loads(text)
-            if not isinstance(d, dict):
-                raise ValueError("not a dict")
-        except ValueError:
-            d = {}
-            # self.send('unknown: '+text)
-        except Exception:
-            d = {}
+    """Admin - Celery"""
 
-        cmd = d.get('t', None)
-        if cmd == 'file':
-            from core.files.models import File
-            hash = d.get('hash', None)
-            comment = d.get('comment', None)
-            f = File.objects.get(sha1=hash)
-            if comment is not None:
-                f.comment = comment
-                f.save()
-            print(comment)
+    def receive(self, stream, payload, **kwargs):
+        """Called with decoded JSON content."""
+        if 'celery' == stream:
+            pass
 
-        for k in d:
-            if k == 'ddt':
-                v = True if d[k]==b'True' or d[k]=='True' or d[k]==True else False
-                self.r.set(k, v)
-                self.send('set {} to {}'.format(k, v))
-                from cms.adm import channels_run_worker
-                channels_run_worker()
-                # cache.set('ddt', d[k])
+        else:
+            # no specific stream
+            pass
 
-            if k == 'watchcss':
-                self.send('css')
-
-            if k == 'restartworker':
-                from cms.adm import channels_run_worker
-                k = 'worker'
-                v = channels_run_worker()
-                self.r.set(k, v)
-                # self.send(str(p))
-
-    def disconnect(self, message, **kwargs):
-        """
-        Called when a WebSocket connection is opened.
-        """
-        pass
+        # self.send(self.message.user)
+        for line in execute(["ls"]):
+            self.send({'logline': line})
+        self.send({'logline': 'finish'})
