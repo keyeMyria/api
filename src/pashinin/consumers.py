@@ -124,7 +124,7 @@ class Celery(JsonWebsocketConsumer):
         Called with a decoded WebSocket frame.
         """
         self.send(text)
-
+        return
         d = {}
         try:
             d = json.loads(text)
