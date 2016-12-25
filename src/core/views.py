@@ -105,7 +105,8 @@ class Celery(BaseView):
         c['plist'] = []
         for p in psutil.process_iter():
             try:
-                c['plist'] += [p.cmdline()]
+                if p.cmdline() != ['']:
+                    c['plist'] += [p.cmdline()]
             except:
                 pass
             try:

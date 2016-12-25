@@ -128,7 +128,9 @@ class Celery(SuperuserConsumer):
         """Called with decoded JSON content."""
         if 'celery' == stream:
             pass
-
+        elif 'task' == stream:
+            from core.tasks import project_update
+            project_update.delay("0b17e9e91086c6539589202242e362bf9e82c8d9")
         else:
             # no specific stream
             pass

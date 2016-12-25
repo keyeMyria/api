@@ -38,7 +38,9 @@
 
   Registered tasks:
   {% for task in registered_tasks %}
-	<div>{{task}}</div>
+	<div>
+	  <a class="task" href="">{{task}}</a>
+	</div>
   {% else %}
 	none
   {% endfor %}

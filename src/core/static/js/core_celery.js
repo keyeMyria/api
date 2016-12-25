@@ -25,6 +25,18 @@ $(document).ready(function() {
 		console.log("connection closed");
 	};
 
+	$("a.task").each(function(i, el){
+		$(el).click(function(){
+			ws.send(JSON.stringify({
+				"p": {
+					"task": $(el).text()
+				},
+				"s": "task"
+			}));
+			return false;
+		});
+	});
+
 	$("a#run_celery").click(function(){
 		ws.send(JSON.stringify({"p": {"key": "value"}, "s": ""}));
 		// ws.send(JSON.stringify({"payload": {"key": "value"}, "stream": "0"}));
