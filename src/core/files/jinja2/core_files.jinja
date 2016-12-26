@@ -6,18 +6,19 @@
 {% block header %}
   {{super()}}
 
-<div class="w pad-sm flex grow0">
-  <div>
+<div class="w pad-sm flex equal" style="overflow:hidden">
+  <div class="bred2 flex grow0">
 	  <img class="marr left" alt="Celery" width="64px" height="64px"
 		   src="{{file("bb59fd6a60cfc40c93c976ff0407fa77b56d647d")}}"/>
+	  <h1>Files</h1>
   </div>
-  <div>
-	<h1>Files</h1>
-  </div>
-  <div class="marl ib" style="flex-grow:1 !important;flex-basis:1;position:relative">
-	<form class="dropzone right" id="upload" action="{{ url('files:upload') }}" style="height:95%;width:300px">
+  <div class="bred2">
+	<form class="dropzone right" id="upload" action="{{ url('files:upload') }}" style="height:100%;width:100%">
 	  {{ csrf_input }}
 	</form>
+  </div>
+  <div class="ib bred2 hide-if-less-800" style="text-align:right;flex-grow:1 !important;flex-basis:1;position:relative">
+	Total files: {{files_count}}
   </div>
 </div>
 {% endblock %}
@@ -26,7 +27,7 @@
 {% block content %}
 <div class="pad-sm">
 <p>
-  Total: {{files_count}}
+
 </p>
 
 {% for f in files %}
@@ -71,16 +72,12 @@
 
 
 <p>
-  /var/www/xdev/files
+
 
 
   {# service glusterfs-server status #}
 
-  {% if mounted %}
-	<span>{{mounted}}</span>
-  {% else %}
-	<span>{{mounted}}</span>
-  {% endif %}
+
 </p>
 
 <p>
@@ -94,5 +91,26 @@
 	{{ csrf_input }}
   </form>
 </div>
+
+{% if user.is_superuser %}
+<div class="info bred pad">
+  <ul>
+	<li>
+	  All files are located in /mnt/files.
+
+	  {% if mounted %}
+		<span>It is mounted, you can upload files.</span>
+	  {% else %}
+		<span>It is NOT mounted!</span>
+		<a href="#">Mount</a>
+	  {% endif %}
+	</li>
+	<li>
+	  Uploaded files first go to /mnt/files/uploads.
+	</li>
+  </ul>
+</div>
+{% endif %}
+
 </div>
 {% endblock %}

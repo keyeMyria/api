@@ -168,7 +168,7 @@ class Files(BaseView):
         import psutil
         c['mounted'] = False
         for p in psutil.disk_partitions(True):
-            if p.mountpoint == '/var/www/xdev/files':
+            if p.mountpoint == settings.FILES_ROOT:
                 c['mounted'] = True
                 break
 
