@@ -40,6 +40,9 @@
 		  <div id="loginbox" class="hide popup">
 			{# Add some superuser menu items: #}
 			{% if user.is_superuser %}
+			  <a class="padlr" href="{{url("index")}}">Main page</a>
+			  <a class="padlr" href="{{url("admin:index")}}">Django admin</a>
+			  <a class="padlr" href="{{url("files:index")}}">Files</a>
 			  <a class="padlr" href="{{url("core:celery")}}">Celery</a>
 			{% endif %}
 

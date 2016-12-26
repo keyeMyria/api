@@ -1,0 +1,98 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block title %}Files{% endblock %}
+
+
+{% block header %}
+  {{super()}}
+
+<div class="w pad-sm flex grow0">
+  <div>
+	  <img class="marr left" alt="Celery" width="64px" height="64px"
+		   src="{{file("bb59fd6a60cfc40c93c976ff0407fa77b56d647d")}}"/>
+  </div>
+  <div>
+	<h1>Files</h1>
+  </div>
+  <div class="marl ib" style="flex-grow:1 !important;flex-basis:1;position:relative">
+	<form class="dropzone right" id="upload" action="{{ url('files:upload') }}" style="height:95%;width:300px">
+	  {{ csrf_input }}
+	</form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="pad-sm">
+<p>
+  Total: {{files_count}}
+</p>
+
+{% for f in files %}
+  <div class="file">
+	<table>
+	  <tr>
+		<td>SHA1</td>
+		<td><span class="hash">{{f.sha1}}</span></td>
+	  </tr>
+	  <tr>
+		<td>Uploaded</td>
+		<td><time class="timeago" datetime="{{f.added}}">{{f.added}}</time></td>
+	  </tr>
+	  <tr>
+		<td>User</td>
+		<td>{{f.uploader}}</td>
+	  </tr>
+	  <tr>
+		<td>Comment</td>
+		<td><input name="" type="text" value="{% if f.comment %}{{f.comment}}{% endif %}" autocomplete="off" placeholder="{{_("Comment")}}"/></td>
+	  </tr>
+	  <tr>
+		<td>Content-type</td>
+		<td><a class="getcontenttype" href="#">{{f.content_type_string}}</a></td>
+	  </tr>
+	  <tr>
+		<td>Size</td>
+		<td>{{f.size}}</td>
+	  </tr>
+	</table>
+
+	<a href="{{f.get_absolute_url()}}">View</a>
+	<a class="analyze" href="{{f.get_absolute_url()}}">Analyze</a>
+	<p>
+
+	</p>
+  </div>
+  <br/>
+{% else %}
+  No files
+{% endfor %}
+
+
+<p>
+  /var/www/xdev/files
+
+
+  {# service glusterfs-server status #}
+
+  {% if mounted %}
+	<span>{{mounted}}</span>
+  {% else %}
+	<span>{{mounted}}</span>
+  {% endif %}
+</p>
+
+<p>
+  <a id="rescanfiles" href="#">Rescan folder</a>
+</p>
+
+
+<h1>Images</h1>
+<div>
+  <form id="my-awesome-dropzone" action="" class="dropzone">
+	{{ csrf_input }}
+  </form>
+</div>
+</div>
+{% endblock %}

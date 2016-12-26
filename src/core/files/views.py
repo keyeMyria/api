@@ -99,11 +99,20 @@ class Upload(BaseView):
                     upload = prevUpload
                 else:
                     upload.save()
-            # upload.process()
+
+        # The file is uploaded, it is now for example:
+        #
+        # /mnt/files/uploads/2016/06/28/dropzone_NaLkPzK.css
+        #
+        # Upload directory:
+        # MEDIA_ROOT = os.path.join(FILES_ROOT, 'uploads/')
+        #
+        # TODO: process uploaded file
+        # upload.process()
         return HttpResponse(json.dumps({'url': upload.url}))
 
 
-class Files(BaseView):
+class Files2(BaseView):
     template_name = "files.html"
 
     def get_context_data(self, **kwargs):
@@ -142,6 +151,28 @@ class Files(BaseView):
         r.set('tasks_files_process', files_process.delay())
         move_all_uploads.delay()
         return HttpResponse(json.dumps({'url': 123}))
+
+
+class Files(BaseView):
+    template_name = "core_files.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(Files, self).get_context_data(**kwargs)
+
+        c['files_count'] = F.objects.count()
+        c['files'] = F.objects.filter().order_by('-added')[:10]
+        c['dropzone'] = True
+        c['timeago'] = True
+
+        # Check mountpoint
+        import psutil
+        c['mounted'] = False
+        for p in psutil.disk_partitions(True):
+            if p.mountpoint == '/var/www/xdev/files':
+                c['mounted'] = True
+                break
+
+        return c
 
 
 class DirView(BaseView):
