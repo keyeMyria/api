@@ -164,6 +164,9 @@ def project_update(commit_sha1):
         ["sergey@pashinin.com"]
     )
 
+    # try .delay()
+    get_project_at_commit.apply_async((commit_sha1,), expires=120)
+
     # migrate.delay()
     # collect_static.delay()
 
