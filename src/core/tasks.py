@@ -139,16 +139,22 @@ def get_project_at_commit(sha1):
 
     """
     dst = os.path.join(
-        os.path.basename(settings.GIT_PATH),  # parent path of current project
+        os.path.dirname(settings.REPO_PATH),  # parent path of current project
         sha1                                  # use SHA1 as folder name
     )
+
+    # git clone...
     cmd = [
         'git', 'clone', '--depth=1',
         'https://github.com/pashinin-com/pashinin.com.git',
         dst
     ]
-    updatelog(sha1, "Cloning...\n{}\n".format(" ".join(cmd)))
-    # call()
+    p = Popen(cmd, stdout=PIPE)
+    output, err = p.communicate()
+    updatelog(sha1, "Cloning...\n{}\n{}\n".format(
+        " ".join(cmd),
+        output
+    ))
     return sha1
 
 
