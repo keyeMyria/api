@@ -1,3 +1,4 @@
+pip>=9.0.1
 #amqp==1.4.6            # Celery dependencies
 #gevent
 #git+git://github.com/surfly/gevent.git
@@ -165,5 +166,5 @@ telepot
 
 setuptools>=30.4.0
 
-rparser
+rparser>=0.1.15
 psutil   # view system processes
