@@ -154,12 +154,10 @@ def project_update(sha1):
     Runs in core/hooks/views.py: Travis class
     """
     # restart supervisor jobs
-    log = ""
-
     # build_css.apply_async(
     #     link=collect_static.s()
     # )
-    log += chain(
+    chain(
         get_project_at_commit.s(sha1),
         build_css.s(),
         collect_static.s(),
