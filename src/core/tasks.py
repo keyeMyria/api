@@ -65,21 +65,24 @@ def build_css(sha1, *args):
     # find scss:
     # find all .scss files, but not starting with "_" symbol,
     # and not under /node_modules/, /static/ folders
-    cmd1 = [
-        "find", settings.GIT_PATH, "-type", "f", "-name", '"*.scss"',
-        '-not', '-name', '"_*"', '-not', '-path', '"./node_modules/*"',
-        '-not', '-path', '"./static/*"', '-print'
-    ]
-    # compile css
-    cmd2 = [
-        "parallel", "--no-notice", "sass", '--cache-location',
-        '/tmp/sass', '--style', 'compressed', '{}', '{.}.css'
-    ]
-    p1 = Popen(cmd1, stdout=PIPE)
-    p2 = Popen(cmd2, stdin=p1.stdout, stdout=PIPE)
-    p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
-    output, err = p2.communicate()
-    updatelog(sha1, "Compile CSS...\n{}\n".format(output))
+    try:
+        cmd1 = [
+            "find", settings.GIT_PATH, "-type", "f", "-name", '"*.scss"',
+            '-not', '-name', '"_*"', '-not', '-path', '"./node_modules/*"',
+            '-not', '-path', '"./static/*"', '-print'
+        ]
+        # compile css
+        cmd2 = [
+            "parallel", "--no-notice", "sass", '--cache-location',
+            '/tmp/sass', '--style', 'compressed', '{}', '{.}.css'
+        ]
+        p1 = Popen(cmd1, stdout=PIPE)
+        p2 = Popen(cmd2, stdin=p1.stdout, stdout=PIPE)
+        p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+        output, err = p2.communicate()
+        updatelog(sha1, "Compile CSS...\n{}\n".format(output))
+    except Exception as e:
+        updatelog(sha1, "ERROR compiling CSS...\n{}\n".format(str(e)))
     return sha1
 
 
@@ -142,7 +145,7 @@ def get_project_at_commit(sha1):
         'https://github.com/pashinin-com/pashinin.com.git',
         dst
     ]
-    updatelog(sha1, "Cloning...\n{}\n".format(cmd.join(" ")))
+    updatelog(sha1, "Cloning...\n{}\n".format(" ".join(cmd)))
     # call()
     return sha1
 
