@@ -119,8 +119,10 @@ $(document).ready(function() {
 {% endif %}
 <script defer src="{{ static("js/main.js") }}?v=3"></script>
 {% if hljs %}
-<link rel="stylesheet" href="{{ static("js/hljs/src/styles/docco.css") }}">
-<script src="{{ static("js/hljs/build/highlight.pack.js") }}"></script>
+{# <link rel="stylesheet" href="{{ static("js/hljs/src/styles/docco.css") }}"> #}
+  {# <script src="{{ static("js/hljs/build/highlight.pack.js") }}"></script> #}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 {% endif %}
 {% if chartjs %}
