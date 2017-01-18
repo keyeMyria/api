@@ -1,17 +1,21 @@
 import urllib
-import rparser
+from rparser import article_render as A
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
+from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 # from dirtyfields import DirtyFieldsMixin
 # from elasticsearch import Elasticsearch
+from unidecode import unidecode
 from core.models import AddedChanged
 # import bleach
 from django.utils.translation import gettext_lazy as _
 # from raven.contrib.django.raven_compat.models import client
+import logging
+log = logging.getLogger(__name__)
 
 
 # class ArticleCategory(Debug, Tree, Translated):
@@ -84,10 +88,33 @@ class Article(AddedChanged):
 
     @property
     def as_html(self):
-        return rparser.html(self.src)
+        try:
+            html, info = A(self.src)
 
+            missing_links = info.get("missing_links", tuple())
+            set_links = {}
+            if missing_links:
+                for missing_page in missing_links:
+                    slug = slugify(unidecode(missing_page))
+                    try:
+                        article = Article.objects.get(slug=slug)
+                        set_links[missing_page] = article.get_absolute_url()
+                    except:
+                        print("no page:", slug)
+            return html
+        except Exception as e:
+            # TODO
+            msg_debug = "Article.as_html error: " + str(e)
+            if settings.DEBUG:
+                log.error(msg_debug)
+                return msg_debug
+            else:
+
+                return "Error happened! I know about it."
+
+    @property
     def as_latex(self):
-        return "todo"
+        return "TODO: Article.as_latex property"
 
     @property
     def is_redirect(self):
@@ -121,7 +148,6 @@ def article_pre_save(instance, *args, **kwargs):
     #     instance.debug = {}
 
     # TODO: handle redirects when renaming
-    from unidecode import unidecode
     instance.slug = slugify(unidecode(instance.title))
 
 
