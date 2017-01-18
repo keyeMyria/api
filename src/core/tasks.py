@@ -91,7 +91,8 @@ def migrate(sha1, *args):
         'migrate'
     ]
     updatelog(sha1, "Migrate...")
-    return call(cmd)
+    call(cmd)
+    return sha1
 
 
 @shared_task
