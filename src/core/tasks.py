@@ -16,6 +16,8 @@ def updatelog(sha1, msg=None):
     s = r.get(key)
     if s is None:
         s = ""
+    else:
+        s = s.decode()
     if msg is None:
         return s
     s += msg
@@ -167,18 +169,6 @@ def project_update(sha1):
         migrate.s(),
     )()
 
-    # from git import Repo
-    # repo = Repo(d)
-
-    # TODO: email is sent but nothing else executes
-    # 2 "collect_static" tasks have status "PENDING"
-
-    # try .delay()
-    # get_project_at_commit.apply_async((commit_sha1,), expires=120)
-
-    # migrate.delay()
-    # collect_static.delay()
-
     chain(
         supervisor.s("worker-"+settings.DOMAIN, "restart"),
         restart_celery.s()
@@ -186,7 +176,7 @@ def project_update(sha1):
 
     send_mail(
         sha1,
-        updatelog(sha1),
+        "LOG - updating to {}\n".format(sha1)+updatelog(sha1),
         "update robot <ROBOT@pashinin.com>",
         ["sergey@pashinin.com"]
     )
