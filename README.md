@@ -24,3 +24,5 @@ make tmux
 <!-- Manually with IPython shell: -->
 
 <!--     ./manage.py shell -->
+
+[Docs](http://pashinincom.readthedocs.io/en/latest/)

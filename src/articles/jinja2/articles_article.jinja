@@ -10,7 +10,7 @@
 {% block header %}
 {{super()}}
 <div class="pad-sm padt w">
-  <h1>{{article.title}}</h1>
+  {% if article %}<h1>{{article.title}}</h1>{% endif %}
 </div>
 {% endblock %}
 
@@ -41,13 +41,18 @@
 
 
 {% block content %}
-{% if article %}
-<div class="pad-sm">
-  {{article.as_html|safe}}
-</div>
-{% else %}
-  Что-то нет такой статьи
-{% endif %}
+  {% if article %}
+	<div class="pad-sm">
+	  {{article.as_html|safe}}
+	</div>
+	{% if DEBUG %}
+	  <div class="pad-sm" style="color:#aaa">
+		{{article.as_latex|safe}}
+	  </div>
+	{% endif %}
+  {% else %}
+	Что-то нет такой статьи
+  {% endif %}
 {% endblock %}
 
 {# {% block footer %}{% endblock %} #}
