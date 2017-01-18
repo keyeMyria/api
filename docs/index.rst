@@ -44,6 +44,21 @@ update process:
    project_update.delay(commit_sha1)
 
 
+To run it manually:
+
+
+.. code-block:: bash
+
+   sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
+
+
+.. code-block:: text
+
+   In [1]: from core.tasks import project_update
+   In [2]: project_update("ef49782ef60d75b2a66f29ea236912a54c09a305")
+
+
+
 .. _core/tasks.py: https://github.com/pashinin-com/pashinin.com/blob/master/src/core/tasks.py
 .. _travis_secret_settings: https://github.com/pashinin-com/pashinin.com/blob/master/configs/settings.py.mustache#L334
 .. _travis.yml: https://github.com/pashinin-com/pashinin.com/blob/master/.travis.yml#L105-L106

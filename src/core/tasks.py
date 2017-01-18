@@ -1,15 +1,8 @@
-# import re
-# import time
+"""Tasks for updating this site."""
+
 import os
 from celery import shared_task
 from celery import chain
-# from raven.contrib.django.raven_compat.models import client
-# from datetime import timedelta
-# from six.moves.urllib.parse import urljoin
-# from celery import chain
-# import string
-# from celery import group, chord
-# from .models import *
 from django.core.mail import send_mail
 from subprocess import call, Popen, PIPE
 from celery.signals import task_postrun
@@ -116,21 +109,35 @@ def collect_static(*args):
 
 @shared_task
 def get_project_at_commit(commit_sha1):
-    # clone a repo into a new destination
-    dest = os.path.join(
-        os.path.basename(settings.GIT_PATH),
-        commit_sha1
+    """Clone a repo and place it near current working project.
+
+    If current project is in /var/www/prj, a new one will be in
+    /var/www/ef49782e...4c09a305 for example.
+
+    """
+    dst = os.path.join(
+        os.path.basename(settings.GIT_PATH),  # parent path of current project
+        commit_sha1                           # use SHA1 as folder name
+    )
+    send_mail(
+        "Cloning", commit_sha1,
+        "update robot <ROBOT@pashinin.com>",
+        ["sergey@pashinin.com"]
     )
     call([
         'git', 'clone', '--depth=1',
         'https://github.com/pashinin-com/pashinin.com.git',
-        dest
+        dst
     ])
     return commit_sha1
 
 
 @shared_task
 def project_update(commit_sha1):
+    """This task runs when Travis build is finished succesfully.
+
+    Runs in core/hooks/views.py: Travis class
+    """
     # restart supervisor jobs
     body = ""
 
@@ -146,6 +153,9 @@ def project_update(commit_sha1):
 
     # from git import Repo
     # repo = Repo(d)
+
+    # TODO: email is sent but nothing else executes
+    # 2 "collect_static" tasks have status "PENDING"
 
     send_mail(
         commit_sha1,

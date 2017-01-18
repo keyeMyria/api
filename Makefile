@@ -167,6 +167,9 @@ css: sass
 sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
 
+shell:
+	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
+
 # python setup.py install develop
 # pip uninstall your-local-repo-egg
 # docker exec -it $(vm) pip3 install rparser -vvvv --no-index --find-links file:///var/www/parser
