@@ -16,7 +16,7 @@ class ArticleView(ArticlesBase):
     def get_context_data(self, **kwargs):
         c = super(ArticleView, self).get_context_data(**kwargs)
         # c["search"] = True
-        # c["hljs"] = True
+        c["hljs"] = True
         slug = self.kwargs.get('slug', '')
         id = int(self.kwargs.get('id', 0))
         # user = c["user"]
