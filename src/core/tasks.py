@@ -51,12 +51,7 @@ def restart_celery(*args):
     pid = ''
     with open(pidfile) as f:
         pid = f.read().strip()
-    Popen([
-        'sudo',
-        'kill',
-        "-HUP",
-        pid
-    ])
+    Popen(['sudo', 'kill', "-HUP", pid])
     return "ok"
 
 
@@ -144,6 +139,7 @@ def get_project_at_commit(sha1):
     /var/www/ef49782e...4c09a305 for example.
 
     """
+    updatelog(sha1, "\nCloning...\n")
     dst = os.path.join(
         os.path.dirname(settings.REPO_PATH),  # parent path of current project
         sha1                                  # use SHA1 as folder name
@@ -151,7 +147,7 @@ def get_project_at_commit(sha1):
     if os.path.isdir(dst):
         updatelog(
             sha1,
-            "\nPath {} already exists. Skipping.\n".format(dst)
+            "Path {} already exists. Skipping.\n".format(dst)
         )
         return sha1
 
@@ -163,10 +159,7 @@ def get_project_at_commit(sha1):
     ]
     p = Popen(cmd, stdout=PIPE)
     output, err = p.communicate()
-    updatelog(
-        sha1,
-        "Cloning...\n{}\n{}\n".format(" ".join(cmd), output)
-    )
+    updatelog(sha1, "{}\n{}\n".format(" ".join(cmd), output))
     return sha1
 
 
@@ -195,7 +188,7 @@ def project_update(sha1):
 
     send_mail(
         sha1,
-        "LOG - updating to {}\n".format(sha1)+updatelog(sha1),
+        "LOG - updating to {}...\n".format(sha1)+updatelog(sha1),
         "update robot <ROBOT@pashinin.com>",
         ["sergey@pashinin.com"]
     )
