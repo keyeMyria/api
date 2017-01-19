@@ -192,6 +192,7 @@ class Updates(BaseView):
 
     def get_context_data(self, **kwargs):
         c = super(Updates, self).get_context_data(**kwargs)
+        c["timeago"] = True
         c["updates"] = SiteUpdate.objects.all()
         return c
 
