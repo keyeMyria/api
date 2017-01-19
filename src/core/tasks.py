@@ -82,9 +82,9 @@ def build_css(sha1, *args):
         p2 = Popen(cmd2, stdin=p1.stdout, stdout=PIPE)
         p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
         output, err = p2.communicate()
-        updatelog(sha1, "Compile CSS...\n{}\n".format(output))
+        updatelog(sha1, "\nCompile CSS...\n{}\n".format(output))
     except Exception as e:
-        updatelog(sha1, "ERROR compiling CSS...\n{}\n".format(str(e)))
+        updatelog(sha1, "\nERROR compiling CSS...\n{}\n".format(str(e)))
     return sha1
 
 
@@ -95,7 +95,7 @@ def migrate(sha1, *args):
         os.path.join(settings.GIT_PATH, 'src', 'manage.py'),
         'migrate'
     ]
-    updatelog(sha1, "Migrate...")
+    updatelog(sha1, "\nMigrate...\n")
     call(cmd)
     return sha1
 
@@ -111,7 +111,9 @@ def collect_static(sha1, *args):
         '-i', '*.scss', '-i', '*.sass', '-i', '*.less', '-i', '*.coffee',
         '-i', '*.map', '-i', '*.md'
     ]
-    call(cmd)
+    p = Popen(cmd, stdout=PIPE)
+    output, err = p.communicate()
+    updatelog(sha1, "\nCollect static...\n{}\n".format(output))
     return sha1
 
 # @task_postrun.connect()
@@ -142,6 +144,9 @@ def get_project_at_commit(sha1):
         os.path.dirname(settings.REPO_PATH),  # parent path of current project
         sha1                                  # use SHA1 as folder name
     )
+    if os.path.isdir(dst):
+        updatelog(sha1, "\nPath {} already exists. Skipping.\n".format(dst))
+        return sha1
 
     # git clone...
     cmd = [
