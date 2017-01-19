@@ -11,6 +11,7 @@ pashinin.com
    :caption: Contents:
 
    installation
+   static
 
 
 Update process
