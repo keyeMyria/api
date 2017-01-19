@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -9,7 +10,7 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRespo
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
-import logging
+from .models import SiteUpdate
 
 log = logging.getLogger(__name__)
 
@@ -183,6 +184,16 @@ class Celery(BaseView):
                 params = config["program:celery"]
                 res['params'] = dict(params)
         return HttpResponse(json.dumps(res))
+
+
+class Updates(BaseView):
+    template_name = "core_updates.jinja"
+    only_superuser = True
+
+    def get_context_data(self, **kwargs):
+        c = super(Updates, self).get_context_data(**kwargs)
+        c["updates"] = SiteUpdate.objects.all()
+        return c
 
 
 # def err404(request):

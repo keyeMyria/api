@@ -7,7 +7,10 @@ from celery import chain
 from django.core.mail import send_mail
 from subprocess import call, Popen, PIPE
 from celery.signals import task_postrun
+from datetime import datetime
 from django.conf import settings
+from . import now
+from .models import SiteUpdate
 
 
 def updatelog(sha1, msg=None, clear=False):
@@ -169,17 +172,14 @@ def project_update(sha1):
 
     Runs in core/hooks/views.py: Travis class
     """
-    updatelog(sha1, clear=True)
-    # restart supervisor jobs
-    # build_css.apply_async(
-    #     link=collect_static.s()
-    # )
+    upd, created = SiteUpdate.objects.get_or_create(sha1=sha1, started=now())
+    updatelog(sha1, clear=True)  # clear log in case we've already run this job
     chain(
         get_project_at_commit.s(sha1),
         build_css.s(),
         collect_static.s(),
         migrate.s(),
-    )().get()
+    )().get()  # get() waits for all subtasks
 
     chain(
         supervisor.s("worker-"+settings.DOMAIN, "restart"),
@@ -192,5 +192,9 @@ def project_update(sha1):
         "update robot <ROBOT@pashinin.com>",
         ["sergey@pashinin.com"]
     )
+
+    upd.log = updatelog(sha1)
+    upd.finished = now()
+    upd.save()
     # supervisor.delay("worker-"+settings.DOMAIN, "restart")
     # restart_celery.delay()

@@ -57,7 +57,7 @@ configs:
 #
 # docker exec --user user -it $(vm) ./manage.py makemigrations your_app_label
 # docker exec --user user -it docker_web_1 ./manage.py makemigrations articles
-migrate:
+migrate-docker:
 	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb
 	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
 	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings

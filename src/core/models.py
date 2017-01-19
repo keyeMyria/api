@@ -11,6 +11,21 @@ from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 
 
+class SiteUpdate(models.Model):
+    started = models.DateTimeField(
+        default=None,
+        null=True, blank=True,
+        db_index=True
+    )
+    finished = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        null=True, blank=True
+    )
+    sha1 = models.CharField(max_length=40, editable=False, unique=True)
+    log = models.TextField(null=True, blank=True)
+
+
 class AddedChanged(models.Model):
     added = models.DateTimeField(
         auto_now_add=True,
