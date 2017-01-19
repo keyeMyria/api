@@ -179,7 +179,7 @@ def project_update(sha1):
         build_css.s(),
         collect_static.s(),
         migrate.s(),
-    )().join()
+    )().get()
 
     chain(
         supervisor.s("worker-"+settings.DOMAIN, "restart"),
