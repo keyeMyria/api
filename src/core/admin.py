@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import User
+from .models import *  # noqa
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.models import Group, Permission
 admin.site.register(Permission)
@@ -88,6 +88,11 @@ class UserAdmin(UserAdmin):
 
 # Now register the new UserAdmin...
 # admin.site.unregister(CustomUser)
+
+
+@admin.register(SiteUpdate)
+class SiteUpdateAdmin(admin.ModelAdmin):
+    pass
 
 
 # class ProxyUser(User):

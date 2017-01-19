@@ -2,7 +2,7 @@
 
 {% block head %}
 {{super()}}
-<script defer src="{{ static("js/core_celery.js") }}"></script>
+<script defer src="{{ static("js/core_updates.js") }}"></script>
 {% endblock %}
 
 {% block header %}
@@ -23,10 +23,8 @@
 		<b>{{update}}</b><br/>
 		<time class="timeago" datetime="{{update.length}}">{{update.length}}</time>
 		<a class="log" href="#">Show log</a>
-		<div class="hidden">
-		  <pre>
-			{{update.log}}
-		  </pre>
+		<div class="log hide">
+		  <pre>{{update.log}}</pre>
 		</div>
 	  </div>
 	{% else %}
