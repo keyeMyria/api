@@ -17,10 +17,21 @@
 
 {% block content %}
 <div class="pad-sm">
-  {% for update in updates %}
-	{{update}}
-  {% else %}
-	No updates
-  {% endfor %}
+  <div class="updates">
+	{% for update in updates %}
+	  <div>
+		<b>{{update}}</b><br/>
+		<time class="timeago" datetime="{{update.length}}">{{update.length}}</time>
+		<a class="log" href="#">Show log</a>
+		<div class="hidden">
+		  <pre>
+			{{update.log}}
+		  </pre>
+		</div>
+	  </div>
+	{% else %}
+	  No updates
+	{% endfor %}
+  </div>
 </div>
 {% endblock %}

@@ -25,6 +25,16 @@ class SiteUpdate(models.Model):
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
     log = models.TextField(null=True, blank=True)
 
+    @property
+    def length(self):
+        if self.finished and self.started:
+            return self.finished-self.started
+        else:
+            return None
+
+    def __str__(self):
+        return self.sha1
+
 
 class AddedChanged(models.Model):
     added = models.DateTimeField(
