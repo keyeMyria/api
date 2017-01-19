@@ -10,14 +10,18 @@ from celery.signals import task_postrun
 from django.conf import settings
 
 
-def updatelog(sha1, msg=None):
+def updatelog(sha1, msg=None, clear=False):
     key = 'updatelog_'+sha1
     r = redis.StrictRedis(host=settings.SESSION_REDIS_HOST, port=6379, db=0)
-    s = r.get(key)
-    if s is None:
+    if clear:
         s = ""
+        r.set(key, s, ex=3600*24*30)
     else:
-        s = s.decode()
+        s = r.get(key)
+        if s is None:
+            s = ""
+        else:
+            s = s.decode()
     if msg is None:
         return s
     s += msg
@@ -145,7 +149,10 @@ def get_project_at_commit(sha1):
         sha1                                  # use SHA1 as folder name
     )
     if os.path.isdir(dst):
-        updatelog(sha1, "\nPath {} already exists. Skipping.\n".format(dst))
+        updatelog(
+            sha1,
+            "\nPath {} already exists. Skipping.\n".format(dst)
+        )
         return sha1
 
     # git clone...
@@ -156,10 +163,10 @@ def get_project_at_commit(sha1):
     ]
     p = Popen(cmd, stdout=PIPE)
     output, err = p.communicate()
-    updatelog(sha1, "Cloning...\n{}\n{}\n".format(
-        " ".join(cmd),
-        output
-    ))
+    updatelog(
+        sha1,
+        "Cloning...\n{}\n{}\n".format(" ".join(cmd), output)
+    )
     return sha1
 
 
@@ -169,6 +176,7 @@ def project_update(sha1):
 
     Runs in core/hooks/views.py: Travis class
     """
+    updatelog(sha1, clear=True)
     # restart supervisor jobs
     # build_css.apply_async(
     #     link=collect_static.s()
