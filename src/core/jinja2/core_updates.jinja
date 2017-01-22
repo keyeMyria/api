@@ -21,7 +21,10 @@
 	{% for update in updates %}
 	  <div>
 		<b>{{update}}</b><br/>
-		<time class="timeago" datetime="{{update.length}}">{{update.length}}</time>
+		<time class="timeago" datetime="{{update.started}}">{{update.started}}</time>
+		{# {% if update.length %} #}
+		{#   <time>{{update.length}}</time> #}
+		{# {% endif %} #}
 		<a class="log" href="#">Show log</a>
 		<div class="log hide">
 		  <pre>{{update.log}}</pre>

@@ -1,0 +1,20 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block head %}
+{{super()}}
+{# <script defer src="{{ static("js/core_updates.js") }}"></script> #}
+{% endblock %}
+
+{% block header %}
+  {{super()}}
+
+<div class="w pad-sm">
+  <h1>Nginx</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="pad-sm">
+  <pre>{{nginxv}}</pre>
+</div>
+{% endblock %}

@@ -5,5 +5,6 @@ from .views import *  # noqa
 urlpatterns = [
     url(r'^celery$', Celery.as_view(), name='celery'),
     url(r'hooks/', include('core.hooks.urls', namespace='hooks')),
+    url(r'^nginx$', Nginx.as_view(), name='nginx'),
     url(r'^updates$', Updates.as_view(), name='updates'),
 ]

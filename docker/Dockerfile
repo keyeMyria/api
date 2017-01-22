@@ -8,7 +8,8 @@ git \
 postgresql-server-dev-all \
 postgresql-client \
 glusterfs-client \
-supervisor
+supervisor \
+nginx
 # redis-server \
 # postgresql \
 
