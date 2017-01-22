@@ -2,8 +2,7 @@
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 {% if favicon %}<link rel="shortcut icon" href="/favicon.ico?v={{favicon}}" />{% endif %}
 {# {% if ravenjs %} #}
-<script defer src="{{ static("ravenjs/3.9.1.js") }}"></script>
-<script defer src="{{ static("ravenjs/settings.js") }}"></script>
+<script defer src="{{ static("ravenjs_3.9.1.js") }}"></script>
 {# {% endif %} #}
 {% if fetch or True %}{# https://github.com/github/fetch #}
 <script defer src="{{ static("js/fetch2.0.2.min.js") }}"></script>
