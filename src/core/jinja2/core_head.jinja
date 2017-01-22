@@ -4,7 +4,7 @@
 {% if fetch or True %}{# https://github.com/github/fetch #}
 <script defer src="{{ static("js/fetch2.0.2.min.js") }}"></script>
 {% endif %}
-<script defer src="{{ static("js/serialize.js") }}"></script>
+<script defer src="{{ static("js/serialize.js") }}?v=2"></script>
 {% if jquery and False %}
 <script defer src="{{ static("js/jquery-3.1.1.min.js") }}"></script>
 <script defer src="{{ static("js/serialize-object.2.5.0.min.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
@@ -101,11 +101,11 @@ $(document).ready(function() {
 {% if filesizejs %}
 <script src="{{ static("filesize.js/3.3.0.js") }}"></script>
 {% endif %}
-<script defer src="{{ static("js/main.js") }}?v=3"></script>
+<script defer src="{{ static("js/main.js") }}?v=4"></script>
 {% if dropzone %}{# should be after main.js (getCookie() function) #}
 <script defer src="{{ static("dropzone/dropzone.min.js") }}"></script>
 {% if user.is_superuser %}
-<script defer src="{{ static("dropzones/body.js") }}"></script>
+<script defer src="{{ static("dropzones/body.js") }}?v=2"></script>
 {% endif %}
 {% endif %}
 {% if hljs %}
