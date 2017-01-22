@@ -54,6 +54,7 @@ $pad: 1em;
 .padtlr{padding-top:1em;padding-left:1em;padding-right:1em}
 .padr{padding-right:1em}
 .padl{padding-left:1em}
+.padr-sm{padding-right:$pad*0.5}
 .padl-sm{padding-left:$pad*0.5}
 .padlr-sm{padding-left:$pad*0.5;padding-right:$pad*0.5}
 .padb{padding-bottom:1em}
@@ -100,6 +101,7 @@ $pad: 1em;
 			display:none;
 		}
 	}
+	.hide-if-more-800{@media (min-width : 800px){display:none}}
 	.hide-if-less-800{@media (max-width : 800px){display:none}}
 	.hide-if-less-360{@media (max-width : 360px){display:none}}
 	.centered-if-less-800{@media (max-width : 800px){text-align:center}}
@@ -115,9 +117,6 @@ $pad: 1em;
 			flex-grow:0 !important;
 		}
 	}
-
-
-
 	&.equal{
 		&>*{
 			flex-basis: 0;
@@ -236,6 +235,21 @@ a {
 	text-decoration: none;
 	color: #0645ff;
 	background: none;
+	&.redlink{
+		color:#f00;
+		&:visited{
+			color:#f00;
+		}
+		&:hover{
+			color:lighten(#f00, 10%);
+		}
+	}
+	&.external{
+		background-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%2306c%22%20d%3D%22M1.5%204.518h5.982V10.5H1.5z%22%2F%3E%3Cpath%20d%3D%22M5.765%201H11v5.39L9.427%207.937l-1.31-1.31L5.393%209.35l-2.69-2.688%202.81-2.808L4.2%202.544z%22%20fill%3D%22%2306f%22%2F%3E%3Cpath%20d%3D%22M9.995%202.004l.022%204.885L8.2%205.07%205.32%207.95%204.09%206.723l2.882-2.88-1.85-1.852z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E);
+		background-position: center right;
+		background-repeat: no-repeat;
+		padding-right: 13px;
+	}
 }
 a:visited {
 	color: #0A25a0;
@@ -268,8 +282,13 @@ q {
 	font-style: italic;
 }
 
+ul, ol{
+	padding: 0;
+	margin: 0 0 10px 25px;
+}
 ul {
 	line-height: 1.5em;
+
 	// list-style-type: square;
 	// margin: .5em 0 1em 1.5em;
 	// padding: 0;
@@ -479,24 +498,15 @@ div.dropzone, form.dropzone{
 
 pre, code, tt, kbd, samp {
 	font-family: "Ubuntu mono", monospace, "Courier New";
-}
-code {
-	background-color: #f9f9f9;
+	background-color: #efefef;
 }
 pre {
-	margin:0.4rem;
-	padding: 0.4rem;
+	padding:$pad*0.5;
 	border-radius: 3px;
 	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
-	/* border: 1px dashed #2f6fab; */
-	/* color: black; */
-	/* background-color: #f9f9f9; */
-	/* line-height: 1.3em; */
-	white-space: pre-wrap;		 /* css-3 */
+	white-space: pre-wrap;
 	word-wrap: break-word;			/* Internet Explorer 5.5+ */
-
 	code {
-		font-size: 0.85em;
 		line-height: 1.4em;
 	}
 }

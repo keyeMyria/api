@@ -65,17 +65,26 @@
 	<div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
 	  <div class="w" style="overflow:visible">
 		<div class="padlr2 flex">
-		  <nav class="flex {% if menu["cls"] %}menu["cls"]{% else %}grow0{% endif %}">
-			{% set root = menu["root"] %}
-			{% if parent %}
-			  <a class="parent" href="{{parent.url}}">{{parent.title}}</a>
-			{% endif %}
-			{% for item in menu["items"] %}
-			  {% if item %}
-				<a href="{{item.url}}">{{item.title}}</a>
+		  <div class="padtb">
+			<nav class="flex {% if menu["cls"] %}menu["cls"]{% else %}grow0{% endif %}">
+			  {% set root = menu["root"] %}
+			  {% if parent %}
+				<a class="parent" href="{{parent.url}}">{{parent.title}}</a>
 			  {% endif %}
-			{% endfor %}
-		  </nav>
+			  {% for item in menu["items"] %}
+				{% if item %}
+				  <a href="{{item.url}}">{{item.title}}</a>
+				{% endif %}
+			  {% endfor %}
+			</nav>
+		  </div>
+		  <div class="flex0 padr-sm hide-if-less-800" style="position:relative;padding-top:0.4em">
+			<img class="photo myphotosize left marr" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
+				 style="box-shadow: 0px 0px 2px #000;width:60px;height:60px;border-radius:50%;
+						position:absolute; left:-70px"/>
+			<b>{{phone}}</b><br/>
+			<span class="right" style="font-size:0.8em">Сергей Александрович</span>
+		  </div>
 		</div>
 	  </div>
 	</div>
