@@ -1,7 +1,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 {% if favicon %}<link rel="shortcut icon" href="/favicon.ico?v={{favicon}}" />{% endif %}
-{% if jquery %}
+{% if fetch or True %}{# https://github.com/github/fetch #}
+<script defer src="{{ static("js/fetch2.0.2.min.js") }}"></script>
+{% endif %}
+<script defer src="{{ static("js/serialize.js") }}"></script>
+{% if jquery and False %}
 <script defer src="{{ static("js/jquery-3.1.1.min.js") }}"></script>
 <script defer src="{{ static("js/serialize-object.2.5.0.min.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
 {% endif %}
@@ -9,45 +13,25 @@
 <script src="{{ static("ravenjs/3.2.1.js") }}"></script>
 <script>Raven.config('//{{RAVEN_PUBLIC}}@sentry.pashinin.com/2', {whitelistUrls: ['pashinin.com', 'dev.pashinin.com']}).install();</script>
 {% endif %}
-{% if DEBUG and livereload %}
-<script src="{{static("js/livereload.js")}}"></script>
-{% endif %}
-{% if timeago %}
-<script defer src="{{ static("js/timeago/jquery.timeago.js") }}"></script>
+{% if DEBUG and livereload %}<script src="{{static("js/livereload.js")}}"></script>{% endif %}
+{% if timeago %}{# https://github.com/hustcc/timeago.js #}
+<script defer src="{{ static("timeago/timeago.min.js") }}"></script>
 {% if LANGUAGE_CODE == "ru" %}
-<script defer src="{{ static("js/timeago/locales/jquery.timeago.ru.js") }}"></script>
+<script defer src="{{ static("timeago/ru.js") }}"></script>
 {% endif %}
-<script>$.timeago.settings.allowFuture = true;</script>
+{# <script>$.timeago.settings.allowFuture = true;</script> #}
 <script type="text/javascript">
-   jQuery(document).ready(function() {
-     $("time.timeago").timeago();
-   });
+document.addEventListener("DOMContentLoaded", function(event) {
+if (typeof timeago == 'function') {
+var timeagoInstance = new timeago();
+timeagoInstance.render(document.querySelectorAll('.timeago'));}});
 </script>
+{# <script defer src="{{ static("timeago/timeago.js") }}"></script> #}
 {% endif %}
 {% if user.is_superuser %}
 {# <script defer src="{{ static("SIPml-api.js") }}"></script> #}
 {# <script defer src="{{ static("jssip2.0.3.min.js") }}"></script> #}
 {# <script defer src="{{ static("sip-0.7.5.min.js") }}"></script> #}
-{% endif %}
-{% if dropzone %}
-<script defer src="{{ static("dropzone/dropzone.js") }}"></script>
-{# <script defer> #}
-{# $(document).ready(function() { #}
-{#   Dropzone.options.upload = { #}
-{#   maxFilesize: 800, #}
-{#   filesizeBase: 1024, #}
-{#     init: function() { #}
-{#       this.on("uploadprogress", function(file, progress) { #}
-{#         console.log("File progress", progress); #}
-{#       }); #}
-{#     } #}
-{#   } #}
-{# }); #}
-  {# </script> #}
-
-{% if user.is_superuser %}
-<script defer src="{{ static("dropzones/body.js") }}"></script>
-{% endif %}
 {% endif %}
 {% if ckeditor %}
 {# <link rel="stylesheet" href="js/ckeditor/dev/builder/release/ckeditor/contents.css"> #}
@@ -118,6 +102,12 @@ $(document).ready(function() {
 <script src="{{ static("filesize.js/3.3.0.js") }}"></script>
 {% endif %}
 <script defer src="{{ static("js/main.js") }}?v=3"></script>
+{% if dropzone %}{# should be after main.js (getCookie() function) #}
+<script defer src="{{ static("dropzone/dropzone.min.js") }}"></script>
+{% if user.is_superuser %}
+<script defer src="{{ static("dropzones/body.js") }}"></script>
+{% endif %}
+{% endif %}
 {% if hljs %}
 {# <link rel="stylesheet" href="{{ static("js/hljs/src/styles/docco.css") }}"> #}
   {# <script src="{{ static("js/hljs/build/highlight.pack.js") }}"></script> #}

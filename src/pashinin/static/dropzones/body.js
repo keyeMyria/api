@@ -1,9 +1,10 @@
-$(document).ready(function() {
-	$("#bodyupload").mouseenter(function() {
-		$("#bodyupload").addClass('hide');
+{let ready = function(e) {
+	let upload_div = document.getElementById("bodyupload");
+	upload_div.addEventListener("mouseover", function(e) {
+		document.getElementById("bodyupload").classList.add('hide');
 	});
-	$("#bodyupload").mouseleave(function() {
-		$("#bodyupload").addClass('hide');
+	upload_div.addEventListener("mouseout", function(e) {
+		document.getElementById("bodyupload").classList.add('hide');
 	});
 
 	// Not only files can be drag&dropped but also links, images...
@@ -20,11 +21,8 @@ $(document).ready(function() {
 		}
 		return false;
 	}
-	var show = function(e){
-		if (containsFiles(e))
-			document.getElementById('bodyupload').classList.remove("hide");
-	};
-	var hide = function(e){document.getElementById('bodyupload').classList.add("hide");};
+	var counter=0;
+	let hide = function(e){document.getElementById('bodyupload').classList.add("hide");};
 	new Dropzone(document.body, {
 		url: "/_/file/upload", // Set the url
 		//previewsContainer: "#previews", // Define the container to display the previews
@@ -33,26 +31,32 @@ $(document).ready(function() {
 			'X-CSRFToken': getCookie('csrftoken')
 		},
 		drop: function(e) {
-			return hide(e);
+			counter=0;
+			document.getElementById('bodyupload').classList.add("hide");
 		},
 		dragend: function(e) {
-			return hide(e);
+			document.getElementById('bodyupload').classList.add("hide");
 		},
 		dragstart: function(e) {
-			// console.log(e);
-			return hide(e);
+			document.getElementById('bodyupload').classList.add("hide");
 		},
 		dragenter: function(e) {
 			// console.log(e.dataTransfer);
 			// console.log(e);
 			// console.log(e.dataTransfer.types);
-			return show(e);
+			counter++;
+			if (containsFiles(e))
+				document.getElementById('bodyupload').classList.remove("hide");
 		},
 		dragover: function(e) {
-			return show(e);
+			if (containsFiles(e))
+				document.getElementById('bodyupload').classList.remove("hide");
 		},
 		dragleave: function(e) {
-			return hide(e);
+			counter--;
+			if (counter === 0) {
+				document.getElementById('bodyupload').classList.add("hide");
+			}
 		},
 		uploadprogress: function(file, progress, bytesSent) {
 			var node, _i, _len, _ref, _results;
@@ -75,4 +79,10 @@ $(document).ready(function() {
 			return null;
 		}
 	});
-});
+};
+ if (document.readyState === 'complete' || document.readyState !== 'loading') {
+	 ready();
+ } else {
+	 document.addEventListener('DOMContentLoaded', ready);
+ };
+}

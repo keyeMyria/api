@@ -1,20 +1,30 @@
-$(document).ready(function() {
-	$("form#login").submit(function(e){
+{let ready=function(e){
+	document.getElementById("login").addEventListener("submit", function(e){
 		e.preventDefault();
-		$.ajax({
-			type: 'POST',
-			url: $(this).attr('action'),
-			data: $(this).serializeObject(),
-			context: this,
-			dataType: 'json',
-			success: function(d){
-				if ("errors" in d){
-					showFormErrors(d["errors"], $("form#login"));
+		let form = e.target;
+		fetch(e.target.getAttribute("action"), {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				"X-CSRFToken": getCookie('csrftoken'),
+				"Accept": "application/json",
+				"Content-type": "application/x-www-form-urlencoded"
+			},
+			body: serialize(formToJSON(form.elements))
+		})
+			.then(r => r.json())
+			.then(data => {
+				if ("errors" in data){
+					showFormErrors(data["errors"], document.getElementById("login"));
 				}else{
 					window.location.href = getURLParameter('return');
 				}
-			}
-		});
-		return false;
+			});
 	});
-});
+};
+ if (document.readyState === 'complete' || document.readyState !== 'loading') {
+	 ready();
+ } else {
+	 document.addEventListener('DOMContentLoaded', ready);
+ }
+}

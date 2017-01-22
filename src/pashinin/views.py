@@ -107,12 +107,14 @@ class Login(EnsureCsrfCookieMixin, Base):
             login(request, f.cleaned_data['user'])
             return HttpResponse(json.dumps({'code': 0}))
         else:
-            return HttpResponse(json.dumps({
-                'errors': f.errors,
-            }))
+            return HttpResponse(json.dumps({'errors': f.errors}))
 
 
 class Logout(APIView):
+    def get(self, request, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
+
     def post(self, request, **kwargs):
         logout(request)
         return HttpResponse("{}")
