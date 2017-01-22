@@ -6,7 +6,6 @@
 		el.addEventListener("click", function(e) {
 			e.target.parentElement.querySelector("div.log").classList.toggle("hide");
 			e.preventDefault();
-			let a=toInt("a");
 		});
 	};
 };
