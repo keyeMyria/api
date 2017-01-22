@@ -1,6 +1,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 {% if favicon %}<link rel="shortcut icon" href="/favicon.ico?v={{favicon}}" />{% endif %}
+{# {% if ravenjs %} #}
+<script defer src="{{ static("ravenjs/3.9.1.js") }}"></script>
+<script defer src="{{ static("ravenjs/settings.js") }}"></script>
+{# {% endif %} #}
 {% if fetch or True %}{# https://github.com/github/fetch #}
 <script defer src="{{ static("js/fetch2.0.2.min.js") }}"></script>
 {% endif %}
@@ -9,16 +13,10 @@
 <script defer src="{{ static("js/jquery-3.1.1.min.js") }}"></script>
 <script defer src="{{ static("js/serialize-object.2.5.0.min.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
 {% endif %}
-{% if ravenjs %}
-<script src="{{ static("ravenjs/3.2.1.js") }}"></script>
-<script>Raven.config('//{{RAVEN_PUBLIC}}@sentry.pashinin.com/2', {whitelistUrls: ['pashinin.com', 'dev.pashinin.com']}).install();</script>
-{% endif %}
-{% if DEBUG and livereload %}<script src="{{static("js/livereload.js")}}"></script>{% endif %}
+{% if DEBUG %}<script src="{{static("js/livereload.js")}}"></script>{% endif %}
 {% if timeago %}{# https://github.com/hustcc/timeago.js #}
 <script defer src="{{ static("timeago/timeago.min.js") }}"></script>
-{% if LANGUAGE_CODE == "ru" %}
-<script defer src="{{ static("timeago/ru.js") }}"></script>
-{% endif %}
+{% if LANGUAGE_CODE == "ru" %}<script defer src="{{ static("timeago/ru.js") }}"></script>{% endif %}
 {# <script>$.timeago.settings.allowFuture = true;</script> #}
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function(event) {

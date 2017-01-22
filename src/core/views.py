@@ -42,7 +42,6 @@ class BaseView(TemplateView):
         # libraries
         c["jquery"] = True
         c["corecss"] = True
-        c["livereload"] = True
         c["chartjs"] = False
         c["nouislider"] = False
         c["dropzone"] = c['user'].is_superuser
