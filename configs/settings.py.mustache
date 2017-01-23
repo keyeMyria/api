@@ -172,12 +172,6 @@ CORS_ORIGIN_WHITELIST = (
 
 ROOT_URLCONF = '{{app}}.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
-# Default: None
-# WSGI_APPLICATION = 'wsgi.application'
-# WSGI_APPLICATION = 'ws4redis.django_runserver.application'
-
-
 # Context processors:
 # https://docs.djangoproject.com/en/1.9/ref/templates/api/#built-in-template-context-processors
 # django.template.backends.django.DjangoTemplates
@@ -190,17 +184,6 @@ TEMPLATES = [
         "OPTIONS": {
             'environment': 'core.jinja.environment',
             'trim_blocks': False,
-            # "match_extension": ".jinja",
-            # "context_processors": [
-            #     "django.template.context_processors.request",
-            #     # "django.contrib.auth.context_processors.auth",
-            #     "django.template.context_processors.debug",
-            #     "django.template.context_processors.i18n",
-            #     # "django.template.context_processors.media",
-            #     "django.template.context_processors.static",
-            #     # "django.template.context_processors.tz",
-            #     # "django.contrib.messages.context_processors.messages",
-            # ],
         }
     },
     {
@@ -235,41 +218,23 @@ from {{app}}.celeryconfig import *
 
 INSTALLED_APPS = (
     'redis_cache',                 # pip install django-redis-cache
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'admin_tools',
-    # 'admin_tools.theming',
-    # 'admin_tools.menu',
-    # 'admin_tools.dashboard',
-    # 'grappelli',
-    # 'ws4redis',
     'channels',
-    # 'bootstrap3',
     'cacheops',
     'corsheaders',
     'django.contrib.auth',
-    # 'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
-    # 'suit',                          # http://django-suit.readthedocs.org/en/latest/
-    # 'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.postgres',
     'sortedm2m',
-    # 'djcelery',
     'django_extensions',
     'rest_framework',
     'django_nose',
-    # 'django_jinja',
     'mptt',
-    # 'django_pdb',
-    # 'raven.contrib.django.celery',
     'raven.contrib.django.raven_compat',
     # 'social.apps.django_app.default',
 
