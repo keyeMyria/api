@@ -196,11 +196,14 @@ ege:
 # docker exec --user www-data $(vm) export DJANGO_SETTINGS_MODULE="ege.settings";
 # --settings=ege.settings
 
-locale:
+locale-docker:
 	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
 
-localecompile:
+localecompile-docker:
 	$(dockermanage.py) compilemessages
+
+localecompile:
+	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py compilemessages
 
 py:
 	$(python)
