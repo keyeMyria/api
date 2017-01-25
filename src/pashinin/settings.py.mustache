@@ -3,7 +3,6 @@ import os
 import sys
 from os.path import dirname, abspath, basename
 
-
 testing = 'test' in sys.argv or '--reuse-db' in sys.argv
 DEBUG = testing
 {{#DEBUG}}
@@ -11,7 +10,7 @@ DEBUG = True
 {{/DEBUG}}
 
 SETTINGS_PATH = dirname(abspath(__file__))
-SITE_PATH = dirname(abspath(__file__))
+app = basename(SETTINGS_PATH)
 GIT_PATH = dirname(dirname(SETTINGS_PATH))
 REPO_PATH = GIT_PATH
 REPOS_PATH = dirname(REPO_PATH)
@@ -93,7 +92,7 @@ LANGUAGES = (
 
 LOCALE_PATHS = (
     # 'locale',
-    os.path.join(SETTINGS_PATH, 'locale'),     # replace SITE_PATH with yours
+    os.path.join(SETTINGS_PATH, 'locale'),
 )
 
 # If you set this to False, Django will not format dates, numbers and
@@ -170,7 +169,7 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1'
 )
 
-ROOT_URLCONF = '{{app}}.urls'
+ROOT_URLCONF = app+'.urls'
 
 # Context processors:
 # https://docs.djangoproject.com/en/1.9/ref/templates/api/#built-in-template-context-processors
@@ -179,7 +178,7 @@ ROOT_URLCONF = '{{app}}.urls'
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [os.path.join(SITE_PATH, 'templates'), ],
+        "DIRS": [os.path.join(SETTINGS_PATH, 'templates'), ],
         "APP_DIRS": True,
         "OPTIONS": {
             'environment': 'core.jinja.environment',
@@ -212,7 +211,7 @@ TEMPLATES = [
 BROKER_URL = 'redis://{{redis_server}}:6379/0'
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
-from {{app}}.celeryconfig import *
+from pashinin.celeryconfig import *
 
 
 
@@ -227,6 +226,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.postgres',
@@ -238,11 +238,15 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     # 'social.apps.django_app.default',
 
+
+
     'core',
     'core.files',
-    '{{app}}',
     'baumanka',
     'articles',
+    'edu',
+    'ege',
+    app,
 )
 
 REST_FRAMEWORK = {
@@ -288,7 +292,7 @@ CHANNEL_LAYERS = {
             # powered projects on the same host (same redis db)
             "prefix": "{{domain}}",
         },
-        'ROUTING': '{{app}}.routing.channel_routing',
+        'ROUTING': app+'.routing.channel_routing',
     },
 }
 

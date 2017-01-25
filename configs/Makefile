@@ -1,5 +1,6 @@
 # -*- Makefile -*-
 
+python = `./makeve.py`
 S = /tmp/conf.json
 supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
@@ -14,7 +15,7 @@ templates:
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
 	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
-	mustache $(S) settings.py.mustache > ../src/pashinin/settings.py
+	(cd ../src; python3 -c 'from core.tasks import generate_settings;generate_settings()')
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
 	mustache $(S) phpfpm_params.mustache > $(output)/phpfpm_params
 	mustache $(S) nginx-site.conf.mustache > $(output)/$(domain).conf

@@ -9,8 +9,7 @@ from subprocess import call, Popen, PIPE
 from celery.signals import task_postrun
 from datetime import datetime
 from django.conf import settings
-from . import now
-from .models import SiteUpdate
+from . import now, apps
 
 
 def updatelog(sha1, msg=None, clear=False):
@@ -172,6 +171,7 @@ def project_update(sha1):
 
     Runs in core/hooks/views.py: Travis class
     """
+    from .models import SiteUpdate
     upd, created = SiteUpdate.objects.get_or_create(sha1=sha1, started=now())
     updatelog(sha1, clear=True)  # clear log in case we've already run this job
     chain(
@@ -198,3 +198,23 @@ def project_update(sha1):
     upd.save()
     # supervisor.delay("worker-"+settings.DOMAIN, "restart")
     # restart_celery.delay()
+
+
+@shared_task
+def generate_settings():
+    """Scans all apps and (re)generates settings.py files.
+
+    It looks for 'settings.py.mustache' files and runs mustache command
+    to render a file.
+
+    """
+    for app, path in apps():
+        template = os.path.join(path, 'settings.py.mustache')
+        if os.path.isfile(template):
+            print(template)
+            cmd = ['mustache', '/tmp/conf.json', template]
+            p = Popen(cmd, stdout=PIPE)
+            output, err = p.communicate()
+            out = os.path.join(os.path.dirname(template), 'settings.py')
+            with open(out, 'wb') as f:
+                f.write(output)

@@ -7,6 +7,13 @@
 {# <script defer src="{{ static("s.js") }}"></script> #}
 {% endblock %}
 
+
+{% block css %}
+{{super()}}
+<link rel="stylesheet" property="stylesheet" href="{{ static("core.css") }}?v=1">
+{% endblock %}
+
+
 {% block prebody %}
 {% if user.is_superuser %}
 <div id="bodyupload" class="hide noprint" style="position:fixed; background-color: rgba(0,0,0,0.4); width:100%;height:100%;z-index:1000;padding:4rem;box-sizing:border-box;">
@@ -42,13 +49,13 @@
 			{% if user.is_superuser %}
 			  <a class="padlr" href="{{url("index")}}">Main page</a>
 			  <a class="padlr" href="{{url("admin:index")}}">Django admin</a>
-			  <a class="padlr" href="{{url("files:index")}}">Files</a>
+			  <a class="padlr" href="{{url("core:files:index")}}">Files</a>
 			  <a class="padlr" href="{{url("core:celery")}}">Celery</a>
 			  <a class="padlr" href="{{url("core:nginx")}}">Nginx</a>
 			  <a class="padlr" href="{{url("core:updates")}}">Updates</a>
 			{% endif %}
 
-			<a id="exit" class="padlr" href="{{url("logout")}}">Выход</a>
+			<a id="exit" class="padlr" href="{{url("core:logout")}}">Выход</a>
 		  </div>
 		{% else %}{# user is not authenticated #}
 		  <a href="{{url("login")}}?return={{request.get_full_path()}}">Войти</a>
@@ -57,39 +64,6 @@
 	</div>
   </div>
 </div>
-
-{# Menu #}
-{% if menu and menu["items"] %}
-  {% set parent = menu["parent"] %}
-  {# {% if parent %} #}
-	<div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
-	  <div class="w" style="overflow:visible">
-		<div class="padlr2 flex">
-		  <div class="padtb">
-			<nav class="flex {% if menu["cls"] %}menu["cls"]{% else %}grow0{% endif %}">
-			  {% set root = menu["root"] %}
-			  {% if parent %}
-				<a class="parent" href="{{parent.url}}">{{parent.title}}</a>
-			  {% endif %}
-			  {% for item in menu["items"] %}
-				{% if item %}
-				  <a href="{{item.url}}">{{item.title}}</a>
-				{% endif %}
-			  {% endfor %}
-			</nav>
-		  </div>
-		  <div class="flex0 padr-sm hide-if-less-800" style="position:relative;padding-top:0.4em">
-			<img class="photo myphotosize left marr" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
-				 style="box-shadow: 0px 0px 2px #000;width:60px;height:60px;border-radius:50%;
-						position:absolute; left:-70px"/>
-			<b>{{phone}}</b><br/>
-			<span class="right" style="font-size:0.8em">Сергей Александрович</span>
-		  </div>
-		</div>
-	  </div>
-	</div>
-  {# {% endif %} #}
-{% endif %}
 {% endblock %}
 
 
@@ -118,11 +92,11 @@
 {% endblock %}
 
 
-{% block footer%}
-<div class="w noprint pad-sm">
-  {% block footerc %}
-	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
-	<p><a href="{{url("index")}}">pashinin.com</a></p>
-  {% endblock %}
-</div>
-{% endblock %}
+{# {% block footer%} #}
+{# <div class="w noprint pad-sm"> #}
+{#   {% block footerc %} #}
+{# 	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %} #}
+{# 	<p><a href="{{url("index")}}">pashinin.com</a></p> #}
+{#   {% endblock %} #}
+{# </div> #}
+{# {% endblock %} #}

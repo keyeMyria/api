@@ -26,27 +26,30 @@ class Base(BaseView):
         c["price"] = 900
         c["price45"] = 700
         c["menu_id"] = "services"
-        c['menu'] = {
-            'parent': None,
-            'items': [
-                {
-                    'title': 'Главная',
-                    'url': reverse('index'),
-                },
-                {
-                    'title': 'Статьи',
-                    'url': reverse('articles:index'),
-                } if c['user'].is_superuser else None,
-                {
-                    'title': 'Вопросы',
-                    'url': reverse('faq'),
-                },
-                {
-                    'title': 'Контакты',
-                    'url': reverse('contacts'),
-                },
-            ]
-        }
+        try:
+            c['menu'] = {
+                'parent': None,
+                'items': [
+                    {
+                        'title': 'Главная',
+                        'url': reverse('index'),
+                    },
+                    {
+                        'title': 'Статьи',
+                        'url': reverse('articles:index'),
+                    } if c['user'].is_superuser else None,
+                    {
+                        'title': 'Вопросы',
+                        'url': reverse('faq'),
+                    },
+                    {
+                        'title': 'Контакты',
+                        'url': reverse('contacts'),
+                    },
+                ]
+            }
+        except:
+            pass
         return c
 
 
@@ -108,13 +111,3 @@ class Login(EnsureCsrfCookieMixin, Base):
             return HttpResponse(json.dumps({'code': 0}))
         else:
             return HttpResponse(json.dumps({'errors': f.errors}))
-
-
-class Logout(APIView):
-    def get(self, request, **kwargs):
-        logout(request)
-        return HttpResponseRedirect(reverse("index"))
-
-    def post(self, request, **kwargs):
-        logout(request)
-        return HttpResponse("{}")

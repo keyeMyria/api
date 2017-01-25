@@ -6,18 +6,27 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
 	fs = require("fs"),
 	path = require("path");
+var exec = require('child_process').exec;
+
+// function get_apps(srcpath) {
+// 	return fs.readdirSync(srcpath).filter(function(file) {
+// 		return fs.statSync(path.join(srcpath, file)).isDirectory() && file!=='__pycache__';
+// 	});
+// }
 
 // settings.py
-var settings_template = 'configs/settings.py.mustache';
-gulp.task('settings.py', function() {
-	return gulp.src(settings_template)
-		.pipe(shell([
-			'mustache /tmp/conf.json '+settings_template+' > src/pashinin/settings.py'
-        ]))
-        .pipe(livereload());
-});
 gulp.task('settings', function() {
-	gulp.watch(settings_template, ['settings.py']);
+	gulp.watch('src/**/settings.py.mustache').on("change", function (info) {
+		console.log(info.path);
+		var output = info.path.substr(0, info.path.lastIndexOf("."));
+		console.log(output);
+		exec('mustache /tmp/conf.json '+ info.path +' > ' + output, function (err, stdout, stderr) {
+			console.log(stdout);
+			console.log(stderr);
+			// cb(err);
+		});
+		livereload();
+	});
 });
 
 

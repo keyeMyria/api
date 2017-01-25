@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from subprocess import call, Popen, PIPE
+from rest_framework.views import APIView
 from .models import SiteUpdate
 
 log = logging.getLogger(__name__)
@@ -228,3 +229,12 @@ configure arguments: --with-cc-opt='-g -O2 -fPIE -fstack-protector-strong -Wform
 #         return HttpResponseServerError(render_to_string('500.html', locals()))
 #     else:
 #         return HttpResponseServerError('500')
+
+class Logout(APIView):
+    def get(self, request, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
+
+    def post(self, request, **kwargs):
+        logout(request)
+        return HttpResponse("{}")

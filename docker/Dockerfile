@@ -1,4 +1,4 @@
-FROM python:3-onbuild
+FROM python:3.5-onbuild
 # FROM ubuntu:latest
 COPY requirements.txt /tmp/
 
@@ -9,7 +9,8 @@ postgresql-server-dev-all \
 postgresql-client \
 glusterfs-client \
 supervisor \
-nginx
+nginx \
+gettext
 # redis-server \
 # postgresql \
 

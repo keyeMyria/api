@@ -25,6 +25,10 @@ class SiteUpdate(models.Model):
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
     log = models.TextField(null=True, blank=True)
 
+    class Meta:
+        verbose_name = _("Site update")
+        verbose_name_plural = _("Site updates")
+
     @property
     def length(self):
         if self.finished and self.started:

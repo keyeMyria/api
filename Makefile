@@ -5,7 +5,7 @@ vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret
 d = `pwd`
 vm = docker_web_1
 manage = $(python) src/manage.py
-
+dockermanage.py = docker exec --user user -it $(vm) python ./manage.py
 
 # docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
 # docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
@@ -18,6 +18,7 @@ docker: configs
 	(cd docker; docker-compose up migration)
 	(cd docker; docker-compose up -d web)
 	docker exec -it $(vm) adduser user --uid `id -u` --quiet --disabled-password --gecos ""
+# docker exec -it $(vm) ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.6/rparser
 
 # docker exec -it docker_web_1 userdel user
 	# (cd docker; docker-compose up -d db redis)
@@ -38,7 +39,7 @@ bash:
 
 # --noworker - runserver will NOT start workers
 django:
-	docker exec --user www-data -it $(vm) ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
+	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) ./manage.py runserver 0.0.0.0:8000
 # docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 
 glusterfs:
@@ -57,8 +58,10 @@ configs:
 #
 # docker exec --user user -it $(vm) ./manage.py makemigrations your_app_label
 # docker exec --user user -it docker_web_1 ./manage.py makemigrations articles
+#
+# ./manage.py migrate --fake default
 migrate-docker:
-	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb
+	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb --settings=pashinin.settings
 	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
 	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings
 
@@ -103,7 +106,8 @@ ve:
 # TODO: upgrade pip
 
 link_debug_parser:
-	ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.5/rparser
+	ln -sf /var/www/parser/build/lib/rparser/ /usr/local/lib/python3.6/rparser/
+# docker exec -it $(vm)
 
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
@@ -185,4 +189,18 @@ wheel:
 	python3 -m pip wheel . -w /wheelhouse/
 
 parsertest:
-	docker exec -it $(vm) python3 -c 'import rparser;rparser.html("asd")'
+	docker exec -it $(vm) python3 -c 'from rparser import article_render'
+
+ege:
+	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings' -it $(vm) ./manage.py runserver 0.0.0.0:8001
+# docker exec --user www-data $(vm) export DJANGO_SETTINGS_MODULE="ege.settings";
+# --settings=ege.settings
+
+locale:
+	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
+
+localecompile:
+	$(dockermanage.py) compilemessages
+
+py:
+	$(python)

@@ -42,7 +42,14 @@ nav{overflow: hidden;margin-top:0em;font-size:1.1em}
 <header style="border-bottom: 1px solid rgba(0,0,0,0.075);">{% block header %}{% endblock %}</header>
 <main>{% block main %}{% endblock %}</main>
 </div>
-<footer style="background:#f7f7f7;">{% block footer %}{% endblock %}
+<footer style="background:#f7f7f7;">{% block footer %}
+<div class="w noprint pad-sm">
+  {% block footer_content %}
+	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
+	<p><a href="{{url("index")}}">pashinin.com</a></p>
+  {% endblock %}
+</div>
+
 <div class="w">
   <div class="pad-sm">
 	© {{year}} {{_("Sergey Pashinin")}}
@@ -51,6 +58,7 @@ nav{overflow: hidden;margin-top:0em;font-size:1.1em}
 	</div>
   </div>
 </div>
+{% endblock %}
 </footer>
 {% block css %}{% endblock %}
 {% if analytics and not DEBUG %}

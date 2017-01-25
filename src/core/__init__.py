@@ -25,6 +25,18 @@ def underDjangoDebugServer():
         return False
 
 
+def apps():
+    """Iterate all apps (read file-system)"""
+    src = os.path.dirname(os.path.dirname(__file__))
+    for app in os.listdir(src):
+        path = os.path.join(src, app)
+        if not os.path.isdir(path):
+            continue
+        if not os.path.isfile(os.path.join(path, '__init__.py')):
+            continue
+        yield (app, path)
+
+
 def correctURL(url):
     val = URLValidator()
     try:

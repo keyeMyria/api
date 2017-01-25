@@ -35,7 +35,6 @@ urlpatterns = [
     #     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^articles/',  include('articles.urls', namespace='articles')),
     url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
-    url(r'^_/file/', include('core.files.urls', namespace='files')),
     url(r'^_/', include('core.urls', namespace='core')),
 ]
 
@@ -44,9 +43,7 @@ urlpatterns += i18n_patterns(
     url(r'^contacts$', Contacts.as_view(), name='contacts'),
     url(r'^faq$', FAQ.as_view(), name="faq"),
     url(r'^login$', Login.as_view(), name='login'),
-    url(r'^logout$', Logout.as_view(), name='logout'),
 
     url(r'^_/django/', include(admin.site.urls)),
-    # url(r'^$', Index.as_view(), name="index"),
     prefix_default_language=False
 )

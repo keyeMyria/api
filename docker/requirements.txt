@@ -166,5 +166,5 @@ telepot
 
 setuptools>=30.4.0
 
-rparser>=0.1.15
+rparser>=0.1.16
 psutil   # view system processes
