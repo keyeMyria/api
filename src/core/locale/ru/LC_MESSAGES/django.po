@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-25 23:16+0300\n"
+"PO-Revision-Date: 2017-01-25 23:17+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: core/admin.py:74
+msgid "Permissions"
+msgstr "Права"
+
+#: core/apps.py:10
+msgid "Core"
+msgstr ""
+
+#: core/jinja2/core_base.jinja:55
+msgid "Sergey Pashinin"
+msgstr "Сергей Пашинин"
+
+#: core/models.py:29
+msgid "Site update"
+msgstr "Обновление сайта"
+
+#: core/models.py:30
+msgid "Site updates"
+msgstr "Обновления сайта"
+
+#: core/models.py:120
+msgid "User"
+msgstr "Пользователь"
+
+#: core/models.py:122
+msgid "Users"
+msgstr "Пользователи"
+
+#: core/models.py:163
+msgid "Parent element"
+msgstr ""
+
+#: core/models.py:198
+msgid "IP"
+msgstr ""
+
+#: core/models.py:199
+msgid "IP-addresses"
+msgstr "IP-адреса"
+
+#: core/models.py:241
+msgid "Hostname"
+msgstr "Хост"
+
+#: core/models.py:242
+msgid "Hostnames"
+msgstr "Хосты"

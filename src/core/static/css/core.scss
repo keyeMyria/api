@@ -1,0 +1,1161 @@
+// compile
+@import "variables.scss";
+
+
+$c_border: #e2e2e2;
+$article_width: 854px;
+$left_color: #FFF;	/* #4E78C2, #325DA7 */
+$left_panel_width: 150px;
+@media only screen and (min-device-width : 1280px) {
+	$left_panel_width: 250px;
+}
+
+
+$light: #FFF;
+$dark: #0064be;
+$dark: #517191;
+$dark: #5171a9;
+
+*{box-sizing: border-box;}
+.table{display:table;border-collapse: collapse;}
+.row{display:table-row}
+.cell{display:table-cell}
+.ib{display:inline-block}
+.nowrap{white-space: nowrap}
+.indent{text-indent: 1rem;}
+.clearfix:after {
+	content: " ";
+	display: block;
+	height: 0;
+	clear: both;
+}
+.rtop5px{
+	border-top-right-radius:5px;
+	border-top-left-radius:5px;
+}
+.r5{border-radius:5px}
+
+header{
+	flex-grow:0 !important;
+	z-index:2;
+}
+
+div.top{flex-grow: 0;}
+div.bot{flex-grow: 0;}
+
+$pad: 1em;
+.hpad{padding:.5em}
+.pad{padding:1em}
+.pad-sm{padding:$pad*0.5}
+.padtb{padding-top:1em;padding-bottom:1em}
+.padt{padding-top:1em;}
+.padt2{padding-top:2em;}
+.padlr{padding-left:1em;padding-right:1em}
+.padtlr{padding-top:1em;padding-left:1em;padding-right:1em}
+.padr{padding-right:1em}
+.padl{padding-left:1em}
+.padr-sm{padding-right:$pad*0.5}
+.padl-sm{padding-left:$pad*0.5}
+.padlr-sm{padding-left:$pad*0.5;padding-right:$pad*0.5}
+.padb{padding-bottom:1em}
+.padb2{padding-bottom:2em}
+
+.mart2{margin-top:2em}
+.mart{margin-top:1em}
+.marb{margin-bottom:1em}
+.martb{margin-top:1em;margin-bottom:1em}
+.marr{margin-right:1em}
+.marl{margin-left:1em}
+.nomar{margin:0}
+.nopad{padding:0}
+
+.hidew{
+	@media only screen and (max-width : 949px){
+		display:none;
+	}
+}
+
+
+.w50{width:50px;}
+.w40{width:40px;}
+.w30{width:30px;}
+
+@media screen
+{
+	.hide1000{
+		@media only screen and (max-width : 1000px){display:none;}
+		@media only screen and (min-width : 1000px){display:block;}
+	}
+	.hide950{
+		@media only screen and (max-width : 950px){display:none;}
+		@media only screen and (min-width : 950px){display:block;}
+	}
+	.hide800{
+		@media only screen and (max-width : 800px){display:none;}
+		@media only screen and (min-width : 800px){display:block;}
+	}
+	.hidem{
+		@media only screen
+		and (min-device-width: 320px)
+		and (max-device-width: 480px) {
+			display:none;
+		}
+	}
+	.hide-if-more-800{@media (min-width : 800px){display:none}}
+	.hide-if-less-800{@media (max-width : 800px){display:none}}
+	.hide-if-less-360{@media (max-width : 360px){display:none}}
+	.centered-if-less-800{@media (max-width : 800px){text-align:center}}
+}
+
+.flex{
+	display:flex;
+	&>*{
+		flex-grow:1;
+	}
+	&.grow0{
+		&>*{
+			flex-grow:0 !important;
+		}
+	}
+	&.equal{
+		&>*{
+			flex-basis: 0;
+		}
+	}
+
+	// &>*:first-child{
+	// 	margin-left:0;
+	// }
+	// &>*:last-child{
+	// 	margin-right:0;
+	// }
+
+	&.col-if-less-w500{
+		@media only screen and (max-width: 500px) {
+			flex-direction:column;
+		}
+	}
+	&.col500{
+		@media only screen and (max-width: 500px) {
+			flex-direction:column;
+		}
+	}
+	&.col950{
+		@media only screen and (max-width: 950px) {
+			flex-direction:column;
+		}
+	}
+	&.column-if-less-800{
+		@media only screen and (max-width: 800px) {
+			flex-direction:column;
+		}
+	}
+
+	&.col{
+		flex-direction:column;
+	}
+}
+
+.right{float:right;}
+.left{float:left;}
+
+.shadow6{box-shadow: 1px 1px 6px #888888}
+
+
+textarea:focus,
+input[type=text]:focus,
+input[type=password]:focus{
+	border-color: #889;
+	transition: all 0.1s linear;
+}
+
+textarea:hover,
+input[type=text]:hover,
+input[type=password]:hover{
+	// border-color: #00f;
+	border-color: #aab;
+	box-shadow: 0px 0px 2px #aab;
+	transition: all 0.1s linear;
+}
+
+textarea,
+input[type=text],
+input[type=password]{
+	font-size:1rem;
+	background-color:#fff;
+	color:#333;
+	border-radius: 0px;
+	padding:0.7em;
+	font-family: Arial;
+	// margin-top	 :0.3em;
+	margin-bottom:0.3em;
+	// min-width: 250px;
+	border:1px solid #ccc;
+	width: 100%;
+	box-sizing: border-box;
+	transition: all 0.1s linear;
+}
+
+
+.dark{
+	background-color:$dark;
+	color:#fff;
+
+	a{
+		color:#fff;
+		&:visited{
+			color:#eee;
+		}
+		&:hover{
+			color:#fcc;
+		}
+	}
+
+	input, textarea {
+		color:#EEE;
+		border:1px solid lighten($dark, 10%);
+
+		&:focus{
+			box-shadow: 0px 0px 5px #fff;
+		}
+	}
+}
+
+textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+textarea:focus{
+	outline: none;
+	border:1px solid #0Cf;
+	/* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.35); */
+}
+
+a {
+	text-decoration: none;
+	color: #0645ff;
+	background: none;
+	&.redlink{
+		color:#f00;
+		&:visited{
+			color:#f00;
+		}
+		&:hover{
+			color:lighten(#f00, 10%);
+		}
+	}
+	&.external{
+		background-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%2306c%22%20d%3D%22M1.5%204.518h5.982V10.5H1.5z%22%2F%3E%3Cpath%20d%3D%22M5.765%201H11v5.39L9.427%207.937l-1.31-1.31L5.393%209.35l-2.69-2.688%202.81-2.808L4.2%202.544z%22%20fill%3D%22%2306f%22%2F%3E%3Cpath%20d%3D%22M9.995%202.004l.022%204.885L8.2%205.07%205.32%207.95%204.09%206.723l2.882-2.88-1.85-1.852z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E);
+		background-position: center right;
+		background-repeat: no-repeat;
+		padding-right: 13px;
+	}
+}
+a:visited {
+	color: #0A25a0;
+}
+a:active {
+	color: #faa700;
+}
+a:hover, a:focus {
+	color: #c00;
+}
+img {
+	border: none;
+	vertical-align: middle;
+	max-width:100%;
+	height: auto;
+}
+hr {
+	height: 1px;
+	color: #aaa;
+	background-color: #aaa;
+	border: 0;
+	margin: .2em 0 .2em 0;
+}
+p {
+	margin: .4em 0 .5em 0;
+	line-height: 1.5em;
+}
+q {
+	font-family: Times, "Times New Roman", serif;
+	font-style: italic;
+}
+
+ul, ol{
+	padding: 0;
+	margin: 0 0 10px 25px;
+}
+ul {
+	line-height: 1.5em;
+
+	// list-style-type: square;
+	// margin: .5em 0 1em 1.5em;
+	// padding: 0;
+	/* @embed */
+	// list-style-image: url(/_s/img/wiki/bullet-icon.png);
+}
+ol {
+	// line-height: 1.5em;
+	// margin: .3em 0 0 1.5em;
+	// padding: 0.3em;
+	// list-style-image: none;
+}
+li {
+	// margin-bottom: .1em;
+}
+dt {
+	font-weight: bold;
+	margin-bottom: .1em;
+}
+dl {
+	margin-top: .2em;
+	margin-bottom: .5em;
+}
+dd {
+	line-height: 1.5em;
+	margin-left: 2em;
+	margin-bottom: .1em;
+}
+
+table {
+	border-spacing: 0;
+    border-collapse: collapse;
+	font-size: 100%;
+
+	td{padding: 0}
+	&.tdpad{
+		& td{
+			padding: 0.4rem !important;
+		}
+	}
+
+
+	&.hlrow{
+		tr:hover {
+			background-color: #ffff99;
+		}
+	}
+}
+
+/* Forms */
+fieldset {
+	border: 1px solid #2f6fab;
+	margin: 1em 0 1em 0;
+	padding: 0 1em 1em;
+	line-height: 1.5em;
+}
+fieldset.nested {
+	margin: 0 0 0.5em 0;
+	padding: 0 0.5em 0.5em;
+}
+legend {
+	padding: .5em;
+	font-size: 95%;
+}
+form {
+	border: none;
+	margin: 0;
+}
+
+select {
+	vertical-align: top;
+	font-size: 1rem;
+}
+
+time{
+	color:#AAA;
+}
+
+.code{
+	font-family: "Ubuntu mono", Courier;
+}
+
+.left .body .header{
+	width:100%;
+	/* font-weight:bold; */
+	text-align:center;
+}
+
+.cntTopPanel{
+	margin-left:10em;
+	/* height:200px; */
+	/* background-color:#FEE; */
+	display:none;
+	padding:1em;
+}
+
+div.upload.item{
+	margin: 0.5em 0 0.5em 0;
+	position:relative;
+	border-bottom: 1px dashed #AAA;
+	padding: 0.3em;
+	clear:both;
+	overflow:auto;
+
+	div.img{
+		float:left;
+		width: 59px;
+		position:relative;
+		text-align:center;
+		margin-right: 0.6em;
+	}
+}
+
+
+a.dwnld{
+	background: url('/_s/img/arrd.gif') no-repeat scroll 2px 4px white;
+	font-size: 0.8em;
+	padding: 0.2em;
+	color:#0645AD;
+	padding-left:10px;
+	&:hover{
+		text-decoration:none;
+		color:#1655BD;
+		background-color: #D1D7DD;
+	}
+}
+
+div.footerwide{
+	/* border-top: 10px solid rgb(221, 221, 221); */
+	// border-top: 0px solid #CCC;
+	/* color: rgb(102, 102, 102); */
+	/* font-size: 14px; */
+	/* height: 40px; */
+	padding: 0px;
+	/* position:absolute; */
+	/* bottom:0; */
+	width:100%;
+	z-index:222;
+	/* padding-bottom:10px; */
+	background-color: transparent;
+	/* background-color:#666; */
+	color: black;
+	/* background-color: #AAA; */
+	/* background: linear-gradient(to bottom, rgba(230, 230, 230, 1)	0%, rgba(249,249,249,100) 100%); */
+
+	div:first-child{margin:auto;}
+
+	a{
+		color: black;
+		text-decoration:none;
+		overflow:hidden;
+		transition: all 0.1s linear;
+		&:hover{
+			text-decoration:underline;
+			opacity: 1;
+			transition: all 0.1s linear;
+		}
+	}
+
+	p.contributeLabel {
+		background: none repeat scroll 0% 0% rgb(38,98,38);
+		margin: 0px;
+		padding: 3px;
+		width: 16em;
+		/* transform: translate(50%, -50%) rotate(40deg) translate(0px, 5em); */
+		/* -webkit-transform: translate(50%, -50%) rotate(40deg) translate(0, 5em); */
+		font-weight:bold;
+		/* float:right; */
+		position:relative;
+		left:-150px;
+		top:-10px;
+		border-radius:10px;
+
+		a{
+			display: block;
+			padding: 0.2em 0px;
+			text-align: center;
+			/* border: 1px dashed white; */
+			font-weight: bold;
+			text-decoration: none;
+			color:white;
+		}
+	}
+}
+
+div.dropzone, form.dropzone{
+	border:2px dashed #DDD;
+	border-radius: 5px;
+	padding: 0.5em;
+	font-size: 1.5em;
+	color: #77C;
+	margin-bottom: 0.5em;
+	text-align: center;
+	transition: all 0.3s linear;
+
+	&.beforehover{
+		border-color: #DDA;
+		background-color: #FFC;
+		transition: all 0.3s linear;
+	}
+	&.hover{
+		border-color: #CCC;
+		background-color: #EEB;
+		color:#000;
+	}
+}
+
+pre, code, tt, kbd, samp {
+	font-family: "Ubuntu mono", monospace, "Courier New";
+	background-color: #efefef;
+}
+pre {
+	padding:$pad*0.5;
+	border-radius: 3px;
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+	white-space: pre-wrap;
+	word-wrap: break-word;			/* Internet Explorer 5.5+ */
+	code {
+		line-height: 1.4em;
+	}
+}
+
+
+.bold{font-weight:bold}
+
+div.contents{
+	overflow:hidden;
+	white-space: nowrap;
+	display:none;
+	background-color:white;
+	border: 1px solid transparent;
+	transition:all 0.2s linear;
+}
+
+div.contents ol {
+	font-size:1em;
+	line-height: 1em;
+	margin-left:20px;
+	padding: 0;
+	list-style-image: none;
+}
+
+
+#userlogin {
+	min-width: 20em;
+	max-width: 90%;
+	width: 40em;
+}
+
+
+/* Images */
+/* @noflip */div.floatright, table.floatright {
+	margin: 0 0 .5em .5em;
+	border: 0;
+}
+div.floatright p { font-style: italic; }
+/* @noflip */div.floatleft, table.floatleft {
+	margin: 0 .5em .5em 0;
+	border: 0;
+}
+div.floatleft p { font-style: italic; }
+/* Emulate Center */
+.center {
+	width: 100%;
+	text-align: center;
+}
+.small {font-size: 94%;}
+
+div.container{
+	position:relative;
+	height:100%;
+	overflow:auto;
+}
+
+span.tag{
+	background-color:#E4EDF4;
+	padding:0.3em;
+	color:#3E6D8E;
+}
+
+footer{
+	flex: 0 0 auto;
+	z-index:2;
+}
+
+.o0{opacity: 0}
+.appear {
+	transition-property: all;
+	transition-duration: 3s;
+	// transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+	opacity: 1;
+}
+
+.bred{border:1px solid red}
+
+
+div.lside{
+	// background-color:#edeef0;
+	a{
+		cursor:pointer;
+		display: block;
+		padding-top:.1rem;
+		padding-bottom:.1rem;
+
+		// &:hover{
+		// 	background-color:#eef;
+		// }
+	}
+}
+
+
+aside{
+	&:empty {
+		display: none;
+	}
+}
+
+
+
+
+
+
+
+
+/* Structural Elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	// font-family: Ubuntu, Arial, 'libra sans', sans-serif;
+	font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	background: none;
+	font-weight: normal;
+	margin: 0;
+	padding-top: .5em;
+	padding-bottom: .15em;
+	width: auto;
+}
+
+
+h1 {
+	@media (max-width: 600px){font-size:1.6em}
+	@media (min-width: 600px){font-size:1.9em}
+}
+
+
+h1 .editsection { font-size: 53%; }
+// h2 { font-size: 150%; }
+h2 {
+	@media (max-width: 600px){font-size:1.3em}
+	@media (min-width: 600px){font-size:1.5em}
+}
+h2 .editsection { font-size: 67%; font-weight: normal }
+h3,
+h4,
+h5,
+h6 {
+	border-bottom: none;
+	// font-weight: bold;
+}
+
+h3 { font-size: 142%; }
+h3 .editsection { font-size: 76%; font-weight: normal; }
+h4 { font-size: 126%; }
+h4 .editsection { font-size: 86%; font-weight: normal; }
+h5 { font-size: 100%; }
+h5 .editsection { font-weight: normal; }
+h6 { font-size: 80%;	}
+h6 .editsection { font-size: 125%; font-weight: normal; }
+.editsection { float: right; }
+
+h1, h2, h3, h4, h5{
+	&.lines{
+		width: 100%;
+		// text-align: center;
+		border-bottom: 1px dashed #aaa;
+		line-height: 0.1em;
+		margin: 0.5em 0em 1em;
+		overflow:visible;
+		span{
+			background:#fff;
+			padding:0 0.5em 0em 0em;
+		}
+	}
+}
+h1, h2 {
+	margin-top: .2em;
+	margin-bottom: .6em;
+	/* font-weight: bold; */
+	/*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
+}
+h2 {
+	margin-top: .1em;
+	/*font-weight: bold;*/
+	/*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
+}
+h3, h4, h5 {
+	margin-bottom: .3em;
+}
+
+#profile{
+	&:hover{
+		background:rgba(0,0,0,0.05);
+	}
+	&.pressed{
+		background:rgba(0,0,0,0.15);
+	}
+}
+#loginbox{
+	line-height:100%;
+	position:absolute;
+	right:0;
+	background:#fff;
+	margin-right:3px;
+	margin-top:8px;
+	min-width:100px;
+	text-align:left;
+	padding-top:.3em;
+	padding-bottom:.3em;
+	border-radius:4px;
+	z-index:1110;
+	border:1px solid rgba(0,0,0,0.15);
+	box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+	&:before{
+		font-size: 14px;
+		line-height: 1.5;
+		content:"";
+		top: -13px;
+		// margin: 0 -9px;
+		right: 20px;
+		left: auto;
+		border: 6px solid transparent;
+		position: absolute;
+		display: inline-block;
+		border-bottom-color: rgba(0,0,0,0.15);
+		// box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+	}
+	&:after{
+		font-size: 14px;
+		line-height: 1.5;
+		content:"";
+		top: -12px;
+		margin: 0 0px;
+		right: 20px;
+		left: auto;
+		border: 6px solid transparent;
+		position: absolute;
+		display: inline-block;
+		border-bottom-color: #fff;
+	}
+	a{
+		display: block;
+		padding: 4px 10px 4px 15px;
+		overflow: hidden;
+		color: #2a5885;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		// padding-top:.4em;
+		// padding-bottom:.4em;
+		// border-left:3px solid transparent;
+		// width:100%;
+		&:hover{
+			background-color: lighten(#2a5885, 55%);
+		}
+	}
+}
+
+
+
+
+// stylelint-disable selector-no-type
+
+// Base button styles
+.btn {
+	position: relative;
+	display: inline-block;
+	padding: 6px 12px;
+	font-size: $body-font-size;
+	// font-weight: $font-weight-bold;
+	font-weight: 500;
+	line-height: 20px;  // Specifically not inherit our `<body>` default
+	color: $text-gray-dark;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	user-select: none;
+	background-color: #eee;
+	background-image: linear-gradient(#fcfcfc, #eee);
+	border: 1px solid #d5d5d5;
+	border-radius: 3px;
+	appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	i {
+		font-style: normal;
+		font-weight: 500;
+		opacity: 0.6;
+	}
+
+	.octicon {
+		vertical-align: text-top;
+	}
+
+	// Darken for just a tad more contrast against the button background
+	.counter {
+		color: #666;
+		text-shadow: none;
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	&:focus {
+		text-decoration: none;
+		border-color: #51a7e8; // Blue glow for focus
+		outline: none;
+		box-shadow: 0 0 5px rgba(81, 167, 232, 0.5); // Blue glow for focus
+	}
+
+	&:focus:hover,
+	&.selected:focus {
+		border-color: #51a7e8; // Blue glow for focus
+	}
+
+	&:hover,
+	&:active,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		text-decoration: none;
+		background-color: #ddd;
+		background-image: linear-gradient(#eee, #ddd);
+		border-color: #ccc;
+	}
+
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-active {
+		background-color: #dcdcdc;
+		background-image: none;
+		border-color: #b5b5b5;
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	&.selected:hover {
+		background-color: darken(#dcdcdc, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: rgba(102, 102, 102, 0.5);
+			cursor: default;
+			background-color: rgba(229, 229, 229, 0.5);
+			background-image: none;
+			border-color: rgba(197, 197, 197, 0.5);
+			box-shadow: none;
+		}
+	}
+}
+
+
+
+// Button color generator for primary and themed buttons
+
+@mixin solid-btn($foreground: $text-gray-dark, $background: #eee) {
+	color: $foreground;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+	background-color: $background;
+	background-image: linear-gradient(saturate(lighten($background, 13%), 8%), saturate(darken($background, 9%), 5%));
+	border: 1px solid darken($background, 8%);
+
+	.counter {
+		color: saturate(darken($background, 9%), 5%);
+		background: $foreground;
+	}
+
+	&:hover,
+	&:active,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		background-color: darken($background, 10%);
+		background-image: linear-gradient(lighten($background, 8%), darken($background, 13%));
+		border-color: darken($background, 12%);
+	}
+
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-active {
+		background-color: darken($background, 15%);
+		background-image: none;
+		border-color: darken($background, 20%);
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	&.selected:hover {
+		background-color: darken($background, 20%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: $foreground;
+			cursor: default;
+			background-color: mix(#fff, $background, 50%);
+			background-image: linear-gradient(mix(#fff, $background, 60%), mix(#fff, darken($background, 5%), 45%));
+			border-color: mix(#fff, $background, 40%);
+			box-shadow: none;
+		}
+	}
+}
+
+// Button color generator for default-y buttons with grey bgs and colored text, like btn-danger
+
+@mixin inverse-hover-btn($foreground: $text-gray-dark) {
+	color: $foreground;
+
+	&:hover {
+		color: $text-white;
+		background-color: $foreground;
+		background-image: linear-gradient(lighten($foreground, 30%), lighten($foreground, 10%));
+		border-color: $foreground;
+	}
+
+	&:active,
+	&.selected {
+		color: $text-white;
+		background-color: darken($foreground, 5%);
+		background-image: none;
+		border-color: darken($foreground, 8%);
+	}
+
+	&.selected:hover {
+		background-color: darken($foreground, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: mix(#fff, $foreground, 50%);
+			background-color: #efefef;
+			background-image: linear-gradient(#fefefe, #efefef);
+			border-color: #e1e1e1;
+		}
+	}
+
+	&:hover,
+	&:active,
+	&.selected {
+		.counter {
+			color: $text-white;
+		}
+	}
+}
+
+// Outline color generator for btn-outline to make the hover state inverse the text and bg colors.
+
+@mixin outline-btn($text-color: $text-blue, $bg-color: $bg-white) {
+	color: $text-color;
+	background-color: $bg-color;
+	background-image: none;
+	border: 1px solid $border-gray;
+
+	.counter {
+		background-color: rgba(0, 0, 0, 0.07);
+	}
+
+	&:hover,
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		color: $bg-color;
+		background-color: $text-color;
+		background-image: none;
+		border-color: $text-color;
+
+		.counter {
+			color: $text-color;
+			background-color: $bg-color;
+		}
+	}
+
+	&.selected:hover {
+		background-color: darken($text-color, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		&:hover {
+			color: $text-gray;
+			background-color: $bg-white;
+			background-image: none;
+			border-color: $border-gray;
+		}
+	}
+}
+
+
+// Green primary button
+.btn-primary {
+	@include solid-btn($white, $green);
+}
+
+// Red danger button
+.btn-danger {
+	@include inverse-hover-btn($flash-text-red);
+}
+
+// Outline button
+//
+// For when we need a linky-action that's not too heavy in busier
+// areas like conversation timelines.
+.btn-outline {
+	@include outline-btn($text-blue);
+}
+
+
+// Social button count
+.btn-with-count {
+	float: left;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+// Minibutton overrides
+//
+// Tweak `line-height` to make them smaller.
+.btn-sm {
+	padding: 3px 10px;
+	font-size: $font-size-small;
+	line-height: 20px;
+}
+
+// Large button adds more padding around text. Use font-size utils to increase font-size.. e.g, <p class="text-gamma"><button class="btn btn-large btn-primary" type="button">Big green button</button></p>
+.btn-large {
+	padding: 0.75em 1.25em;
+	font-size: inherit;
+	border-radius: 6px;
+}
+
+// Hidden text button
+//
+// Use `.hidden-text-expander` to indicate and expand hidden text.
+.hidden-text-expander {
+	display: block;
+
+	&.inline {
+		position: relative;
+		top: -1px;
+		display: inline-block;
+		margin-left: 5px;
+		line-height: 0;
+	}
+}
+
+.hidden-text-expander a,
+.ellipsis-expander {
+	display: inline-block;
+	height: 12px;
+	padding: 0 5px 5px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 6px;
+	color: #555;
+	text-decoration: none;
+	vertical-align: middle;
+	background: #ddd;
+	border: 0;
+	border-radius: 1px;
+
+	&:hover {
+		text-decoration: none;
+		background-color: #ccc;
+	}
+
+	&:active {
+		color: $text-white;
+		background-color: #4183c4;
+	}
+}
+
+// Social count bubble
+//
+// A container that is used for social bubbles counts.
+.social-count {
+	float: left;
+	padding: 3px 7px;
+	font-size: $font-size-small;
+	font-weight: $font-weight-bold;
+	line-height: 20px;
+	color: $text-gray-dark;
+	vertical-align: middle;
+	background-color: $bg-white;
+	border: 1px solid #ddd;
+	border-left: 0;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+
+	&:hover,
+	&:active {
+		text-decoration: none;
+	}
+
+	&:hover {
+		color: $text-blue;
+		cursor: pointer;
+	}
+}
+
+// Full-width button
+//
+// These buttons expand to the full width of their parent container
+.btn-block {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+// Radio buttons
+//
+// Buttons backed by radio or checkbox control. Requires the use of `.hidden`
+// on the `input` to properly hide it.
+.btn-link {
+	display: inline-block;
+	padding: 0;
+	font-size: inherit;
+	color: $text-blue;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	background-color: transparent;
+	border: 0;
+	appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:disabled {
+		color: $text-gray;
+		pointer-events: none;
+		cursor: default;
+	}
+}
+
+
+
+div#index{
+	background-size: cover;
+	padding-top:10vh;
+	padding-bottom:10vh;
+	@media (max-width: 800px){
+		padding-top:5vh;
+		padding-bottom:5vh;
+	}
+	@media (max-width: 600px){
+		padding-top:0;
+		padding-bottom:0;
+	}
+	@media (min-width: 800px){
+		padding-top:10vh;
+		padding-bottom:10vh;
+	}
+	color:#fff;
+}
