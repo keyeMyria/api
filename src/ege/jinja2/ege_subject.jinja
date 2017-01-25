@@ -1,0 +1,50 @@
+{% extends "ege_base.jinja" %}
+
+{% block style %}
+{{super()}}
+.ovrl{background-color:rgba(255, 255, 255, 0.6);bottom:0;right:0;left:0;z-index:2;position:absolute;text-align:center;width:100%}
+{% endblock %}
+
+
+{% block head %}
+{{super()}}
+<script defer src="{{ static("repetitor.js") }}?v=2"></script>
+{% endblock %}
+
+
+{% block title %}ЕГЭ - {{subject}}{% endblock %}
+
+{# {% block metadescription %}Занятия по информатике: подготовка к ОГЭ, ЕГЭ, разбор профессиональных задач. {{price45}}р/45мин. Индивидуальные занятия, никаких мини-групп.{% endblock %} #}
+
+
+{# {% block og %} #}
+{# <meta property="fb:app_id" content="1745714579011049" /> #}
+{# <meta property="og:title" content="Репетитор по информатике (Москва, Онлайн)"/> #}
+{# <meta property="og:description" content="Занятия по информатике для школьников, студентов и всех будущих линуксойдов. Программирование, администрирование и разработка. ОГЭ, ЕГЭ."/> #}
+{# <meta property="og:image" content="https://pashinin.com{{file("1a8126d5c7799ceb0054ac40934bb1b79aec5164")}}"> #}
+{# <meta property="og:type" content="article"/> #}
+{# <meta property="og:url" content= "https://pashinin.com"/> #}
+{# {% endblock %} #}
+
+
+{% block header %}
+{{super()}}
+<div class="pad-sm w flex padt">
+  <div>
+	<h1 style="margin-top:0;padding-top:0">{{subject}}</h1>
+  </div>
+</div>
+{% endblock %}
+
+
+{# {% block breadcrumb %}Репетитор по информатике (Москва, Онлайн){% endblock %} #}
+
+
+{% block content %}
+  <div class="pad-sm">
+	{% for task in tasks %}
+	{% else %}
+	  No tasks
+	{% endfor %}
+  </div>
+{% endblock %}
