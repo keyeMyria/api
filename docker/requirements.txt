@@ -168,3 +168,7 @@ setuptools>=30.4.0
 
 rparser>=0.1.16
 psutil   # view system processes
+
+# склонение слов в русском языке
+pymorphy2[fast]
+pymorphy2-dicts-ru
