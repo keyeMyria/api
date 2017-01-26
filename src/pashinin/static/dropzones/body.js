@@ -24,7 +24,7 @@
 	var counter=0;
 	let hide = function(e){document.getElementById('bodyupload').classList.add("hide");};
 	new Dropzone(document.body, {
-		url: "/_/file/upload", // Set the url
+		url: "/_/files/upload", // Set the url
 		//previewsContainer: "#previews", // Define the container to display the previews
 		clickable: false, // Define the element that should be used as click trigger to select files.
 		headers: {
