@@ -2,7 +2,6 @@
 
 {% block css %}
 {{super()}}
-{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("pashinin_core.css") }}?v=11">{% endif %}
 {% endblock %}
 
 {% block style %}
@@ -58,6 +57,10 @@
 
 {% block footer_content %}
   <a href="{{url("baumanka:kafedra", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
+  {% if user.is_superuser %}
+	<br/><a href="//ege.pashinin.com">ЕГЭ (11кл)</a>
+	<br/><a href="//oge.pashinin.com">ОГЭ (9кл)</a>
+  {% endif %}
 {% endblock %}
 
 {# Google author #}

@@ -14,31 +14,16 @@
 
 {% block head %}
 {{super()}}
-<script defer src="{{ static("repetitor.js") }}?v=2"></script>
+{# <script defer src="{{ static("repetitor.js") }}?v=2"></script> #}
 {% endblock %}
 
 
-{% block title %}ЕГЭ - задачи и решения{% endblock %}
-
-{# {% block metadescription %}Занятия по информатике: подготовка к ОГЭ, ЕГЭ, разбор профессиональных задач. {{price45}}р/45мин. Индивидуальные занятия, никаких мини-групп.{% endblock %} #}
-
-
-{# {% block og %} #}
-{# <meta property="fb:app_id" content="1745714579011049" /> #}
-{# <meta property="og:title" content="Репетитор по информатике (Москва, Онлайн)"/> #}
-{# <meta property="og:description" content="Занятия по информатике для школьников, студентов и всех будущих линуксойдов. Программирование, администрирование и разработка. ОГЭ, ЕГЭ."/> #}
-{# <meta property="og:image" content="https://pashinin.com{{file("1a8126d5c7799ceb0054ac40934bb1b79aec5164")}}"> #}
-{# <meta property="og:type" content="article"/> #}
-{# <meta property="og:url" content= "https://pashinin.com"/> #}
-{# {% endblock %} #}
+{% block title %}{% endblock %}
 
 
 {% block header %}
 {{super()}}
 {% endblock %}
-
-
-{# {% block breadcrumb %}Репетитор по информатике (Москва, Онлайн){% endblock %} #}
 
 
 {% block content %}
@@ -48,6 +33,6 @@
 
 
 {% block footer_content %}
-  <p><a href="{{url("index")}}">pashinin.com</a></p>
-  {# <a href="{{url("baumanka:kafedra", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a> #}
+<p><a href="//oge.{{domain}}">ОГЭ (9кл)</a></p>
+<p><a href="//ege.{{domain}}">ЕГЭ (11кл)</a></p>
 {% endblock %}

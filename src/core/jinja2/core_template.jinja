@@ -10,7 +10,7 @@
 
 {% block css %}
 {{super()}}
-<link rel="stylesheet" property="stylesheet" href="{{ static("css/core.css") }}?v=1">
+{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("css/core.css") }}?v=1">{% endif %}
 {% endblock %}
 
 
@@ -74,8 +74,8 @@
 	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
   {% endif %}
 
-  <div class="" style="position:relative;padding-top:0px">
-	<div class="rtop5px" style="background-color:#fff;">   {# #cdcdcd #}
+  <div style="position:relative;padding-top:0px">
+	<div>
 	  {% if self.breadcrumb() %}
 		<div class="pad-sm" style="border-bottom:0px solid #ddd">
 		  {% block breadcrumb %}{% endblock %}

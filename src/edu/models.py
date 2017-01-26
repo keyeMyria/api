@@ -20,7 +20,7 @@ class Task(models.Model):
     #     # verbose_name_plural = _("Subjects")
     # )
     title = models.CharField(
-        max_length=65,
+        max_length=100,
         help_text=_("Google displays first 50-60 characters of a title tag")
     )
     added = models.DateTimeField(
@@ -81,6 +81,10 @@ class Task(models.Model):
         # db_table = 'edu_tasks'
         verbose_name = _("Task")
         verbose_name_plural = _("Tasks")
+
+    @property
+    def as_html(self):
+        return 'TODO'
 
     def get_absolute_url(self):
         if settings.SITE_ID == 2:

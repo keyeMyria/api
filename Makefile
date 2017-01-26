@@ -192,7 +192,7 @@ parsertest:
 	docker exec -it $(vm) python3 -c 'from rparser import article_render'
 
 ege:
-	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings' -it $(vm) ./manage.py runserver 0.0.0.0:8001
+	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(vm) ./manage.py runserver 0.0.0.0:8001
 # docker exec --user www-data $(vm) export DJANGO_SETTINGS_MODULE="ege.settings";
 # --settings=ege.settings
 
@@ -207,6 +207,3 @@ localecompile:
 
 py:
 	$(python)
-
-psql:
-	docker exec --user postgres -it docker_db_1 psql

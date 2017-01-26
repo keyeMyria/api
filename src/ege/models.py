@@ -58,11 +58,22 @@ class EGE(models.Model):
         verbose_name_plural = _("ЕГЭ / ОГЭ")
         unique_together = ("type", "year", "subject")
 
+    @property
+    def info_formatted(self):
+        from rparser import article_render as A
+        html, info = A(self.info)
+        return html
+
     def __str__(self):
         if self.type == 0:
             return "ЕГЭ - {} {}".format(self.subject, self.year)
         else:
             return "ОГЭ - {} {}".format(self.subject, self.year)
+
+
+@receiver(pre_save, sender=EGE)
+def ege_pre_save(instance, *args, **kwargs):
+    instance.info = instance.info.replace("\r\n", "\n")
 
 
 class Subject(models.Model):
