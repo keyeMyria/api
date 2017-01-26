@@ -19,6 +19,8 @@ matrix:
 addons:
   hosts:
     - pashinin.com
+    - ege.pashinin.com
+    - oge.pashinin.com
   apt:
     sources:
       #   - deadsnakes      # for python 3.5
