@@ -207,3 +207,6 @@ localecompile:
 
 py:
 	$(python)
+
+psql:
+	docker exec --user postgres -it docker_db_1 psql
