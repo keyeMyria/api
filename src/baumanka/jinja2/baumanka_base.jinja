@@ -3,7 +3,7 @@
 {% block topleft %}<a href="{{url("baumanka:index")}}">Бауманка</a>{% endblock %}
 
 
-{% block footerc %}
+{% block footer_content %}
   {% if user.is_superuser %}
 	<span class="right">{{ip}}</span>
   {% endif %}
