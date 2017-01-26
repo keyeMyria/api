@@ -16,7 +16,7 @@ var exec = require('child_process').exec;
 
 // settings.py
 gulp.task('settings', function() {
-	gulp.watch('src/**/settings.py.mustache').on("change", function (info) {
+	gulp.watch('src/**/settings.py*.mustache').on("change", function (info) {
 		console.log(info.path);
 		var output = info.path.substr(0, info.path.lastIndexOf("."));
 		console.log(output);

@@ -42,9 +42,12 @@
 
 {% block content %}
   <div class="pad-sm">
+	<ol>
 	{% for task in tasks %}
+	  <li>{{task}}</li>
 	{% else %}
 	  No tasks
 	{% endfor %}
+	</ol>
   </div>
 {% endblock %}

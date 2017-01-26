@@ -6,7 +6,9 @@ from django.dispatch import receiver
 from django.db.models.aggregates import Count
 from random import randint
 from django.db import transaction
+from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class Task(models.Model):
@@ -80,10 +82,13 @@ class Task(models.Model):
         verbose_name = _("Task")
         verbose_name_plural = _("Tasks")
 
-    # def get_absolute_url(self):
-    #     return reverse("edu:onlytask", kwargs={
-    #         'id': self.pk
-    #     })
+    def get_absolute_url(self):
+        if settings.SITE_ID == 2:
+            return reverse("task", kwargs={
+                'id': self.pk
+            })
+        else:
+            return '//ege.pashinin.com'
 
     def __str__(self):
         return self.title

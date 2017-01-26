@@ -1,5 +1,5 @@
 """Tasks for updating this site."""
-
+import re
 import os
 import redis
 from celery import shared_task
@@ -209,8 +209,9 @@ def generate_settings():
 
     """
     for app, path in apps():
-        template = os.path.join(path, 'settings.py.mustache')
-        if os.path.isfile(template):
+        templates = [os.path.join(path, f) for f in os.listdir(path)
+                     if re.match(r'settings.*\.mustache', f)]
+        for template in templates:
             print(template)
             cmd = ['mustache', '/tmp/conf.json', template]
             p = Popen(cmd, stdout=PIPE)
