@@ -220,7 +220,7 @@ class File(DirtyFieldsMixin, AddedChanged):
         return send_file(self.filename, attachment=True)
 
     def get_absolute_url(self):
-        return reverse("files:file", kwargs={
+        return reverse("core:files:file", kwargs={
             'sha1': self.sha1,
         })
 
