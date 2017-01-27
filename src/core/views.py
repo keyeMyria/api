@@ -12,6 +12,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from subprocess import call, Popen, PIPE
 from rest_framework.views import APIView
+from django.contrib.auth import logout
+from django.core.urlresolvers import reverse
 from .models import SiteUpdate
 
 log = logging.getLogger(__name__)

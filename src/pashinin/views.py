@@ -13,7 +13,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import login
 # from django.views.decorators.csrf import ensure_csrf_cookie, requires_csrf_token
 from rest_framework.views import APIView
-from django.contrib.auth import logout
 from core.views import EnsureCsrfCookieMixin
 from channels import Channel
 
