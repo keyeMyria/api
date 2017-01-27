@@ -5,12 +5,14 @@
 <script defer src="{{ static("js/core_updates.js") }}"></script>
 {% endblock %}
 
+
+{% block title %}{{_("Site updates")}}{% endblock %}
+
+
 {% block header %}
   {{super()}}
 
 <div class="w pad-sm">
-  {# <img class="left marr" alt="Celery" width="64px" #}
-  {# 	   src="{{file("beec0e35eb960de1b0159276c7d5f4026145aa5d")}}"/> #}
   <h1>Updates</h1>
 </div>
 {% endblock %}
