@@ -47,7 +47,9 @@ class Travis(APIView):
             commit_sha1 = payload['commit']
             from core.tasks import project_update
             from core.models import SiteUpdate
+            from core import now
             upd, created = SiteUpdate.objects.get_or_create(sha1=commit_sha1)
+            upd.started = now()
             upd.travis_raw = d["payload"][0]
             upd.commit_message = payload['message']
             upd.save()

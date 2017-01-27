@@ -173,10 +173,6 @@ def project_update(sha1):
 
     Runs in core/hooks/views.py: Travis class
     """
-    from .models import SiteUpdate
-    upd, created = SiteUpdate.objects.get_or_create(sha1=sha1)
-    upd.started = now()
-    upd.save()
     updatelog(sha1, clear=True)  # clear log in case we've already run this job
     chain(
         get_project_at_commit.s(sha1),
