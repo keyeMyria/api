@@ -20,14 +20,17 @@
   <div class="updates">
 	{% for update in updates %}
 	  <div>
-		<b>{{update}}</b><br/>
+		<b>{{update.commit_message}}</b>, {{update.sha1}}<br/>
 		<time class="timeago" datetime="{{update.started}}">{{update.started}}</time>
 		{# {% if update.length %} #}
 		{#   <time>{{update.length}}</time> #}
 		{# {% endif %} #}
-		<a class="log" href="#">Show log</a>
+		<a class="log" href="#">Show log</a> | <a class="travis" href="#">Travis hook data</a>
 		<div class="log hide">
 		  <pre>{{update.log}}</pre>
+		</div>
+		<div class="travis_raw">
+		  <pre>{{update.travis_raw}}</pre>
 		</div>
 	  </div>
 	{% else %}

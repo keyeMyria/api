@@ -6,10 +6,7 @@ from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.db.models import Count
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from django.core.urlresolvers import reverse
-from django.core.mail import send_mail
 from rest_framework.views import APIView
-from rest_framework import renderers
 
 
 class Github(APIView):
@@ -24,6 +21,8 @@ class Github(APIView):
 
 
 class Travis(APIView):
+    "Travis web hook"
+
     def post(self, request, **kwargs):
         # Security check
         # Check not anyone can run update but only Travis
@@ -47,6 +46,13 @@ class Travis(APIView):
         if SUCCEDED:
             commit_sha1 = payload['commit']
             from core.tasks import project_update
+            from core.models import SiteUpdate
+            upd = SiteUpdate(
+                sha1=commit_sha1,
+                travis_raw=json.dumps(d),
+                commit_message=payload['message'],
+            )
+            upd.save()
             project_update.delay(commit_sha1)
         else:
             # Travis build FAILED

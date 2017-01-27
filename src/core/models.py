@@ -11,6 +11,8 @@ from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 
 
+# Travis payload format:
+# https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
 class SiteUpdate(models.Model):
     started = models.DateTimeField(
         default=None,
@@ -23,6 +25,16 @@ class SiteUpdate(models.Model):
         null=True, blank=True
     )
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
+    commit_time = models.DateTimeField(
+        db_index=True,
+        null=True, blank=True
+    )
+    commit_message = models.CharField(
+        max_length=150,
+        editable=False,
+        null=True, blank=True
+    )
+    travis_raw = models.TextField(null=True, blank=True)
     log = models.TextField(null=True, blank=True)
 
     class Meta:

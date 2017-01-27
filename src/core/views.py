@@ -188,6 +188,8 @@ class Celery(BaseView):
         return HttpResponse(json.dumps(res))
 
 
+# Travis payload format:
+# https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
 class Updates(BaseView):
     template_name = "core_updates.jinja"
     only_superuser = True
