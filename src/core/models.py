@@ -1,3 +1,4 @@
+import json
 from django.db import models
 from django.db.models import Count, Func
 from django.contrib.postgres.fields import ArrayField
@@ -40,7 +41,6 @@ class SiteUpdate(models.Model):
     class Meta:
         verbose_name = _("Site update")
         verbose_name_plural = _("Site updates")
-
 
     @property
     def travis_raw_pretty(self):
