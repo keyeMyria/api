@@ -36,9 +36,9 @@ class Travis(APIView):
 
         # request.body - bytes
         s = request.body.decode("utf-8")  # string
-        d = urllib.parse.parse_qs(s)      # dict
+        d = urllib.parse.parse_qs(s)      # dict with only 1 key - "payload"
 
-        # d["payload"]    is a list with 1 item - a string
+        # d["payload"]    is a list with only 1 item - a string
         # This string contains JSON object described here:
         # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
         payload = json.loads(d["payload"][0])
@@ -48,8 +48,8 @@ class Travis(APIView):
             from core.tasks import project_update
             from core.models import SiteUpdate
             upd, created = SiteUpdate.objects.get_or_create(sha1=commit_sha1)
-            upd.travis_raw=json.dumps(d)
-            upd.commit_message=payload['message']
+            upd.travis_raw = d["payload"][0]
+            upd.commit_message = payload['message']
             upd.save()
             project_update.delay(commit_sha1)
         else:
