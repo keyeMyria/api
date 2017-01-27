@@ -290,7 +290,7 @@ CHANNEL_LAYERS = {
             'hosts': [('{{redis_server}}', 6379)],
             # "prefix" is needed when you have several "Django channels"
             # powered projects on the same host (same redis db)
-            "prefix": "{{domain}}",
+            "prefix": app+"."+DOMAIN+str(SITE_ID)
         },
         'ROUTING': app+'.routing.channel_routing',
     },
