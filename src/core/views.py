@@ -197,7 +197,7 @@ class Updates(BaseView):
     def get_context_data(self, **kwargs):
         c = super(Updates, self).get_context_data(**kwargs)
         c["timeago"] = True
-        c["updates"] = SiteUpdate.objects.filter(started__isnull=False) \
+        c["updates"] = SiteUpdate.objects.filter(commit_message__isnull=False) \
                                          .order_by('-started')
         return c
 
