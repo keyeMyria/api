@@ -41,6 +41,12 @@ class SiteUpdate(models.Model):
         verbose_name = _("Site update")
         verbose_name_plural = _("Site updates")
 
+
+    @property
+    def travis_raw_pretty(self):
+        parsed = json.loads(self.travis_raw)
+        return json.dumps(parsed, indent=4, sort_keys=True)
+
     @property
     def length(self):
         if self.finished and self.started:
