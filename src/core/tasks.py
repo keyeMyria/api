@@ -31,9 +31,11 @@ def updatelog(sha1, msg=None, clear=False):
     return s
 
 
+# def supervisor(jobname, cmd):
 @shared_task
-def supervisor(jobname, cmd):
-    return call(['sudo', 'supervisorctl', cmd, jobname])
+def supervisor(*args):
+    pass
+    # return call(['sudo', 'supervisorctl', cmd, jobname])
     # return Popen(['sudo', 'supervisorctl', cmd, jobname])
     # kill -HUP $pid
     # {{repo}}/tmp/celery.pid
@@ -180,25 +182,23 @@ def project_update(sha1):
         build_css.s(),
         collect_static.s(),
         migrate.s(),
-    )().get()  # get() waits for all subtasks
+        # chain(
+        #     supervisor.s("worker-"+settings.DOMAIN, "restart"),
+        #     restart_celery.s()
+        # ),
+        update_finish.s()
+    )()  # get() waits for all subtasks
+    # supervisor.delay("worker-"+settings.DOMAIN, "restart")
+    # restart_celery.delay()
 
-    chain(
-        supervisor.s("worker-"+settings.DOMAIN, "restart"),
-        restart_celery.s()
-    )
 
-    send_mail(
-        sha1,
-        "LOG - updating to {}...\n".format(sha1)+updatelog(sha1),
-        "update robot <ROBOT@pashinin.com>",
-        ["sergey@pashinin.com"]
-    )
-
+@shared_task
+def update_finish(sha1, *args):
+    from .models import SiteUpdate
+    upd, created = SiteUpdate.objects.get_or_create(sha1=sha1)
     upd.log = updatelog(sha1)
     upd.finished = now()
     upd.save()
-    # supervisor.delay("worker-"+settings.DOMAIN, "restart")
-    # restart_celery.delay()
 
 
 @shared_task
