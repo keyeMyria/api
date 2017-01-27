@@ -92,7 +92,8 @@ class UserAdmin(UserAdmin):
 
 @admin.register(SiteUpdate)
 class SiteUpdateAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('commit_message', 'started', 'finished')
+    # list_filter = ('public', )
 
 
 # class ProxyUser(User):

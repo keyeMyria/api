@@ -200,6 +200,7 @@ def update_finish(sha1, *args):
     upd.log = updatelog(sha1)
     upd.finished = now()
     upd.save()
+    return sha1
 
 
 @shared_task
