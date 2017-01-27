@@ -44,8 +44,11 @@ class SiteUpdate(models.Model):
 
     @property
     def travis_raw_pretty(self):
-        parsed = json.loads(self.travis_raw)
-        return json.dumps(parsed, indent=4, sort_keys=True)
+        if self.travis_raw:
+            parsed = json.loads(self.travis_raw)
+            return json.dumps(parsed, indent=4, sort_keys=True)
+        else:
+            return ""
 
     @property
     def length(self):
