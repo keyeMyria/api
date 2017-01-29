@@ -424,7 +424,7 @@ CACHES = {
         # 'KEY_PREFIX': 'd' if DEBUG else '',
     }
 }
-if DEBUG:
+if DEBUG and False:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
