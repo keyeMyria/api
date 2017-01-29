@@ -174,6 +174,9 @@ sass:
 shell:
 	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
+shell-docker:
+	docker exec --user user -it $(vm) ./manage.py shell
+
 # python setup.py install develop
 # pip uninstall your-local-repo-egg
 # docker exec -it $(vm) pip3 install rparser -vvvv --no-index --find-links file:///var/www/parser
