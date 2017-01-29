@@ -9,7 +9,9 @@ from django.contrib.auth.models import Group, Permission
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'slug', 'published')
+    list_filter = ('published', )
+    ordering = ['-published', 'name']
 
 
 @admin.register(EGE)

@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from .models import SiteUpdate
+from . import now
 
 log = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
         c["domain"] = settings.DOMAIN
+        c['now'] = now()
         c['year'] = date.today().year
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG

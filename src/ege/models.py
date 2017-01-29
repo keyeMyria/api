@@ -80,7 +80,7 @@ class Subject(models.Model):
     """Предмет ЕГЭ/ОГЭ"""
     name = models.CharField(
         max_length=50,
-        # help_text=_("")
+        verbose_name=_('Name')
     )
     slug = models.SlugField(
         max_length=60,
@@ -92,6 +92,7 @@ class Subject(models.Model):
     class Meta:
         verbose_name = "Предмет"
         verbose_name_plural = "Предметы"
+        unique_together = ("name", "slug")
 
     def get_absolute_url(self):
         return reverse('subject', kwargs={'subj': self.slug})

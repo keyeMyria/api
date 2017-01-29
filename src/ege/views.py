@@ -3,15 +3,18 @@ import os
 from pashinin.views import Base as B
 from django.conf import settings
 from .models import *  # noqa
+from core import now
 from edu.models import Task
 import pymorphy2
-# from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 
 morph = pymorphy2.MorphAnalyzer()
 log = logging.getLogger(__name__)
 
 
 class Base(B):
+    only_superuser = True
+
     def get_context_data(self, **kwargs):
         c = super(Base, self).get_context_data(**kwargs)
         c['EGE'] = settings.SITE_ID == 2
@@ -26,7 +29,18 @@ class Index(Base):
 
     def get_context_data(self, **kwargs):
         c = super(Index, self).get_context_data(**kwargs)
-        c['subjects'] = Subject.objects.filter()
+        c['subjects'] = Subject.objects.filter(published=True) \
+                                       .order_by('name')
+        return c
+
+
+class YearView(Base):
+    template_name = "ege_year.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(YearView, self).get_context_data(**kwargs)
+        c['year'] = kwargs.get('year', c.get('now', now()).year)
+        c['tasks'] = Task.objects.filter()
         return c
 
 
@@ -35,12 +49,11 @@ class SubjectView(Base):
 
     def get_context_data(self, **kwargs):
         c = super(SubjectView, self).get_context_data(**kwargs)
+        c['year'] = kwargs.get('year', c.get('now', now()).year)
         try:
-            c['subject'] = Subject.objects.get(slug=kwargs['subj'])
-            c['ege'] = EGE.objects.get(
-                subject=c['subject'],
-                year=c['year'],
-                type=0
+            c['subject'] = Subject.objects.get(
+                slug=kwargs['subj'],
+                published=True
             )
             # дательный падеж:
             c['po_subject'] = " ".join([
@@ -48,7 +61,20 @@ class SubjectView(Base):
                 for w in str(c['subject']).split()
             ]).lower()
         except Subject.DoesNotExist:
-            c['subject'] = None
+            c['redirect'] = reverse("index")
+            c['ege'] = None
+            return c
+            # return HttpResponseRedirect(reverse("index"))
+
+        try:
+            c['ege'] = EGE.objects.get(
+                subject=c['subject'],
+                year=c['year'],
+                type=0
+            )
+        except EGE.DoesNotExist:
+            # c['subject'] = None
+            c['ege'] = None
             c['status'] = 404
 
         c['tasks'] = Task.objects.filter()
