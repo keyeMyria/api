@@ -174,11 +174,11 @@ def process_sections(sections, *args):
 
             time.sleep(5)
 
-            # chain(
-            #     get_subject_sections.s(url),
-            #     process_sections.s(),
-            # )()
-            extract_tasks_from_url.delay(url)
+            chain(
+                extract_tasks_from_url.s(url),
+                process_tasks.s(),
+            )()
+
             time.sleep(5)
 
             # for i in range(1, total_pages-1)
@@ -214,6 +214,17 @@ def extract_tasks_from_url(url):
             # log.debug(tag_contents(td).strip())
             # print(td.text_content())
     return res
+
+
+@shared_task
+def process_tasks(tasks):
+    for task_info in tasks:
+        process_task.delay(*task_info)
+
+
+@shared_task
+def process_task(guid, html):
+    return 'TODO: create "{}" task'.format(guid)
 
 
 def tag_contents(tag):
@@ -305,9 +316,7 @@ def get_inf():
         chain(
             get_subject_sections.s(url),
             process_sections.s(),
-            # build_css.s(),
-            # collect_static.s(),
-            # migrate.s(),
+            # process_tasks.s(),
         )()
     except:
         client.captureException()
