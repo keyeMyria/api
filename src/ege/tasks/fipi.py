@@ -143,7 +143,7 @@ def get_subject_sections(subject_url, *args):
 
 
 @shared_task
-def process_sections(*args):
+def process_sections(sections, *args):
     """Пройтись по всем разделам предмета.
 
     Parameters
@@ -158,7 +158,7 @@ def process_sections(*args):
     total_pages = 0
     count = 1
     try:
-        for section_title, url in args:
+        for section_title, url in sections:
             log.debug('Processing "{}" ({}/{})...'.format(
                 section_title,
                 count,
@@ -174,6 +174,13 @@ def process_sections(*args):
 
             time.sleep(5)
 
+            # chain(
+            #     get_subject_sections.s(url),
+            #     process_sections.s(),
+            # )()
+            extract_tasks_from_url.delay(url)
+            time.sleep(5)
+
             # for i in range(1, total_pages-1)
 
             # print(total_pages)
@@ -182,23 +189,31 @@ def process_sections(*args):
         client.captureException()
 
 
-
 @shared_task
-def extract_tasks_from_html(html):
+def extract_tasks_from_url(url):
     """Return a list of tasks"""
+    html = get(url)
     tree = lxml.html.fromstring(html)
-    tds = S('form[name="checkform"] table td')(tree)
-    for td in tds:
-        log.debug('---------')
-        html = ''
-        for el in td.xpath("child::node()"):
-            if isinstance(el, lxml.etree._ElementUnicodeResult):
-                html += str(el)
-            else:
-                html += etree.tostring(el, encoding='unicode')
-        log.debug(html)
-        # log.debug(tag_contents(td).strip())
-        # print(td.text_content())
+    forms = S('form[name="checkform"]')(tree)
+    # tds = S('form[name="checkform"] table td')(tree)
+    res = []
+    for form in forms:
+        guid = ''
+        try:
+            guid = S('input[name="guid"]')(form)[0]
+        except:
+            client.captureException()
+        for td in S('table td')(form):
+            html = ''
+            for el in td.xpath("child::node()"):
+                if isinstance(el, lxml.etree._ElementUnicodeResult):
+                    html += str(el)
+                else:
+                    html += etree.tostring(el, encoding='unicode')
+            res.append((guid, html))
+            # log.debug(tag_contents(td).strip())
+            # print(td.text_content())
+    return res
 
 
 def tag_contents(tag):
@@ -207,12 +222,6 @@ def tag_contents(tag):
         return str(tag)
 
     res = []
-    # if tag.text is not None:
-    #     res.append(tag.text)
-    # for el in tag.iterchildren():
-
-    # for el in tag:
-    #     res.append(tag_to_text(el))
     prev = None
     for el in tag.xpath("child::node()"):
         # is_text_element = isinstance(tag, lxml.etree._ElementUnicodeResult)
