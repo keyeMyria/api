@@ -15,8 +15,16 @@ Any Django project (including this one) can have `tasks.py` file in apps
 
 .. code-block:: python
 
-   In [1]: from ege.tasks import ege_subjects_and_urls
-   In [2]: ege_subjects_and_urls()
+   In [1]: from ege.tasks import get_inf
+
+   In [2]: t = get_inf.delay()
+   Out[2]: t = <AsyncResult: 63b5705e-bf52-41d8-b9e4-930471a2738b>
+
+   In [3]: t.state
+   Out[3]: 'PENDING'
+
+   In [4]: t.ready()
+   Out[4]: False
 
 
 Django Channels
