@@ -1,10 +1,16 @@
-from django import forms
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import *  # noqa
-from django.utils.translation import ugettext, ugettext_lazy as _
-from django.contrib.auth.models import Group, Permission
+from django.utils.translation import ugettext_lazy as _
+
+
+def make_published(modeladmin, request, queryset):
+    queryset.update(published=True)
+    make_published.short_description = _("Published")
+
+
+def unpublish(modeladmin, request, queryset):
+    queryset.update(published=False)
+    make_published.short_description = _("Hide")+" (published=False)"
 
 
 @admin.register(Subject)
@@ -12,6 +18,7 @@ class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'published')
     list_filter = ('published', )
     ordering = ['-published', 'name']
+    actions = [unpublish, make_published]
 
 
 @admin.register(EGE)

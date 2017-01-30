@@ -8,7 +8,8 @@ from random import randint
 from django.db import transaction
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.contrib.sites.shortcuts import get_current_site
+# from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.postgres.fields import JSONField
 
 
 class Task(models.Model):
@@ -76,6 +77,7 @@ class Task(models.Model):
         db_index=True,
         # help_text=_("Published in the DB?")
     )
+    debug = JSONField(default=dict)
 
     class Meta:
         # db_table = 'edu_tasks'

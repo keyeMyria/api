@@ -592,14 +592,6 @@ class Hostname(models.Model):
 #     class Meta:
 #         abstract = True
 
-# class Debug(models.Model):
-#     debug = HStoreField(null=True, blank=True)
-#     # from django.contrib.postgres.fields import HStoreField
-#     # objects = hstore.HStoreManager()
-
-#     class Meta:
-#         abstract = True
-
 # class Language(models.Model):
 #     name = models.CharField(max_length=150, help_text="Original language name")
 #     name_en = models.CharField(max_length=150, help_text="Name in English")
