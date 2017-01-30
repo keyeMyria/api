@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/pashinin-com/pashinin.com.png?branch=master)](https://travis-ci.org/pashinin-com/pashinin.com)
+[![Coverage Status](https://coveralls.io/repos/github/pashinin/pashinin.com/badge.svg?branch=master)](https://coveralls.io/github/pashinin/pashinin.com?branch=master)
 
 # pashinin.com
 
