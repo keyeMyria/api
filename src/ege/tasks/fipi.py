@@ -13,7 +13,6 @@ from celery import chain
 import requests
 import hashlib
 import logging
-from django.core.cache import cache
 import lxml.html
 from lxml.cssselect import CSSSelector as S
 from ..models import Subject
@@ -22,51 +21,8 @@ from unidecode import unidecode
 from edu import subject_slug
 from raven.contrib.django.raven_compat.models import client
 from lxml import etree  # noqa
+from core.tasks import get
 log = logging.getLogger(__name__)
-
-
-def save_cookies(requests_cookiejar, filename):
-    with open(filename, 'wb') as f:
-        pickle.dump(requests_cookiejar, f)
-
-
-def load_cookies(filename):
-    with open(filename, 'rb') as f:
-        return pickle.load(f)
-
-
-def get(url, charset='utf-8'):
-    """Just GETs an URL."""
-    v = 7
-    cookies = '/tmp/cookies.txt'
-
-    key = "url.get_" + hashlib.sha1(url.encode('utf-8')).hexdigest()
-    html = cache.get(key, version=v)
-    if html is not None:
-        return html
-
-    try:
-        r = requests.get(url, cookies=load_cookies(cookies))
-    except:
-        r = requests.get(url)
-
-    save_cookies(r.cookies, cookies)
-    if r.status_code == 200:
-        html = r.text
-        tree = lxml.html.fromstring(html)
-        meta = S('meta[http-equiv="Content-Type"]')(tree)
-        if meta:
-            content = meta[0].get('content')
-            m = re.search('charset=(.*)', content)
-            charset = m.group(1)
-            # print(etree.tostring(meta[0]), charset)
-            if charset:
-                try:
-                    html = r.content.decode(charset)
-                except:
-                    client.captureException()
-        cache.set(key, html, 3600, version=v)
-        return html
 
 
 @shared_task

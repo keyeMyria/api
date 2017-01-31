@@ -9,7 +9,7 @@ from subprocess import call, Popen, PIPE
 from celery.signals import task_postrun
 from datetime import datetime
 from django.conf import settings
-from . import now, apps
+from .. import now, apps
 
 
 def updatelog(sha1, msg=None, clear=False):
