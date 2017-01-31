@@ -12,6 +12,10 @@ python:
   - "3.5"
   # - "nightly" # currently points to 3.7-dev
   - "pypy"
+
+env:
+  - DJANGO_SETTINGS_MODULE=pashinin.settings
+
 matrix:
   allow_failures:
     - python: pypy
