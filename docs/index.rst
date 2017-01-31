@@ -13,6 +13,7 @@ pashinin.com
    installation
    static
    long-running-tasks
+   tests
 
 
 Update process
