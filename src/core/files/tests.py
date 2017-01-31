@@ -1,14 +1,12 @@
 import os
-from proj.tests import travis, CommonTest
+from core.tests import travis, CommonTest
 from django.core.urlresolvers import reverse
-from .models import UploadFile
 from django.conf import settings
 from unittest import skip
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = settings.FILE_UPLOAD_MAX_MEMORY_SIZE
 FILE_UPLOAD_TEMP_DIR = settings.FILE_UPLOAD_TEMP_DIR
 MEDIA_URL = settings.MEDIA_URL
-SITE_PATH = settings.SITE_PATH
 
 
 class Upload(CommonTest):

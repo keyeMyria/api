@@ -327,9 +327,10 @@ from raven.contrib.celery import register_signal, register_logger_signal
 # register_signal(client)
 # register_logger_signal(client, loglevel=logging.INFO)
 
-# Tests
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-TEST_RUNNER = 'django_pytest.test_runner.TestRunner'
+# django.test.runner.DiscoverRunner (default)
+# django_nose.NoseTestSuiteRunner
+# TEST_RUNNER =
+
 if testing:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',

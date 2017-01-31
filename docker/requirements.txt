@@ -57,7 +57,6 @@ django-nose
 
 django-mptt               # git+https://github.com/django-mptt/django-mptt.git
 django-optimizations
-django-pytest                  # py.test runner
 django-redis-cache
 
 # https://github.com/martinrusev/django-redis-sessions
@@ -99,7 +98,10 @@ python-magic
 #pylibmc
 pyinotify               # signals instead of polling (to reload dev server)
 #PySide                 # for spynner      installed with Ansible
-pytest-django           # "--reuse-db"
+
+
+pytest
+pytest-django>=3.1.2           # "--reuse-db"
 
 # What is better?
 # 1. python-social-auth
@@ -176,3 +178,5 @@ pymorphy2-dicts-ru
 # for python lxml lib
 lxml
 cssselect
+
+coverage
