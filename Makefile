@@ -214,4 +214,4 @@ py:
 test:
 	which coverage || sudo pip install coverage -U
 	which coveralls || sudo pip install coveralls -U
-	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) pytest
+	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) pytest --cov . --cov-report term-missing -v
