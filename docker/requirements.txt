@@ -103,6 +103,7 @@ pyinotify               # signals instead of polling (to reload dev server)
 pytest
 pytest-django>=3.1.2           # "--reuse-db"
 pytest-cov
+pytest-xdist
 
 # What is better?
 # 1. python-social-auth
