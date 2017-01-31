@@ -72,7 +72,7 @@ before_script:
 script:
   # - ps -ef | grep -v grep | grep nginx
   # - curl http://127.0.0.1:8080/
-  - (cd src; pytest)
+  - (cd src; pytest -n3 --cov . --cov-report annotate)
   - curl pashinin.com
   - curl -Is http://pashinin.com | grep "200 OK"
 
