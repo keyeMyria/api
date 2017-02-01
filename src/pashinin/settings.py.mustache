@@ -3,19 +3,21 @@ import os
 import sys
 from os.path import dirname, abspath, basename
 
-testing = 'test' in sys.argv or '--reuse-db' in sys.argv
-DEBUG = testing
+testing = 'test' in sys.argv or '--reuse-db' in sys.argv or \
+          '--cov-report' in sys.argv
 {{#DEBUG}}
 DEBUG = True
 {{/DEBUG}}
+if testing:
+    DEBUG = False
 
 SETTINGS_PATH = dirname(abspath(__file__))
 app = basename(SETTINGS_PATH)
 GIT_PATH = dirname(dirname(SETTINGS_PATH))
 REPO_PATH = GIT_PATH
 REPOS_PATH = dirname(REPO_PATH)
-VEBIN = os.path.join(GIT_PATH, "tmp", "ve", "bin")
-VEPYTHON = os.path.join(GIT_PATH, "tmp", "ve", "bin", "python")
+VEBIN = os.path.join(REPO_PATH, "tmp", "ve", "bin")
+VEPYTHON = os.path.join(REPO_PATH, "tmp", "ve", "bin", "python")
 
 
 EMAIL_HOST = '10.254.239.1'
@@ -29,30 +31,25 @@ DOMAIN = "{{domain}}"
 SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 
 # Databases
-# sudo apt-get install pgbouncer
-# vim /etc/pgbouncer/pgbouncer.ini
-# [databases]
-# * = host=10.254.239.1 port=5433
-# /etc/pgbouncer/userlist.txt
-# "user" "password"
-DB_ENGINE_MYSQL = 'django.db.backends.mysql'
-DB_ENGINE_POSTGRE = 'django.db.backends.postgresql_psycopg2'
-DATABASE_ENGINE = DB_ENGINE_POSTGRE
-is_sqlite = (DATABASE_ENGINE == 'django.db.backends.sqlite3')
+#
+# django.db.backends.postgresql_psycopg2
+# django.contrib.gis.db.backends.postgis
+#
+DB_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASES = {
     'default': {
-        'ENGINE': DATABASE_ENGINE,
-        # 'NAME': "test.db" if is_sqlite else "{{dbname}}",
+        'ENGINE': DB_ENGINE,
         'NAME': "{{dbname}}",
         'USER': "{{dbuser}}",
         'PASSWORD': "{{dbpass}}",
         'HOST': "{{dbhost}}",
-        # 'HOST': "127.0.0.1",
         'PORT': '{{dbport}}',
-        # 'PORT': '6432',
+        # PORT
+        # 5432 - postgres
+        # 6432 - pgbouncer
     },
     'sentry': {
-        'ENGINE': DATABASE_ENGINE,
+        'ENGINE': DB_ENGINE,
         'NAME': "sentry",
         'USER': "{{dbuser}}",
         'PASSWORD': "{{dbpass}}",
@@ -112,7 +109,7 @@ MEDIA_URL = '/_sp/uploads/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(GIT_PATH, "static")
+STATIC_ROOT = os.path.join(REPO_PATH, "static")
 
 
 FILES_ROOT = "{{FILES_ROOT}}"
@@ -336,9 +333,6 @@ if testing:
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
 
-SOUTH_TESTS_MIGRATE = False  # To disable migrations and use syncdb instead
-SKIP_SOUTH_TESTS = True      # To disable South's own unit tests
-
 #
 # Authentication
 #
@@ -401,9 +395,9 @@ SOCIAL_AUTH_PIPELINE = (
 
 AUTH_USER_MODEL = 'core.User'
 
-# TODO: why is it here?
+# https://docs.djangoproject.com/en/1.10/ref/settings/#migration-modules
 MIGRATION_MODULES = {
-    'auth': None,
+    # 'auth': None,
     # 'contenttypes': None,
     # 'default': None,
     # 'sessions': None,
@@ -531,7 +525,7 @@ if ddt and DEBUG:
 
 
 # Directories for uploaded files
-# FILE_UPLOAD_TEMP_DIR = os.path.join(GIT_PATH, "tmp", "uploads")
+# FILE_UPLOAD_TEMP_DIR = os.path.join(REPO_PATH, "tmp", "uploads")
 max_download_size = 1024*1024*4
 
 SENDFILE_ROOT = FILES_ROOT

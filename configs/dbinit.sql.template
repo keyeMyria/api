@@ -1,4 +1,5 @@
 -- -*- mode: sql -*-
 CREATE USER {{dbuser}} WITH PASSWORD '{{dbpass}}';
 ALTER USER "{{dbuser}}" WITH PASSWORD '{{dbpass}}';
+ALTER USER "{{dbuser}}" CREATEDB;
 CREATE DATABASE {{dbname}} WITH OWNER {{dbuser}};

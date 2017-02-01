@@ -1,5 +1,5 @@
 #!/bin/sh
 # psql -h 127.0.0.1 -p 5434 -U postgres -c "CREATE USER pashinin WITH PASSWORD 'superpass';"
 psql -h {{dbhost}} -p {{dbport}} -c "CREATE USER pashinin WITH PASSWORD 'superpass';"
-psql -h {{dbhost}} -p {{dbport}} -U postgres -c "CREATE DATABASE pashinin WITH OWNER pashinin;"
+psql -h {{dbhost}} -p {{dbport}} -U postgres -c "CREATE DATABASE pashinin WITH OWNER {{dbuser}};"
 # psql -h db -U postgres -c "grant all privileges on database pashinin to pashinin;"
