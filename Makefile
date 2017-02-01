@@ -177,27 +177,8 @@ shell:
 shell-docker:
 	docker exec --user user -it $(vm) ./manage.py shell
 
-# python setup.py install develop
-# pip uninstall your-local-repo-egg
-# docker exec -it $(vm) pip3 install rparser -vvvv --no-index --find-links file:///var/www/parser
-# --upgrade --force-reinstall
-# build_rust
-# docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py install --force'
-parser:
-	docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py build_rust'
-
-# docker exec -it $(vm) /bin/sh -c 'cd /var/www/parser;python3 setup.py bdist_wheel'
-# docker exec -it $(vm) python3 -m pip wheel /var/www/parser/ -w /wheelhouse/
-wheel:
-	python3 -m pip wheel . -w /wheelhouse/
-
-parsertest:
-	docker exec -it $(vm) python3 -c 'from rparser import article_render'
-
 ege:
 	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(vm) ./manage.py runserver 0.0.0.0:8001
-# docker exec --user www-data $(vm) export DJANGO_SETTINGS_MODULE="ege.settings";
-# --settings=ege.settings
 
 locale-docker:
 	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
@@ -214,4 +195,7 @@ py:
 test:
 	which coverage || sudo pip install coverage -U
 	which coveralls || sudo pip install coveralls -U
-	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) pytest --cov . --cov-report term-missing -v
+	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) pytest --cov-config .coveragerc --cov src --cov-report term-missing -v
+
+test-local:
+	pytest --ds=pashinin.settings --cov-config .coveragerc --cov src --cov-report term-missing -v
