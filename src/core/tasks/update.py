@@ -191,7 +191,7 @@ def project_update(sha1):
 
 @shared_task
 def update_finish(sha1, *args):
-    from .models import SiteUpdate
+    from core.models import SiteUpdate
     upd, created = SiteUpdate.objects.get_or_create(sha1=sha1)
     upd.log = updatelog(sha1)
     upd.finished = now()
