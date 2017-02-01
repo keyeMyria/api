@@ -80,7 +80,9 @@ after_script:
   - git status
 
 after_success:
-  - (cd src; coveralls)
+  - coveralls
+  - ls -la .
+  - ls -la src
 
 after_failure:
   - sudo service redis-server status
