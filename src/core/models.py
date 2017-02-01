@@ -119,7 +119,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         db_index=True
     )
     # is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(
+        default=False,
+        help_text=_("Designates whether this user can access the admin site.")
+    )
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True, db_index=True)
     first_name = models.CharField(max_length=200)
@@ -131,16 +134,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     #     blank=True,
     #     # help_text=_("Avatar image")
     # )
-    # permissions = models.ManyToManyField(Permission)
-    # groups = models.ManyToManyField(Group)
+    permissions = models.ManyToManyField(
+        Permission,
+        related_name="permissions",
+        null=True, blank=True
+    )
+    groups = models.ManyToManyField(
+        Group,
+        related_name="groups",
+        null=True, blank=True
+    )
 
     objects = UserManager()
     USERNAME_FIELD = 'email'
 
     class Meta:
-        # db_table = 'auth_user'
         verbose_name = _("User")
-        # app_label = 'auth'
         verbose_name_plural = _("Users")
 
     def gravatar(self, size_in_px=25):

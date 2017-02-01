@@ -92,14 +92,14 @@ class SiteUpdateAdmin(admin.ModelAdmin):
     # list_filter = ('public', )
 
 
-# class ProxyUser(User):
-#     class Meta:
-#         proxy = True
-#         app_label = 'auth'
-#         verbose_name = User._meta.verbose_name
-#         verbose_name_plural = User._meta.verbose_name_plural
+class ProxyUser(User):
+    class Meta:
+        proxy = True
+        app_label = 'auth'
+        verbose_name = User._meta.verbose_name
+        verbose_name_plural = User._meta.verbose_name_plural
 
-# admin.site.register(ProxyUser, UserAdmin)
+admin.site.register(ProxyUser, UserAdmin)
 
 # from django.contrib import admin
 # from .models import *
