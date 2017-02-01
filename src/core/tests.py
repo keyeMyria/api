@@ -34,3 +34,8 @@ class CommonTest(TestCase):
 
     def superuser(self):
         self.assertTrue(self.c.login(username=self._superuser.email, password=self.password))
+
+
+def test_with_client(client):
+    response = client.get('/')
+    assert response.status_code == 200
