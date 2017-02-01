@@ -308,12 +308,13 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # Transport selection via DSN is deprecated. You should explicitly pass
 # the transport class to Client() instead.
 # import raven
-RAVEN_CONFIG = {
-    'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
-}
+if not testing:
+    RAVEN_CONFIG = {
+        'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
+    }
 
 import logging
 from raven import Client
