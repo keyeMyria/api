@@ -137,12 +137,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     permissions = models.ManyToManyField(
         Permission,
         related_name="permissions",
-        null=True, blank=True
+        blank=True
     )
     groups = models.ManyToManyField(
         Group,
         related_name="groups",
-        null=True, blank=True
+        blank=True
     )
 
     objects = UserManager()
