@@ -21,6 +21,7 @@ matrix:
     - python: pypy
 
 addons:
+  postgresql: "9.6"
   hosts:
     - pashinin.com
   apt:
@@ -35,6 +36,9 @@ addons:
       - ruby-mustache
       - redis-server
       - realpath
+
+services:
+    - postgresql
 
 before_install:
   # - umask 022
@@ -60,7 +64,7 @@ install:
   - sudo service nginx start
   - sudo supervisorctl reread
   - sudo supervisorctl update
-  # - sudo supervisorctl restart daphne
+  - sudo service postgresql status
   - sleep 5
 
 before_script:
