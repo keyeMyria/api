@@ -56,7 +56,6 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserAdmin(UserAdmin):
-    # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
 
@@ -85,9 +84,6 @@ class UserAdmin(UserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ('groups', 'permissions',)
-
-# Now register the new UserAdmin...
-# admin.site.unregister(CustomUser)
 
 
 @admin.register(SiteUpdate)

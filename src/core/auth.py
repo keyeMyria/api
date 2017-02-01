@@ -1,7 +1,5 @@
-import django
 from django.contrib import auth
 from django.utils.functional import SimpleLazyObject
-# from .models import User
 
 #
 # Taken from the official Django Auth Middleware:
@@ -9,10 +7,6 @@ from django.utils.functional import SimpleLazyObject
 #
 
 
-# def get_user(request):
-#     if not hasattr(request, '_cached_user'):
-#         request._cached_user = auth.get_user(request)
-#     return request._cached_user
 def get_user(request):
     if not hasattr(request, '_cached_user'):
         request._cached_user = auth.get_user(request)

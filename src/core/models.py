@@ -10,6 +10,7 @@ from django.db import transaction
 from random import randint
 from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
+from django_gravatar.helpers import get_gravatar_url
 
 
 # Travis payload format:
@@ -142,17 +143,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         # app_label = 'auth'
         verbose_name_plural = _("Users")
 
-    @property
-    def is_authenticated(self):
-        return not self.is_anonymous
-
-    @property
-    def is_anonymous(self):
-        return self.id == 1
-
     def gravatar(self, size_in_px=25):
         """Return authorized social accounts"""
-        from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
         return get_gravatar_url(self.email, size=size_in_px)
 
     @property
@@ -161,11 +153,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return UserSocialAuth.objects.filter(user=self)
 
     def get_full_name(self):
-        # The user is identified by their email address
-        return self.email
+        "Used in Admin. Dajngo wants this to be defined."
+        return "{} {}".format(self.first_name, self.last_name)
 
     def get_short_name(self):
-        # The user is identified by their email address
+        "Used in Admin. Dajngo wants this to be defined."
         return self.email
 
     def __str__(self):
