@@ -61,6 +61,20 @@ To run it manually:
    In [2]: project_update("ef49782ef60d75b2a66f29ea236912a54c09a305")
 
 
+Migrations
+----------
+
+.. code-block:: bash
+
+   django.db.migrations.exceptions.InconsistentMigrationHistory:
+   Migration core.0001_initial is applied before its dependency auth.0001_initial on database 'default'.
+
+   select earliest from django_migrations;
+
+.. code-block:: bash
+
+   INSERT INTO django_migrations (app, name, applied) VALUES ('auth', '0001_initial', '2016-11-01 12:00:00');
+
 
 .. _core/tasks.py: https://github.com/pashinin-com/pashinin.com/blob/master/src/core/tasks.py
 .. _travis_secret_settings: https://github.com/pashinin-com/pashinin.com/blob/master/configs/settings.py.mustache#L334

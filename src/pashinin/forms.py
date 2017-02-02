@@ -8,7 +8,9 @@ class Enroll(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(Enroll, self).__init__(*args, **kwargs)
-        # self.fields['name'].error_messages = {'required': 'custom required message'}
+        # self.fields['name'].error_messages = {
+        #     'required': 'custom required message'
+        # }
 
         # if you want to do it to all of them
         for field in self.fields.values():

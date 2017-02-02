@@ -1,19 +1,19 @@
 import os
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-MEDIA_ROOT = settings.MEDIA_ROOT
-MEDIA_URL = settings.MEDIA_URL
 from django.db import models
 from core import now
 import hashlib
-from raven.contrib.django.raven_compat.models import client
+# from raven.contrib.django.raven_compat.models import client
 import shutil
 from dirtyfields import DirtyFieldsMixin
-from django.http import HttpResponse
 from core.models import AddedChanged
 from django.core.urlresolvers import reverse
-from django.core.files.uploadedfile import TemporaryUploadedFile, InMemoryUploadedFile
+from django.core.files.uploadedfile import (TemporaryUploadedFile,
+                                            InMemoryUploadedFile)
 from . import CT_CHOICES
+
+MEDIA_URL = settings.MEDIA_URL
 
 
 class File(DirtyFieldsMixin, AddedChanged):
@@ -44,17 +44,6 @@ class File(DirtyFieldsMixin, AddedChanged):
         verbose_name = _("File")
         verbose_name_plural = _('Files')
         index_together = (("content_type", "content_subtype"), )
-
-    def publish(self):
-        ext = mime_extensions.get(self.content_type_string, '')
-        filename_public = self.filename_from_hash(
-            sha1=self.sha1,
-            public=True,
-            ext=ext
-        )
-        if not os.path.isfile(filename_public):
-            pass
-        pass
 
     @property
     def content_type_string(self):
@@ -149,7 +138,8 @@ class File(DirtyFieldsMixin, AddedChanged):
     # def from_url(cls, url):
     #     #assert False, url
     #     # "url" start after /_sp/ ...   (so -5)
-    #     filename = os.path.join(MEDIA_ROOT, url[len(MEDIA_URL)-5:])
+    #     filename = os.path.join(settings.MEDIA_ROOT,
+    #                            url[len(settings.MEDIA_URL)-5:])
     #     d, created = Data.objects.get_or_create(md5=cls.get_md5(filename),
     #                                             size=os.path.getsize(filename))
     #     #o, created = cls.objects.get_or_create(data=d)
@@ -198,22 +188,10 @@ class File(DirtyFieldsMixin, AddedChanged):
     def icon(self):
         '''Return an URL to icon for this file type'''
         p = '/_s/img/icons'
-        return os.path.join(p, mime_icons.get(self.content_type_string, '01.png'))
-        return self.get_absolute_url()
-        f, ext = os.path.splitext(self.name)
-        if ext.startswith('.'):
-            ext = ext[1:]
-
-        if ext == 'torrent':
-            return p+'torrent.png'
-        elif ext in ['webm']:
-            return p+'video.png'
-        elif ext == 'ogg':
-            return p+'ogg.png'
-        elif ext == 'png':
-            return self.url
-        else:
-            return p+'01.png'
+        return os.path.join(
+            p,
+            # mime_icons.get(self.content_type_string, '01.png')
+        )
 
     def send(self):
         from .sendfile import send_file
@@ -276,10 +254,10 @@ class UploadedFile(models.Model):
         self.save()
         return self.sha1
 
-    @staticmethod
-    def generate_new_filename(instance, filename):
-        f, ext = os.path.splitext(filename)
-        return '%s%s' % (uuid.uuid4().hex, ext)
+    # @staticmethod
+    # def generate_new_filename(instance, filename):
+    #     f, ext = os.path.splitext(filename)
+    #     return '%s%s' % (uuid.uuid4().hex, ext)
 
     @property
     def in_archive_already(self):
@@ -293,7 +271,7 @@ class UploadedFile(models.Model):
     @property
     def filename(self):
         """Returns a full filename of an UploadedFile"""
-        return os.path.join(MEDIA_ROOT, self.file.name)
+        return os.path.join(settings.MEDIA_ROOT, self.file.name)
 
     def __str__(self):
         return str(self.file)

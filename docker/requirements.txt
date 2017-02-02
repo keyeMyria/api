@@ -105,6 +105,8 @@ pytest-django>=3.1.2           # "--reuse-db"
 pytest-cov
 pytest-xdist
 pytest-pythonpath
+pytest-pep8
+pytest-cache
 
 # What is better?
 # 1. python-social-auth

@@ -69,9 +69,9 @@ CELERYBEAT_SCHEDULE = {
     #     # 'args': (1, 2),
     #     # 'options': {"expires": 10.0}
     # },
-    #'every-minute': {
+    # 'every-minute': {
     #    'task': 'proj.celery.debug_task',
     #    'schedule': crontab(minute='*/1'),
     #    #'args': (1, 2)
-    #},
+    # },
 }

@@ -5,13 +5,13 @@ Parsing using Celery tasks.
 """
 import time
 import re
-import os
+# import os
 import redis
-import pickle
+# import pickle
 from celery import shared_task
 from celery import chain
-import requests
-import hashlib
+# import requests
+# import hashlib
 import logging
 import lxml.html
 from lxml.cssselect import CSSSelector as S
@@ -189,17 +189,18 @@ def tag_contents(tag):
         return str(tag)
 
     res = []
-    prev = None
+    # prev = None
     for el in tag.xpath("child::node()"):
         # is_text_element = isinstance(tag, lxml.etree._ElementUnicodeResult)
         txt = tag_to_text(el)
-        # if prev is not None and isinstance(prev, lxml.etree._ElementUnicodeResult) \
+        # if prev is not None and isinstance(prev,
+        #                                    lxml.etree._ElementUnicodeResult)\
         #    and el.tag == 'p':
         # if not isinstance(el, lxml.etree._ElementUnicodeResult) and \
         #    el.tag == 'p' and prev is not None:
         #     res[-1] = res[-1].rstrip()
         res.append(txt)
-        prev = el
+        # prev = el
 
     # if tag.tail is not None:
     #     res.append(tag.tail)
@@ -267,7 +268,8 @@ def tag_to_text(tag):
 @shared_task
 def get_inf():
     # subject root url
-    url = "http://85.142.162.119/os11/xmodules/qprint/openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F"
+    url = "http://85.142.162.119/os11/xmodules/qprint/openlogin.php?" \
+          "proj=B9ACA5BBB2E19E434CD6BEC25284C67F"
     try:
         chain(
             get_subject_sections.s(url),

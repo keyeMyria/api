@@ -2,8 +2,9 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.template.loader import render_to_string
-from django.http import Http404, HttpResponse, HttpRequest, HttpResponseNotFound
-from django.contrib.sitemaps.views import sitemap
+from django.http import HttpResponseNotFound
+# from django.contrib.sitemaps.views import sitemap
+from .sitemaps import StaticViewSitemap
 from .views import *  # noqa
 
 
@@ -25,7 +26,6 @@ def err500(request):
 # handler500 = 'pashinin.urls.err500'
 # handler404 = IndexView.as_view()
 
-from .sitemaps import StaticViewSitemap
 sitemaps = {
     'static': StaticViewSitemap,
 }
@@ -33,8 +33,8 @@ sitemaps = {
 urlpatterns = [
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     #     name='django.contrib.sitemaps.views.sitemap'),
-    url(r'^articles/',  include('articles.urls', namespace='articles')),
-    url(r'^baumanka/',  include('baumanka.urls', namespace='baumanka')),
+    url(r'^articles/', include('articles.urls', namespace='articles')),
+    url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
     url(r'^_/', include('core.urls', namespace='core')),
 ]
 

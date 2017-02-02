@@ -1,9 +1,24 @@
+import os
 import functools
+import pytest
 from unittest import TestCase
 
 
+@pytest.fixture(autouse=True)
+def ci(request):
+    if os.getenv('CI', '') != 'true':
+        pytest.skip('Run it on CI system only')
+
+
 def travis(func):
-    """Decorator to run tests only on travis build"""
+    """Decorator to run a function only if we are in Travis.
+
+    @travis
+    def func1():
+        pass
+
+    func1()  # will run only if in Travis build
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         res = None
@@ -11,29 +26,6 @@ def travis(func):
             res = func(*args, **kwargs)
         return res
     return wrapper
-
-
-class CommonTest(TestCase):
-    """A template for tests"""
-    def setUp(self):
-        self.password = User.objects.make_random_password()
-        self.c = Client(HTTP_USER_AGENT='Mozilla/5.0')
-        self.email = 'root@localhost'
-        try:
-            self._superuser = User.objects.get(email=self.email)
-        except:
-            self._superuser = User.objects.create_user(email=self.email,
-                                                       password=self.password)
-        self._superuser.is_active = True
-        self._superuser.is_superuser = True
-        self._superuser.save()
-        self.F = F(self.c)
-
-    def anon(self):
-        self.c.logout()
-
-    def superuser(self):
-        self.assertTrue(self.c.login(username=self._superuser.email, password=self.password))
 
 
 def test_with_client(client):

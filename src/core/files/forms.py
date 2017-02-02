@@ -62,25 +62,26 @@ class FileForm(forms.ModelForm):
             kwargs['readonly_fields'] = ('uploader',)
             # self.fields['on_disk'] = forms.BooleanField(required=False)
 
-        #     self.fields['file'].initial = p.content
-        #     if p.lng is not None:
-        #         self.fields['category'].queryset = ArticleCategory.objects.filter(lng=p.lng)
+            #     self.fields['file'].initial = p.content
+            # if p.lng is not None:
+            #     self.fields['category'].queryset = ArticleCategory \
+            #                            .objects.filter(lng=p.lng)
 
     def save(self, commit=True):
         m = super(FileForm, self).save(commit=False)
-        data = self.cleaned_data
+        # data = self.cleaned_data
         # uploaded_files = request.session.get('uploaded_files_ids', set())
-        if f.multiple_chunks():  # big enough to be on disk
-            # Like: path/tmpuj7kjiau.upload
-            filename = f.temporary_file_path()
-            print('big', filename)
-        else:
-            print('small')
-            # with open(uploadedFilename, 'wb+') as destination:
-	    #     for chunk in f.chunks():
-	    #         destination.write(chunk)
+        # if f.multiple_chunks():  # big enough to be on disk
+        #     # Like: path/tmpuj7kjiau.upload
+        #     filename = f.temporary_file_path()
+        #     print('big', filename)
+        # else:
+        #     print('small')
+        #     # with open(uploadedFilename, 'wb+') as destination:
+        #     #     for chunk in f.chunks():
+        #     #         destination.write(chunk)
 
-        m.sha1 = sha1
+        # m.sha1 = sha1
         # m.uploader = self.request.user
         # m.page_len = 10
         if commit:

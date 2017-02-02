@@ -1,13 +1,13 @@
 # from __future__ import absolute_import
 import os
 import celery
+from django.conf import settings
 
 # To call a task from a command line:
 #  celery call proj.celery.debug_task
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pashinin.settings')
-from django.conf import settings
 
 
 class Celery(celery.Celery):

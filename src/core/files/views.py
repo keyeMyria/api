@@ -76,7 +76,9 @@ class Upload(BaseView):
                 f.save()
 
         # TODO: optimize uploaded JPGs
-        # jpegtran -copy none -optimize -perfect inputimage.jpg > outputimage.jpg
+        #
+        # jpegtran -copy none -optimize -perfect inputimage.jpg >
+        # outputimage.jpg
 
                 # user.avatar = Image.from_file(f)
             return HttpResponse(json.dumps({
@@ -140,12 +142,14 @@ class Files2(BaseView):
         # i = inspect()
         # i.scheduled()
         # i.active()
-        sha1 = request.POST.get("sha1")
-        if sha1 is not None:
-            f = File.objects.get(sha1=sha1)
-            import magic
-            m = magic.from_file(f.filename, mime=True).decode("utf-8")
-            # return HttpResponse(json.dumps({'filename': f.content_type_string}))
+        # sha1 = request.POST.get("sha1")
+        # if sha1 is not None:
+        #     f = File.objects.get(sha1=sha1)
+        #     import magic
+        #     m = magic.from_file(f.filename, mime=True).decode("utf-8")
+        #     # return HttpResponse(
+        #     #     json.dumps({'filename': f.content_type_string})
+        #     # )
         from .tasks import files_process, move_all_uploads
         r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
         r.set('tasks_files_process', files_process.delay())

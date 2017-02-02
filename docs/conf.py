@@ -22,6 +22,7 @@
 # on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 # -- General configuration ------------------------------------------------
+import sphinx_rtd_theme
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
@@ -84,7 +85,7 @@ todo_include_todos = False
 #
 html_theme = 'alabaster'
 
-import sphinx_rtd_theme
+
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 

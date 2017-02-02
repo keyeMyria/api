@@ -5,7 +5,7 @@ from . import faculties
 from django.conf import settings
 # from core.models import Comment
 from django.core.urlresolvers import reverse
-from .models import EduMaterial
+# from .models import EduMaterial
 
 
 baumanka_dir = '/mnt/files/baumanka/'
@@ -20,7 +20,8 @@ class Baumanka(Base):
         c['menu'] = {
             # 'parent': {
             #     'title': c['kafname'],
-            #     # 'url': reverse("baumanka:kafedra", F=kwargs.get('F'), K=kwargs.get('K'))
+            #     # 'url': reverse("baumanka:kafedra", F=kwargs.get('F'),
+            #    # K=kwargs.get('K'))
             #     'url': reverse("baumanka:index")
             # },
             'items': [

@@ -1,9 +1,9 @@
 import datetime
 import json
 from core.views import BaseView
-from django.utils.translation import ugettext as _
+# from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.conf import settings
+# from django.conf import settings
 from django.http import HttpResponse
 from .forms import Enroll
 from core.forms import Login as LoginForm
@@ -11,8 +11,8 @@ from django.http import HttpResponseRedirect
 # from django.utils.decorators import method_decorator
 # from raven.contrib.django.raven_compat.models import client
 from django.contrib.auth import login
-# from django.views.decorators.csrf import ensure_csrf_cookie, requires_csrf_token
-from rest_framework.views import APIView
+# from django.views.decorators.csrf import ensure_csrf_cookie
+# from rest_framework.views import APIView
 from core.views import EnsureCsrfCookieMixin
 from channels import Channel
 

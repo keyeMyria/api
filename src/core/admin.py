@@ -3,8 +3,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import *  # noqa
-from django.utils.translation import ugettext, ugettext_lazy as _
-from django.contrib.auth.models import Group, Permission
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import Permission
 admin.site.register(Permission)
 # admin.site.unregister(Group)
 
@@ -13,7 +13,10 @@ class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label='Password confirmation',
+        widget=forms.PasswordInput
+    )
 
     class Meta:
         model = User
@@ -181,13 +184,16 @@ admin.site.register(ProxyUser, UserAdmin)
 # class URLAdmin(admin.ModelAdmin):
 #     form = URLForm
 #     # exclude
-#     list_display = ('__str__', 'redirect', 'scheme', 'host', 'path_str', 'query',
+#     list_display = ('__str__', 'redirect', 'scheme', 'host', 'path_str',
+#                     'query',
 #                     'fragment')
-#     # list_display = ('url', 'redirect', 'scheme', 'host', 'image', 'query', 'fragment')
+#     # list_display = ('url', 'redirect', 'scheme', 'host', 'image', 'query',
+#                      'fragment')
 #     # ordering = ('host',)
 #     list_filter = ('scheme', )
 #     raw_id_fields = ('redirect', 'host')
-#     search_fields = ('url', 'scheme__name', 'host__domain__name', 'redirect__url',
+#     search_fields = ('url', 'scheme__name', 'host__domain__name',
+#                       'redirect__url',
 #                      'redirect__scheme__name',
 #                      'redirect__host__domain__name')
 #     # filter_horizontal = ('scheme',)

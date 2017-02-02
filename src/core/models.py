@@ -1,4 +1,5 @@
 import json
+import hashlib
 from django.db import models
 from django.db.models import Count, Func
 from django.contrib.postgres.fields import ArrayField
@@ -8,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Permission, Group, PermissionsMixin
 from django.db import transaction
 from random import randint
+from django.core.cache import cache
 from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 from django_gravatar.helpers import get_gravatar_url
@@ -245,7 +247,7 @@ class IP(models.Model):
         # print(IP.stat())
         #       .group_by('inet'))
         # print(IP.objects.values('inet').annotate(arr_els=Unnest('open_ports')))
-              # .values_list('arr_els', flat=True).distinct())
+        # .values_list('arr_els', flat=True).distinct())
         return str(self.inet)
 
 
@@ -265,7 +267,9 @@ class Hostname(models.Model):
 
     @property
     def key(self):
-        return 'host_{}'.format(hashlib.md5(str(self).encode('utf-8')).hexdigest())
+        return 'host_{}'.format(
+            hashlib.md5(str(self).encode('utf-8')).hexdigest()
+        )
 
     @property
     def last_visited(self):
@@ -278,30 +282,33 @@ class Hostname(models.Model):
         return cache.set(key, t, 60)
 
     def last_visit_older(self, s):
-        #print(self, self.last_visited)
+        # print(self, self.last_visited)
         if self.last_visited is None:
             return True
-        return now() - self.last_visited > timedelta(seconds=3)
+        # return now() - self.last_visited > timedelta(seconds=3)
 
-    @classmethod
-    def from_string(cls, s):
-        host_arr = s.split('.')
-        host_part = '.'.join(host_arr[:-2])
-        domain_part = '.'.join(host_arr[-2:])
-        #try:
-        domain, c = Domain.objects.get_or_create(name=domain_part)
-        #except:
-        #    client.captureException()
-        domain.clean()
-        host, c = Hostname.objects.get_or_create(name=host_part, domain=domain)
-        return host
+    # @classmethod
+    # def from_string(cls, s):
+    #     host_arr = s.split('.')
+    #     host_part = '.'.join(host_arr[:-2])
+    #     domain_part = '.'.join(host_arr[-2:])
+    #     # try:
+    #     domain, c = Domain.objects.get_or_create(name=domain_part)
+    #     # except:
+    #     #    client.captureException()
+    #     domain.clean()
+    #     host, c = Hostname.objects.get_or_create(
+    #         name=host_part,
+    #         domain=domain
+    #     )
+    #     return host
 
     def __eq__(self, other):
         if other is None:
             return False
         if str(self) == str(other):
-        #if self.name == other.name and \
-        #   self.domain == other.domain:
+            # if self.name == other.name and \
+            #   self.domain == other.domain:
             return True
         return False
 
@@ -329,11 +336,10 @@ class Hostname(models.Model):
 #         return self.name_en
 
 
-
-
 # class PersonManager(models.Manager):
 #     def get_queryset(self):
-#         return super(PersonManager, self).get_queryset().select_related('name',
+#         return super(PersonManager, self).get_queryset() \
+#                                          .select_related('name',
 
 # class URLScheme(models.Model):
 #     """http://en.wikipedia.org/wiki/URI_scheme"""
@@ -376,7 +382,8 @@ class Hostname(models.Model):
 
 #     class Meta:
 #         db_table = 'url'
-#         unique_together = (("scheme", "host", "path_str", "query", "fragment"), )
+#         unique_together = (("scheme", "host", "path_str",
+#                             "query", "fragment"), )
 #         # index_together = [["name", "domain"], ]
 #         verbose_name = "URL"
 #         verbose_name_plural = "URLs"
@@ -419,8 +426,10 @@ class Hostname(models.Model):
 #         while not self.host.last_visit_older(wait):
 #             sleep(wait)
 
-#         headers = {'User-Agent':
-#                    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0'}
+#         headers = {
+#             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:29.0)'
+#             ' Gecko/20100101 Firefox/29.0'
+#         }
 
 #         try:
 #             r = requests.get(str(self), headers=headers)
@@ -450,7 +459,8 @@ class Hostname(models.Model):
 #         "Download URL and save it to FILENAME."
 #         # endfile = os.path.basename(url) + '.jpg'
 #         headers = {'User-Agent':
-#                    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0'}
+#                    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:29.0)
+# Gecko/20100101 Firefox/29.0'}
 #         import requests
 #         r = requests.get(url, headers=headers, stream=True)
 #         if r.status_code == 200:
@@ -463,7 +473,9 @@ class Hostname(models.Model):
 #         return url
 
 #     def data_to_unicode(self, **kwargs):
-#         "Extract META tags from HTML and try to convert data to Unicode string"
+#         """Extract META tags from HTML.
+#
+#         and try to convert data to Unicode string"""
 #         from article.parser.html import guess_html_encoding
 #         # update = kwargs.get('update', False)
 #         data = self.download(**kwargs)
@@ -594,7 +606,10 @@ class Hostname(models.Model):
 #         abstract = True
 
 # class Language(models.Model):
-#     name = models.CharField(max_length=150, help_text="Original language name")
+#     name = models.CharField(
+#         max_length=150,
+#         help_text="Original language name"
+#     )
 #     name_en = models.CharField(max_length=150, help_text="Name in English")
 #     code = models.CharField(
 #         max_length=2,

@@ -4,9 +4,10 @@ import logging
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
-from core import get_client_ip, is_mobile
-from django.utils.translation import ugettext as _
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect, HttpResponse
+from core import get_client_ip
+# from django.utils.translation import ugettext as _
+from django.http import (HttpResponseNotFound, HttpResponseRedirect,
+                         HttpResponse)
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
@@ -66,7 +67,7 @@ class BaseView(TemplateView):
                 '10.92.209.1',
             ))
         c['status'] = 200
-        c['mobile'] = is_mobile(self.request)
+        # c['mobile'] = is_mobile(self.request)
         return c
 
     def get(self, request, **kwargs):
@@ -215,10 +216,7 @@ class Nginx(BaseView):
             p = Popen(['nginx', '-V'])
             nginxv, err = p.communicate(stdout=PIPE)
         except:
-            nginxv = '''nginx version: nginx/1.10.0 (Ubuntu)
-built with OpenSSL 1.0.2g  1 Mar 2016
-TLS SNI support enabled
-configure arguments: --with-cc-opt='-g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -fPIE -pie -Wl,-z,relro -Wl,-z,now' --prefix=/usr/share/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-debug --with-pcre-jit --with-ipv6 --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_v2_module --with-http_sub_module --with-http_xslt_module --with-stream --with-stream_ssl_module --with-mail --with-mail_ssl_module --with-threads --add-module=/build/nginx-pzhfc2/nginx-1.10.0/debian/modules/nginx-auth-pam --add-module=/build/nginx-pzhfc2/nginx-1.10.0/debian/modules/nginx-dav-ext-module --add-module=/build/nginx-pzhfc2/nginx-1.10.0/debian/modules/nginx-echo --add-module=/build/nginx-pzhfc2/nginx-1.10.0/debian/modules/nginx-upstream-fair --add-module=/build/nginx-pzhfc2/nginx-1.10.0/debian/modules/ngx_http_substitutions_filter_module'''
+            nginxv = '''nginx version: nginx/1.10.0 (Ubuntu)...'''
 
         c["nginxv"] = nginxv
         c["arguments"] = nginxv
@@ -234,7 +232,8 @@ configure arguments: --with-cc-opt='-g -O2 -fPIE -fstack-protector-strong -Wform
 
 # def err500(request):
 #     if request.method == 'GET':
-#         return HttpResponseServerError(render_to_string('500.html', locals()))
+        # return HttpResponseServerError(render_to_string('500.html',
+        #                                                 locals()))
 #     else:
 #         return HttpResponseServerError('500')
 

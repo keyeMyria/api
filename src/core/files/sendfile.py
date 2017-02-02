@@ -71,7 +71,9 @@ def send_file(f, *args, **kwargs):
         response['Content-type'] = response['Content-type'] + "; charset=utf-8"
 
     if attachment:
-        response['Content-Disposition'] = 'attachment; filename="%s"' % (outFilename)
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+            outFilename
+        )
     else:
         # 'inline; filename="%s"' % (outFilename)
         # open in browser

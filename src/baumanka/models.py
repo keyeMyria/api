@@ -1,16 +1,10 @@
 import os
-from django.utils.translation import gettext_lazy as _
-from django.conf import settings
+# from django.utils.translation import gettext_lazy as _
 from django.db import models
-from core import now
-import hashlib
-from raven.contrib.django.raven_compat.models import client
-import shutil
-from dirtyfields import DirtyFieldsMixin
-from django.http import HttpResponse
+# from raven.contrib.django.raven_compat.models import client
 from core.models import AddedChanged
-from django.core.urlresolvers import reverse
-from django.core.files.uploadedfile import TemporaryUploadedFile, InMemoryUploadedFile
+from dirtyfields import DirtyFieldsMixin
+# from django.core.urlresolvers import reverse
 
 
 class EduMaterial(DirtyFieldsMixin, AddedChanged):

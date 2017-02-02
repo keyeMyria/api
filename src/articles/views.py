@@ -53,7 +53,8 @@ class ArticleView(ArticlesBase):
         #     try:
         #         from files.sendfile import send_file
         #         fname = article.title.strip(".")
-        #         r = send_file(self.request, article.pdf.filename, in_browser=True,
+        #         r = send_file(self.request, article.pdf.filename,
+        #                       in_browser=True,
         #                       outFilename=fname+".pdf")
         #         return r
         #     except:
@@ -61,7 +62,8 @@ class ArticleView(ArticlesBase):
         #         return HttpResponse("")
 
         # if user.is_superuser:
-        #     drafts = Article.objects.filter(is_draft=True, namespace=Article.NS_ARTICLE)
+        #     drafts = Article.objects.filter(is_draft=True,
+        #                            namespace=Article.NS_ARTICLE)
         return c
 
 
@@ -74,12 +76,15 @@ class Articles(ArticlesBase):
             'count': Article.objects.count(),
             'drafts': Article.objects.filter(published=False).count(),
         }
-        # c["categories"] = ArticleCategory.objects.filter(parent=None, lng_id=lng) \
-        #                                          .exclude(article__category=None)
-        # c["articles"] = Article.objects.filter(ok=True, lng_code=lng).order_by('title')
+        # c["categories"] = ArticleCategory.objects.filter(
+        #                 parent=None, lng_id=lng) \
+        #                .exclude(article__category=None)
+        # c["articles"] = Article.objects.filter(ok=True, lng_code=lng) \
+        #       .order_by('title')
         c["articles"] = Article.objects.filter().order_by('added')
-        # # ctx["submenu"] = SubMenu({'url': reverse('articles'), 'title': _('Articles')},
-        # #                          {'url': reverse('books'), 'title': _('Books')},
-        # #                          parent={'url': reverse('articles'), 'title': _('Articles')})
+        # ctx["submenu"] = SubMenu({
+        # 'url': reverse('articles'), 'title': _('Articles')},
+        #  {'url': reverse('books'), 'title': _('Books')},
+        #  parent={'url': reverse('articles'), 'title': _('Articles')})
         # m.parent = {'url': reverse('articles'), 'title': 'asd'}
         return c

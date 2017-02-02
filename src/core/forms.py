@@ -1,12 +1,16 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 # from .models import URL
 
 
 # class URLAddForm(forms.ModelForm):
-#     URL = forms.CharField(label='URL',
-#                           widget=forms.TextInput(attrs={'placeholder': 'https://www.google.com'}))
+#     URL = forms.CharField(
+#         label='URL',
+#         widget=forms.TextInput(attrs={
+#             'placeholder': 'https://www.google.com'
+#         })
+#     )
 
 #     def save(self, commit=True):
 #         m = super(URLAddForm, self).save(commit=False)
@@ -23,8 +27,9 @@ from django.core.exceptions import ValidationError
 #         try:
 #             URL.from_string(url)
 #         except Exception as e:
-#             raise ValidationError('Looks like invalid URL: {}\n{}'.format(url, str(e)),
-#                                   code='invalid')
+#             raise ValidationError(
+#              'Looks like invalid URL: {}\n{}'.format(url, str(e)),
+#              code='invalid')
 
 #     class Meta:
 #         model = URL
@@ -33,7 +38,7 @@ from django.core.exceptions import ValidationError
 
 # class URLForm(forms.ModelForm):
 #     # URL = forms.CharField(label='search',
-#     #                      widget=forms.TextInput(attrs={'placeholder': 'Search'}))
+#     #           widget=forms.TextInput(attrs={'placeholder': 'Search'}))
 
 #     def save(self, commit=True):
 #         #extra_field = self.cleaned_data.get('extra_field', None)

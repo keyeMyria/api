@@ -1,5 +1,5 @@
-from django.conf.urls import include, url
-from .views import *
+from django.conf.urls import url  # , include
+from .views import *  # noqa
 
 
 urlpatterns = [
@@ -7,8 +7,10 @@ urlpatterns = [
     url(r'^(?P<F>\w+?)(?P<K>\d+)/$', Kafedra.as_view(), name="kafedra"),
     url(r'^(?P<F>\w+?)(?P<K>\d+)/practice$',
         Practice.as_view(), name="practice"),
-    # url(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/$',  Sem.as_view(), name="sem"),
+    # url(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/$',
+    #  Sem.as_view(), name="sem"),
     url(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/(?:(?P<path>.*)/?)?$',
         Sem.as_view(), name="sem"),
-    # url(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls, namespace='faculty')),
+    # url(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls,
+    #                                        namespace='faculty')),
 ]

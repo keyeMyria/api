@@ -10,7 +10,10 @@ if __name__ == "__main__":
     # ERROR: virtualenv is not compatible with this system or executable
     # TODO: pip install --upgrade virtualenv
 
-    if (sys.version_info >= (3, 5) and not sys.executable=="/usr/local/bin/python"):
+    if (
+            sys.version_info >= (3, 5) and
+            not sys.executable == "/usr/local/bin/python"
+    ):
         print(sys.executable, end="")
         sys.exit(0)
 
@@ -32,10 +35,10 @@ if __name__ == "__main__":
     if os.path.isdir(ve):
         import shutil
         shutil.rmtree(ve)
-            # virtualenv -p /usr/bin/python3 $(ve_path)
-            #     	$(vecmd)
-            # $(pip) install -r $(requirements)
-            # ln -sf /var/www/xdev/src/cms $(ve_path)/lib/python3.5/site-packages/cms
+        # virtualenv -p /usr/bin/python3 $(ve_path)
+        #     	$(vecmd)
+        # $(pip) install -r $(requirements)
+    # ln -sf /var/www/xdev/src/cms $(ve_path)/lib/python3.5/site-packages/cms
     os.makedirs(ve)
 
     # create ve
