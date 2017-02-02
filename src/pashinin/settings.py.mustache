@@ -5,11 +5,12 @@ from os.path import dirname, abspath, basename
 
 testing = 'test' in sys.argv or '--reuse-db' in sys.argv or \
           '--cov-report' in sys.argv
+
+DEBUG = False
 {{#DEBUG}}
-DEBUG = True
+if not testing:
+    DEBUG = True
 {{/DEBUG}}
-if testing:
-    DEBUG = False
 
 SETTINGS_PATH = dirname(abspath(__file__))
 app = basename(SETTINGS_PATH)
