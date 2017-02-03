@@ -1,5 +1,15 @@
-# import pytest
-from . import process_sections
+import pytest
+from . import (
+    process_sections,
+    ege_subjects_and_urls
+)
+
+
+@pytest.mark.skip(reason='for now')
+@pytest.mark.django_db
+def test_get_subjects():
+    subject_and_urls = ege_subjects_and_urls()
+    assert len(subject_and_urls) == 15
 
 
 # @pytest.mark.django_db

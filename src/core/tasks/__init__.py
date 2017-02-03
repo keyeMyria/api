@@ -21,6 +21,7 @@ def save_cookies(requests_cookiejar, filename):
 
 
 def load_cookies(filename):
+    """Returns what? dict?"""
     with open(filename, 'rb') as f:
         return pickle.load(f)
 
@@ -30,16 +31,24 @@ def get(url, charset='utf-8'):
     """Just GETs an URL."""
     v = 7
     cookies = '/tmp/cookies.txt'
+    headers = {
+        'User-Agent':
+        'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+    }
 
     key = "url.get_" + hashlib.sha1(url.encode('utf-8')).hexdigest()
     html = cache.get(key, version=v)
     if html is not None:
-        return html
+        return html, {}
 
     try:
-        r = requests.get(url, cookies=load_cookies(cookies))
+        r = requests.get(
+            url,
+            cookies=load_cookies(cookies),
+            headers=headers
+        )
     except:
-        r = requests.get(url)
+        r = requests.get(url, headers=headers)
 
     save_cookies(r.cookies, cookies)
     if r.status_code == 200:
@@ -58,6 +67,6 @@ def get(url, charset='utf-8'):
                     # client.captureException()
                     pass
         cache.set(key, html, 3600, version=v)
-        return html
+        return html, {'r': r}
     else:
-        return None
+        return r.text, {'r': r}
