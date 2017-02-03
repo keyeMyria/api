@@ -57,7 +57,7 @@ before_install:
 # Default:
 # install: "pip install -r requirements.txt"
 install:
-  - python -c 'from core.tasks.update import generate_settings;generate_settings()'
+  - (cd src; python -c 'from core.tasks.update import generate_settings;generate_settings()')
   - pip install -r docker/requirements.txt
   - pip install coveralls
   - pip install flake8
