@@ -6,6 +6,7 @@ dist: trusty
 git:
   depth: 3
 
+# default: 3 min
 # 1d - 86400
 # 1h - 3600
 cache:
@@ -29,90 +30,26 @@ addons:
   postgresql: "9.6"
   hosts:
     - pashinin.com
-  apt:
-    sources:
-      #   - deadsnakes      # for python 3.5
-      - sourceline: 'ppa:brightbox/ruby-ng'
-      - sourceline: 'ppa:nginx/stable'
-    packages:
-      - nginx-full
-      - supervisor
-      - ruby2.3
-      - ruby-mustache
-      - redis-server
-      - realpath
 
 services:
     - postgresql
+    - redis-server
 
-before_install:
-  - pwd
-  - echo $TRAVIS_PYTHON_VERSION
-  # - sudo chown -R www-data .
-  - ruby -v
-  - nginx -V
-  # - sudo gem install mustache      # <- need this one, not one form apt-get
-  # - sudo service redis-server start
-
-# Default:
-# install: "pip install -r requirements.txt"
 install:
   - pip install -r docker/requirements.txt
   - pip install coveralls
   - pip install flake8
+  - (cd configs; ./config.py secret-example.json secret.json)
   - (cd src; python -c 'from core.tasks.update import generate_settings;generate_settings()')
-  # - (cd configs; make)
-  # - (cd configs; make links)
-  # - psql -a -f configs/tmp/dbinit.sql -U postgres
-  # - (cd src; ../configs/migrations.sh)
-  # - # - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
-  # - sudo service nginx stop
-  # - sudo service nginx start
-  # - sudo supervisorctl reread
-  # - sudo supervisorctl update
-  # - sudo service postgresql status
-  # - sleep 5
 
 before_script:
   - flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
-
-# TESTS
-# script: nosetests
 script:
-  # - ps -ef | grep -v grep | grep nginx
-  # - curl http://127.0.0.1:8080/
   - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v -n3 --durations=3
-  - curl pashinin.com
-  - curl -Is http://pashinin.com | grep "200 OK"
-
-# after_script:
-#   - git status
 
 after_success:
   - coveralls
-  - ls -la .
-  - ls -la src
-
-after_failure:
-  # sudo service redis-server status
-  # sudo supervisorctl status
-  # sudo netstat -atunpl
-  ls -la /tmp
-  ls -la /etc/supervisor/conf.d/
-  ls -la /etc/nginx/
-  ls -la .
-  ls -la /home/travis/build/pashinin-com/pashinin.com/src
-  ls -la /home/travis/virtualenv/python3.5.0/bin/
-  df -h
-  # sudo cat /var/log/nginx/error.log
-  # sudo cat /etc/nginx/nginx.conf
-  # sudo cat /etc/supervisor/conf.d/daphne.conf
-  # sudo cat /etc/nginx/sites-enabled/pashinin.com.conf
-  # sudo ls -la /var/log/supervisor
-  # sudo cat /var/log/supervisor/supervisord.log
-  # sudo cat /var/log/supervisor/daphne.err.log
-  # sudo cat /var/log/supervisor/worker.err.log
 
 # To use encrypted variables:
 #
