@@ -1,13 +1,6 @@
 import os
 import functools
-import pytest
-from unittest import TestCase
-
-
-@pytest.fixture(autouse=True)
-def ci(request):
-    if os.getenv('CI', '') != 'true':
-        pytest.skip('Run it on CI system only')
+# import pytest
 
 
 def travis(func):
