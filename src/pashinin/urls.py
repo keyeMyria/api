@@ -5,7 +5,12 @@ from django.template.loader import render_to_string
 from django.http import HttpResponseNotFound
 # from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap
-from .views import *  # noqa
+from .views import (
+    Index,
+    FAQ,
+    Login,
+    Contacts
+)
 
 
 def err404(request):

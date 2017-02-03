@@ -1,11 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
-from django.db.models.aggregates import Count
-from random import randint
-from django.db import transaction
 from django.conf import settings
 from django.core.urlresolvers import reverse
 # from django.contrib.sites.shortcuts import get_current_site

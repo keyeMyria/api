@@ -1,11 +1,9 @@
 import json
-import os
-import redis
 import urllib
-from django.http import HttpResponse, Http404, HttpResponseNotFound
-from django.db.models import Count
+from django.http import HttpResponse
+# from django.db.models import Count
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 from rest_framework.views import APIView
 
 

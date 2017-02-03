@@ -4,10 +4,7 @@ import os
 import redis
 from celery import shared_task
 from celery import chain
-from django.core.mail import send_mail
 from subprocess import call, Popen, PIPE
-from celery.signals import task_postrun
-from datetime import datetime
 from django.conf import settings
 from .. import now, apps
 

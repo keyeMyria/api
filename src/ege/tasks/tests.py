@@ -1,5 +1,5 @@
 # import pytest
-from ..tasks import process_sections
+from . import process_sections
 
 
 # @pytest.mark.django_db

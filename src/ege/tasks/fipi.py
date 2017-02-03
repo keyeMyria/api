@@ -6,8 +6,6 @@ Parsing using Celery tasks.
 import time
 import re
 # import os
-import redis
-# import pickle
 from celery import shared_task
 from celery import chain
 # import requests
@@ -125,7 +123,7 @@ def process_sections(sections, *args):
             pages = S('span.Walk a')(tree)
             pages = [int(p.text_content().strip('[]')) for p in pages]
             pages.append(0)
-            total_pages = max(pages)
+            total_pages = max(pages)  # noqa
             count += 1
 
             time.sleep(5)

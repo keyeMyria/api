@@ -1,5 +1,5 @@
 import core.json as json
-from channels.generic.websockets import WebsocketConsumer, \
+from channels.generic.websockets import \
     JsonWebsocketConsumer as JSONC
 
 

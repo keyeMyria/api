@@ -1,4 +1,3 @@
-import urllib
 from rparser import article_render as A
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -125,14 +124,14 @@ class Article(AddedChanged):
     # def tags(self):
     #     return []
 
-    @classmethod
-    def untagged(cls, namespace=0):
-        """Get pages that do not have links from "categorylinks" table"""
-        return cls.objects \
-                  .exclude(page_id__in=categorylinks.objects.filter()
-                           .values_list('cl_from', flat=True)) \
-                  .filter(page_namespace=cls.NS_ARTICLE) \
-                  .filter(page_is_redirect=0)
+    # @classmethod
+    # def untagged(cls, namespace=0):
+    #     """Get pages that do not have links from "categorylinks" table"""
+    #     return cls.objects \
+    #               .exclude(page_id__in=categorylinks.objects.filter()
+    #                        .values_list('cl_from', flat=True)) \
+    #               .filter(page_namespace=cls.NS_ARTICLE) \
+    #               .filter(page_is_redirect=0)
 
     @property
     def unverified_revisions(self):

@@ -34,8 +34,12 @@ when defining CHANNEL_LAYERS:
 """
 
 from channels.routing import route, route_class
-from .consumers import *  # noqa
 from channels.generic.websockets import WebsocketDemultiplexer
+from .consumers import (
+    Default,
+    Celery,
+    send_lead
+)
 
 
 # WebsocketDemultiplexer doesn't work with class-based consumers

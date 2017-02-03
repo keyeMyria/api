@@ -1,5 +1,10 @@
 from django.conf.urls import url  # , include
-from .views import *  # noqa
+from .views import (
+    Baumanka,
+    Kafedra,
+    Sem,
+    Practice,
+)
 
 
 urlpatterns = [

@@ -150,15 +150,15 @@ class File(DirtyFieldsMixin, AddedChanged):
     #         f.save()
     #         return f
 
-    @classmethod
-    def from_bytes(cls, b):
-        d = Data.from_bytes(b)
-        filename = cls.uploads_md5(d.md5)
-        f, created = cls.objects.get_or_create(data=d, filename=filename)
-        if not os.path.isfile(filename):
-            with open(filename, "wb") as fd:
-                fd.write(b)
-        return f
+    # @classmethod
+    # def from_bytes(cls, b):
+    #     d = Data.from_bytes(b)
+    #     filename = cls.uploads_md5(d.md5)
+    #     f, created = cls.objects.get_or_create(data=d, filename=filename)
+    #     if not os.path.isfile(filename):
+    #         with open(filename, "wb") as fd:
+    #             fd.write(b)
+    #     return f
 
     def readable_by(self, user, request=None):
         if user.is_superuser:

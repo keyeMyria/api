@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import File
-from .forms import *
+from .forms import FileForm, FileAddForm
 
 
 @admin.register(File)

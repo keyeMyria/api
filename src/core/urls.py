@@ -1,5 +1,10 @@
 from django.conf.urls import include, url
-from .views import *  # noqa
+from .views import (
+    Celery,
+    Nginx,
+    Updates,
+    Logout
+)
 
 # These urls go under "core" namespace url: /_/
 urlpatterns = [

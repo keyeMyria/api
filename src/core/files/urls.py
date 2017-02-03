@@ -1,5 +1,9 @@
 from django.conf.urls import url
-from .views import *  # noqa
+from .views import (
+    Files,
+    Upload,
+    File,
+)
 
 # In pashinin/urls.py
 #

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import *  # noqa
+from .models import User, SiteUpdate
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Permission
 admin.site.register(Permission)
@@ -102,6 +102,7 @@ class ProxyUser(User):
         auto_created = True
         verbose_name = User._meta.verbose_name
         verbose_name_plural = User._meta.verbose_name_plural
+
 
 admin.site.register(ProxyUser, UserAdmin)
 

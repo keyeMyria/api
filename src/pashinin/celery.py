@@ -21,6 +21,7 @@ class Celery(celery.Celery):
             register_logger_signal(client)
             register_signal(client)
 
+
 app = Celery('pashinin')
 
 # Using a string here means the worker will not have to

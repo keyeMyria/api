@@ -1,8 +1,12 @@
-# import re
-# import os
-# import redis
+import pickle
+import hashlib
+import requests
+import re
+import lxml
+from lxml.cssselect import CSSSelector as S
 from celery import shared_task
 from django.core.cache import cache
+from raven.contrib.django.raven_compat.models import client
 # from celery import chain
 # from subprocess import call, Popen, PIPE
 # from celery.signals import task_postrun

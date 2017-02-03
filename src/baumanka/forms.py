@@ -1,6 +1,5 @@
-import os
 from django import forms
-from .models import *  # noqa
+from .models import EduMaterial
 
 
 class EduMaterialForm(forms.ModelForm):

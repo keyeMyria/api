@@ -7,8 +7,8 @@ from .models import File as F, UploadedFile
 from core import now
 from .tasks import ensure_fs_ready
 from .forms import UploadedFileForm
-from django.http import HttpResponse, Http404, HttpResponseNotFound
-from django.db.models import Count
+from django.http import HttpResponse, HttpResponseNotFound
+# from django.db.models import Count
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -90,7 +90,7 @@ class Upload(BaseView):
         for key in request.FILES:
             f = request.FILES[key]
             upload = UploadedFile(file=f)
-            upload_md5 = upload.get_md5()
+            # upload_md5 = upload.get_md5()
             upload.date_uploaded = now()
             if f.multiple_chunks():  # file is already on disk
                 upload.save()

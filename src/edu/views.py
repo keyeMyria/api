@@ -1,8 +1,6 @@
 import logging
-import os
 from pashinin.views import Base
-from django.conf import settings
-from .models import *  # noqa
+from .models import Task
 # from django.core.urlresolvers import reverse
 log = logging.getLogger(__name__)
 

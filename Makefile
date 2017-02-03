@@ -193,4 +193,8 @@ py:
 	$(python)
 
 test:
-	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -v --pep8 -n3 --durations=3 --cov src --cov-report term-missing"
+	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -v -n3 --durations=3"
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
+
+flake8:
+	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py

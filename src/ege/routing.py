@@ -1,5 +1,5 @@
 from channels.routing import route_class
-from .consumers import *  # noqa
+from .consumers import Default
 
 
 channel_routing = [

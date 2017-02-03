@@ -1,8 +1,7 @@
 import logging
-import os
 from pashinin.views import Base as B
 from django.conf import settings
-from .models import *  # noqa
+from .models import Subject, EGE
 from core import now
 from edu.models import Task
 import pymorphy2

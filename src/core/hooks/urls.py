@@ -1,5 +1,9 @@
 from django.conf.urls import url
-from .views import *  # noqa
+from .views import (
+    Github,
+    Telegram,
+    Travis,
+)
 
 urlpatterns = [
     url(r'^github$', Github.as_view(), name="github"),

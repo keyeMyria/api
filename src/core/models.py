@@ -158,10 +158,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return authorized social accounts"""
         return get_gravatar_url(self.email, size=size_in_px)
 
-    @property
-    def social_accounts(self):
-        """Return authorized social accounts"""
-        return UserSocialAuth.objects.filter(user=self)
+    # @property
+    # def social_accounts(self):
+    #     """Return authorized social accounts"""
+    #     return UserSocialAuth.objects.filter(user=self)
 
     def get_full_name(self):
         "Used in Admin. Dajngo wants this to be defined."

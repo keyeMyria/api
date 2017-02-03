@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *  # noqa
+from .models import Subject, EGE
 from django.utils.translation import ugettext_lazy as _
 
 

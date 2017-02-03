@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+# from django.conf.urls import include, url
 from .views import *  # noqa
 
 # These urls go under "core" namespace url: /_/

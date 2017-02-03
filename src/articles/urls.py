@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import *  # noqa
+from .views import Articles, ArticleView
 
 urlpatterns = [
     url(r'^$', Articles.as_view(), name="index"),

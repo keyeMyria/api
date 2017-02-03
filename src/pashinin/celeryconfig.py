@@ -2,8 +2,8 @@
 # This file is a part of Django's settings.py. It is included withing
 # it.
 #
-from celery.schedules import crontab
-from datetime import timedelta
+# from celery.schedules import crontab
+# from datetime import timedelta
 from django.conf import settings
 
 # Register our serializer methods into kombu

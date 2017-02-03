@@ -1,7 +1,5 @@
 import os
 import sys
-import functools
-import re
 import datetime
 from django.utils.timezone import utc
 from django.core.validators import URLValidator

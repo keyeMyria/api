@@ -70,7 +70,7 @@ install:
   - sleep 5
 
 before_script:
-  - flake8 .      # check Python code style
+  - flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 
 # TESTS

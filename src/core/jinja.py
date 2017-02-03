@@ -9,7 +9,7 @@ now = datetime.now()
 
 
 def djrender(value):
-    from django.template import Template, Context
+    # from django.template import Template, Context
     # from cms.core.jinja import environment
     # t = Template(value)
     # c = Context({
