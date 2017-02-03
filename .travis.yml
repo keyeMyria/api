@@ -78,7 +78,7 @@ before_script:
 script:
   # - ps -ef | grep -v grep | grep nginx
   # - curl http://127.0.0.1:8080/
-  - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v
+  - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v -n3 --durations=3
   - curl pashinin.com
   - curl -Is http://pashinin.com | grep "200 OK"
 
