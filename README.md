@@ -1,7 +1,10 @@
+# pashinin.com
+
 [![Build Status](https://travis-ci.org/pashinin-com/pashinin.com.png?branch=master)](https://travis-ci.org/pashinin-com/pashinin.com)
 [![Coverage Status](https://coveralls.io/repos/github/pashinin-com/pashinin.com/badge.svg?branch=master)](https://coveralls.io/github/pashinin-com/pashinin.com?branch=master)
+[![PEP8](https://img.shields.io/badge/style-pep8-blue.svg)](https://www.python.org/dev/peps/pep-0008/)
+[![Docs](https://img.shields.io/badge/Docs-read-blue.svg)](http://pashinincom.readthedocs.io/en/latest/)
 
-# pashinin.com
 
 ```bash
 make dev_pkgs
@@ -25,5 +28,3 @@ make tmux
 <!-- Manually with IPython shell: -->
 
 <!--     ./manage.py shell -->
-
-[Docs](http://pashinincom.readthedocs.io/en/latest/)
