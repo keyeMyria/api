@@ -17,6 +17,7 @@ env:
   - DJANGO_SETTINGS_MODULE=pashinin.settings
 
 matrix:
+  fast_finish: true
   allow_failures:
     - python: pypy
 
