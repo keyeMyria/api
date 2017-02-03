@@ -6,7 +6,7 @@ import lxml
 from lxml.cssselect import CSSSelector as S
 from celery import shared_task
 from django.core.cache import cache
-from raven.contrib.django.raven_compat.models import client
+# from raven.contrib.django.raven_compat.models import client
 # from celery import chain
 # from subprocess import call, Popen, PIPE
 # from celery.signals import task_postrun
@@ -55,7 +55,8 @@ def get(url, charset='utf-8'):
                 try:
                     html = r.content.decode(charset)
                 except:
-                    client.captureException()
+                    # client.captureException()
+                    pass
         cache.set(key, html, 3600, version=v)
         return html
     else:
