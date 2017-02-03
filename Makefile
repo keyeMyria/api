@@ -198,3 +198,8 @@ test:
 
 flake8:
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
+
+render:
+	(cd configs;./config.py secret-example.json secret.json)
+	(cd configs/; ./render.py)
+	(cd src; python3 -c 'from core.tasks import generate_settings;generate_settings()')

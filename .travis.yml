@@ -39,8 +39,7 @@ install:
   - pip install -r docker/requirements.txt
   - pip install coveralls
   - pip install flake8
-  - (cd configs; ./config.py secret-example.json secret.json)
-  - (cd src; python -c 'from core.tasks.update import generate_settings;generate_settings()')
+  - make render
 
 before_script:
   - flake8 src --exclude=*/migrations/*,__pycache__,settings*.py

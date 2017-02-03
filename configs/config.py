@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     # Put some additional variables
     data['repo'] = repo_path
-    data['www-data'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
+    data['wwwdata'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
 
     if (sys.version_info >= (3, 5)):
         data['vebin'] = os.path.dirname(sys.executable)

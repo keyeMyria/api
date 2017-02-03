@@ -13,7 +13,7 @@
 command={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
 
 directory={{repo}}/src
-user={{www-data}}
+user={{wwwdata}}
 autostart=true
 autorestart=false
 stderr_logfile=/var/log/supervisor/daphne-{{domain}}.err.log

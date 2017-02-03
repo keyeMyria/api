@@ -16,15 +16,18 @@ var exec = require('child_process').exec;
 
 // settings.py
 gulp.task('settings', function() {
-	gulp.watch('src/**/settings*.mustache').on("change", function (info) {
+	gulp.watch('src/**/settings*.jinja').on("change", function (info) {
 		console.log(info.path);
 		var output = info.path.substr(0, info.path.lastIndexOf("."));
 		console.log(output);
-		exec('mustache /tmp/conf.json '+ info.path +' > ' + output, function (err, stdout, stderr) {
+		exec('./configs/render.py ' + info.path, function (err, stdout, stderr) {
 			console.log(stdout);
 			console.log(stderr);
-			// cb(err);
 		});
+		// exec('mustache /tmp/conf.json '+ info.path +' > ' + output, function (err, stdout, stderr) {
+		// 	console.log(stdout);
+		// 	console.log(stderr);
+		// });
 		livereload();
 	});
 });

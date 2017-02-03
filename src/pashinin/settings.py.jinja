@@ -3,14 +3,16 @@ import os
 import sys
 from os.path import dirname, abspath, basename
 
-testing = 'test' in sys.argv or '--reuse-db' in sys.argv or \
-          '--cov-report' in sys.argv
+TESTING = 'test' in sys.argv or '--reuse-db' in sys.argv or \
+          '--durations=3' in sys.argv
 
+{% if DEBUG %}
+DEBUG = True
+if TESTING:
+    DEBUG = False
+{% else %}
 DEBUG = False
-{{#DEBUG}}
-if not testing:
-    DEBUG = True
-{{/DEBUG}}
+{% endif %}
 
 SETTINGS_PATH = dirname(abspath(__file__))
 app = basename(SETTINGS_PATH)
@@ -309,7 +311,7 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # Transport selection via DSN is deprecated. You should explicitly pass
 # the transport class to Client() instead.
 # import raven
-if not testing:
+if not TESTING:
     RAVEN_CONFIG = {
         'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
         # If you are using git, you can also automatically configure the
@@ -330,7 +332,7 @@ from raven.contrib.celery import register_signal, register_logger_signal
 # django_nose.NoseTestSuiteRunner
 # TEST_RUNNER =
 
-if testing:
+if TESTING:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
@@ -413,12 +415,13 @@ MIGRATION_MODULES = {
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS_HOST = '{{redis_server}}'
 
+
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         # 'LOCATION': '/var/run/redis/redis-server.pid',
         'LOCATION': ['{{redis_server}}:6379'],
-        # 'KEY_PREFIX': 'd' if DEBUG else '',
+        'KEY_PREFIX': 't' if TESTING else '',
     }
 }
 if DEBUG and False:

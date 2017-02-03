@@ -5,11 +5,8 @@ Parsing using Celery tasks.
 """
 import time
 import re
-# import os
 from celery import shared_task
 from celery import chain
-# import requests
-# import hashlib
 import logging
 import lxml.html
 from lxml.cssselect import CSSSelector as S

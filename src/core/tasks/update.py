@@ -1,6 +1,7 @@
 """Tasks for updating this site."""
 import re
 import os
+import json
 import redis
 from celery import shared_task
 from celery import chain
@@ -197,6 +198,21 @@ def update_finish(sha1, *args):
 
 
 @shared_task
+def render_jinja_file(filename, data, outdir=None):
+    full = os.path.abspath(filename)
+    d = os.path.dirname(full)
+    base, ext = os.path.splitext(os.path.basename(full))
+    output = os.path.join(d, base)
+    if outdir is not None:
+        output = os.path.join(outdir, base)
+
+    input = open(full, 'r').read()
+    from jinja2 import Environment
+    with open(output, 'w') as f:
+        f.write(Environment().from_string(input).render(**data))
+
+
+@shared_task
 def generate_settings():
     """Scans all apps and (re)generates settings.py files.
 
@@ -204,14 +220,10 @@ def generate_settings():
     to render a file.
 
     """
+    data = json.load(open('/tmp/conf.json', 'r'))
     for app, path in apps():
         templates = [os.path.join(path, f) for f in os.listdir(path)
-                     if re.match(r'settings.*\.mustache', f)]
+                     if re.match(r'settings.*\.jinja', f)]
         for template in templates:
             print(template)
-            cmd = ['mustache', '/tmp/conf.json', template]
-            p = Popen(cmd, stdout=PIPE)
-            output, err = p.communicate()
-            out = os.path.join(os.path.dirname(template), 'settings.py')
-            with open(out, 'wb') as f:
-                f.write(output)
+            render_jinja_file(template, data)
