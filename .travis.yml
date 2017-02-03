@@ -57,10 +57,10 @@ before_install:
 # Default:
 # install: "pip install -r requirements.txt"
 install:
-  - (cd src; python -c 'from core.tasks.update import generate_settings;generate_settings()')
   - pip install -r docker/requirements.txt
   - pip install coveralls
   - pip install flake8
+  - (cd src; python -c 'from core.tasks.update import generate_settings;generate_settings()')
   # - (cd configs; make)
   # - (cd configs; make links)
   # - psql -a -f configs/tmp/dbinit.sql -U postgres
