@@ -54,23 +54,23 @@ before_install:
 # Default:
 # install: "pip install -r requirements.txt"
 install:
-  pip install -r docker/requirements.txt
-  pip install coveralls
-  pip install flake8
-  (cd configs; make)
-  (cd configs; make links)
-  psql -a -f configs/tmp/dbinit.sql -U postgres
-  (cd src; ../configs/migrations.sh)
-  # - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
-  sudo service nginx stop
-  sudo service nginx start
-  sudo supervisorctl reread
-  sudo supervisorctl update
-  sudo service postgresql status
-  sleep 5
+  - pip install -r docker/requirements.txt
+  - pip install coveralls
+  - pip install flake8
+  - (cd configs; make)
+  - (cd configs; make links)
+  - psql -a -f configs/tmp/dbinit.sql -U postgres
+  - (cd src; ../configs/migrations.sh)
+  - # - (cd src; /home/travis/virtualenv/python3.5.0/bin/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1)
+  - sudo service nginx stop
+  - sudo service nginx start
+  - sudo supervisorctl reread
+  - sudo supervisorctl update
+  - sudo service postgresql status
+  - sleep 5
 
 before_script:
-  flake8 .      # check Python code style
+  - flake8 .      # check Python code style
 
 
 # TESTS
@@ -86,9 +86,9 @@ after_script:
   - git status
 
 after_success:
-  coveralls
-  ls -la .
-  ls -la src
+  - coveralls
+  - ls -la .
+  - ls -la src
 
 after_failure:
   sudo service redis-server status
