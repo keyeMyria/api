@@ -1,6 +1,6 @@
 # pashinin.com
 
-[![License](https://img.shields.io/badge/license-GPL_3-green.svg?dummy)](https://github.com/pashinin/workgroups2)
+[![License](https://img.shields.io/badge/license-GPL_3-green.svg?dummy)](https://github.com/pashinin-com/pashinin.com)
 [![Documentation Status](https://readthedocs.org/projects/pashinincom/badge/?version=latest)](http://pashinincom.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/pashinin-com/pashinin.com.png?branch=master)](https://travis-ci.org/pashinin-com/pashinin.com)
 [![PEP8](https://img.shields.io/badge/style-pep8-blue.svg)](https://www.python.org/dev/peps/pep-0008/)
