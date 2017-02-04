@@ -3,11 +3,19 @@ import os
 import sys
 from os.path import dirname, abspath, basename
 
-testing = 'test' in sys.argv or '--reuse-db' in sys.argv
-DEBUG = testing
-{{#DEBUG}}
+TESTING = os.getenv('TRAVIS') or (
+    'test' in sys.argv or
+    '--reuse-db' in sys.argv or
+    '--durations=3' in sys.argv
+)
+
+{% if DEBUG %}
 DEBUG = True
-{{/DEBUG}}
+if TESTING:
+    DEBUG = False
+{% else %}
+DEBUG = False
+{% endif %}
 
 SETTINGS_PATH = dirname(abspath(__file__))
 app = basename(SETTINGS_PATH)
@@ -308,12 +316,13 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # Transport selection via DSN is deprecated. You should explicitly pass
 # the transport class to Client() instead.
 # import raven
-RAVEN_CONFIG = {
-    'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
-}
+if not TESTING:
+    RAVEN_CONFIG = {
+        'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        # 'release': raven.fetch_git_sha(os.path.dirname(__file__)),
+    }
 
 import logging
 from raven import Client
@@ -397,9 +406,10 @@ SOCIAL_AUTH_PIPELINE = (
 
 AUTH_USER_MODEL = 'core.User'
 
+
 # TODO: why is it here?
 MIGRATION_MODULES = {
-    'auth': None,
+    # 'auth': None,
     # 'contenttypes': None,
     # 'default': None,
     # 'sessions': None,
@@ -418,15 +428,9 @@ CACHES = {
         'BACKEND': 'redis_cache.RedisCache',
         # 'LOCATION': '/var/run/redis/redis-server.pid',
         'LOCATION': ['{{redis_server}}:6379'],
-        # 'KEY_PREFIX': 'd' if DEBUG else '',
+        'KEY_PREFIX': 't' if TESTING else '',
     }
 }
-if DEBUG:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
-    }
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.

@@ -20,6 +20,8 @@ python:
 
 env:
   - DJANGO_SETTINGS_MODULE=pashinin.settings
+  - DJANGO_SETTINGS_MODULE=ege.settings_ege
+  - DJANGO_SETTINGS_MODULE=ege.settings_oge
 
 matrix:
   fast_finish: true
