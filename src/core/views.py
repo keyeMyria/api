@@ -16,6 +16,8 @@ from rest_framework.views import APIView
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from .models import SiteUpdate
+from .forms import Login as LoginForm
+from django.contrib.auth import login
 from . import now
 
 log = logging.getLogger(__name__)
@@ -44,7 +46,7 @@ class BaseView(TemplateView):
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC
-        c['INSTALLED_APPS'] = settings.INSTALLED_APPS
+        # c['INSTALLED_APPS'] = settings.INSTALLED_APPS
 
         # libraries
         c["jquery"] = True
@@ -236,6 +238,35 @@ class Nginx(BaseView):
         #                                                 locals()))
 #     else:
 #         return HttpResponseServerError('500')
+
+
+# @method_decorator(ensure_csrf_cookie, name='dispatch')
+class Login(EnsureCsrfCookieMixin, BaseView):
+    template_name = "core_login.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(Login, self).get_context_data(**kwargs)
+        c['menu'] = {}
+        # c['form'] = LoginForm
+        return c
+
+    def get(self, request, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            c = self.get_context_data(**kwargs)
+            return self.render_to_response(c, status=c['status'])
+
+    def post(self, request, **kwargs):
+        f = LoginForm(request.POST)
+        # request.GET.get('redirect')
+        # Check form input data (email and password)
+        if f.is_valid():
+            login(request, f.cleaned_data['user'])
+            return HttpResponse(json.dumps({'code': 0}))
+        else:
+            return HttpResponse(json.dumps({'errors': f.errors}))
+
 
 class Logout(APIView):
     def get(self, request, **kwargs):

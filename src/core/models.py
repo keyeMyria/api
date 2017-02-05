@@ -13,6 +13,7 @@ from django.core.cache import cache
 from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 from django_gravatar.helpers import get_gravatar_url
+from . import now
 
 
 # Travis payload format:
@@ -81,12 +82,18 @@ class AddedChanged(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, username, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=self.normalize_email(email),
+            username=username,
+            is_staff=False,
+            is_active=True,
+            is_superuser=False,
+            last_login=now(),
+            date_joined=now()
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -100,8 +107,8 @@ class UserManager(BaseUserManager):
             random_index = randint(0, count - 1)
             return self.all()[random_index]
 
-    def create_superuser(self, email, password):
-        user = self.create_user(email, password=password)
+    def create_superuser(self, username, email, password):
+        user = self.create_user(username, email, password)
         user.is_active = True
         user.is_staff = True
         user.is_superuser = True

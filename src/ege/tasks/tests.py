@@ -13,7 +13,8 @@ def test_get_subjects():
 
 
 # @pytest.mark.django_db
-def test_fipi_get(settings):
+@pytest.mark.skip(reason='for now')
+def test_fipi_get():
     process_sections([])
     # from .update import project_update
     # settings.CELERY_ALWAYS_EAGER = True

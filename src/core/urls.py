@@ -3,6 +3,7 @@ from .views import (
     Celery,
     Nginx,
     Updates,
+    Login,
     Logout
 )
 
@@ -13,5 +14,6 @@ urlpatterns = [
     url(r'files/', include('core.files.urls', namespace='files')),
     url(r'^nginx$', Nginx.as_view(), name='nginx'),
     url(r'^updates$', Updates.as_view(), name='updates'),
+    url(r'^login$', Login.as_view(), name='login'),
     url(r'^logout$', Logout.as_view(), name='logout'),
 ]

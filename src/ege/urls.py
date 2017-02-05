@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import url, include
 from .views import YearView, SubjectView, Index
+from core.views import Login
 
 # ege.example.org
 urlpatterns = [
@@ -12,6 +13,7 @@ urlpatterns = [
         SubjectView.as_view(), name="subject"),
 
 
+    url(r'^login$', Login.as_view(), name='login'),
     url(r'^_/', include('core.urls', namespace='core')),
     url(r'^_/django/', include(admin.site.urls)),
 ]
