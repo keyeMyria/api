@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 # from django.conf import settings
 from django.http import HttpResponse
 from .forms import Enroll
-from django.http import HttpResponseRedirect
 # from django.utils.decorators import method_decorator
 # from raven.contrib.django.raven_compat.models import client
 # from django.views.decorators.csrf import ensure_csrf_cookie
