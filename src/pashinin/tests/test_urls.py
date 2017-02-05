@@ -3,7 +3,8 @@ import pytest
 
 @pytest.mark.urls('pashinin.urls')
 def test_urls_as_admin(admin_client):
-    urls = ['/', '/contacts', '/faq']
+    urls = ['/', '/contacts', '/faq', '/articles/']
+    urls += ['/_/celery', '/_/nginx', '/_/updates']
     for url in urls:
         r = admin_client.get(url)
         assert r.status_code == 200
