@@ -119,6 +119,12 @@ STATIC_ROOT = os.path.join(REPO_PATH, "static")
 
 
 FILES_ROOT = "{{FILES_ROOT}}"
+# if not os.path.isdir(FILES_ROOT) and TESTING:
+#     FILES_ROOT = os.path.join(REPO_PATH, 'tmp', 'files')
+#     if not os.path.isdir(FILES_ROOT):
+#         os.makedirs(FILES_ROOT, exist_ok=True)
+if TESTING:
+    FILES_ROOT = os.path.join(REPO_PATH, 'tmp', 'files')
 
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.

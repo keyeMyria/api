@@ -1,3 +1,5 @@
+import os
+import pytest
 # import os
 # from core.tests import travis
 # from django.core.urlresolvers import reverse
@@ -64,3 +66,20 @@
 #         self.superuser()
 #         os.remove(test_upload("Superuser"))
 #         os.remove(fname)
+cd = os.path.dirname(os.path.abspath(__file__))
+assets = os.path.join(cd, 'assets')
+
+
+@pytest.mark.django_db
+def test_upload(client):
+    with open(os.path.join(assets, 'text.txt')) as fp:
+        r = client.post(
+            '/_/files/upload',
+            data={
+                'name': 'file',
+                'file': fp
+            },
+            # content_type='application/json'
+        )
+        assert r.status_code == 200
+        assert r.json()['sha1'] == 'a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0'

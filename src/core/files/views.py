@@ -71,7 +71,7 @@ class Upload(BaseView):
             new_file.save()
             from .tasks import move_upload_to_files
             f = move_upload_to_files(new_file)
-            if f.uploader is None:
+            if not f.uploader and user is not None and not user.is_anonymous:
                 f.uploader = user
                 f.save()
 
@@ -83,9 +83,12 @@ class Upload(BaseView):
                 # user.avatar = Image.from_file(f)
             return HttpResponse(json.dumps({
                 'url': f.get_absolute_url(),
-                'id': f.pk
-            }))
-        return HttpResponse("fail")
+                'id': f.pk,
+                'sha1': f.sha1
+            }), content_type='application/json')
+        else:  # upload form is not valid
+            return HttpResponse(json.dumps({'errors': form.errors}),
+                                content_type='application/json')
 
         for key in request.FILES:
             f = request.FILES[key]
