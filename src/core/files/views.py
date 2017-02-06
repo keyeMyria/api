@@ -117,49 +117,6 @@ class Upload(BaseView):
         return HttpResponse(json.dumps({'url': upload.url}))
 
 
-class Files2(BaseView):
-    template_name = "files.html"
-
-    def get_context_data(self, **kwargs):
-        c = super(Files, self).get_context_data(**kwargs)
-        m = c["menu"]
-        m.buttons = [(_("Files"), reverse('files')), ]
-        objects_on_page = 25
-
-        c['files_count_total'] = F.objects.filter().count()
-        c['files_count_private'] = F.objects.filter(ok=False).count()
-        c['files_count_public'] = F.objects.filter(ok=True).count()
-
-        c['files'] = F.objects.filter()[:objects_on_page]
-        c['ctypes_dict'] = dict(File.CT_CHOICES)
-        c['ctypes'] = F.objects.filter().values_list(
-            'content_type',
-            'content_subtype'
-        ).distinct()
-        return c
-
-    def post(self, request, **kwargs):
-        # ctx = self.get_context_data(**kwargs)
-        # http://docs.celeryproject.org/en/latest/userguide/workers.html?highlight=revoke#inspecting-workers
-        # from celery.task.control import inspect
-        # i = inspect()
-        # i.scheduled()
-        # i.active()
-        # sha1 = request.POST.get("sha1")
-        # if sha1 is not None:
-        #     f = File.objects.get(sha1=sha1)
-        #     import magic
-        #     m = magic.from_file(f.filename, mime=True).decode("utf-8")
-        #     # return HttpResponse(
-        #     #     json.dumps({'filename': f.content_type_string})
-        #     # )
-        from .tasks import files_process, move_all_uploads
-        r = redis.StrictRedis(host='10.254.239.1', port=6379, db=0)
-        r.set('tasks_files_process', files_process.delay())
-        move_all_uploads.delay()
-        return HttpResponse(json.dumps({'url': 123}))
-
-
 class Files(BaseView):
     template_name = "core_files.jinja"
 

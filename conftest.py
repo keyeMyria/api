@@ -66,7 +66,6 @@ def django_cache(request, settings):
     cache.clear()
     d = os.path.dirname(str(request.fspath))
     assets = os.path.join(d, 'assets')
-    print(assets)
     if os.path.isdir(assets):
         for f in os.listdir(assets):
             filename = os.path.join(assets, f)

@@ -17,7 +17,7 @@ def test_urls_as_admin(admin_client):
 
 @pytest.mark.urls('pashinin.urls')
 def test_urls_as_anon(client):
-    urls = ['/', '/contacts', '/faq', '/login']
+    urls = ['/', '/contacts', '/faq', '/login', '/baumanka/']
     for url in urls:
         r = client.get(url)
         assert r.status_code == 200
