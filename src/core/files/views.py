@@ -1,6 +1,5 @@
 import json
 import os
-import redis
 from core.views import BaseView
 from .sendfile import send_file
 from .models import File as F, UploadedFile
@@ -10,8 +9,8 @@ from .forms import UploadedFileForm
 from django.http import HttpResponse, HttpResponseNotFound
 # from django.db.models import Count
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
-from django.core.urlresolvers import reverse
+# from django.utils.translation import gettext_lazy as _
+# from django.core.urlresolvers import reverse
 from os.path import isfile, isdir, join
 
 
