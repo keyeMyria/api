@@ -1,7 +1,8 @@
 import pytest
 from . import (
     process_sections,
-    ege_subjects_and_urls
+    ege_subjects_and_urls,
+    create_subjects
 )
 
 
@@ -20,3 +21,9 @@ def test_fipi_get():
     # settings.CELERY_ALWAYS_EAGER = True
     # result = project_update.delay('123456')
     # assert result.successful()
+
+
+@pytest.mark.django_db
+def test_create_subjects():
+    create_subjects('Информатика')
+    # TODO: test record slug

@@ -56,3 +56,28 @@ def admin_client(db, admin_user):
     client = Client()
     client.login(username=admin_user.email, password='password')
     return client
+
+
+@pytest.fixture(autouse=True)
+def django_cache(request, settings):
+    """A Django test client logged in as an admin user."""
+    from django.core.cache import cache
+    from core.tasks import url_get_version
+    cache.clear()
+    d = os.path.dirname(str(request.fspath))
+    assets = os.path.join(d, 'assets')
+    print(assets)
+    if os.path.isdir(assets):
+        for f in os.listdir(assets):
+            filename = os.path.join(assets, f)
+            if f.startswith('url_'):
+                sha1 = f.split('_')[1][:-4]
+                key = 'url.get_'+sha1
+                cache.set(
+                    key,
+                    open(filename, 'r').read(),
+                    version=url_get_version
+                )
+    # print(request.function.__name__)
+    # print(request.fspath)
+    return cache

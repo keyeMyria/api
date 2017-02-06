@@ -26,10 +26,13 @@ def load_cookies(filename):
         return pickle.load(f)
 
 
+url_get_version = 7
+
+
 @shared_task
 def get(url, charset='utf-8'):
     """Just GETs an URL."""
-    v = 7
+    # v = 7
     cookies = '/tmp/cookies.txt'
     headers = {
         'User-Agent':
@@ -37,9 +40,9 @@ def get(url, charset='utf-8'):
     }
 
     key = "url.get_" + hashlib.sha1(url.encode('utf-8')).hexdigest()
-    html = cache.get(key, version=v)
+    html = cache.get(key, version=url_get_version)
     if html is not None:
-        return html, {}
+        return html, {'cached': True}
 
     try:
         r = requests.get(
@@ -66,7 +69,7 @@ def get(url, charset='utf-8'):
                 except:
                     # client.captureException()
                     pass
-        cache.set(key, html, 3600, version=v)
+        cache.set(key, html, 3600, version=url_get_version)
         return html, {'r': r}
     else:
         return r.text, {'r': r}
