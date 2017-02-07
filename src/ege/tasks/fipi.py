@@ -20,6 +20,9 @@ from core.tasks import get
 log = logging.getLogger(__name__)
 
 
+fipi_bank_root_url = "http://www.fipi.ru/content/otkrytyy-bank-zadaniy-ege"
+
+
 @shared_task
 def ege_subjects_and_urls(*args):
     """Scans a root URL http://www.fipi.ru/content/otkrytyy-bank-zadaniy-ege
@@ -33,8 +36,8 @@ def ege_subjects_and_urls(*args):
 
     """
     try:
-        url = "http://www.fipi.ru/content/otkrytyy-bank-zadaniy-ege"
-        tree = lxml.html.fromstring(get(url))
+        html, info = get(fipi_bank_root_url)
+        tree = lxml.html.fromstring(html)
         links = S('div.content table a[href^="http://85."]')(tree)
         res = [(" ".join(el.text_content().split()).lower().capitalize(),
                 el.get('href'))
@@ -65,7 +68,7 @@ def create_subjects(*args):
         client.captureException()
 
 
-# http://85.142.162.119/os11/xmodules/qprint/openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F
+# http://85.142.162.119/os11/xmodules/qprint/index.php?proj=AF0ED3F2557F8FFC4C06F80B6803FD26
 @shared_task
 def get_subject_sections(subject_url, *args):
     """Получить разделы по предмету вместе с ссылками
@@ -80,7 +83,7 @@ def get_subject_sections(subject_url, *args):
     """
     try:
         log.debug("getting sections...")
-        html = get(subject_url)
+        html, info = get(subject_url)
         tree = lxml.html.fromstring(html)
         links = S('td.coursebody a[href^="qsearch.php"]')(tree)
         res = [(" ".join(el.text_content().split()).lower().capitalize(),
@@ -115,7 +118,7 @@ def process_sections(sections, *args):
                 count,
                 len(args)
             ))
-            html = get(url)
+            html, info = get(url)
             tree = lxml.html.fromstring(html)
             pages = S('span.Walk a')(tree)
             pages = [int(p.text_content().strip('[]')) for p in pages]

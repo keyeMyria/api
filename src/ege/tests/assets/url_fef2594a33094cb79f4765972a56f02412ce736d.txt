@@ -1,0 +1,1399 @@
+
+<html XMLNS:m="http://www.w3.org/1998/Math/MathML">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /><LINK href="../../docs/B9ACA5BBB2E19E434CD6BEC25284C67F.css" rel="STYLESHEET" type="text/css">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../lib/t3utils.js"></script><meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<META NAME="Document-state" CONTENT="Dynamic"><META HTTP-EQUIV="pragma" CONTENT="no-cache"><META HTTP-EQUIV="expires" CONTENT="0"><title>Открытый банк заданий ЕГЭ</title>
+</head>
+<body class='coursebody' style='font-size:11pt'>
+<table width="100%" height="100%" cellspacing=0 cellpadding=0>
+<tr height='20px'><td colspan=2 >
+<script language="javascript">
+     var proj='B9ACA5BBB2E19E434CD6BEC25284C67F';
+
+    function QuestionEd() {
+      location.href='index.php?proj='+proj;
+    }
+
+
+    function QuestionFav() {
+        location.href='index.php?theme_guid=FAVOUR&proj='+proj;
+    }
+
+    function selectProject()
+    {
+        location.href='index.php';
+    }
+</script>
+
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0"><tr>
+<td background="../../images/l3.gif"><img src="../../images/l2.gif"></td>
+<td background="../../images/l3.gif"><img src="../../images/l3.gif"></td>
+<td background="../../images/l3.gif"colspan="2" align=right>
+<img src="../../images/l8.gif"></td></tr>
+<tr><td colspan="2"  background="../../images/gr_polosa.gif">
+  <table border="0"  cellpadding="0" cellspacing="0" background="../../images/gr_polosa.gif">
+  <tr>
+   <td height="33" width="0">&nbsp;</td>
+     <td width=10><img src='../../images/ptr.gif' align=top  width=10 height=33 border=0></td><td width=35>
+<img border='0' src='../../images/i_2.gif' onmouseover='src="../../images/2.gif"' onmouseout='src="../../images/i_2.gif"' onclick="QuestionEd();" title='Разделы' align='absmiddle' style='cursor:pointer'><td width=35>
+<img border='0' src='../../images/i_3.gif' onmouseover='src="../../images/3.gif"' onmouseout='src="../../images/i_3.gif"' onclick="QuestionFav();" title='Отложенные задания' align='absmiddle' style='cursor:pointer'>&nbsp;<sup id='fav_cnt'>1</sup>   </tr>
+  </table>
+</td><td  valign="center" align="right"  background="../../images/gr_polosa.gif">&nbsp;</td>
+</tr>
+<style>
+#chpr-a #chpr-img {border:0px; width:18px; height:18px; background: url(../../images/chcs.gif);}
+#chpr-a:hover #chpr-img {background: url(../../images/chcs_i.gif);}
+</style>
+<tr>
+  <td colspan="4" background="../../images/l5.gif" valign="top">
+        <table border="0" cellpadding="0" cellspacing="0" height=28><tr><td><a id='chpr-a' href='javascript:selectProject()' title='Перейти к другому предмету'><span class="projname">&nbsp;Открытый банк заданий ЕГЭ&nbsp;/&nbsp;Информатика</span></a></td><td background="../../images/l5.gif">&nbsp;</td></tr></table>
+</td></tr></table>
+ </td></tr>
+<tr valign=top>
+<td class='coursebody' width='10%'>
+    <div style='width:300px; margin: 5px;'>
+    <div style='margin-bottom:5px;'><a href='qsearch.php?theme_guid=521f264f9341e31197f4001fc68344c9&proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F'>Информация и информационные процессы</a></div><div style='margin-bottom:5px;'><a href='qsearch.php?theme_guid=c83a56569341e311bd87001fc68344c9&proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F'>Информационная деятельность человека</a></div><div style='margin-bottom:5px;' class=cell_2><a href='qsearch.php?theme_guid=9009f55c9341e311beed001fc68344c9&proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F'>Средства ИКТ</a></div>    </div>
+</td>
+<td style='background-color:white' width='90%'>
+<table width=100% cellspacing=1px cellpadding=5px><tr><td>
+<style>
+#gl_container {font-size:80%; color: #A0A0A0}
+</style>
+<script language="JavaScript">
+
+ function printQThemes()
+ {
+    var wnd=open('question_print.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9', 'proppvwnd', 'scrollbars=1,resizable=1,width=600,height=400,left='+(screen.width-600)/2+',top='+(screen.height-400)/2 );
+    wnd.focus();
+ }
+
+ var request;
+ var requestInProgress = false;
+ function generateFavLink()
+ {
+    if (requestInProgress) return;
+
+    if (!request)
+        request = createAJAXRequest();
+
+    requestInProgress = true;
+    request.open('GET', 'gen_fav_link.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&tm=1486470824', true);
+    request.onreadystatechange = showFavLink;
+    request.send(null);
+
+    document.getElementById('gl_container').innerHTML="<img src='../../images/aloader.gif'  width='20' height='20'>";
+ }
+
+ function showFavLink()
+ {
+    if (request.readyState==4)
+    {
+        requestInProgress = false;
+        document.getElementById('gl_container').innerHTML = (request.status==200? request.responseText : 'Ошибка...');
+    }
+ }
+
+var lastFVBtn;
+function add2fav(img, guid)
+{
+    if (requestInProgress) return;
+
+    if (!request)
+        request = createAJAXRequest();
+
+    requestInProgress = true;
+
+    lastFVBtn = img;
+    lastFVBtn.src='../../images/aloader.gif';
+
+    request.open('GET', 'quest_preview.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&tm=1486470824&ajax=1&add2fav='+guid, true);
+    request.onreadystatechange = add2favDone;
+    request.send(null);
+
+}
+
+function add2favDone()
+{
+    if (request.readyState==4)
+    {
+        requestInProgress = false;
+        if (lastFVBtn)
+            lastFVBtn.parentNode.removeChild(lastFVBtn);
+        lastFVBtn=null;
+        setFavCnt(request.responseText);
+    }
+}
+
+var lastSLVBtn;
+var lastSLVSet;
+
+function setSolved(img, guid, solved)
+{
+    if (requestInProgress) return;
+
+    if (!request)
+        request = createAJAXRequest();
+
+    requestInProgress = true;
+
+    lastSLVBtn = img;
+    lastSLVBtn.guid = guid;
+    lastSLVBtn.src='../../images/aloader.gif';
+    lastSLVSet = solved;
+
+    request.open('GET', 'quest_preview.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&tm=1486470824&ajax=1&'+(solved?'':'re')+'set_solved='+guid, true);
+    request.onreadystatechange = setSolvedDone;
+    request.send(null);
+
+}
+
+function setSolvedDone()
+{
+    if (request.readyState==4)
+    {
+        requestInProgress = false;
+        if (lastSLVSet)
+        {
+           lastSLVBtn.title = 'Отметить задание как нерешенное';
+           lastSLVBtn.onclick = function () { setSolved(this, this.guid, false) }
+           lastSLVBtn.onmouseover = function () { this.src = '../../images/chk_in.gif'; }
+           lastSLVBtn.onmouseout = function () { this.src = '../../images/chk.gif'; }
+           lastSLVBtn.src = '../../images/chk.gif';
+        }
+        else
+        {
+           lastSLVBtn.title = 'Отметить задание как решенное';
+           lastSLVBtn.onclick = function () { setSolved(this, this.guid, true) }
+           lastSLVBtn.onmouseOver = function () { this.src = '../../images/chk_ds_in.gif'; }
+           lastSLVBtn.onmouseOut = function () { this.src = '../../images/chk_ds.gif'; }
+           lastSLVBtn.src = '../../images/chk_ds.gif';
+        }
+        lastSLVBtn=null;
+    }
+}
+
+function setFavCnt(cnt)
+{    if (!cnt.match(/^\s*\d+\s*$/))
+        return;
+
+    var c = document.getElementById('fav_cnt');
+    if (c)
+        c.innerHTML = cnt;}
+
+setFavCnt('1');
+
+</script>
+  <table border="0" cellpadding="1" cellspacing="1" width="100%"><tr><td width="100%" align="center" class="header" valign="top" height="30">Средства ИКТ (314)</td></tr><tr><td height="30"  align="center"> <span class='WalkSelected'>&nbsp;1&nbsp;</span>  <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=1'>[2]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=2'>[3]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=3'>[4]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=4'>[5]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=5'>[6]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=6'>[7]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=7'>[8]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=8'>[9]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=9'>[10]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=10'>[11]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=11'>[12]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=12'>[13]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=13'>[14]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=14'>[15]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=15'>[16]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=16'>[17]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=17'>[18]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=18'>[19]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=19'>[20]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=20'>[21]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=21'>[22]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=22'>[23]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=23'>[24]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=24'>[25]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=25'>[26]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=26'>[27]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=27'>[28]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=28'>[29]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=29'>[30]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=30'>[31]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=31'>[32]</a></span></td></tr></table><br>		<script language="javascript">
+        var abort_answer_senging;
+		function onButtonClick()
+		{
+			var aform=document.checkform;
+            abort_answer_senging = false;
+			setAnswer(aform);
+            if (abort_answer_senging) return;
+			;
+			//aform.submit();
+            if (aform.setBtn)
+                aform.setBtn.disabled=true;
+		}
+		function onResetClick()
+		{
+			var aform=document.checkform;
+			var aEl = document.createElement('input');
+			aEl.type = 'hidden';
+			aEl.name = 'reset';
+			aEl.value = 1;
+			aform.appendChild(aEl);
+
+;
+			aform.submit();
+		}
+
+		function noAction()
+		{
+		}
+
+		</script>
+        <style type="text/css">
+			.img_scroll_container { height: 400px; overflow-y: scroll; text-align: center; width:100%;}
+			.img_scroll_container img { width: 700px }
+            .printbody .img_scroll_container { height: auto; overflow-y: hidden; }
+            .printbody .img_scroll_container img { width: 650px }
+		</style>
+		<script language="javascript">
+		var qguid='';
+		var qfiles_location='../../';
+
+		function ShowPictureQ(s,hint)
+		{
+			while ((p=s.indexOf(". "))>0)
+			s=s.substring(0,p+1)+s.substring(p+2);
+			document.write('<IMG SRC="'+qfiles_location+s+'" ALIGN=ABSMIDDLE alt="'+hint+'" border="0"> ');
+		}
+
+		function ShowPictureQBL(s,hint,h,bl)
+		{
+			while ((p=s.indexOf(". "))>0)
+			s=s.substring(0,p+1)+s.substring(p+2);
+			var vspace=h/2-bl;
+			if (vspace<0) vspace=-vspace;
+			document.write('<IMG SRC="'+qfiles_location+s+'" ALIGN=MIDDLE border="0" alt="'+hint+'" VSPACE='+(vspace)+' STYLE="position:relative; top:'+(h/2-bl)+'px;">');
+		}
+
+
+
+		function ShowPictureQ2WH(s,s2,hint,w,h)
+		{
+            if (s.indexOf('.flv')>0 ||s.indexOf('.mp4')>0 ||s.indexOf('.swf')>0)
+                s='../../show_media.php?m='+encodeURIComponent(s)+'&w='+w+'&h='+h;
+
+			w=w+40;
+			h=h+30;
+
+						document.write('<a href="javascript:var wnd=window.open(\''+qfiles_location+s+'\',\'\',\',status=1,resizable=1,menubar=0,scrollbars=1,width='+w+', height='+h+',left='+((screen.width-w)/2)+',top='+((screen.height-h)/2)+'\');wnd.focus();"><IMG BORDER=0 SRC="'+qfiles_location+s2+'" ALIGN=ABSMIDDLE style="cursor:pointer" alt="'+hint+'"></a> ');
+			//alert('вставил картинку!');
+		}
+
+		function ShowPictureQ3WH(s,s2,s3,hint,w,h)
+		{
+			ShowPictureQ2WH(s,s2,hint,w,h);
+		}
+
+		function ShowPictureQ2(s,s2,hint)
+		{
+			ShowPictureQ2WH(s,s2,hint,600,400);
+		};
+
+		function invertImage(img, s, s2)
+		{
+			if (img.src.indexOf(s)>0) img.src=qfiles_location+s2; else img.src=qfiles_location+s;
+		}
+
+		function ShowPictureQ3(s,s2,hint)
+		{
+			while ((p=s.indexOf(". "))>0)
+			s=s.substring(0,p+1)+s.substring(p+2);
+            var onclick=(s.indexOf('.jpg')>0||s.indexOf('.png')>0||s.indexOf('.gif')>0 ?'onclick="invertImage(this, \''+s+'\', \''+s2+'\')"':'');
+			document.write('<IMG SRC="'+qfiles_location+s2+'" '+onclick+' ALIGN=ABSMIDDLE style="cursor:pointer" alt="'+hint+'" border="0"> ');
+		};
+
+		function showXGraphic(xml)
+		{
+			document.write("<object classid=\"CLSID:A40BD42C-2DF9-4DB6-AE58-6411A05C7827\" ID=GraphX, width=258, height=410 ><param name=DEsignMode value=1><param name=\"Buffer\" value='<?xml version=\"1.0\"?>"+xml+"'></object>");
+		}
+		/*
+function ShowPictureQGX2(img,xml)
+{
+w=500;
+h=400;
+document.write('<IMG BORDER=0 SRC="'+qfiles_location+img+'" ALIGN=ABSMIDDLE>');
+}
+*/
+		function ShowPictureQGX2(img,xml)
+		{
+			w=500;
+			h=400;
+			document.write('<a href="javascript:var wnd=window.open(\'../../showxgprahic.php?qguid='+qguid+'&xml='+xml+'\',\'\',\',status=1,resizable=1,menubar=0,scrollbars=1,width='+w+', height='+h+',left='+((screen.width-w)/2)+',top='+((screen.height-h)/2)+'\');wnd.focus();"><IMG BORDER=0 SRC="'+qfiles_location+img+'" ALIGN=ABSMIDDLE style="cursor:pointer"></a> ');
+		}
+
+		</script>
+		<table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="0190D44E424D91CE4917FE4480B1AB68">
+		<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0">  <p class="MsoNormal">Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных суммарное число дочерей <br /> и внучек&nbsp; Коренных А.С.</p> <p class="MsoNormal"><span>&nbsp;</span></p> <table class="MsoNormalTable" border="0" cellspacing="0" cellpadding="0" width="492"> <tr> <td width="257" nowrap="nowrap" colspan="3" valign="bottom"> <p class="MsoNormal" align="center"><b>Таблица 1</b></p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">&nbsp;</p> </td> <td width="206" nowrap="nowrap" colspan="2" valign="bottom"> <p class="MsoNormal" align="center"><b>Таблица 2</b></p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center"><b >ID</b></p> </td> <td width="129" valign="top"> <p class="MsoNormal"><b >Фамилия_И.О.</b></p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center"><b >Пол</b></p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108" valign="top"> <p class="MsoNormal" align="center"><b >ID_Родителя</b></p> </td> <td width="99" valign="top"> <p class="MsoNormal" align="center"><b >ID_Ребёнка</b></p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">1171</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Шемко Н.А.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">1171</p> </td> <td width="99"> <p class="MsoNormal" align="center">3371</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">2242</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Шемко И.М.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">2242</p> </td> <td width="99"> <p class="MsoNormal" align="center">2251</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">2251</p> </td> <td width="129" valign="top"> <p class="MsoNormal" align="center">Шемко М.И.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">2242</p> </td> <td width="99"> <p class="MsoNormal" align="center">3342</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">2262</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Шемко М.М.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">2251</p> </td> <td width="99"> <p class="MsoNormal" align="center">2262</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">3342</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Галиани А.И.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">2251</p> </td> <td width="99"> <p class="MsoNormal" align="center">5542</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">3351</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Галиани В.С.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">3342</p> </td> <td width="99"> <p class="MsoNormal" align="center">3351</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">3371</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Галиани С.С.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">3342</p> </td> <td width="99"> <p class="MsoNormal" align="center">4462</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">4442</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Коренных А.С.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">3371</p> </td> <td width="99"> <p class="MsoNormal" align="center">3351</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">4451</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Коренных Л.А.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">3371</p> </td> <td width="99"> <p class="MsoNormal" align="center">4462</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">4462</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Воевода О.С.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">4442</p> </td> <td width="99"> <p class="MsoNormal" align="center">2251</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">4482</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Воевода М.О.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">М</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">4442</p> </td> <td width="99"> <p class="MsoNormal" align="center">3342</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">5542</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center"><span >Бой</span> А.М.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">7751</p> </td> <td width="99"> <p class="MsoNormal" align="center">2262</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">7751</p> </td> <td width="129" nowrap="nowrap" valign="bottom"> <p class="MsoNormal" align="center">Медечко М.А.</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">Ж</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108"> <p class="MsoNormal" align="center">7751</p> </td> <td width="99"> <p class="MsoNormal" align="center">5542</p> </td> </tr> <tr> <td width="64" valign="top"> <p class="MsoNormal" align="center">…</p> </td> <td width="129" valign="top"> <p class="MsoNormal" align="center">…</p> </td> <td width="64" valign="top"> <p class="MsoNormal" align="center">…</p> </td> <td width="28" nowrap="nowrap" valign="bottom"> <p class="MsoNormal">&nbsp;</p> </td> <td width="108" valign="top"> <p class="MsoNormal" align="center">…</p> </td> <td width="99" valign="top"> <p class="MsoNormal" align="center">…</p> </td> </tr> </table> <p class="MsoNormal"><span>&nbsp;</span></p>  </TD></TR>
+
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '0190D44E424D91CE4917FE4480B1AB68');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=0190D44E424D91CE4917FE4480B1AB68&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '0190D44E424D91CE4917FE4480B1AB68', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>F64B4A</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="0EB98C2DF32BA50A4DEFF4A266238D86">
+		<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Какой минимальный объём памяти (в Кбайт) нужно зарезервировать, чтобы можно было сохранить любое растровое изображение размером 320&#215;640 пикселей при условии, что в изображении могут использоваться 16 различных цветов? В ответе запишите только целое число, единицу измерения писать не нужно.</P></TD></TR>
+
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '0EB98C2DF32BA50A4DEFF4A266238D86');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=0EB98C2DF32BA50A4DEFF4A266238D86&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '0EB98C2DF32BA50A4DEFF4A266238D86', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>35AE49</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="01AC6C5C44E6838B4CC6B41638DEA5C9">
+		<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0">  <p class="MsoNormal">Музыкальный фрагмент был записан в формате стерео (двухканальная запись), оцифрован и сохранён в виде файла без использования сжатия данных. Размер полученного файла <m:math><m:mstyle displaystyle="true"> <m:semantics> <m:mo>&#x2013;</m:mo>  </m:semantics> </m:mstyle></m:math>&nbsp;30 Мбайт. Затем тот же музыкальный фрагмент был записан повторно в формате моно и оцифрован с разрешением в 2 раза выше и частотой дискретизации в 1,5 раза меньше, чем в первый раз. Сжатие данных не производилось. Укажите размер файла в Мбайт, полученного при повторной записи. В ответе запишите только целое число, единицу измерения писать не нужно.<span></span></p>  </TD></TR>
+
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '01AC6C5C44E6838B4CC6B41638DEA5C9');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=01AC6C5C44E6838B4CC6B41638DEA5C9&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '01AC6C5C44E6838B4CC6B41638DEA5C9', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>F2EE4C</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="04A323F71E6D86044077384173DD5280">
+		<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0">  <p class="MsoNormal">Музыкальный фрагмент был оцифрован и записан в виде файла без использования сжатия данных. Получившийся файл был передан в город А по каналу связи за 24 секунды. Затем тот же музыкальный фрагмент был оцифрован повторно с разрешением в 2 раза ниже и частотой дискретизации в 1,5 раза больше, чем в первый раз. Сжатие данных не производилось. Полученный файл был передан в город Б; пропускная способность канала связи с городом Б в 2 раза выше, чем канала связи с городом А. Сколько секунд длилась передача файла в город Б? В ответе запишите только целое число, единицу измерения писать не нужно.<span></span></p>  </TD></TR>
+
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '04A323F71E6D86044077384173DD5280');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=04A323F71E6D86044077384173DD5280&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '04A323F71E6D86044077384173DD5280', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>B0774C</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="072CB36898E585E94132533EF85FB5CC">
+		<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Какой минимальный объём памяти (в Кбайт) нужно зарезервировать, чтобы можно было сохранить любое растровое изображение размером 1024&#215;128 пикселов при условии, что в изображении могут использоваться 16 различных цветов? В ответе запишите только целое число, единицу измерения писать не нужно.</P></TD></TR>
+
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '072CB36898E585E94132533EF85FB5CC');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=072CB36898E585E94132533EF85FB5CC&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '072CB36898E585E94132533EF85FB5CC', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>D9E740</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="0B445C1020DCB577410F9B5F57742D52">
+
+<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных фамилию и инициалы племянницы Гранта Б.А.</P>
+<P class=MsoNormal><I>Пояснение: племянницей считается дочь брата или сестры.</I></P>
+<TABLE border=1 cellSpacing=0 cellPadding=0 svWidth>
+<TBODY>
+<TR>
+<TD vAlign=bottom colSpan=3 noWrap>
+<P class=MsoNormal align=center><B>Таблица 1</B></P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom colSpan=2 noWrap>
+<P class=MsoNormal align=center><B>Таблица 2</B></P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center><B>ID</B></P></TD>
+<TD vAlign=top>
+<P class=MsoNormal><B>Фамилия_И.О.</B></P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center><B>Пол</B></P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center><B>ID_Родителя</B></P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center><B>ID_Ребёнка</B></P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>28</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Леоненко М.Д.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>38</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>39</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>38</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Грант А.Б.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>58</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>39</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>39</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Грант Б.А.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>39</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>40</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>40</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Грант Б.Б.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>78</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>40</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>48</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Степаненко З.А.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>38</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>48</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>49</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Степаненко Т.Л.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>58</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>48</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>50</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Степаненко Л.Л.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>48</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>49</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>58</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Кривец Д.Н.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>50</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>49</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>59</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Кривец Р.Д.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>28</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>50</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>60</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Колос Е.Л.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>48</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>60</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>61</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Колос А.Е.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>50</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>60</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>68</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Кроха М.Б.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>39</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>68</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>78</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal align=center>Волченко Т.Д.</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>78</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>68</P></TD></TR>
+<TR>
+<TD vAlign=top>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=bottom noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top>
+<P class=MsoNormal align=center>…</P></TD></TR></TBODY></TABLE>
+<P class=MsoNormal>&nbsp;</P></TD></TR>
+  				<TR><TD><table width="100%" cellpadding=3><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>1)</b>&nbsp;</td><td width="100%" align=left id=varrow1 ><p class="MsoNormal">Леоненко М.Д.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>2)</b>&nbsp;</td><td width="100%" align=left id=varrow2 ><p class="MsoNormal">Колос Е.Л.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>3)</b>&nbsp;</td><td width="100%" align=left id=varrow3 ><p class="MsoNormal">Степаненко Т.Л.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>4)</b>&nbsp;</td><td width="100%" align=left id=varrow4 ><p class="MsoNormal">Степаненко З.А.<span></span></p></td></tr></table></TD></TR>
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '0B445C1020DCB577410F9B5F57742D52');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=0B445C1020DCB577410F9B5F57742D52&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '0B445C1020DCB577410F9B5F57742D52', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>91BE4B</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="113B3231C1BFA78443C339229F83AC0B">
+
+<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных фамилию и инициалы дедушки Иванца О.С. по материнской линии.</P>
+<TABLE border=1 cellSpacing=0 cellPadding=0 width=522>
+<TBODY>
+<TR>
+<TD vAlign=bottom width=257 colSpan=3 noWrap>
+<P class=MsoNormal align=center><B>Таблица 1</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom width=236 colSpan=2 noWrap>
+<P class=MsoNormal align=center><B>Таблица 2</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center><B>ID</B></P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal><B>Фамилия_И.О.</B></P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center><B>Пол</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center><B>ID_Родителя</B></P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center><B>ID_Ребёнка</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго Н.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго И.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>Живаго П.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>26</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго П.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе А.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>35</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе В.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе С.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко А.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>45</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко В.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>36</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>46</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец О.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>47</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец П.О.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>54</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Вовк А.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Саркисян П.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>…</P></TD></TR></TBODY></TABLE>
+<P class=MsoNormal>&nbsp;</P></TD></TR>
+  				<TR><TD><table width="100%" cellpadding=3><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>1)</b>&nbsp;</td><td width="100%" align=left id=varrow1 ><p class="MsoNormal">Иванец П.О.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>2)</b>&nbsp;</td><td width="100%" align=left id=varrow2 ><p class="MsoNormal">Лещенко А.С.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>3)</b>&nbsp;</td><td width="100%" align=left id=varrow3 ><p class="MsoNormal">Живаго И.П.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>4)</b>&nbsp;</td><td width="100%" align=left id=varrow4 ><p class="MsoNormal">Живаго Н.А.<span></span></p></td></tr></table></TD></TR>
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '113B3231C1BFA78443C339229F83AC0B');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=113B3231C1BFA78443C339229F83AC0B&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '113B3231C1BFA78443C339229F83AC0B', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>F790F7</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="1305F70FE878BC1B408F3731E46ABD24">
+
+<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных фамилию и инициалы бабушки Иванца О.С. по материнской линии.</P>
+<TABLE border=1 cellSpacing=0 cellPadding=0 width=522>
+<TBODY>
+<TR>
+<TD vAlign=bottom width=257 colSpan=3 noWrap>
+<P class=MsoNormal align=center><B>Таблица 1</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom width=236 colSpan=2 noWrap>
+<P class=MsoNormal align=center><B>Таблица 2</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center><B>ID</B></P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal><B>Фамилия_И.О.</B></P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center><B>Пол</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center><B>ID_Родителя</B></P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center><B>ID_Ребёнка</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко Н.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>22</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>22</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко И.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>Лещенко П.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>26</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко П.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Робертс А.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>22</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>35</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Робертс В.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Робертс С.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Дрозд А.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>45</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Дрозд В.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>36</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>46</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец О.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>47</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец П.О.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>54</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Челидзе А.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Саркисян П.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>…</P></TD></TR></TBODY></TABLE>
+<P class=MsoNormal>&nbsp;</P></TD></TR>
+  				<TR><TD><table width="100%" cellpadding=3><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>1)</b>&nbsp;</td><td width="100%" align=left id=varrow1 ><p class="MsoNormal">Иванец П.О.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>2)</b>&nbsp;</td><td width="100%" align=left id=varrow2 ><p class="MsoNormal">Лещенко И.П.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>3)</b>&nbsp;</td><td width="100%" align=left id=varrow3 ><p class="MsoNormal">Дрозд А.С.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>4)</b>&nbsp;</td><td width="100%" align=left id=varrow4 ><p class="MsoNormal">Лещенко Н.А.<span></span></p></td></tr></table></TD></TR>
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '1305F70FE878BC1B408F3731E46ABD24');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=1305F70FE878BC1B408F3731E46ABD24&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '1305F70FE878BC1B408F3731E46ABD24', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>781DF4</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="1893E575D765B70E4F1CF4D15D3D8CD6">
+
+<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных число братьев Черных Т.И.</P>
+<TABLE border=1 cellSpacing=0 cellPadding=0 width=521>
+<TBODY>
+<TR>
+<TD vAlign=bottom width=257 colSpan=3 noWrap>
+<P class=MsoNormal align=center><B>Таблица 1</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom width=236 colSpan=2 noWrap>
+<P class=MsoNormal align=center><B>Таблица 2</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center><B>ID</B></P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal><B>Фамилия_И.О.</B></P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center><B>Пол</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center><B>ID_Родителя</B></P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center><B>ID_Ребёнка</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>10</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Гуревич И.И.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>10</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>95</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>42</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Цейс А.И.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>85</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>71</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>Петренко И.А.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>71</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>82</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>82</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Черных Т.И.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>13</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>95</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>85</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Гуревич И.А.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>42</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>23</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>95</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Гуревич А.И.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>71</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>23</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Петренко А.И.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>95</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>85</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>13</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>Колос А.А.</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>42</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>82</P></TD></TR>
+<TR>
+<TD vAlign=top width=56>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=top width=142 noWrap>
+<P class=MsoNormal align=center>...</P></TD>
+<TD vAlign=top width=59>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>...</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>...</P></TD></TR></TBODY></TABLE>
+<P class=MsoNormal>&nbsp;</P></TD></TR>
+  				<TR><TD><table width="100%" cellpadding=3><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>1)</b>&nbsp;</td><td width="100%" align=left id=varrow1 ><p class="MsoNormal">1<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>2)</b>&nbsp;</td><td width="100%" align=left id=varrow2 ><p class="MsoNormal">2<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>3)</b>&nbsp;</td><td width="100%" align=left id=varrow3 ><P class=MsoNormal>3</P></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>4)</b>&nbsp;</td><td width="100%" align=left id=varrow4 ><P class=MsoNormal>4</P></td></tr></table></TD></TR>
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '1893E575D765B70E4F1CF4D15D3D8CD6');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=1893E575D765B70E4F1CF4D15D3D8CD6&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '1893E575D765B70E4F1CF4D15D3D8CD6', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>5371FA</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" width="100%" cellspacing='3'><tr><td><table border="0" width="100%" bgcolor='gray' cellspacing='1'><tr><td class='cell_1'>		<form action='javascript:noAction()' name='checkform' id='checkform' method="get"		>
+		<input type="Hidden" name="guid" value="1A1666EB30B8A08D4F78AF7322189D94">
+
+<TABLE WIDTH="100%">
+  				<TR><TD valign=top width=100% bgcolor="#F0F0F0"> <P class=MsoNormal>Ниже представлены две таблицы из базы данных. Каждая строка таблицы 2 содержит информацию о ребёнке и об одном из его родителей. Информация представлена значением поля ID в соответствующей строке таблицы 1. Определите на основании приведённых данных фамилию и инициалы бабушки Иванец О.С. по материнской линии.</P>
+<TABLE border=1 cellSpacing=0 cellPadding=0 width=522>
+<TBODY>
+<TR>
+<TD vAlign=bottom width=257 colSpan=3 noWrap>
+<P class=MsoNormal align=center><B>Таблица 1</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal align=center>&nbsp;</P></TD>
+<TD vAlign=bottom width=236 colSpan=2 noWrap>
+<P class=MsoNormal align=center><B>Таблица 2</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center><B>ID</B></P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal><B>Фамилия_И.О.</B></P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center><B>Пол</B></P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center><B>ID_Родителя</B></P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center><B>ID_Ребёнка</B></P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго Н.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго И.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>25</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>Живаго П.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>26</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Живаго П.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>26</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе А.И.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>23</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>35</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе В.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>34</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Кобаидзе С.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>44</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко А.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>35</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>45</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Лещенко В.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>М</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>14</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>36</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>46</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец О.С.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>34</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>47</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Иванец П.О.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>36</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>46</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>54</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Вовк А.П.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>25</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=bottom width=142 noWrap>
+<P class=MsoNormal align=center>Саркисян П.А.</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>Ж</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>64</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>54</P></TD></TR>
+<TR>
+<TD vAlign=top width=54>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=142>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=61>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=bottom width=28 noWrap>
+<P class=MsoNormal>&nbsp;</P></TD>
+<TD vAlign=top width=123>
+<P class=MsoNormal align=center>…</P></TD>
+<TD vAlign=top width=113>
+<P class=MsoNormal align=center>…</P></TD></TR></TBODY></TABLE>
+<P class=MsoNormal>&nbsp;</P></TD></TR>
+  				<TR><TD><table width="100%" cellpadding=3><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>1)</b>&nbsp;</td><td width="100%" align=left id=varrow1 ><p class="MsoNormal">Иванец П.О.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>2)</b>&nbsp;</td><td width="100%" align=left id=varrow2 ><p class="MsoNormal">Живаго И.П.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>3)</b>&nbsp;</td><td width="100%" align=left id=varrow3 ><p class="MsoNormal">Живаго Н.А.<span></span></p></td></tr><tr  ><td width=0>&nbsp;&nbsp;</td><td width=0>&nbsp;<b>4)</b>&nbsp;</td><td width="100%" align=left id=varrow4 ><p class="MsoNormal">Лещенко А.С.<span></span></p></td></tr></table></TD></TR>
+			  </TABLE>	</form>
+	</td></tr></table><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="left" width="100">
+<img border='0' src='../../images/addfav.gif' onmouseover='src="../../images/addfav_in.gif"' onmouseout='src="../../images/addfav.gif"' onclick="add2fav(this, '1A1666EB30B8A08D4F78AF7322189D94');" title='Отложить задание' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../admin/images/view0.gif' onmouseover='src="../../admin/images/view.gif"' onmouseout='src="../../admin/images/view0.gif"' onclick="open_win('../../project/questions/question_view.php?qst=1A1666EB30B8A08D4F78AF7322189D94&md=qprint',750,450,'previewwnd')" title='Показать задание в отдельном окне' align='absmiddle' style='cursor:pointer'>
+<img border='0' src='../../images/chk_ds.gif' onmouseover='src="../../images/chk_ds_in.gif"' onmouseout='src="../../images/chk_ds.gif"' onclick="setSolved(this, '1A1666EB30B8A08D4F78AF7322189D94', true);" title='Отметить задание как решенное' align='absmiddle' style='cursor:pointer'></td><td align='right'><span style='color:#D0D0D0'>C222FF</span></td></tr></table><hr style="height:1; color:#D0D0D0"></td></tr></table><br><table border="0" cellpadding="1" cellspacing="1" width="100%"><tr><td width="100%" align="center" valign="top" height="10"> <span class='WalkSelected'>&nbsp;1&nbsp;</span>  <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=1'>[2]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=2'>[3]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=3'>[4]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=4'>[5]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=5'>[6]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=6'>[7]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=7'>[8]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=8'>[9]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=9'>[10]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=10'>[11]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=11'>[12]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=12'>[13]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=13'>[14]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=14'>[15]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=15'>[16]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=16'>[17]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=17'>[18]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=18'>[19]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=19'>[20]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=20'>[21]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=21'>[22]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=22'>[23]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=23'>[24]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=24'>[25]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=25'>[26]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=26'>[27]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=27'>[28]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=28'>[29]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=29'>[30]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=30'>[31]</a></span> <span class='Walk'><a href='index.php?proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F&theme_guid=9009f55c9341e311beed001fc68344c9&groupno=31'>[32]</a></span></td></tr><tr><td height="30">&nbsp;</td></tr></table></td></tr></table>
+</td>
+</tr>
+</table>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({messageStyle: "none", "HTML-CSS": { matchFontHeight: true }, MMLorHTML: { prefer: { MSIE: "MML" } } });</script><SCRIPT language=JavaScript src="../../lib/bdetect.js" type=text/javascript></SCRIPT>
+
+<script language='JavaScript'>
+var crtm="1486470824";
+function SubmitForm(aform,pgname)
+{
+var aEl = document.createElement('input');
+if (!browser.isMac || !browser.isIE)
+  aEl.type = 'hidden';
+aEl.style.display = 'none';
+aEl.name = 'crtm';
+aEl.value = crtm;
+aform.appendChild(aEl);
+aform.action=pgname;
+aform.submit();
+
+}
+function GetPageName(pgname,extparams){
+if (pgname=='') pgname='/os11/xmodules/qprint/index.php';
+if (extparams=='')
+	pgname=pgname+"?crtm="+crtm;
+else	pgname=pgname+"?crtm="+crtm+"&"+extparams;
+return pgname;}
+function ShowPage(pgname,extparams,wndname,wndparam){
+if (wndname=='') {
+
+  location.href=GetPageName(pgname,extparams);
+
+  }
+  else
+ {if (wndparam=='')
+wnd=window.open(GetPageName(pgname,extparams),wndname);
+else wnd=window.open(GetPageName(pgname,extparams),wndname,wndparam);
+wnd.focus();}
+}
+</script>
+</body>
+</html>

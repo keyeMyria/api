@@ -1,10 +1,12 @@
+import os
 import pytest
 
 
-# not_travis = os.getenv('CI', '') != 'true'
+not_ci = os.getenv('CI', '') != 'true'
+
 
 # @pytest.mark.django_db
-@pytest.mark.ci
+@pytest.mark.skipif(not_ci, reason='Run it on CI system only')
 def test_deploy_project(settings):
     from .update import project_update
     settings.CELERY_ALWAYS_EAGER = True

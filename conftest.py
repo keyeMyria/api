@@ -1,5 +1,6 @@
 import os
 import pytest
+import codecs
 
 
 # def pytest_addoption(parser):
@@ -70,11 +71,20 @@ def django_cache(request, settings):
         for f in os.listdir(assets):
             filename = os.path.join(assets, f)
             if f.startswith('url_'):
-                sha1 = f.split('_')[1][:-4]
+                basename, ext = os.path.splitext(f)
+                sha1 = basename.split('_')[1]
                 key = 'url.get_'+sha1
+                try:
+                    with codecs.open(filename, 'r', 'utf-8') as f:
+                        html = f.read()
+                        # html = open(filename, 'r').read()
+                except:
+                    with codecs.open(filename, 'r', 'cp1251') as f:
+                        html = f.read()
+
                 cache.set(
                     key,
-                    open(filename, 'r').read(),
+                    html,
                     version=url_get_version
                 )
     # print(request.function.__name__)
