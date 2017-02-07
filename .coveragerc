@@ -9,6 +9,8 @@ source = src
 show_missing = true
 precision = 2
 omit =
+    asgi.py
+    manage.py
     *migrations*
     *settings*.py
 
