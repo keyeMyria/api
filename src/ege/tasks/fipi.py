@@ -69,7 +69,11 @@ def create_subjects(*args):
         client.captureException()
 
 
+# russian:
 # http://85.142.162.119/os11/xmodules/qprint/index.php?proj=AF0ED3F2557F8FFC4C06F80B6803FD26
+#
+# IT:
+# http://85.142.162.119/os11/xmodules/qprint/index.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F
 @shared_task
 def get_subject_sections(subject_url, *args):
     """Получить разделы по предмету вместе с ссылками
@@ -269,8 +273,8 @@ def tag_to_text(tag):
 @shared_task
 def get_inf():
     # subject root url
-    url = "http://85.142.162.119/os11/xmodules/qprint/openlogin.php?" \
-          "proj=B9ACA5BBB2E19E434CD6BEC25284C67F"
+    url = "http://85.142.162.119/os11/xmodules/qprint/index.php" +\
+          "?proj=B9ACA5BBB2E19E434CD6BEC25284C67F"
     try:
         chain(
             get_subject_sections.s(url),
