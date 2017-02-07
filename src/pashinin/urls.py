@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
-from django.template.loader import render_to_string
-from django.http import HttpResponseNotFound
+# from django.template.loader import render_to_string
+# from django.http import HttpResponseNotFound
 # from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap
 from core.views import Login
