@@ -74,8 +74,8 @@ def create_subjects(*args):
 #
 # IT:
 # http://85.142.162.119/os11/xmodules/qprint/index.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F
-@shared_task
-def get_subject_sections(subject_url, *args):
+@shared_task(bind=True)
+def get_subject_sections(self, subject_url, *args):
     """Получить разделы по предмету вместе с ссылками
 
     Для предмета "Информатика":
@@ -89,6 +89,8 @@ def get_subject_sections(subject_url, *args):
     try:
         log.debug("getting sections...")
         html, info = get(subject_url)
+        if len(html) < 100:
+            raise ValueError("almost no html")
         tree = lxml.html.fromstring(html)
         links = S('td.coursebody a[href^="qsearch.php"]')(tree)
         res = [(" ".join(el.text_content().split()).lower().capitalize(),
@@ -97,7 +99,9 @@ def get_subject_sections(subject_url, *args):
         for title, url in res:
             log.debug(title)
         return res
-    except:
+    except Exception as e:
+        html, info = get(fipi_bank_root_url)
+        self.retry(countdown=2, exc=e)
         client.captureException()
 
 
