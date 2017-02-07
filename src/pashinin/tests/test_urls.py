@@ -9,11 +9,6 @@ def test_urls_as_admin(admin_client):
         r = admin_client.get(url)
         assert r.status_code == 200
 
-    # admin user is already logged in,
-    # so /login url must redirect
-    r = admin_client.get('/login')
-    assert r.status_code == 302
-
 
 @pytest.mark.urls('pashinin.urls')
 def test_urls_as_anon(client):
@@ -21,3 +16,27 @@ def test_urls_as_anon(client):
     for url in urls:
         r = client.get(url)
         assert r.status_code == 200
+
+
+@pytest.mark.urls('pashinin.urls')
+def test_login_logout(admin_client):
+    # admin user is already logged in,
+    # so /login url must redirect
+    r = admin_client.get('/login')
+    assert r.status_code == 302
+
+    # logout
+    r = admin_client.get('/_/logout')
+    assert r.status_code == 302
+
+    # admin_client.login(username='admin@example.com', password='password')
+
+    r = admin_client.post('/login', {
+        'email': 'admin@example.com',
+        'password': 'password'
+    })
+    assert r.json() == {'code': 0}
+    assert r.status_code == 200
+
+    r = admin_client.get('/_/updates')
+    assert r.status_code == 200

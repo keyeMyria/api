@@ -12,6 +12,7 @@ import lxml.html
 from lxml.cssselect import CSSSelector as S
 from ..models import Subject
 from django.template.defaultfilters import slugify
+from django.conf import settings
 from unidecode import unidecode
 from edu import subject_slug
 from raven.contrib.django.raven_compat.models import client
@@ -126,14 +127,16 @@ def process_sections(sections, *args):
             total_pages = max(pages)  # noqa
             count += 1
 
-            time.sleep(5)
+            if not settings.TESTING:
+                time.sleep(5)
 
             chain(
                 extract_tasks_from_url.s(url),
                 process_tasks.s(),
             )()
 
-            time.sleep(5)
+            if not settings.TESTING:
+                time.sleep(5)
 
             # for i in range(1, total_pages-1)
 

@@ -263,9 +263,15 @@ class Login(EnsureCsrfCookieMixin, BaseView):
         # Check form input data (email and password)
         if f.is_valid():
             login(request, f.cleaned_data['user'])
-            return HttpResponse(json.dumps({'code': 0}))
+            return HttpResponse(
+                json.dumps({'code': 0}),
+                content_type='application/json'
+            )
         else:
-            return HttpResponse(json.dumps({'errors': f.errors}))
+            return HttpResponse(
+                json.dumps({'errors': f.errors}),
+                content_type='application/json'
+            )
 
 
 class Logout(APIView):
@@ -275,4 +281,4 @@ class Logout(APIView):
 
     def post(self, request, **kwargs):
         logout(request)
-        return HttpResponse("{}")
+        return HttpResponse("{}", content_type='application/json')
