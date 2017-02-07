@@ -83,3 +83,7 @@ def test_upload(client):
         )
         assert r.status_code == 200
         assert r.json()['sha1'] == 'a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0'
+
+    # downloading
+    r2 = client.get('/_/files/' + r.json()['sha1'])
+    assert r2.status_code == 200

@@ -9,14 +9,15 @@ source = src
 show_missing = true
 precision = 2
 omit =
-    asgi.py
-    manage.py
+    *asgi.py
+    *manage.py
     *migrations*
     *settings*.py
 
 exclude_lines =
     pragma: no cover
     def __repr__
+    class Telegram(APIView):
     if self.debug:
     if settings.DEBUG
     raise AssertionError

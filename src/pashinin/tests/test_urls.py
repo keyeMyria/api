@@ -4,7 +4,8 @@ import pytest
 @pytest.mark.urls('pashinin.urls')
 def test_urls_as_admin(admin_client):
     urls = ['/', '/contacts', '/faq', '/articles/']
-    urls += ['/_/celery', '/_/nginx', '/_/updates']
+    urls += ['/_/celery', '/_/nginx', '/_/updates',
+             '/_/django/corefiles/file/']
     for url in urls:
         r = admin_client.get(url)
         assert r.status_code == 200
@@ -31,6 +32,7 @@ def test_login_logout(admin_client):
 
     # admin_client.login(username='admin@example.com', password='password')
 
+    # try to log in again
     r = admin_client.post('/login', {
         'email': 'admin@example.com',
         'password': 'password'
