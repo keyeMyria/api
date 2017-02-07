@@ -45,7 +45,7 @@ before_script:
   - flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 script:
-  - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v -n3 --durations=3
+  - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v --durations=3
 
 after_success:
   - coveralls
