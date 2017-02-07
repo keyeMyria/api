@@ -12,19 +12,22 @@ from .views import (
     Contacts
 )
 
+# Error handlers
+#
+# https://docs.djangoproject.com/en/dev/ref/urls/#django.conf.urls.handler400
+#
+# def err404(request):
+#     if request.method == 'GET':
+#         return HttpResponseNotFound(render_to_string('404.html', locals()))
+#     else:
+#         return HttpResponseNotFound('404')
 
-def err404(request):
-    if request.method == 'GET':
-        return HttpResponseNotFound(render_to_string('404.html', locals()))
-    else:
-        return HttpResponseNotFound('404')
 
-
-def err500(request):
-    if request.method == 'GET':
-        return HttpResponseNotFound(render_to_string('500.html', locals()))
-    else:
-        return HttpResponseNotFound('500')
+# def err500(request):
+#     if request.method == 'GET':
+#         return HttpResponseNotFound(render_to_string('500.html', locals()))
+#     else:
+#         return HttpResponseNotFound('500')
 
 
 # handler404 = 'proj.urls.err404'
