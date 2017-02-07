@@ -11,7 +11,7 @@ domain = `./config.py -p domain secret-example.json secret.json`
 templates:
 	mkdir -p $(output)
 	./config.py secret-example.json secret.json
-	mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
+	# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
 	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
