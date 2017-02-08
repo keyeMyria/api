@@ -15,6 +15,7 @@ from django.template.defaultfilters import slugify
 from django.conf import settings
 from unidecode import unidecode
 from edu import subject_slug
+from edu.models import Task
 from raven.contrib.django.raven_compat.models import client
 from lxml import etree  # noqa
 from core.tasks import get
@@ -162,29 +163,30 @@ def process_sections(sections, *args):
 
 @shared_task(bind=True)
 def extract_tasks_from_url(self, url):
-    """Return a list of tasks"""
+    """Извлечение задач со страницы.
+
+    На одной странице расположено 10 форм. В каждой - таблица с
+    содержанием задачи. В форме также есть скрытый <input> - GUID
+    задачи.
+
+    """
     try:
         html, info = get(url)
         tree = lxml.html.fromstring(html)
         forms = S('form[name="checkform"]')(tree)
-        # tds = S('form[name="checkform"] table td')(tree)
         res = []
         for form in forms:
-            guid = ''
-            try:
-                guid = S('input[name="guid"]')(form)[0]
-            except:
-                client.captureException()
+            guid = S('input[name="guid"]')(form)[0].get('value').strip()
             for td in S('table td')(form):
+                # Just get HTML of a table in this form and pass it as a
+                # task text.  We will parse it later from another task.
                 html = ''
                 for el in td.xpath("child::node()"):
                     if isinstance(el, lxml.etree._ElementUnicodeResult):
                         html += str(el)
                     else:
                         html += etree.tostring(el, encoding='unicode')
-                res.append((guid, html))
-                # log.debug(tag_contents(td).strip())
-                # print(td.text_content())
+            res.append((guid, html.strip()))
         return res
     except Exception as e:
         html, info = get("http://85.142.162.119/os11/xmodules/qprint/" +
@@ -205,7 +207,22 @@ def process_tasks(tasks):
 
 @shared_task
 def process_task(guid, html):
-    return 'TODO: create "{}" task'.format(guid)
+    try:
+        task = Task.objects.get(debug__fipi_guid=guid)
+        return 'exists'
+    except Task.DoesNotExist:
+        # There still may be the same task just without Fipi GUID
+        task = Task(
+            title=html[:20],
+            text=html,
+            debug={
+                'fipi_guid': guid,
+                'html': html,
+                'v': 1
+            }
+        )
+        task.save()
+        return 'created'
 
 
 def tag_contents(tag):

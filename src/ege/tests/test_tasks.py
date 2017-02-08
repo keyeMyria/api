@@ -1,12 +1,22 @@
 import pytest
 from core.tasks import get
+from edu.models import Task
 from ..tasks import (
     fipi_bank_root_url,
     process_sections,
     ege_subjects_and_urls,
     get_subject_sections,
+    extract_tasks_from_url,
+    process_tasks
     # create_subjects
 )
+
+
+# Средства ИКТ - первая страница с задачами
+# fef2594a33094cb79f4765972a56f02412ce736d
+url_ikt_first_page = 'http://85.142.162.119/os11/xmodules/qprint/index.php' +\
+                     '?theme_guid=9009f55c9341e311beed001fc68344c9&' + \
+                     'proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F'
 
 
 # @pytest.mark.skip(reason='for now')
@@ -46,9 +56,7 @@ def test_process_sections(settings):
     #     #  'openlogin.php?proj=AF0ED3F2557F8FFC4C06F80B6803FD26')
     # ])
     sections = [
-        ('Средства ИКТ', 'http://85.142.162.119/os11/xmodules/qprint/' +
-         'index.php?theme_guid=9009f55c9341e311beed001fc68344c9&proj_guid' +
-         '=B9ACA5BBB2E19E434CD6BEC25284C67F')
+        ('Средства ИКТ', url_ikt_first_page)
     ]
     for title, url in sections:
         html, info = get(url)
@@ -65,6 +73,43 @@ def test_process_sections(settings):
 # http://85.142.162.119/os11/xmodules/qprint/index.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F
 
 
-# Средства ИКТ - первая страница с задачами
-# fef2594a33094cb79f4765972a56f02412ce736d
-# http://85.142.162.119/os11/xmodules/qprint/index.php?theme_guid=9009f55c9341e311beed001fc68344c9&proj_guid=B9ACA5BBB2E19E434CD6BEC25284C67F
+def test_extract_tasks_from_url():
+    """Извлечение задач со страницы.
+
+    На 1 странице расположено 10 форм. В каждой - таблица с содержанием
+    задачи. В форме также есть скрытое поле - GUID задачи.
+
+    """
+    html, info = get(url_ikt_first_page)
+    assert info['cached']
+
+    import lxml
+    from lxml.cssselect import CSSSelector as S
+    tree = lxml.html.fromstring(html)
+    forms = S('form[name="checkform"]')(tree)
+
+    # 10 задач на странице
+    assert len(forms) == 10
+
+    tasks = extract_tasks_from_url(url_ikt_first_page)
+    # Должно совпадать - 10 задач из 10 форм
+    assert len(tasks) == 10
+
+    for guid, text in tasks:
+        # guid должен быть строкой
+        assert len(guid) > 10
+        assert len(text) > 10
+        assert isinstance(guid, str)
+
+
+@pytest.mark.django_db
+def test_process_tasks(settings):
+    tasks = extract_tasks_from_url(url_ikt_first_page)
+    settings.CELERY_ALWAYS_EAGER = True
+
+    result = process_tasks.delay(tasks)
+    assert result.successful()
+
+    tasks = Task.objects.filter()
+    assert tasks.count() > 9
+    assert tasks.count() < 20
