@@ -100,10 +100,13 @@ def get_subject_sections(self, subject_url, *args):
             log.debug(title)
         return res
     except Exception as e:
-        html, info = get(fipi_bank_root_url)
-        time.sleep(2)
+        # html, info = get(fipi_bank_root_url)
+        # time.sleep(2)
         html, info = get("http://85.142.162.119/os11/xmodules/qprint/" +
-                         "openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F")
+                         "openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F",
+                         force=True)
+        time.sleep(2)
+        get(subject_url, force=True)
         self.retry(countdown=2, exc=e)
         client.captureException()
 

@@ -30,7 +30,7 @@ url_get_version = 7
 
 
 @shared_task
-def get(url, charset='utf-8'):
+def get(url, charset='utf-8', force=False):
     """Just GETs an URL."""
     # v = 7
     cookies = '/tmp/cookies.txt'
@@ -41,7 +41,7 @@ def get(url, charset='utf-8'):
 
     key = "url.get_" + hashlib.sha1(url.encode('utf-8')).hexdigest()
     html = cache.get(key, version=url_get_version)
-    if html is not None:
+    if html is not None and not force:
         return html, {'cached': True}
 
     try:
