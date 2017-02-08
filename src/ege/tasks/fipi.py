@@ -155,7 +155,7 @@ def process_sections(sections, *args):
             # for i in range(1, total_pages-1)
 
             # print(total_pages)
-            # break
+            break
     except:
         client.captureException()
 
@@ -164,7 +164,7 @@ def process_sections(sections, *args):
 def extract_tasks_from_url(self, url):
     """Return a list of tasks"""
     try:
-        html = get(url)
+        html, info = get(url)
         tree = lxml.html.fromstring(html)
         forms = S('form[name="checkform"]')(tree)
         # tds = S('form[name="checkform"] table td')(tree)
