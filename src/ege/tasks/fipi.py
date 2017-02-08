@@ -163,28 +163,31 @@ def process_sections(sections, *args):
 @shared_task
 def extract_tasks_from_url(url):
     """Return a list of tasks"""
-    html = get(url)
-    tree = lxml.html.fromstring(html)
-    forms = S('form[name="checkform"]')(tree)
-    # tds = S('form[name="checkform"] table td')(tree)
-    res = []
-    for form in forms:
-        guid = ''
-        try:
-            guid = S('input[name="guid"]')(form)[0]
-        except:
-            client.captureException()
-        for td in S('table td')(form):
-            html = ''
-            for el in td.xpath("child::node()"):
-                if isinstance(el, lxml.etree._ElementUnicodeResult):
-                    html += str(el)
-                else:
-                    html += etree.tostring(el, encoding='unicode')
-            res.append((guid, html))
-            # log.debug(tag_contents(td).strip())
-            # print(td.text_content())
-    return res
+    try:
+        html = get(url)
+        tree = lxml.html.fromstring(html)
+        forms = S('form[name="checkform"]')(tree)
+        # tds = S('form[name="checkform"] table td')(tree)
+        res = []
+        for form in forms:
+            guid = ''
+            try:
+                guid = S('input[name="guid"]')(form)[0]
+            except:
+                client.captureException()
+            for td in S('table td')(form):
+                html = ''
+                for el in td.xpath("child::node()"):
+                    if isinstance(el, lxml.etree._ElementUnicodeResult):
+                        html += str(el)
+                    else:
+                        html += etree.tostring(el, encoding='unicode')
+                res.append((guid, html))
+                # log.debug(tag_contents(td).strip())
+                # print(td.text_content())
+        return res
+    except:
+        client.captureException()
 
 
 @shared_task
