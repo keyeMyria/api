@@ -160,8 +160,8 @@ def process_sections(sections, *args):
         client.captureException()
 
 
-@shared_task
-def extract_tasks_from_url(url):
+@shared_task(bind=True)
+def extract_tasks_from_url(self, url):
     """Return a list of tasks"""
     try:
         html = get(url)
@@ -186,7 +186,14 @@ def extract_tasks_from_url(url):
                 # log.debug(tag_contents(td).strip())
                 # print(td.text_content())
         return res
-    except:
+    except Exception as e:
+        html, info = get("http://85.142.162.119/os11/xmodules/qprint/" +
+                         "openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F",
+                         force=True)
+        time.sleep(2)
+        html, info = get(url, force=True)
+        time.sleep(2)
+        self.retry(countdown=2, exc=e)
         client.captureException()
 
 
