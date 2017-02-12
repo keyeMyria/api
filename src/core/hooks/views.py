@@ -41,7 +41,8 @@ class Travis(APIView):
         # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
         payload = json.loads(d["payload"][0])
         SUCCEDED = payload['result'] == 0
-        if SUCCEDED:
+        NOTAG = payload['tag'] is None
+        if SUCCEDED and not NOTAG:
             commit_sha1 = payload['commit']
             from core.tasks import project_update
             from core.models import SiteUpdate
@@ -52,9 +53,7 @@ class Travis(APIView):
             upd.commit_message = payload['message']
             upd.save()
             project_update.delay(commit_sha1)
-        else:
-            # Travis build FAILED
-            pass
+
         return HttpResponse("")
 
 
