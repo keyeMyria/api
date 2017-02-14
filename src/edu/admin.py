@@ -20,8 +20,8 @@ def unpublish(modeladmin, request, queryset):
 class TaskAdmin(admin.ModelAdmin):
     form = TaskChangeForm
 
-    list_display = ('title', 'have_solution', 'published', 'added')
-    list_filter = ('published', 'solution')
+    list_display = ('title', 'solution_status', 'published', 'added')
+    list_filter = ('published', 'solution_status')
     actions = [unpublish, make_published]
     ordering = ['published', '-added']
 

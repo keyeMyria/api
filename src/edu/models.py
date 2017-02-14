@@ -26,11 +26,13 @@ class Task(models.Model):
     # )
     title = models.CharField(
         max_length=100,
-        help_text=_("Google displays first 50-60 characters of a title tag")
+        verbose_name=_('Title'),
+        help_text=_("Google displays first 50-60 characters of a title tag"),
     )
     added = models.DateTimeField(
         auto_now_add=True,
         db_index=True,
+        verbose_name=_('Added'),
     )
     # cut = models.TextField(
     #     # verbose_name=_('Solution'),
@@ -84,6 +86,7 @@ class Task(models.Model):
     published = models.BooleanField(
         default=False,
         db_index=True,
+        verbose_name=_('Published'),
         # help_text=_("Published in the DB?")
     )
     debug = JSONField(

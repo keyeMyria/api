@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-25 23:16+0300\n"
-"PO-Revision-Date: 2017-01-25 22:39+0300\n"
+"POT-Creation-Date: 2017-02-14 23:51+0300\n"
+"PO-Revision-Date: 2017-02-14 23:51+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,22 +17,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
+#: edu/admin.py:11 edu/models.py:89
+msgid "Published"
+msgstr "Опубликовано"
+
+#: edu/admin.py:16
+msgid "Hide"
+msgstr "Скрыть"
+
+#: edu/admin.py:38 edu/models.py:62
+msgid "Solution"
+msgstr "Решение"
+
 #: edu/apps.py:10
 msgid "EDU"
 msgstr "Образование"
 
-#: edu/models.py:22
-msgid "Google displays first 50-60 characters of a title tag"
-msgstr ""
+#: edu/models.py:16
+msgid "No solution"
+msgstr "Нет решения"
 
-#: edu/models.py:34 edu/models.py:80
+#: edu/models.py:17
+msgid "Partly solved"
+msgstr "Частично решено"
+
+#: edu/models.py:18
+msgid "Solved"
+msgstr "Решено"
+
+#: edu/models.py:29
+msgid "Title"
+msgstr "Заголовок"
+
+#: edu/models.py:30
+msgid "Google displays first 50-60 characters of a title tag"
+msgstr "Google показывает 50-60 символов в заголовке"
+
+#: edu/models.py:35
+msgid "Added"
+msgstr "Добавлено"
+
+#: edu/models.py:43 edu/models.py:99
 msgid "Task"
 msgstr "Задача"
 
-#: edu/models.py:53
-msgid "Solution"
-msgstr "Решение"
+#: edu/models.py:67
+msgid "Solution status"
+msgstr "Статус решения"
 
-#: edu/models.py:81
+#: edu/models.py:100
 msgid "Tasks"
 msgstr "Задачи"
