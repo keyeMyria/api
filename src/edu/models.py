@@ -23,10 +23,13 @@ class Task(models.Model):
     NO_SOURCE = 0
     FIPI_BANK = 1
     BAUMANKA = 2
+    BOOK_INF_2017_leshiner = 3
     SOURCE_CHOICES = (
         (NO_SOURCE, _('No source')),
         (FIPI_BANK, _('ФИПИ, открытый банк заданий')),
         (BAUMANKA, 'из Бауманки'),
+        (BOOK_INF_2017_leshiner,
+         'Типовые тестовые задания (ИНФ), 2017, Лещинер В.Р.'),
     )
 
     comment = models.CharField(

@@ -33,7 +33,7 @@ class TaskAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_('Task'), {
-           'fields': ('published', 'title', 'text', 'taken_from', 'comment')
+           'fields': ('published', 'title', 'text', ('taken_from', 'comment'))
         }),
         (_('Solution'), {
             'fields': ('solution_status', 'solution'),
