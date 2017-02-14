@@ -71,7 +71,10 @@ class Task(models.Model):
         db_index=True,
         # help_text=_("Published in the DB?")
     )
-    debug = JSONField(default=dict)
+    debug = JSONField(
+        default=dict,
+        blank=True, null=True,
+    )
 
     class Meta:
         # db_table = 'edu_tasks'
