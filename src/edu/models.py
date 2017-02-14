@@ -9,6 +9,7 @@ from django.contrib.postgres.fields import JSONField
 class Task(models.Model):
     """Any task. Anything that can be solved."""
 
+    # Solution status
     NO_SOLUTION = 0
     PARTLY_SOLVED = 1
     SOLVED = 2
@@ -18,6 +19,22 @@ class Task(models.Model):
         (SOLVED, _('Solved')),
     )
 
+    # Taken from
+    NO_SOURCE = 0
+    FIPI_BANK = 1
+    BAUMANKA = 2
+    SOURCE_CHOICES = (
+        (NO_SOURCE, _('No source')),
+        (FIPI_BANK, _('ФИПИ, открытый банк заданий')),
+        (BAUMANKA, 'из Бауманки'),
+    )
+
+    comment = models.CharField(
+        max_length=130,
+        verbose_name=_('Comment'),
+        blank=True, null=True,
+        help_text="ВУЗ, факультет, экзамен / рубежный контроль",
+    )
     # subject = models.ForeignKey(
     #     'Subject',
     #     db_column='subject',
@@ -60,13 +77,17 @@ class Task(models.Model):
     # )
     solution = models.TextField(
         verbose_name=_('Solution'),
-        blank=True,
-        null=True,
+        blank=True, null=True,
     )
     solution_status = models.IntegerField(
         verbose_name=_('Solution status'),
         default=NO_SOLUTION,
         choices=SOLUTION_CHOICES,
+    )
+    taken_from = models.IntegerField(
+        verbose_name=_('Source'),
+        default=NO_SOURCE,
+        choices=SOURCE_CHOICES,
     )
     # tags = ArrayField(
     #     models.CharField(max_length=100),

@@ -32,8 +32,8 @@ class TaskAdmin(admin.ModelAdmin):
     }
 
     fieldsets = (
-        (None, {
-           'fields': ('published', 'title', 'text',)
+        (_('Task'), {
+           'fields': ('published', 'title', 'text', 'taken_from', 'comment')
         }),
         (_('Solution'), {
             'fields': ('solution_status', 'solution'),
