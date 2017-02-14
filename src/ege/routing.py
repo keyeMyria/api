@@ -2,6 +2,6 @@
 # from .consumers import Default
 
 
-# channel_routing = [
-#     # route_class(Default),
-# ]
+channel_routing = [
+    # route_class(Default),
+]

@@ -20,10 +20,10 @@ def unpublish(modeladmin, request, queryset):
 class TaskAdmin(admin.ModelAdmin):
     form = TaskChangeForm
 
-    list_display = ('title', 'published', 'added')
-    list_filter = ('published', )
+    list_display = ('title', 'have_solution', 'published', 'added')
+    list_filter = ('published', 'solution')
     actions = [unpublish, make_published]
-    ordering = ['-published', 'title']
+    ordering = ['published', '-added']
 
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '60'})},
@@ -33,7 +33,10 @@ class TaskAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-           'fields': (('title', 'published'), 'text', 'solution')
+           'fields': ('published', 'title', 'text',)
+        }),
+        (_('Solution'), {
+            'fields': ('solution_status', 'solution'),
         }),
         ('Advanced options', {
             'fields': ('debug', ),

@@ -8,6 +8,16 @@ from django.contrib.postgres.fields import JSONField
 
 class Task(models.Model):
     """Any task. Anything that can be solved."""
+
+    NO_SOLUTION = 0
+    PARTLY_SOLVED = 1
+    SOLVED = 2
+    SOLUTION_CHOICES = (
+        (NO_SOLUTION, _('No solution')),
+        (PARTLY_SOLVED, _('Partly solved')),
+        (SOLVED, _('Solved')),
+    )
+
     # subject = models.ForeignKey(
     #     'Subject',
     #     db_column='subject',
@@ -51,6 +61,11 @@ class Task(models.Model):
         blank=True,
         null=True,
     )
+    solution_status = models.IntegerField(
+        verbose_name=_('Solution status'),
+        default=NO_SOLUTION,
+        choices=SOLUTION_CHOICES,
+    )
     # tags = ArrayField(
     #     models.CharField(max_length=100),
     #     blank=True,
@@ -80,6 +95,10 @@ class Task(models.Model):
         # db_table = 'edu_tasks'
         verbose_name = _("Task")
         verbose_name_plural = _("Tasks")
+
+    @property
+    def have_solution(self):
+        return bool(self.solution)
 
     @property
     def as_html(self):
