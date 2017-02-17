@@ -48,10 +48,14 @@ class SubjectView(Base):
 
     def get_context_data(self, **kwargs):
         c = super(SubjectView, self).get_context_data(**kwargs)
-        c['year'] = kwargs.get('year', c.get('now', now()).year)
+        c['year'] = kwargs.get('year', None)
+        if not c['year']:
+            c['year'] = c.get('now', now()).year
+
+        subj = kwargs['subj']  # from urls pattern
         try:
             c['subject'] = Subject.objects.get(
-                slug=kwargs['subj'],
+                slug=subj,
                 published=True
             )
             # дательный падеж:
@@ -72,9 +76,18 @@ class SubjectView(Base):
                 type=0
             )
         except EGE.DoesNotExist:
+            print('EGE.DoesNotExist')
             # c['subject'] = None
             c['ege'] = None
             c['status'] = 404
 
         c['tasks'] = Task.objects.filter()
         return c
+
+
+class TaskView(SubjectView):
+    template_name = "ege_subject.jinja"
+
+
+class SubjectTheoryView(SubjectView):
+    template_name = "ege_subject.jinja"

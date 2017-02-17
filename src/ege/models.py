@@ -83,6 +83,13 @@ class Subject(models.Model):
         verbose_name="URL part",
         # editable=False,
     )
+    # tasks = models.ManyToManyField(
+    #     'edu.Task',
+    #     # through = 'EgeVariants',
+    #     blank=True,
+    #     # related_name = 'ege',
+    #     help_text="Все задачи, по этому предмету ЕГЭ/ОГЭ"
+    # )
     published = models.BooleanField(default=False)
 
     class Meta:
@@ -91,7 +98,7 @@ class Subject(models.Model):
         unique_together = ("name", "slug")
 
     def get_absolute_url(self):
-        return reverse('subject', kwargs={'subj': self.slug})
+        return reverse('subject:index', kwargs={'subj': self.slug})
 
     def __str__(self):
         return self.name

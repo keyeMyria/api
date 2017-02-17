@@ -2,7 +2,9 @@
 
 {% block style %}
 {{super()}}
-.ovrl{background-color:rgba(255, 255, 255, 0.6);bottom:0;right:0;left:0;z-index:2;position:absolute;text-align:center;width:100%}
+  .ovrl{background-color:rgba(255, 255, 255, 0.6);bottom:0;right:0;left:0;z-index:2;position:absolute;text-align:center;width:100%}
+#subject_menu a{color:#777;margin-right:2rem}
+#subject_menu a:hover{color:red;}
 {% endblock %}
 
 
@@ -31,7 +33,11 @@
 <div class="pad-sm w flex padt">
   <div>
 	<h1 style="margin-top:0;padding-top:0">{{subject}} ({{year}})</h1>
-	<span style="color:#777">Об экзамене</span>
+	<div id="subject_menu" class="flex grow0">
+	  <a href="{{url("subject:index", kwargs={'subj': subj})}}">Об экзамене</a>
+	  <a href="{{url("subject:tasks", kwargs={'subj': subj})}}">Все задачи</a>
+	  <a href="{{url("subject:theory", kwargs={'subj': subj})}}">Теория</a>
+	</div>
   </div>
 </div>
 {% endblock %}
@@ -39,13 +45,18 @@
 
 {% block content %}
   <div class="pad-sm">
+	<h2>Задачи</h2>
 	{% for task in tasks %}
-	  <div>
-		{{task}}
+	  <div class="bred">
+		<a href="{{url("task", kwargs={'id':1, 'slug':'a'})}}">{{task}}</a>
+
+		<div>
+		  {{task.cut}}
+		</div>
 	  </div>
-	  <div>
-		{{task.as_html}}
-	  </div>
+	  {# <div> #}
+	  {# 	{{task.as_html}} #}
+	  {# </div> #}
 	{% else %}
 	  No tasks
 	{% endfor %}
