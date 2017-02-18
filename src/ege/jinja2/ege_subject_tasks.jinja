@@ -1,0 +1,48 @@
+{% extends "ege_subject.jinja" %}
+
+{# {% block title %} #}
+{#   {{exam_type_str}} #}
+{#   {% if subject %} #}
+{# 	по {{po_subject}} #}
+{#   {% endif %} #}
+{#   в {{year}} году #}
+{# {% endblock %} #}
+
+
+{# {% block header %} #}
+{# {{super()}} #}
+{# <div class="pad-sm w flex padt"> #}
+{#   <div> #}
+{# 	<h1 style="margin-top:0;padding-top:0">{{subject}} ({{year}})</h1> #}
+{# 	<div id="subject_menu" class="flex grow0"> #}
+{# 	  <a href="{{url("subject:index", kwargs={'subj': subj})}}">Об экзамене</a> #}
+{# 	  <a href="{{url("subject:tasks:index", kwargs={'subj': subj})}}">Все задачи</a> #}
+{# 	  <a href="{{url("subject:theory", kwargs={'subj': subj})}}">Теория</a> #}
+{# 	</div> #}
+{#   </div> #}
+{# </div> #}
+{# {% endblock %} #}
+
+
+{% block content %}
+  <div class="pad-sm">
+	<a href="#">Случайная задача</a>
+	{% for task in exam.tasks.filter().order_by('order') %}
+	  <div class="marb" style="">
+		<a href="{{url("subject:tasks:task", kwargs={'subj':subj, 'id':task.order})}}">{{task.order}}. {{task}}</a>
+		{# <div> #}
+		{#   <ul> #}
+		{#   {% for tag in task.tags.all() %} #}
+		{# 	<li>{{tag}}</li> #}
+		{#   {% endfor %} #}
+		{#   </ul> #}
+		{# </div> #}
+	  </div>
+	  {# <div> #}
+	  {# 	{{task.as_html}} #}
+	  {# </div> #}
+	{% else %}
+	  No tasks
+	{% endfor %}
+  </div>
+{% endblock %}

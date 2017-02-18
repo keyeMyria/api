@@ -1,7 +1,7 @@
 import logging
 from pashinin.views import Base as B
 from django.conf import settings
-from .models import Subject, EGE
+from .models import Subject, Exam
 from core import now
 from edu.models import Task
 import pymorphy2
@@ -70,15 +70,15 @@ class SubjectView(Base):
             # return HttpResponseRedirect(reverse("index"))
 
         try:
-            c['ege'] = EGE.objects.get(
+            c['exam'] = Exam.objects.get(
                 subject=c['subject'],
                 year=c['year'],
                 type=0
             )
-        except EGE.DoesNotExist:
+        except Exam.DoesNotExist:
             print('EGE.DoesNotExist')
             # c['subject'] = None
-            c['ege'] = None
+            c['exam'] = None
             c['status'] = 404
 
         c['tasks'] = Task.objects.filter()
@@ -91,3 +91,7 @@ class TaskView(SubjectView):
 
 class SubjectTheoryView(SubjectView):
     template_name = "ege_subject.jinja"
+
+
+class SubjectTasks(SubjectView):
+    template_name = "ege_subject_tasks.jinja"

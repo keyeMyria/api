@@ -35,7 +35,7 @@
 	<h1 style="margin-top:0;padding-top:0">{{subject}} ({{year}})</h1>
 	<div id="subject_menu" class="flex grow0">
 	  <a href="{{url("subject:index", kwargs={'subj': subj})}}">Об экзамене</a>
-	  <a href="{{url("subject:tasks", kwargs={'subj': subj})}}">Все задачи</a>
+	  <a href="{{url("subject:tasks:index", kwargs={'subj': subj})}}">Все задачи</a>
 	  <a href="{{url("subject:theory", kwargs={'subj': subj})}}">Теория</a>
 	</div>
   </div>
@@ -45,29 +45,11 @@
 
 {% block content %}
   <div class="pad-sm">
-	<h2>Задачи</h2>
-	{% for task in tasks %}
-	  <div class="bred">
-		<a href="{{url("task", kwargs={'id':1, 'slug':'a'})}}">{{task}}</a>
-
-		<div>
-		  {{task.cut}}
-		</div>
-	  </div>
-	  {# <div> #}
-	  {# 	{{task.as_html}} #}
-	  {# </div> #}
-	{% else %}
-	  No tasks
-	{% endfor %}
-  </div>
-
-  <div class="pad-sm">
-	{% if ege.info %}
-	  <h2>Об экзамене в {{ege.year}}</h2>
-	  <span style="color:#777">{{exam_type_str}} по {{po_subject}} в {{ege.year}} году</span>
+	{% if exam.info %}
+	  <h2>Об экзамене в {{exam.year}}</h2>
+	  <span style="color:#777">{{exam_type_str}} по {{po_subject}} в {{exam.year}} году</span>
 	  <span></span>
-	  {{ege.info_formatted|safe}}
+	  {{exam.info_formatted|safe}}
 	{% else %}
 	  {% if user.is_superuser %}
 		Нет информации об экзамене:

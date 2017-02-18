@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
-class EGE(models.Model):
+class Exam(models.Model):
     """Информация об экзамене ЕГЭ/ОГЭ.
 
     Включая год, предмет, типы задач.
@@ -42,10 +42,10 @@ class EGE(models.Model):
     #     # related_name = 'ege',
     # )
     # tasks = models.ManyToManyField(
-    #     'edu.Category',
-    #     through='EgeTasktypes',
+    #     'ege.Task',
+    #     # through='EgeTasktypes',
     #     blank=True,
-    #     # related_name = 'ege',
+    #     related_name='exams',
     # )
     published = models.BooleanField(default=False)
 
@@ -67,7 +67,7 @@ class EGE(models.Model):
             return "ОГЭ - {} {}".format(self.subject, self.year)
 
 
-@receiver(pre_save, sender=EGE)
+@receiver(pre_save, sender=Exam)
 def ege_pre_save(instance, *args, **kwargs):
     instance.info = instance.info.replace("\r\n", "\n")
 
@@ -102,3 +102,58 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Task(models.Model):
+    """Тип задачи в ЕГЭ/ОГЭ
+
+    Определяется набором тэгов задач. Иначе говоря - это связь модели
+    ЕГЭ и всех подходящих задач из приложения "edu"
+
+    """
+    order = models.IntegerField(
+        verbose_name='Номер задачи',
+        help_text='Например: от 1 до 27',
+    )
+    exam = models.ForeignKey(
+        'ege.Exam',
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="tasks",
+    )
+
+    topic = models.CharField(
+        max_length=150,
+        verbose_name='Тема',
+        null=True, blank=True,
+        help_text='Отображаемая тема этой задачи экзамена, если не указана, '
+        'то будут использованы тэги',
+    )
+
+    Type = (
+        (0, '1 единственная задача'),
+        (1, '1 задача из N на выбор'),
+
+        # или больше, в этом случае в модели ЕГЭ должны повторяться
+        # записи Task с одинаковыми полями "order".  То есть больше
+        # одной задачи с одним и тем же порядковым номером
+    )
+    type = models.IntegerField(
+        default=0,
+        choices=Type,
+        verbose_name='Нужно решить'
+    )
+    tags = models.ManyToManyField(
+        'edu.Tag',
+        verbose_name=_('Tags'),
+        related_name='ege_tasks',  # to get Task types from Tag model
+        help_text='Все тэги, которые подходят для этой задачи в этом экзамене'
+    )
+
+    def __str__(self):
+        if self.topic:
+            return self.topic
+        else:
+            return "{}".format(
+                ', '.join([str(item.name) for item in self.tags.all()])
+            )

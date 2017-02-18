@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, EGE
+from .models import Subject, Exam, Task
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -13,6 +13,9 @@ def unpublish(modeladmin, request, queryset):
     make_published.short_description = _("Hide")+" (published=False)"
 
 
+# admin.site.register(Task)
+
+
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'published')
@@ -21,6 +24,39 @@ class SubjectAdmin(admin.ModelAdmin):
     actions = [unpublish, make_published]
 
 
-@admin.register(EGE)
-class EGEAdmin(admin.ModelAdmin):
+class MembershipInline(admin.TabularInline):
+    model = Task
+    # show_change_link = True
+    extra = 0
+    # model = Exam.tasks.through
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    filter_horizontal = ('tags',)
+    # inlines = [
+    #     TagInline,
+    # ]
+
+
+@admin.register(Exam)
+class ExamAdmin(admin.ModelAdmin):
+    inlines = [
+        MembershipInline,
+    ]
+    exclude = ('tasks',)
+
     list_filter = ('type', )
+
+    fieldsets = (
+        (None, {
+           'fields': ('published', 'type', 'subject', 'year')
+        }),
+        (_('Description'), {
+            'fields': ('info', ),
+        }),
+        # ('Задачи экзамена', {
+        #     'fields': ('exam_tasks', ),
+        # }),
+    )
+    # filter_horizontal = ('exam_tasks',)

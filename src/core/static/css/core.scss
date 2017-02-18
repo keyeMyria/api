@@ -166,7 +166,7 @@ textarea:focus,
 input[type=text]:focus,
 input[type=password]:focus{
 	border-color: #889;
-	transition: all 0.1s linear;
+	// transition: all 0.1s linear;
 }
 
 textarea:hover,
@@ -175,7 +175,7 @@ input[type=password]:hover{
 	// border-color: #00f;
 	border-color: #aab;
 	box-shadow: 0px 0px 2px #aab;
-	transition: all 0.1s linear;
+	// transition: all 0.1s linear;
 }
 
 textarea,
@@ -193,7 +193,7 @@ input[type=password]{
 	border:1px solid #ccc;
 	width: 100%;
 	box-sizing: border-box;
-	transition: all 0.1s linear;
+	// transition: all 0.1s linear;
 }
 
 
@@ -440,11 +440,11 @@ div.footerwide{
 		color: black;
 		text-decoration:none;
 		overflow:hidden;
-		transition: all 0.1s linear;
+		// transition: all 0.1s linear;
 		&:hover{
 			text-decoration:underline;
 			opacity: 1;
-			transition: all 0.1s linear;
+			// transition: all 0.1s linear;
 		}
 	}
 
@@ -520,7 +520,7 @@ div.contents{
 	display:none;
 	background-color:white;
 	border: 1px solid transparent;
-	transition:all 0.2s linear;
+	// transition:all 0.2s linear;
 }
 
 div.contents ol {
@@ -692,6 +692,7 @@ h3, h4, h5 {
 }
 
 #profile{
+	transition: all 0.1s linear;
 	&:hover{
 		background:rgba(0,0,0,0.05);
 	}

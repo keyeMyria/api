@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task
+from .models import Task, Tag
 from .forms import TaskChangeForm
 from django.forms import TextInput
 from django.db import models
@@ -14,6 +14,10 @@ def make_published(modeladmin, request, queryset):
 def unpublish(modeladmin, request, queryset):
     queryset.update(published=False)
     make_published.short_description = _("Hide")+" (published=False)"
+
+
+admin.site.register(Tag)
+# class TaskAdmin(admin.ModelAdmin):
 
 
 @admin.register(Task)
@@ -33,7 +37,8 @@ class TaskAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_('Task'), {
-           'fields': ('published', 'title', 'text', ('taken_from', 'comment'))
+           'fields': ('published', 'title', 'text', ('taken_from', 'comment'),
+                      'tags')
         }),
         (_('Solution'), {
             'fields': ('solution_status', 'solution'),

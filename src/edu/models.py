@@ -6,6 +6,38 @@ from django.core.urlresolvers import reverse
 from django.contrib.postgres.fields import JSONField
 
 
+# class Tag(Tree):
+class Tag(models.Model):
+    name = models.CharField(
+        max_length=100,
+        help_text="Тема задачи или уникальная метка "
+        "(системы счисления, исполнитель РОБОТ)",
+    )
+    hint = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        help_text="Чуть подробднее о задаче"
+        "(Дана таблица, найти то-то)",
+    )
+    # subject = models.ForeignKey(
+    #     'Subject',
+    #     db_column='subject',
+    #     verbose_name=_('Subject'),
+    #     # verbose_name_plural = _("Subjects")
+    #     null=True,
+    #     blank=True,
+    # )
+
+    # class Meta:
+    #     db_table = 'edu_task'
+
+    def __str__(self):
+        if self.hint:
+            return "{} ({})".format(self.name, self.hint)
+        else:
+            return "{}".format(self.name)
+
+
 class Task(models.Model):
     """Any task. Anything that can be solved."""
 
@@ -98,10 +130,11 @@ class Task(models.Model):
     #     null=True,
     #     verbose_name = _('Tags')
     # )
-    # tags = models.ManyToManyField(
-    #     'Tag',
-    #     blank=True,
-    # )
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        verbose_name=_('Tags'),
+    )
     # categories = models.ManyToManyField(
     #     'Category',
     #     blank=True,
