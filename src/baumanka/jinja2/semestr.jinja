@@ -9,39 +9,42 @@ div.k{padding-top:1rem}
 
 {% block metadescription %}Лекции, РК, чертежи, экзамены за {{sem}} семестр для {{kafname}}.{% endblock %}
 
-{% block topleft %}
-  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}} - {{kaf.title}}</a>
+{% block nav1 %}
+  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}} - {{kaf.title}}</a>
 {% endblock %}
 
 
 {% block header %}
-{{super()}}
-<div class="">
-  <div class="w pad-sm">
-	<h1 class="nomar">
-	  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a>
-	</h1>
-  </div>
-  <div class="w pad-sm">
-	{% if levels|length > 0 %}
-	  {# <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
-	{% else %}
-	  {# {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %} #}
-	{% endif %}
-
-	{% for level in levels %}
-	  <a href="{{url("baumanka:sem", kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
-	  {% if not loop.last %}
-		-
+  {{super()}}
+  <div class="">
+	<div class="w pad-sm">
+	  <h1 class="nomar">
+		{# {{kafname}} - #}
+		{# <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a> #}
+		{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}
+	  </h1>
+	</div>
+	<div class="w pad-sm">
+	  {% if levels|length > 0 %}
+		{# <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
+	  {% else %}
+		{# {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %} #}
 	  {% endif %}
-	{% endfor %}
+
+	  <a href="{{url("index", host=host.name)}}">Бауманка</a>
+	  &gt;
+	  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}}</a>
+	  &gt;
+	  <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">сем. {{sem}}</a>
+	  {% if levels %} &gt; {% endif %}
+	  {% for level in levels %}
+		<a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
+		{% if not loop.last %}
+		  &gt;
+		{% endif %}
+	  {% endfor %}
+	</div>
   </div>
-</div>
-{% endblock %}
-
-
-{% block breadcrumb2 %}
-{# <a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> - #}
 {% endblock %}
 
 

@@ -110,11 +110,22 @@ function showFormErrors(errors, form) {
 		e.preventDefault();
 	});
 
+	let site_switch = document.getElementById("site_switch");
+	if (site_switch) site_switch.addEventListener("click", function(e) {
+		document.getElementById("site_switch").classList.toggle("pressed");
+		document.getElementById("site_switch_menu").classList.toggle("hide");
+		e.stopPropagation();
+		e.preventDefault();
+	});
+
 	// hide any menu when clicked somewhere but not in menu
 	document.addEventListener("click", function(e) {
 		if (!closest(e.target, ".popup")) {
 			let profile = document.getElementById("profile");
 			if (profile) profile.classList.remove("pressed");
+			let site_switch = document.getElementById("site_switch");
+			if (site_switch) profile.classList.remove("pressed");
+
 			Array.from(document.getElementsByClassName("popup")).forEach(function(el) {
 				el.classList.add("hide");
 			});

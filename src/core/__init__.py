@@ -53,6 +53,20 @@ def get_client_ip(request):
     return ip
 
 
+# def reverse(lookup_view, *args, **kwargs):
+#     if 'host' in kwargs:
+#         return reverse_hosts(lookup_view, *args, **kwargs)
+#     else:
+#         return reverse_django(lookup_view, *args, **kwargs)
+
+try:
+    from django_hosts.resolvers import reverse as reverse_hosts
+    reverse = reverse_hosts
+except:
+    from django.core.urlresolvers import reverse as reverse_django
+    reverse = reverse_django
+
+
 # Detecting mobile device
 # Taken from here: http://detectmobilebrowsers.com/
 # removed for pep8

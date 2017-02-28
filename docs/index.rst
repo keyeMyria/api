@@ -14,6 +14,9 @@ pashinin.com
    static
    long-running-tasks
    tests
+   algo
+   mailserver
+   auth
 
 
 Update process

@@ -16,81 +16,123 @@ skype: sergey-pashinin
 {% endblock %}
 
 
-{% block breadcrumb %}
-<h1 class="nomar nopad">Контакты</h1>
+
+{% block header2 %}
+  <h1>Контакты</h1>
 {% endblock %}
+
+
+{# {% block breadcrumb %} #}
+{# <h1 class="nomar nopad">Контакты</h1> #}
+{# {% endblock %} #}
 
 
 
 {% block content %}
-  <div class="w">
-    <div class="padlr padt" style="position:relative;" itemscope itemtype="http://schema.org/Person">
-	  <div class="flex" style="10px solid red;">
-		<div class="flex0" style="flex:0 0 120px;position:relative">
-		  <img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
-				 style="box-shadow: 0px 0px 3px #000;width:120px;height:120px"/>
-		</div>
-		<div class="padl " style="position:relative">
-		  {# <span class="title" style="font-size:1.5rem" itemprop="telephone">{{phone}}</span> #}
-		  <p style="font-size:1.5rem" itemprop="name">Пашинин Сергей Александрович</p>
-		  <p>
-			<img itemprop="image" class="left" alt="МГТУ им. Баумана" src="{{ file("cb5766f0333ebeb9f3cdb0efad36e141566fa67f") }}"
-				 style="left:0px;bottom:0;right:0;margin-right:0.5rem"/>
-			МГТУ им. Баумана <br/>
-			Информатика и системы управления
-		  </p>
-		  {# <a itemprop="email" href="mailto:{{email}}">{{email}}</a> #}
-		  <meta itemprop="email" content="{{email}}" />
-		  <meta itemprop="birthDate" content="14th August 1988" />
-		  <div itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
-			<meta itemprop="streetAddress" content="ул. Туристская 19/1" />
-			<meta itemprop="addressLocality" content="Москва" />
-			<meta itemprop="postalCode" content="125459" />
-		  </div>
+  <div class="pad-sm padt2" style="position:relative;" itemscope itemtype="http://schema.org/Person">
+	<div class="flex">
+	  <div class="flex0" style="flex:0 0 120px;position:relative">
+		<img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
+			 style="
+			 {# box-shadow: 0px 0px 3px #000;width:120px;height:120px #}
+			 border: 1px solid #999;
+			 border-radius:3px;
+			 "/>
+	  </div>
+	  <div class="padl " style="position:relative">
+		{# <span class="title" style="font-size:1.5rem" itemprop="telephone">{{phone}}</span> #}
+		<p style="font-size:1.5rem" itemprop="name">Пашинин Сергей Александрович</p>
+		<p>
+		  <img itemprop="image" class="left" alt="МГТУ им. Баумана" src="{{ file("cb5766f0333ebeb9f3cdb0efad36e141566fa67f") }}"
+			   style="left:0px;bottom:0;right:0;margin-right:0.5rem"/>
+		  МГТУ им. Н. Э. Баумана <br/>
+		  Информатика и системы управления
+		</p>
+		<meta itemprop="email" content="{{email}}" />
+		<meta itemprop="birthDate" content="14th August 1988" />
+		<div itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+		  <meta itemprop="streetAddress" content="ул. Туристская 19/1" />
+		  <meta itemprop="addressLocality" content="Москва" />
+		  <meta itemprop="postalCode" content="125459" />
 		</div>
 	  </div>
 	</div>
   </div>
-  {# <div class="noprint" style="line-height:2.5rem;"> #}
-  {# <div class="w flex"> #}
-	  {# 	<div class="padl"> #}
 
-<div class="pad">
 
-{% block services %}
-  <div class="c">
-	<h3><b>{{phone}}</b></h3>
-	<span style="color:#888">Москва, Теле2</span>
-  </div>
-
-  <div class="c">
-	<h3><a href="mailto:{{email}}">{{email}}</a></h3>
-	<span style="color:#888">Email</span>
-  </div>
-
-  <div class="c flex equal soc">
-	<div><a href="https://vk.com/pashinin"><img style="max-width:60px" alt="Вконтакте" src="{{ file("40fa21ea248613c761a2a31ac032c825e3085ac6") }}"/>
-		<br>
-		vk.com/pashinin
-	  </a>
+  <div class="pad-sm">
+	<div class="c pad flex grow0" style="color:#000">
+	  <div class="marr pad-sm">
+		<img alt="" src="{{file('3f260399ed74343d31b1c3dde1319ef9aa4f8e14')}}" style="width:60px"/>
+	  </div>
+	  <div>
+		<h3><b>{{phone}}</b> <span style="font-size:1rem">(Москва, Теле2)</span></h3>
+		<p>Звоните до 21:00 по московскому времени. Сейчас в Москве {{now.hour}}:{{now.minute}}.</p>
+	  </div>
 	</div>
-	<div><a href="skype:sergey-pashinin?chat"><img style="max-width:60px" alt="Skype" src="{{ file("14a6ee6b082c752332121ef9e91a0a56141edb35") }}"/>
-		<br>
-		sergey-pashinin
-	  </a>
+
+	<div class="c pad flex grow0" style="color:#000">
+	  <div class="marr pad-sm">
+		<img alt="" src="{{file('1a3dce321f75e7d7e81f82ff36fd9d1518125b6e')}}" style="width:60px"/>
+	  </div>
+	  <div>
+		<h3><a href="mailto:{{email}}">{{email}}</a></h3>
+		<p>Отправьте мне файлы задач или просто свои вопросы по занятиям.</p>
+	  </div>
 	</div>
-	{# <div> #}
-	{#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #}
-	{# 	<br> #}
-	{# 	fb.com/pashinin #}
-	{#   </a> #}
-	{# </div> #}
-	{# <div><a href="https://youtube.com/sergeypashinin"><img alt="Youtube" src="{{ static("youtube-logo.png") }}"/></a></div> #}
+
+
+	<div class="c pad flex grow0" style="color:#000">
+	  <div class="marr pad-sm padl">
+		<a href="https://vk.com/pashinin"><img style="max-width:50px" alt="Вконтакте" src="{{ file("ed63a9e7645f1ae4c0476a0c1439b961821292ad") }}"/></a>
+	  </div>
+	  <div>
+		<h3><a href="https://vk.com/pashinin">ВКонтакте</a></h3>
+		<p>Можете также использовать контакт для связи. Я там часто бываю.</p>
+	  </div>
+	</div>
+
+
+	<h2 class="pad-sm">Мессенджеры</h2>
+
+	<div class="c pad flex grow0" style="color:#000">
+	  <div class="marr pad-sm padl">
+		<img style="max-width:60px" alt="Вконтакте" src="{{ file("60548aa40ce01b58153356051a40fa212f8529e5") }}"/>
+	  </div>
+	  <div>
+		<h3>Discord</h3>
+		<span style="color:#777">Сергей Пашинин#6974</span> | <a target="_blank" href="https://discordapp.com/">Скачать</a>
+		<p>Лучшее качество звука. Пока нет передачи видео.</p>
+	  </div>
+	</div>
+
+
+	{# Skype #}
+	<div class="c pad flex grow0" style="color:#000">
+	  <div class="marr pad-sm padl">
+		<img style="max-width:60px" alt="Skype" src="{{ file("14a6ee6b082c752332121ef9e91a0a56141edb35") }}"/>
+	  </div>
+	  <div>
+		<h3>Skype</h3>
+		<span style="color:#777">sergey-pashinin</span>
+		<a target="_blank" href="https://skype.com/">Скачать</a>
+		<p>Cкоро не останется причин использовать эту поделку.</p>
+	  </div>
+	</div>
+
+
+	<div class="c flex equal soc">
+	  {# <div> #}
+		{#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #}
+		  {# 	<br> #}
+		  {# 	fb.com/pashinin #}
+		  {#   </a> #}
+		{# </div> #}
+	  {# <div><a href="https://youtube.com/sergeypashinin"><img alt="Youtube" src="{{ static("youtube-logo.png") }}"/></a></div> #}
+	</div>
   </div>
-{% endblock %}
-</div>
 
-
+  <div class="w pad-sm padt2">
 <img alt="Здание" src="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" style="width:100%"/>
 <div class="pad" style="border-top:1px solid #ddd;overflow:auto;">
   <img class="right marr" alt="Занятия проходят тут" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/>

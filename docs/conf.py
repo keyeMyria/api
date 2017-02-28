@@ -156,3 +156,7 @@ texinfo_documents = [
      author, 'pashinincom', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+
+locale_dirs = ['locale/']   # path is example but recommended.
+gettext_compact = False     # optional.

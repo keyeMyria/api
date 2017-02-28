@@ -7,14 +7,16 @@ ol li{margin-top:1em}
 
 {% block title %}Вопросы{% endblock %}
 
-{% block breadcrumb %}
-<h1 class="nomar">Вопросы</h1>
+
+{% block header2 %}
+  <h1>Вопросы</h1>
 {% endblock %}
 
-{% block content %}
-<div class="pad">
 
-<div class="padlr padt marb">
+{% block content %}
+<div class="pad-sm">
+
+<div class="padt2 marb">
   <span class="pad" style="background:#090;color:#fff">
 	Хорошие вопросы:
   </span>
@@ -93,7 +95,9 @@ ol li{margin-top:1em}
 
 <h2>Каков Ваш стаж работы репетитором?</h2>
 
-Примерно {{exp.total_seconds() / 60 / 60 / 24 / 365.25}} года.
+<div class="padl-sm">
+  Примерно {{exp.total_seconds() / 60 / 60 / 24 / 365.25}} года.
+</div>
 
 
 
@@ -123,7 +127,7 @@ ol li{margin-top:1em}
   этим.
 
   <div class="pad" style="background:#ffb;border:1px solid #ff0">
-	<a href="{{url("index")}}">Записываться</a>	ко мне нужно заранее, а не в сентябре на пересдаче
+	<a href="{{url("index")}}" style="text-decoration:underline">Записываться</a>	ко мне нужно заранее, а не в сентябре на пересдаче
 	летней сессии искать кому дать взятку. Тогда сами все сдадите.
   </div>
 </p>

@@ -1,11 +1,9 @@
 {% extends "pashinin_base.jinja" %}
 
-{% block topleft %}<a href="{{url("baumanka:index")}}">Бауманка</a>{% endblock %}
-
-
-{% block footer_content %}
-  {% if user.is_superuser %}
-	<span class="right">{{ip}}</span>
-  {% endif %}
-  <p><a href="{{url("index")}}">pashinin.com</a></p>
+{% block topleft %}
+  <nav>
+  {% block nav1 %}
+	<a href="{{url("index", host=host.name)}}">Бауманка</a>
+  {% endblock %}
+  </nav>
 {% endblock %}

@@ -4,6 +4,7 @@ from .views import (
     YearView,
     SubjectView,
     Index,
+    ExamTaskView,
     TaskView,
     SubjectTheoryView,
     SubjectTasks
@@ -14,17 +15,16 @@ from core.views import Login
 # /subj(/year)?/tasks/
 tasks_patterns = [
     url(r'^$', SubjectTasks.as_view(), name="index"),
-    url(r'^(?P<id>\d+)$', TaskView.as_view(), name='task'),
+    url(r'^(?P<id>\d+)$', ExamTaskView.as_view(), name='task'),
 ]
 
 
 # /subj(/year)?/
 subject_patterns = [
     url(r'^$', SubjectView.as_view(), name="index"),
-    # url(r'^tasks$', SubjectTasks.as_view(), name='tasks'),
     url(r'^tasks/', include(tasks_patterns, namespace='tasks')),
     url(r'^theory$', SubjectTheoryView.as_view(), name='theory'),
-    url(r'^(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
+    # url(r'^(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
 ]
 
 # Main urls in "ege.example.org"

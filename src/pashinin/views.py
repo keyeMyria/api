@@ -1,8 +1,10 @@
 import datetime
 import json
 from core.views import BaseView
+from core.menu import Menu
 # from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from core import reverse
 # from django.conf import settings
 from django.http import HttpResponse
 from .forms import Enroll
@@ -21,35 +23,38 @@ class Base(BaseView):
         c["price"] = 900
         c["price45"] = 700
         c["menu_id"] = "services"
-        try:
-            c['menu'] = {
-                'parent': None,
-                'items': [
-                    {
-                        'title': 'Главная',
-                        'url': reverse('index'),
-                    },
-                    {
-                        'title': 'Статьи',
-                        'url': reverse('articles:index'),
-                    } if c['user'].is_superuser else None,
-                    {
-                        'title': 'Вопросы',
-                        'url': reverse('faq'),
-                    },
-                    {
-                        'title': 'Контакты',
-                        'url': reverse('contacts'),
-                    },
-                ]
-            }
-        except:
-            pass
+
+        c['menu'] = Menu(
+            [
+                ('index', {
+                    'title': 'Главная',
+                    'url': reverse('index'),
+                }),
+                ('articles', {
+                    'title': 'Статьи',
+                    'url': reverse('articles:index'),
+                } if c['user'].is_superuser else None),
+                ('faq', {
+                    'title': 'Вопросы',
+                    'url': reverse('faq'),
+                }),
+                ('contacts', {
+                    'title': 'Контакты',
+                    'url': reverse('contacts'),
+                }),
+            ]
+        )
         return c
 
 
 class Index(Base):
     template_name = "pashinin_index.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(Index, self).get_context_data(**kwargs)
+        # c["menu_id"] = "index"
+        c["menu"].current = 'index'
+        return c
 
     def post(self, request, **kwargs):
         f = Enroll(request.POST)
@@ -68,6 +73,7 @@ class Contacts(Base):
     def get_context_data(self, **kwargs):
         c = super(Contacts, self).get_context_data(**kwargs)
         c["menu_id"] = "contacts"
+        c["menu"].current = 'contacts'
         return c
 
 
@@ -77,4 +83,5 @@ class FAQ(Base):
     def get_context_data(self, **kwargs):
         c = super(FAQ, self).get_context_data(**kwargs)
         c["exp"] = datetime.datetime.now() - datetime.datetime(2013, 1, 1)
+        c["menu"].current = 'faq'
         return c

@@ -41,6 +41,7 @@ class ArticleView(ArticlesBase):
             print("redirect: ", c['redirect'])
 
         c["article"] = article
+        # c["menu"]['items'][1]['current'] = True
 
         # If there is no article with such title - display error
         # or admin's "Add new article" page
@@ -76,6 +77,7 @@ class Articles(ArticlesBase):
             'count': Article.objects.count(),
             'drafts': Article.objects.filter(published=False).count(),
         }
+        c["menu"].current = 'articles'
         # c["categories"] = ArticleCategory.objects.filter(
         #                 parent=None, lng_id=lng) \
         #                .exclude(article__category=None)

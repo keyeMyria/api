@@ -6,7 +6,7 @@ div.k{padding-top:1rem}
 {% endblock %}
 
 
-{% block title %}Бауманка (ботва, лекции, экзамены){% endblock %}
+{% block title %}Бауманка{% endblock %}
 
 
 {% block metadescription %}Лекции, РК, чертежи, экзамены - вся ботва для разных кафедр и факультетов.
@@ -38,7 +38,7 @@ div.k{padding-top:1rem}
 	  <div><h3>{{FS[F].title}}</h3></div>
 	  <div class="padt">
 		{% for K in FS[F].get('kafs', []) %}
-		  <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
+		  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
 		{% endfor %}
 	  </div>
 	</div>

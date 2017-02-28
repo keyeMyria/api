@@ -117,6 +117,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    objects = UserManager()
+    USERNAME_FIELD = 'email'
+
     email = models.EmailField(
         verbose_name='Email',
         max_length=255,
@@ -153,9 +156,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         related_name="groups",
         blank=True
     )
-
-    objects = UserManager()
-    USERNAME_FIELD = 'email'
 
     class Meta:
         verbose_name = _("User")

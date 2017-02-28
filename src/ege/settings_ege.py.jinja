@@ -35,6 +35,8 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 DOMAIN = "{{domain}}"
+if DEBUG:
+    DOMAIN = "localhost"
 SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 
 # Databases
@@ -252,6 +254,9 @@ INSTALLED_APPS = (
     'pashinin',
     'baumanka',
     'articles',
+
+    # 'mama_cas',
+    'django_cas_ng',
 )
 
 REST_FRAMEWORK = {
@@ -349,11 +354,12 @@ SKIP_SOUTH_TESTS = True      # To disable South's own unit tests
 #
 AUTHENTICATION_BACKENDS = (
     'core.backends.EmailBackend',
+    'django_cas_ng.backends.CASBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.google.GoogleOAuth2',
     # 'social.backends.google.GoogleOAuth',
-    'social.backends.vk.VKOAuth2',
+    # 'social.backends.vk.VKOAuth2',
     # 'social.backends.github.GithubOAuth2',
     # 'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -405,6 +411,8 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 AUTH_USER_MODEL = 'core.User'
+
+SESSION_COOKIE_DOMAIN = '.'+DOMAIN
 
 # TODO: why is it here?
 MIGRATION_MODULES = {

@@ -57,7 +57,7 @@ from django.contrib.auth import authenticate
 # f = LoginForm(request.POST)
 #
 class Login(forms.Form):
-    email = forms.CharField(label='Email', max_length=100)
+    username = forms.CharField(label='Email', max_length=100)
     password = forms.CharField(
         label='Пароль',
         max_length=100,
@@ -74,12 +74,14 @@ class Login(forms.Form):
 
     def clean(self):
         cleaned_data = super(Login, self).clean()
-        email = cleaned_data.get("email")
+        username = cleaned_data.get("username")
         password = cleaned_data.get("password")
 
-        if email and password:
-            user = authenticate(username=email,
-                                password=password)
+        if username and password:
+            user = authenticate(
+                username=username,
+                password=password
+            )
             if user is None:
                 raise forms.ValidationError("Incorrect email or password")
             else:

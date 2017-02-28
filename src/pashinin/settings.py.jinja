@@ -34,6 +34,10 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 DOMAIN = "{{domain}}"
+if DEBUG:
+    DOMAIN = "localhost"
+    DOMAIN = "pashinin.dev"
+
 SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 
 # Databases
@@ -155,19 +159,38 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '{{SECRET_KEY}}'
 
+# Auth once on all subdomains
+SESSION_COOKIE_DOMAIN = '.'+DOMAIN
+SESSION_COOKIE_NAME = 'session'
+
+# TODO: to auth once at many domains (not subdomains) - look for SSO
+# (single sing on).
+
+
 MIDDLEWARE_CLASSES = (
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'core.auth.AuthenticationMiddleware',  # by email
+
+    # Auth
+    #
+    # AuthenticationMiddleware on Github:
+    # https://github.com/django/django/blob/master/django/contrib/auth/middleware.py
+    #
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'core.auth.AuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.RemoteUserMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
 
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django_pdb.middleware.PdbMiddleware',
+
+    'django_hosts.middleware.HostsResponseMiddleware',
 )
 
 
@@ -178,6 +201,9 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1'
 )
 
+PARENT_HOST = DOMAIN
+DEFAULT_HOST = 'pashinin'
+ROOT_HOSTCONF = app+'.hosts'  # django-hosts parameter (for subdomains)
 ROOT_URLCONF = app+'.urls'
 
 # Context processors:
@@ -225,6 +251,7 @@ from pashinin.celeryconfig import *
 
 
 INSTALLED_APPS = (
+    'django_hosts',  # for subdomains
     'redis_cache',                 # pip install django-redis-cache
     'channels',
     'cacheops',
@@ -256,6 +283,9 @@ INSTALLED_APPS = (
     'edu',
     'ege',
     app,
+
+    'mama_cas',
+    'django_cas_ng',
 )
 
 REST_FRAMEWORK = {
@@ -350,7 +380,11 @@ if TESTING:
 # Authentication
 #
 AUTHENTICATION_BACKENDS = (
-    'core.backends.EmailBackend',
+    # ModelBackend on Github:
+    # https://github.com/django/django/blob/master/django/contrib/auth/backends.py
+    'django.contrib.auth.backends.ModelBackend',
+    # 'core.backends.EmailBackend',
+    'django_cas_ng.backends.CASBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.google.GoogleOAuth2',
@@ -360,6 +394,8 @@ AUTHENTICATION_BACKENDS = (
     # 'allauth.account.auth_backends.AuthenticationBackend',
 )
 SOCIAL_AUTH_USER_MODEL = 'core.User'
+
+CAS_SERVER_URL = '//'+DOMAIN+'/cas/'
 
 # Github
 # https://github.com/settings/applications

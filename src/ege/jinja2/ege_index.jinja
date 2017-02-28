@@ -15,18 +15,12 @@
 
 
 {% block topleft %}
-{{exam_type_str}}
+  <a href="">{{exam_type_str}}</a>
 {% endblock %}
 
 
-{% block header %}
-{{super()}}
-<div class="pad-sm w flex padt">
-  <div>
-	<h1 style="margin-top:0;padding-top:0">ЕГЭ</h1>
-	{# <span style="color:#777">Россия, Москва</span> #}
-  </div>
-</div>
+{% block header2 %}
+  <h1>{{exam_type_str}}</h1>
 {% endblock %}
 
 

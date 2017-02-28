@@ -184,4 +184,13 @@ pymorphy2-dicts-ru
 lxml
 cssselect
 
+# for test coverage
 coverage
+
+# for subdomains handling
+django-hosts
+
+
+# CAS is an enterprise Single Sign-On solution for web services
+django-mama-cas
+django-cas-ng

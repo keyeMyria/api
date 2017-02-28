@@ -14,14 +14,14 @@ a{color:#295989;}
 .flex01a{flex:1 0 auto}
 .flex0{flex-grow: 0 !important;}
 .w{margin-left:auto;margin-right:auto;overflow:auto}
-nav>*{padding:0.6rem;white-space:nowrap;border-left:0px solid #d94410;flex:0 0 auto;text-align:center;}
+nav>*{white-space:nowrap;border-left:0px solid #d94410;flex:0 0 auto;text-align:center;}
 nav>a{color:#3c4146}
 nav>a:visited{color:#3c4146}
 nav>a:hover{color:#000}
 nav>:last-child{border-right:0px solid #d94410}
 nav>*.parent{background:#e95420;font-weight:bold}
 nav>*:hover{color:#000}
-nav{overflow: hidden;margin-top:0em;font-size:1.1em}
+nav{overflow: visible;margin-top:0em;font-size:1.1em;}
 {% endblock %}
 </style>
 <style media="only screen and (max-width : 1000px)">
@@ -39,23 +39,28 @@ nav{overflow: hidden;margin-top:0em;font-size:1.1em}
 </head><body>
 {% block prebody %}{% endblock %}
 <div class="flex01a flex 0 col">
-<header style="border-bottom: 1px solid rgba(0,0,0,0.075);">{% block header %}{% endblock %}</header>
+<header style="border-bottom: 1px solid rgba(0,0,0,0.075);">
+{% block header %}{% endblock %}
+</header>
 <main>{% block main %}{% endblock %}</main>
 </div>
-<footer style="background:#f7f7f7;">{% block footer %}
+<footer class="padtb" style="background:#242729;color:#aaa">{% block footer %}
 <div class="w noprint pad-sm">
   {% block footer_content %}
 	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
-	<p><a href="{{url("index")}}">pashinin.com</a></p>
+	<a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
+	{# <a href="{{url("baumanka:kafedra", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a> #}
+	<a href="{{url("kafedra", host="baumanka", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
+	{% if user.is_superuser %}
+	  <br/><a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
+	  <br/><a href="{{url("index", host="oge")}}">ОГЭ (9кл)</a>
+	{% endif %}
   {% endblock %}
 </div>
 
 <div class="w">
-  <div class="pad-sm">
+  <div class="pad-sm" style="color:#555;font-size:.8rem">
 	© {{year}} {{_("Sergey Pashinin")}}
-	<div class="right">
-	  <a href="https://vk.com/pashinin"><img alt="{{email}}" src="{{ file("bd6c8ee12d69a89e9d24a7d2646407f880286926") }}"/></a>
-	</div>
   </div>
 </div>
 {% endblock %}

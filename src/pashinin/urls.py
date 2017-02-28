@@ -42,7 +42,7 @@ urlpatterns = [
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     #     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^articles/', include('articles.urls', namespace='articles')),
-    url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
+    # url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
     url(r'^_/', include('core.urls', namespace='core')),
 ]
 
@@ -50,8 +50,12 @@ urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
     url(r'^contacts$', Contacts.as_view(), name='contacts'),
     url(r'^faq$', FAQ.as_view(), name="faq"),
-    url(r'^login$', Login.as_view(), name='login'),
+    # url(r'^login$', Login.as_view(), name='login'),
 
     url(r'^_/django/', include(admin.site.urls)),
     prefix_default_language=False
 )
+
+# urlpatterns += [
+#     url(r'^cas/', include('mama_cas.urls'))
+# ]

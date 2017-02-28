@@ -1,4 +1,7 @@
-from django.conf.urls import url  # , include
+from django.conf.urls import url, include
+from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
+from core.views import Login
 from .views import (
     Baumanka,
     Kafedra,
@@ -18,4 +21,12 @@ urlpatterns = [
         Sem.as_view(), name="sem"),
     # url(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls,
     #                                        namespace='faculty')),
+    url(r'^_/', include('core.urls', namespace='core')),
 ]
+
+urlpatterns += i18n_patterns(
+    url(r'^login$', Login.as_view(), name='login'),
+
+    url(r'^_/django/', include(admin.site.urls)),
+    prefix_default_language=False
+)

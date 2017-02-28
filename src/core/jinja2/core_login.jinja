@@ -22,11 +22,11 @@ ol li{margin-top:1em}
 <div class="pad">
 
 <div class="pad r5" style="margin:auto; max-width:300px;border:1px solid #d8dee2">
-  <form id="login" action="{{url("login")}}" method="POST">
+  <form id="login" action="{{url("core:login", host=host.name)}}" method="POST">
 	{# {{ csrf_input }} #}
 
 	Email:
-	<input name="email" type="text" value=""/>
+	<input name="username" type="text" value=""/>
 
 	Password:
 	<input name="password" type="password" value=""/>

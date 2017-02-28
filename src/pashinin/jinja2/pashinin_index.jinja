@@ -28,20 +28,35 @@
 
 
 {% block header %}
-{{super()}}
+  {{super()}}
+    <div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
+  	<div class="w" style="overflow:visible">
+  	  <div class="pad-sm flex">
+  		<div class="hide-if-less-800">
+  		  <h1>Информатика и программирование</h1>
+  		</div>
+  		<div class="flex grow0 padr-sm" style="position:relative;padding-top:0.4em;font-size:1.1em">
+		  <div>
+  			<img class="photo myphotosize marr ib" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
+  				 style="width:70px;height:70px;border-radius:3px;border:1px solid #aaa;"/>
+		  </div>
+		  <div>
+  			<b>{{phone}}</b><br/>
+  			<span class="" style="font-size:0.9em">Сергей Александрович</span>
+		  </div>
+  		</div>
+  	  </div>
+  	</div>
+	</div>
+
 <div class="block">
 
-
-
-{# 57f203b9cf1ef10a4be793b0003d2be47f1f5159 #}
-{# 1a8126d5c7799ceb0054ac40934bb1b79aec5164 old #}
-<div id="index" class="{# rtop5px #} abs2 {# w1002 h1002 #} center ib"
+<div id="index" class="abs2 center ib"
 	style="background:url({{file("57f203b9cf1ef10a4be793b0003d2be47f1f5159")}});
-		   background-color:#363231;
-		   {# top: 0; bottom: 0; left: 0; right: 0; #}">
-  <div class="w" style="text-shadow:0 1px 1px rgba(0,0,0,1),0 10px 25px rgba(0,0,0,1);">
-	<div class="flex column-if-less-800 pad">
-	  <div style="text-align:left;font-size:1.0em">
+		   background-color:#363231;">
+  <div class="w" style="text-shadow:0 1px 1px rgba(0,0,0,1),0 10px 25px rgba(0,0,0,1);overflow:visible">
+	<div class="flex column-if-less-800 pad-sm">
+	  <div style="text-align:left;font-size:1.0em;">
 		<h1 class="nopad centered-if-less-800" style="line-height:2;">
 		  Подготовка к экзаменам<br/>
 		  Курсы программирования<br/>
@@ -55,7 +70,7 @@
 	  <div>
 		<div class="ib">
 		  <div class="ib" style="max-width:400px;background:rgba(255,255,255,0.0);border:0px solid #aaa">
-			<p>Запишитесь сейчас и получите скидку 5% при онлайн обучении!</p>
+			{# <p>Запишитесь сейчас и получите скидку 5% при онлайн обучении!</p> #}
 			<form id="enrollform" action="{{request.path}}" method="POST">
 			  {{ csrf_input }}
 			  <input name="name" type="text" value="" placeholder="Ваше имя"/>

@@ -10,7 +10,7 @@
 
 {% block css %}
 {{super()}}
-{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("css/core.css") }}?v=1">{% endif %}
+{% if corecss %}<link rel="stylesheet" property="stylesheet" href="{{ static("css/core.css") }}?v=2">{% endif %}
 {% endblock %}
 
 
@@ -32,38 +32,95 @@
 	{% endblock %}
   </div>
 {% endif %}
-<div class="" style="background-color:#f5f5f5;overflow:visible;border-bottom:1px solid #e5e5e5;z-index:2;">
+<div class="" style="background-color:#fafafb;overflow:visible;box-shadow: 0 1px 0 rgba(12,13,14,0.15);z-index:2;height:50px">
   <div class="w" style="overflow:visible;">
-	<div class="flex" style="overflow:visible;">
-	  <div class="padl-sm" style="line-height:35px">
-		{% block topleft %}{% endblock %}
+	<div class="flex" style="">
+	  {% if menu %}
+	  <div class="" style="line-height:35px;overflow:hidden;">
+		<nav style="white-space:nowrap;">
+		  {% set parent = menu["parent"] %}
+
+		  <span class="{# hide-if-more-800 #}">
+
+		  </span>
+
+		  {% spaceless %}
+			{# <a id="site_switch" href="{{url("index", host=host.name)}}"><i class="icon icon-menu">&#61641;</i></a> #}
+			{# <div id="site_switch_menu" class="hide popup w"> #}
+			{#   {\# Add some superuser menu items: #\} #}
+			{#   {% if user.is_superuser %} #}
+			{# 	<a class="padlr" href="{{url("index", host=host.name)}}">Main page</a> #}
+			{# 	<a class="padlr" href="{{url("admin:index", host=host.name)}}">Django admin</a> #}
+			{# 	<a class="padlr" href="{{url("core:files:index", host=host.name)}}">Files</a> #}
+			{# 	<a class="padlr" href="{{url("core:celery", host=host.name)}}">Celery</a> #}
+			{# 	<a class="padlr" href="{{url("core:nginx", host=host.name)}}">Nginx</a> #}
+			{# 	<a class="padlr" href="{{url("core:updates", host=host.name)}}">Updates</a> #}
+			{#   {% endif %} #}
+			{#   <a id="exit" class="padlr" href="{{url("core:logout")}}">Выход</a> #}
+			{# </div> #}
+			{% for k, v in menu.items() %}
+			  {% if v %}
+				<a class="{% if k == menu.current %}current{% endif %}" href="{{v.url}}">
+				  {# {% if loop.index==1 %}<i class="icon icon-menu">&#61641; </i>{% endif %} #}
+				  {% if v.img %}
+					<img alt="" src="{{v.img}}" style="max-width:30px;max-height:30px;"/>
+				  {% endif %}
+				  {{v.title}}
+				</a>
+			  {% endif %}
+			{% endfor %}
+		  {% endspaceless %}
+
+		  {# {{menu}} #}
+		  {# {{menu.width}} #}
+
+		  {# {% if current %} #}
+		  {# 	<a class="" href="{{current.url}}">{{current.title}}</a> #}
+		  {# {% else %} #}
+		  {# 	no #}
+		  {# {% endif %} #}
+		</nav>
+		{# {% block topleft %}<nav>{% block nav1 %}{% endblock %}</nav>{% endblock %} #}
 	  </div>
+	  {% endif %}
 	  <div style="text-align:right;position:relative;height:100%;overflow:visible;padding-right:.3em;line-height:34px">
 		{% if user.is_authenticated %}
-		  <a id="profile" class="ib padlr-sm" href="" style="text-decoration:none;height:35px;">
-			<img class="hpad2 ib" alt="" src="{{ user.gravatar() }}" style="border:0px solid #ccc; width:21px;"/>
-			<span class="ib" style="width: 0; height: 0; border:4px solid transparent; border-top-color: #000;"></span>
-		  </a>
+		  <nav>
+			<a id="profile" class="ib padlr-sm" href="" style="text-decoration:none;height:50px;">
+			  <img class="hpad2 ib" alt="" src="{{ user.gravatar(30) }}" style="border:0px solid #ccc; width:30px;border-radius:2px"/>
+			  <span class="ib" style="width: 0; height: 0; border:4px solid transparent; border-top-color: #000;"></span>
+			</a>
+		  </nav>
 		  <div id="loginbox" class="hide popup">
 			{# Add some superuser menu items: #}
 			{% if user.is_superuser %}
-			  <a class="padlr" href="{{url("index")}}">Main page</a>
-			  <a class="padlr" href="{{url("admin:index")}}">Django admin</a>
-			  <a class="padlr" href="{{url("core:files:index")}}">Files</a>
-			  <a class="padlr" href="{{url("core:celery")}}">Celery</a>
-			  <a class="padlr" href="{{url("core:nginx")}}">Nginx</a>
-			  <a class="padlr" href="{{url("core:updates")}}">Updates</a>
+			  <a class="padlr" href="{{url("index", host=host.name)}}">Main page</a>
+			  <a class="padlr" href="{{url("admin:index", host=host.name)}}">Django admin</a>
+			  <a class="padlr" href="{{url("core:files:index", host=host.name)}}">Files</a>
+			  <a class="padlr" href="{{url("core:celery", host=host.name)}}">Celery</a>
+			  <a class="padlr" href="{{url("core:nginx", host=host.name)}}">Nginx</a>
+			  <a class="padlr" href="{{url("core:updates", host=host.name)}}">Updates</a>
 			{% endif %}
 
-			<a id="exit" class="padlr" href="{{url("core:logout")}}">Выход</a>
+			<a id="exit" class="padlr" href="{{url("core:logout", host=host.name)}}">Выход</a>
 		  </div>
 		{% else %}{# user is not authenticated #}
-		  <a href="{{url("login")}}?return={{request.get_full_path()}}">Войти</a>
+		  <a href="{{url("core:login", host=host.name)}}?return={{request.get_full_path()}}">Войти</a>
 		{% endif %}
 	  </div>
 	</div>
   </div>
 </div>
+
+{% if self.header2() %}
+  <div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
+  	<div class="w" style="overflow:visible">
+  	  <div class="pad-sm">
+		{% block header2 %}{% endblock %}
+  	  </div>
+  	</div>
+  </div>
+{% endif %}
 {% endblock %}
 
 
@@ -74,29 +131,20 @@
 	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
   {% endif %}
 
-  <div style="position:relative;padding-top:0px">
-	<div>
-	  {% if self.breadcrumb() %}
-		<div class="pad-sm" style="border-bottom:0px solid #ddd">
-		  {% block breadcrumb %}{% endblock %}
-		</div>
-	  {% endif %}
-	  {% block content %}{% endblock %}
+  {% if self.content() %}
+	<div style="position:relative;padding-top:0px">
+	  <div>
+		{% if self.breadcrumb() %}
+		  <div class="pad-sm" style="border-bottom:0px solid #ddd">
+			{% block breadcrumb %}{% endblock %}
+		  </div>
+		{% endif %}
+		{% block content %}{% endblock %}
+	  </div>
 	</div>
-  </div>
-
+  {% endif %}
   {% if self.right() %}
 	<aside class="pad noprint" style="flex:0 0 250px;position:relative;">{% block right %}{% endblock %}</aside>
   {% endif %}
   </div>
 {% endblock %}
-
-
-{# {% block footer%} #}
-{# <div class="w noprint pad-sm"> #}
-{#   {% block footerc %} #}
-{# 	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %} #}
-{# 	<p><a href="{{url("index")}}">pashinin.com</a></p> #}
-{#   {% endblock %} #}
-{# </div> #}
-{# {% endblock %} #}

@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import datetime
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -14,11 +15,13 @@ from django.core.cache import cache
 from subprocess import call, Popen, PIPE
 from rest_framework.views import APIView
 from django.contrib.auth import logout
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from core import reverse
 from .models import SiteUpdate
 from .forms import Login as LoginForm
 from django.contrib.auth import login
 from . import now
+from .menu import Menu
 
 log = logging.getLogger(__name__)
 
@@ -41,10 +44,13 @@ class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
         c["domain"] = settings.DOMAIN
-        c['now'] = now()
+        c["host"] = self.request.host
+        c['utcnow'] = datetime.datetime.utcnow()
+        c['now'] = datetime.datetime.now()
         c['year'] = date.today().year
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG
+        c['DOMAIN'] = settings.DOMAIN
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC
         # c['INSTALLED_APPS'] = settings.INSTALLED_APPS
 
@@ -56,6 +62,8 @@ class BaseView(TemplateView):
         c["dropzone"] = c['user'].is_superuser
         c['lng'] = 'en' if self.request.LANGUAGE_CODE in ('en', 'en-us')\
                    else 'ru'
+
+        c['menu'] = Menu([])
 
         try:
             c['o'] = settings.OPTIONS
@@ -236,10 +244,10 @@ class Login(EnsureCsrfCookieMixin, BaseView):
         return c
 
     def get(self, request, **kwargs):
+        c = self.get_context_data(**kwargs)
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("index", host=c['host'].name))
         else:
-            c = self.get_context_data(**kwargs)
             return self.render_to_response(c, status=c['status'])
 
     def post(self, request, **kwargs):
@@ -259,10 +267,12 @@ class Login(EnsureCsrfCookieMixin, BaseView):
             )
 
 
-class Logout(APIView):
+# class Logout(APIView):
+class Logout(EnsureCsrfCookieMixin, BaseView):
     def get(self, request, **kwargs):
+        c = self.get_context_data(**kwargs)
         logout(request)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("index", host=c['host'].name))
 
     def post(self, request, **kwargs):
         logout(request)
