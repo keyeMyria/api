@@ -22,7 +22,7 @@ server {
 }
 
 server {
-    server_name		{{domain}};
+    server_name		{{domain}} baumanka.{{domain}};
 
     # Log
     # [ debug info notice warn error crit]
@@ -114,6 +114,10 @@ server {
         return 200 "google-site-verification: google586e4080b1ba1d35.html";
     }
 
+    location ~ ^/baumanka/ {
+        rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
+        rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
+    }
     location ~ ^/baumanka/sem- {
         rewrite ^/baumanka/sem-0(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
         rewrite ^/baumanka/sem-(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
