@@ -24,10 +24,11 @@ admin.site.register(Tag)
 class TaskAdmin(admin.ModelAdmin):
     form = TaskChangeForm
 
-    list_display = ('title', 'solution_status', 'published', 'added')
-    list_filter = ('published', 'solution_status')
+    list_display = ('title', 'taken_from', 'comment')
     actions = [unpublish, make_published]
     ordering = ['published', '-added']
+    list_filter = ('published', 'solution_status')
+    search_fields = ['text', 'comment']
 
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '60'})},
