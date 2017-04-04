@@ -1,18 +1,29 @@
 import datetime
-import json
+# import json
+from core import json
 from core.views import BaseView
 from core.menu import Menu
+from django.utils.timezone import now, localtime
 # from django.utils.translation import ugettext as _
 # from django.core.urlresolvers import reverse
+from . import student_info
 from core import reverse
 # from django.conf import settings
 from django.http import HttpResponse
-from .forms import Enroll
+# from django.contrib.auth.models import User
+from .forms import Enroll, AddStudent
+from .models import Lesson
 # from django.utils.decorators import method_decorator
 # from raven.contrib.django.raven_compat.models import client
 # from django.views.decorators.csrf import ensure_csrf_cookie
 # from rest_framework.views import APIView
 from channels import Channel
+from braces import views
+from django.contrib.auth import get_user_model
+import logging
+
+log = logging.getLogger(__name__)
+User = get_user_model()
 
 
 class Base(BaseView):
@@ -42,6 +53,10 @@ class Base(BaseView):
                     'title': 'Контакты',
                     'url': reverse('contacts'),
                 }),
+                ('students', {
+                    'title': 'Ученики',
+                    'url': reverse('students'),
+                } if c['user'].is_superuser else None),
             ]
         )
         return c
@@ -75,6 +90,291 @@ class Contacts(Base):
         c["menu_id"] = "contacts"
         c["menu"].current = 'contacts'
         return c
+
+
+def times():
+    cur = datetime.timedelta(hours=10)
+    end = datetime.timedelta(hours=21)
+    while cur < end:
+        yield (cur, cur+datetime.timedelta(hours=1))
+        cur += datetime.timedelta(minutes=30, hours=1)
+
+
+def prev_weekday(d, weekday):
+    days_ahead = weekday - d.weekday()
+    if days_ahead < 0:  # Target day already happened this week
+        days_ahead -= 7
+    return d + datetime.timedelta(days_ahead)
+
+
+def next_weekday(d, weekday):
+    days_ahead = weekday - d.weekday()
+    if days_ahead < 0:  # Target day already happened this week
+        days_ahead += 7
+    return d + datetime.timedelta(days_ahead)
+
+
+class Week:
+    pass
+
+
+class Day:
+    lesson_length = datetime.timedelta(minutes=60)
+    lesson_length_s = lesson_length.total_seconds()
+    start_time = datetime.time(10, 0, 0)
+    end_time = datetime.time(22, 0, 0)
+    pause = datetime.timedelta(minutes=30)
+    len_plus_pause = lesson_length + pause
+
+    def __init__(self, when):
+        self.schedule = []
+
+        if isinstance(when, datetime.datetime):
+            self.start = self.end = self.date = when  # .date()
+        else:
+            self.start = self.end = self.date = localtime(now()).replace(
+                year=when.year,
+                month=when.month,
+                day=when.day,
+            )
+        # self.start = datetime.datetime.combine(self.date, Day.start_time)
+        # self.end = datetime.datetime.combine(self.date, Day.end_time)
+
+        from pytz import timezone
+        localtz = timezone('Europe/Moscow')
+        self.start = self.start \
+                         .replace(tzinfo=localtz) \
+                         .replace(
+                             hour=Day.start_time.hour,
+                             minute=Day.start_time.minute,
+                             second=0
+                         )
+        self.end = self.end.replace(tzinfo=localtz).replace(
+            hour=self.end_time.hour,
+            minute=0
+        )
+
+        # Monday       |     | Next day of week   |
+        # future day 1 | ... | next_week_last_day | today | ...
+        self.next_week_last_day = False
+
+        # if there are no lessons planned - empty schedule
+        if self.lessons.count() == 0:
+            c = localtime(self.start)
+            while c + Day.lesson_length < self.end:
+                self.schedule.append(Lesson(
+                    start=c,
+                    end=(c + Day.lesson_length),
+                    student=None
+                ))
+                c += Day.len_plus_pause
+
+        # Iterate over created or scheduled lessons
+        lessons = list(self.lessons)
+        lessons.sort(key=lambda x: x.start.time())
+        log.debug(lessons)
+        for i, lesson in enumerate(lessons):
+            lesson.start = lesson.start.replace(
+                year=self.date.year,
+                month=self.date.month,
+                day=self.date.day,
+            )
+            lesson.end = lesson.end.replace(
+                year=self.date.year,
+                month=self.date.month,
+                day=self.date.day,
+            )
+
+            first = i == 0
+            last = i == len(self.lessons)-1
+
+            # before first lesson
+            if localtime(lesson.start).time() > Day.start_time and first:
+                log.debug(lesson)
+                L = Lesson(
+                    start=self.start,
+                    # end=localtime(lesson.start) - Day.pause,
+                    end=localtime(lesson.start),
+                    student=None
+                )
+                total = L.length.total_seconds()
+                len1 = Day.lesson_length + Day.pause
+                len1_s = len1.total_seconds()
+                # print(total / len1_s)
+                # count = math.floor(total / len1_s)
+                count = round(total / len1_s)
+                s = localtime(lesson.start) - \
+                    (Day.lesson_length + Day.pause)*count
+                for i in range(0, count):
+                    self.schedule.append(Lesson(
+                        start=s + len1*i,
+                        end=s + len1*i + Day.lesson_length,
+                        student=None
+                    ))
+                # Day.make_schedule(Day.start, lesson.start.time())
+                self.schedule.append(lesson)
+
+            # add empty lessons after last lesson
+            if localtime(lesson.end).time() < Day.end_time and last:
+                # L = Lesson(
+                #     start=lesson.end,
+                #     end=self.end,
+                #     student=None
+                # )
+                # total = L.length.total_seconds()
+                # len1 = Day.lesson_length + Day.pause
+                # len1_s = len1.total_seconds()
+                # count = round(total / len1_s)
+
+                # c = lesson.end.replace(
+                #     year=self.date.year,
+                #     month=self.date.month,
+                #     day=self.date.day,
+                # ) + Day.pause
+                c = localtime(lesson.end).replace(
+                    year=self.date.year,
+                    month=self.date.month,
+                    day=self.date.day,
+                ) + Day.pause
+                while c.time() < self.end.time():
+                    self.schedule.append(Lesson(
+                        start=c,
+                        end=c + Day.lesson_length,
+                        student=None
+                    ))
+                    c += Day.lesson_length + Day.pause
+
+                # s = self.end.replace(tzinfo=localtz).replace(
+                #     hour=localtime(lesson.end).hour,
+                #     # minutes=localtime(lesson.end).minutes
+                # ) + Day.pause
+                # for i in range(0, count):
+                #     self.schedule.append(Lesson(
+                #         start=s + len1*i,
+                #         end=s + len1*i + Day.lesson_length,
+                #         student=None
+                #     ))
+                # Day.make_schedule(Day.start, lesson.start.time())
+
+            if not first and not last:
+                self.schedule.append(lesson)
+
+    @property
+    def title(self):
+        return 'asd'
+
+    @property
+    def lessons(self):
+        """Lessons in this day + scheduled lessons."""
+        a = (Lesson.objects.filter(
+            start__year=self.date.year,
+            start__month=self.date.month,
+            start__day=self.date.day,
+        ) | Lesson.objects.filter(
+            scheduled=True,
+            start__week_day=self.date.weekday()+2
+            # why + 2?
+            # TODO
+            # python weekday starts from 0 (sunday) to 6 (saturday)
+        ))
+        # .order_by("start__time__hour")
+        # log.debug(Lesson.objects.filter(
+        #     scheduled=True,
+        #     start__week_day=self.date.weekday()+2
+        # ))
+        log.debug(a)
+        return a
+
+    def __str__(self):
+        return str(self.date)
+
+
+class Students(views.LoginRequiredMixin,
+               views.SuperuserRequiredMixin,
+               Base):
+    template_name = "pashinin_students.jinja"
+
+    # active students have a last lesson within a week
+    last_lesson_period = datetime.timedelta(days=8)
+
+    def get_context_data(self, **kwargs):
+        c = super(Students, self).get_context_data(**kwargs)
+        utcnow = localtime(now())
+        c["momentjs"] = True
+        c['timeago'] = True
+        c['dragula'] = True
+
+        c['students'] = {
+            'active': User.objects.filter(
+                lessons__start__gt=utcnow-self.last_lesson_period
+                # start__year=self.date.year,
+                # start__month=self.date.month,
+                # start__day=self.date.day,
+            ),
+            'inactive': User.objects.filter(
+                lessons__start__lte=utcnow-self.last_lesson_period
+            )
+        }
+        c['pause_mins'] = Day.pause.seconds // 60
+        c["menu"].current = 'students'
+        # utcnow = datetime.datetime.utcnow()
+
+        # django.utils.timezone.now()
+        c['monday'] = next_weekday(utcnow, 0)
+        c['today'] = Day(utcnow)
+        c['days'] = []
+        c['days'] += [
+            # {
+            #     'weekday': datetime.date(2001, 1, i+1).weekday(),
+            #     'datetime': utcnow + datetime.timedelta(days=7),
+            # }
+            Day(c['monday'] + datetime.timedelta(days=i))
+            # datetime.date(2001, 1, i).strftime('%A'),
+            # c['monday'] + datetime.timedelta(days=i),
+            # datetime.date(2001, 1, i+1).weekday(),
+            for i in range(0, utcnow.weekday())
+        ]
+        if c['days']:
+            c['days'][-1].next_week_last_day = True
+
+        c['days'] += [
+            Day(utcnow + datetime.timedelta(days=i))
+            for i in range(0, 7-utcnow.weekday())
+        ]
+        c['times'] = [item for item in times()]
+        return c
+
+    def post(self, request, **kwargs):
+        # c = self.get_context_data(**kwargs)
+        f = AddStudent(request.POST)
+        utcnow = localtime(now())
+
+        return HttpResponse(
+            json.dumps([student_info(u) for u in User.objects.filter(
+                lessons__start__gt=utcnow-self.last_lesson_period
+            )]),
+            content_type='application/json'
+        )
+
+        if f.is_valid():
+            # new_user = User.objects.create(is_active=False)
+            # new_user.save()
+            # Channel('send-me-lead').send(f.json())
+            return HttpResponse(
+                json.dumps({'code': 0}),
+                content_type='application/json'
+            )
+        else:
+            return HttpResponse(
+                json.dumps({
+                    'errors': f.errors,
+                }), content_type='application/json'
+            )
+        # return HttpResponse(json.dumps({
+        #     'url': 'f.get_absolute_url()',
+        #     'id': 'f.pk',
+        #     'sha1': 'f.sha1'
+        # }), content_type='application/json')
 
 
 class FAQ(Base):

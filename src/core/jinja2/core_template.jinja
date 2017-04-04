@@ -105,7 +105,7 @@
 			<a id="exit" class="padlr" href="{{url("core:logout", host=host.name)}}">Выход</a>
 		  </div>
 		{% else %}{# user is not authenticated #}
-		  <a href="{{url("core:login", host=host.name)}}?return={{request.get_full_path()}}">Войти</a>
+		  <a href="{{url("core:login", host=host.name)}}?next={{request.get_full_path()}}">Войти</a>
 		{% endif %}
 	  </div>
 	</div>

@@ -167,6 +167,9 @@ SESSION_COOKIE_NAME = 'session'
 # (single sing on).
 
 
+LOGIN_URL = '/_/login'
+
+
 MIDDLEWARE_CLASSES = (
     'django_hosts.middleware.HostsRequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -183,6 +186,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'core.auth.AuthenticationMiddleware',
     # 'django.contrib.auth.middleware.RemoteUserMiddleware',
+
+    # SessionAuthenticationMiddleware allows a user's sessions to be
+    # invalidated when their password changes. Must be after
+    # AuthenticationMiddleware
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+
 
     'django.contrib.messages.middleware.MessageMiddleware',
 
@@ -291,6 +300,10 @@ INSTALLED_APPS = (
 REST_FRAMEWORK = {
     # TokenAuthentication needed to remove CSRF errors
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        # Browser http auth (asks username and password)
+        # 'rest_framework.authentication.BasicAuthentication',
+
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
    'DEFAULT_PERMISSION_CLASSES': (
@@ -305,6 +318,12 @@ REST_FRAMEWORK = {
     # 2. For all views:
     # 'DEFAULT_RENDERER_CLASSES': (
     #     'rest_framework.renderers.JSONRenderer',
+    # )
+
+    # Default:
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    #     'rest_framework.renderers.BrowsableAPIRenderer',
     # )
 
     # TODO:

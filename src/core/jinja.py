@@ -10,7 +10,7 @@ from datetime import datetime
 from jinja2 import nodes
 from jinja2.ext import Extension
 import re
-
+from django.utils.formats import date_format
 
 now = datetime.now()
 
@@ -76,10 +76,22 @@ def environment(**options):
             'url': reverse,
             '_': _,
             'file': get_file,
+            'round': round,
             'css': css,
+            'min': min,
             'len': len,
+            'date_format': date_format,
             'now': datetime.now,
         },
     )
     env.filters['djrender'] = djrender
+
+    # Timezone
+    from django.utils.timezone import template_localtime
+    env.filters.update({
+        'localtime': template_localtime,
+    })
+    env.globals.update({
+        'localtime': template_localtime,
+    })
     return env

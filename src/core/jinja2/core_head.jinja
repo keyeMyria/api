@@ -4,13 +4,30 @@
 {# {% if ravenjs %} #}
 <script defer src="{{ static("ravenjs_3.9.1.js") }}"></script>
 {# {% endif %} #}
-{% if fetch or True %}{# https://github.com/github/fetch #}
-<script defer src="{{ static("js/fetch2.0.2.min.js") }}"></script>
-{% endif %}
+
+{# https://github.com/github/fetch #}
+<script type="text/javascript">
+if (typeof fetch !== "function") {
+var d = document,
+h = d.getElementsByTagName('head')[0],
+s = d.createElement('script');
+s.type = 'text/javascript';
+s.async = true;
+s.src = "{{ static("js/fetch2.0.2.min.js") }}";
+h.appendChild(s);
+};
+</script>
+
 <script defer src="{{ static("js/serialize.js") }}?v=2"></script>
 {% if jquery and False %}
 <script defer src="{{ static("js/jquery-3.1.1.min.js") }}"></script>
 <script defer src="{{ static("js/serialize-object.2.5.0.min.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
+{% endif %}
+{% if momentjs %}
+<script defer src="{{ static("js/moment.2.17.1.min.js") }}"></script>
+{% endif %}
+{% if dragula %}
+<script defer src="{{ static("dragula/3.7.2.min.js") }}"></script>
 {% endif %}
 {% if DEBUG %}<script src="{{static("js/livereload.js")}}"></script>{% endif %}
 {% if timeago %}{# https://github.com/hustcc/timeago.js #}

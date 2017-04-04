@@ -123,12 +123,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='Email',
         max_length=255,
-        unique=True,
+        # unique=True,
         db_index=True,
+        blank=True, null=True,
+        default=None,
     )
     username = models.CharField(
         max_length=200,
-        db_index=True
+        db_index=True,
+        blank=True, null=True,
     )
     # is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(
@@ -137,9 +140,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True, db_index=True)
-    first_name = models.CharField(max_length=200)
+    first_name = models.CharField(
+        max_length=200,
+        blank=True, null=True,
+    )
     last_name = models.CharField(max_length=200)
     date_last_pass_sent = models.DateTimeField(null=True)
+    skype = models.CharField(max_length=200, blank=True, null=True)
+    discord = models.CharField(max_length=200, blank=True, null=True)
+    phone = models.CharField(max_length=200, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
     # avatar = models.ForeignKey(
     #     'images.Image',
     #     null=True,
@@ -179,7 +189,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def __str__(self):
-        return self.email
+        if self.first_name:
+            return self.first_name
+        elif self.email:
+            return self.email
+        else:
+            return "ID {}".format(self.pk)
 
 
 # pip install django-mptt

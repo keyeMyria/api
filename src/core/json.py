@@ -4,6 +4,7 @@ from time import mktime
 from raven.contrib.django.raven_compat.models import client
 import six
 from django.db import models
+from django.db.models.query import QuerySet
 
 
 class MyEncoder(json.JSONEncoder):
@@ -30,6 +31,9 @@ class MyEncoder(json.JSONEncoder):
                 '__type__': '__datetime__',
                 'epoc': int(mktime(obj.timetuple()))
             }
+
+        elif isinstance(obj, QuerySet):
+            return [item for item in obj]
 
         # URL model
         # elif isinstance(obj, URL):

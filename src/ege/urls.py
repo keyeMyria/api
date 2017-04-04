@@ -5,7 +5,7 @@ from .views import (
     SubjectView,
     Index,
     ExamTaskView,
-    TaskView,
+    # TaskView,
     SubjectTheoryView,
     SubjectTasks
 )

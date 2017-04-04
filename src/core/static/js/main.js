@@ -65,15 +65,15 @@ function csrfSafeMethod(method) {
 // });
 
 
-function showFormErrors(errors, form) {
-	// "errors" is a dictionary of form:
+function showFormErrors(errors, form, showtext=false) {
+	// "errors" is a dictionary like:
 	// {formfield1: ["error1", "error2"], ...}
 	Array.from(form.querySelectorAll('[class^=ERR]')).forEach(function(el) {
 		el.parentNode.removeChild(el);
 	});
 
 	// fields errors
-	for (var field in errors) {
+	for (let field in errors) {
 		let msgs = errors[field];
 		let msg0 = msgs[0];
 		let input = form.querySelector("[name="+field+"]");
@@ -88,7 +88,12 @@ function showFormErrors(errors, form) {
 		}
 		msg.innerHTML='';
 		msg.appendChild(document.createTextNode(msg0));
-		if (input) input.parentNode.insertBefore(msg, input);
+		if (input){
+			input.classList.add('error');
+			if (showtext) {
+				input.parentNode.insertBefore(msg, input);
+			}
+		}
 	}
 
 	// form errors

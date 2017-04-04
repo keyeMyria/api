@@ -17,7 +17,7 @@
 				if ("errors" in data){
 					showFormErrors(data["errors"], document.getElementById("login"));
 				}else{
-					window.location.href = getURLParameter('return');
+					window.location.href = getURLParameter('next');
 				}
 			});
 	});

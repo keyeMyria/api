@@ -5,3 +5,11 @@ try:
     from .celery import app  # as celery_app  # noqa
 except:
     print("celery import error123 (init.py)")
+
+
+def student_info(user):
+    return {
+        'id': user.pk,
+        'name': user.first_name,
+        'email': user.email
+    }

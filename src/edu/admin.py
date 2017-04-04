@@ -27,7 +27,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'taken_from', 'comment')
     actions = [unpublish, make_published]
     ordering = ['published', '-added']
-    list_filter = ('published', 'solution_status')
+    list_filter = ('published', 'solution_status', 'added')
     search_fields = ['text', 'comment']
 
     formfield_overrides = {

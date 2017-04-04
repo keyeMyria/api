@@ -7,8 +7,9 @@
 
 
 {% block head %}
-{{super()}}
-<script defer src="{{ static("repetitor.js") }}?v=2"></script>
+  {{super()}}
+  <script defer src="{{ static("repetitor.js") }}?v=2"></script>
+  {# <script defer src="{{ static("js/moment.2.17.1.min.js") }}"></script> #}
 {% endblock %}
 
 
@@ -43,6 +44,11 @@
 		  <div>
   			<b>{{phone}}</b><br/>
   			<span class="" style="font-size:0.9em">Сергей Александрович</span>
+			<br/>
+			<span style="color:#888;font-size:0.9em">
+			  {{'%02d' % localtime(now).hour}}:{{ '%02d' % localtime(now).minute }}
+			  МСК
+			</span>
 		  </div>
   		</div>
   	  </div>
@@ -51,7 +57,7 @@
 
 <div class="block">
 
-<div id="index" class="abs2 center ib"
+<div id="index" class="abs2 center ib w100"
 	style="background:url({{file("57f203b9cf1ef10a4be793b0003d2be47f1f5159")}});
 		   background-color:#363231;">
   <div class="w" style="text-shadow:0 1px 1px rgba(0,0,0,1),0 10px 25px rgba(0,0,0,1);overflow:visible">

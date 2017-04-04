@@ -5,11 +5,13 @@ from django.conf.urls.i18n import i18n_patterns
 # from django.http import HttpResponseNotFound
 # from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap
-from core.views import Login
+# from core.views import Login
+from .api.urls import urlpatterns as api_urls
 from .views import (
     Index,
     FAQ,
-    Contacts
+    Contacts,
+    Students,
 )
 
 # Error handlers
@@ -42,6 +44,7 @@ urlpatterns = [
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     #     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^articles/', include('articles.urls', namespace='articles')),
+    url(r'^api/', include(api_urls, namespace='api')),
     # url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
     url(r'^_/', include('core.urls', namespace='core')),
 ]
@@ -49,6 +52,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
     url(r'^contacts$', Contacts.as_view(), name='contacts'),
+    url(r'^students$', Students.as_view(), name='students'),
     url(r'^faq$', FAQ.as_view(), name="faq"),
     # url(r'^login$', Login.as_view(), name='login'),
 

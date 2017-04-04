@@ -175,20 +175,39 @@ def extract_tasks_from_url(self, url):
         tree = lxml.html.fromstring(html)
         forms = S('form[name="checkform"]')(tree)
         res = []
+
+        # each task is in <form> tag
         for form in forms:
             guid = S('input[name="guid"]')(form)[0].get('value').strip()
-            for td in S('table td')(form):
-                # Just get HTML of a table in this form and pass it as a
-                # task text.  We will parse it later from another task.
-                html = ''
-                for el in td.xpath("child::node()"):
-                    if isinstance(el, lxml.etree._ElementUnicodeResult):
-                        html += str(el)
-                    else:
-                        html += etree.tostring(el, encoding='unicode')
+            html = ''
+            # html = etree.tostring(form, encoding='unicode')
+            # html = etree.tostring(S('table')(form)[0], encoding='unicode')
+            # print(etree.tostring(S('table td')(form)[0], encoding='unicode'))
+            table = S('table')(form)[0]
+            # for td in S('tr td')(table):
+            for tr in table.xpath("child::node()"):
+                if isinstance(tr, lxml.etree._ElementUnicodeResult):
+                    continue
+                for td in tr.xpath("child::node()"):
+                    if isinstance(td, lxml.etree._ElementUnicodeResult):
+                        continue
+                    for el in td.xpath("child::node()"):
+                        if isinstance(el, lxml.etree._ElementUnicodeResult):
+                            html += str(el)
+                        else:
+                            html += etree.tostring(
+                                el,
+                                encoding='unicode',
+                                method="html"
+                            )
             res.append((guid, html.strip()))
         return res
+    except TypeError as e:
+        # TypeError: Type 'lxml.etree._ElementUnicodeResult' cannot be
+        # serialized.
+        raise e
     except Exception as e:
+        raise e
         html, info = get("http://85.142.162.119/os11/xmodules/qprint/" +
                          "openlogin.php?proj=B9ACA5BBB2E19E434CD6BEC25284C67F",
                          force=True)
@@ -199,17 +218,47 @@ def extract_tasks_from_url(self, url):
         client.captureException()
 
 
+task_process_version = 2
+
+
 @shared_task
-def process_tasks(tasks):
-    for task_info in tasks:
-        process_task.delay(*task_info)
+def process_tasks(*args):
+    """Обработать задачи, полученные с fipi.ru
+
+    Либо переданные (как список), либо из базы данных.
+
+    """
+    if len(args) > 0:
+        tasks = args[0]  # list of tuples
+        for task_info in tasks:
+            process_task.delay(*task_info)
+        return len(tasks)
+    else:
+        # process tasks from DB
+        tasks = Task.objects.filter(debug__has_key='fipi_guid') \
+                            .filter(debug__v__lt=task_process_version)
+        for task in tasks:  # Task models
+            info = (
+                task.debug['fipi_guid'],
+                task.debug['html']
+            )
+            process_task.delay(*info)
+        return len(tasks)
 
 
 @shared_task
 def process_task(guid, html):
     try:
         task = Task.objects.get(debug__fipi_guid=guid)
-        return 'exists'
+        if not task.published:
+            tree = lxml.html.fromstring(html)
+            task.text = tag_contents(tree)
+            print(html)
+            task.debug['v'] = task_process_version
+            task.save()
+            return 'processed'
+        else:
+            return 'published'
     except Task.DoesNotExist:
         # There still may be the same task just without Fipi GUID
         task = Task(
@@ -218,7 +267,7 @@ def process_task(guid, html):
             debug={
                 'fipi_guid': guid,
                 'html': html,
-                'v': 1
+                'v': task_process_version
             }
         )
         task.save()
@@ -231,27 +280,19 @@ def tag_contents(tag):
         return str(tag)
 
     res = []
-    # prev = None
     for el in tag.xpath("child::node()"):
-        # is_text_element = isinstance(tag, lxml.etree._ElementUnicodeResult)
-        txt = tag_to_text(el)
-        # if prev is not None and isinstance(prev,
-        #                                    lxml.etree._ElementUnicodeResult)\
-        #    and el.tag == 'p':
-        # if not isinstance(el, lxml.etree._ElementUnicodeResult) and \
-        #    el.tag == 'p' and prev is not None:
-        #     res[-1] = res[-1].rstrip()
-        res.append(txt)
-        # prev = el
+        # print(el)
+        # for el in tag:
+        # res.append(str(el)+'\n')
+        res.append(tag_to_text(el))
 
-    # if tag.tail is not None:
-    #     res.append(tag.tail)
     return "".join(res)
 
 
 def tag_to_text(tag):
     res = []
     contents = tag_contents(tag)
+    # contents = ''
     empty = not bool(contents.strip())
 
     if isinstance(tag, lxml.etree._ElementStringResult) or \
@@ -261,23 +302,36 @@ def tag_to_text(tag):
     # b
     elif tag.tag == "b":
         if not empty:
-            res.append("**{}**".format(contents))
+            # res.append("**{}**".format(contents))
+            return "**{}**".format(contents)
+        return ''
 
     elif tag.tag == "br":
-        res.append("<br>")
+        # res.append("<br>")
+        return "<br>"
 
     # i
-    if tag.tag == "i":
+    elif tag.tag == "i":
         if not empty:
-            res.append("_{}_".format(contents))
+            return "_{}_".format(contents)
+        return ''
+
+    elif tag.tag == "input":
+        return ''
+        # if not empty:
+        #     res.append("_{}_".format(contents))
 
     # p
     elif tag.tag == "p":
+        # return "{}\n\n".format(contents.strip())
+        # return str(tag)
         if not empty:
             if len(res) > 1 and res[-1].strip() == '':
-                print(res)
+                # print(res)
                 res.pop()
-            res.append('"'+contents.strip()+'"' + "\n\n")
+            # res.append(contents.strip() + "\n\n")
+            return contents.strip() + "\n\n"
+        return ''
 
     # script
     elif tag.tag == "script":
@@ -289,22 +343,61 @@ def tag_to_text(tag):
             # TODO: get file from url
             res.append(url+" ")
             # res.append(element.text.strip()+"\n\n")
+        return ''
 
     # span
     elif tag.tag == "span":
         if not empty:
-            res.append(contents)
+            return contents
+        return ''
+
+    # table
+    elif tag.tag == "table":
+        # html = etree.tostring(tag, encoding='unicode')
+        html = '<table>\n'
+
+        # for el in tag.xpath("child::node()"):
+        html += contents
+
+        html += '</table>\n\n'
+        return html
+        # res.append(html)
+        # res.append('<table>: \n\n')
+
+    elif tag.tag == "tbody":
+        # html = etree.tostring(tag, encoding='unicode')
+        # html = '<tbody>'
+        # for el in tag.xpath("child::node()"):
+        html = contents
+
+        # html += '</tbody>'
+        return html
+
+    elif tag.tag == "tr":
+        # res.append(contents.strip() + "\n\n")
+        return '  <tr>{}\n  </tr>\n'.format(contents)
+
+    elif tag.tag == "td":
+        # res.append(contents.strip() + " ")
+        if len(contents) < 80:
+            return '    <td>{}</td>'.format(contents.strip())
+        else:
+            return '    <td>\n{}\n    </td>\n'.format(contents.strip())
 
     # any other tag
     else:
-        try:
-            raise ValueError('unknown tag: {}, {}'.format(tag.tag, tag.text))
-        except:
-            client.captureException()
+        return 'Unknown tag: "{}" <-- \n'.format(tag.tag)
+        # html = etree.tostring(tag, encoding='unicode')
+        # print(html)
+        # res.append(html)
+        # raise ValueError('Unknown tag: "{}"'.format(tag.tag))
+        # try:
+        # except:
+        #     client.captureException()
         # if tag.text is not None:
         #     res.append(tag.text)
 
-    return "".join(res)
+    # return "".join(res)
 
 
 @shared_task

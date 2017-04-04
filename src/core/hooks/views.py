@@ -8,6 +8,11 @@ from rest_framework.views import APIView
 
 
 class Github(APIView):
+    """Runs when Github sends data to /_/hooks/github.
+
+    Auth?
+
+    """
     def post(self, request, **kwargs):
         # c = self.get_context_data(**kwargs)
         # send_mail(

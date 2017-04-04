@@ -12,10 +12,15 @@ admin.site.register(Permission)
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput,
+        required=False,
+    )
     password2 = forms.CharField(
         label='Password confirmation',
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput,
+        required=False,
     )
 
     class Meta:
@@ -33,10 +38,16 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+
+        # when password is set
+        if self.cleaned_data["password1"]:
+            user.set_password(self.cleaned_data["password1"])
+        else:
+            user.is_active = False
         if commit:
             user.save()
-            return user
+
+        return user
 
 
 class UserChangeForm(forms.ModelForm):
@@ -58,12 +69,14 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+@admin.register(User)
 class UserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
     list_display = ('id', 'first_name', 'email', 'username', 'date_joined',
-                    'is_superuser', 'is_active')
+                    'is_active')
+    list_display_links = ('id', 'date_joined')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
     fieldsets = (
@@ -72,20 +85,33 @@ class UserAdmin(UserAdmin):
             'username',
             'email',
             'password',
+            'city',
         )}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'permissions')}),
+        (_('Permissions'), {
+            'fields': (
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'groups',
+                'permissions'
+            )
+        }),
     )
 
-    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
+    # fields used when creating a new user
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}),
+            'fields': (
+                'email',
+                'username',
+                'password1', 'password2',
+                'city'
+            )
+        }),
     )
     search_fields = ('email',)
-    ordering = ('email',)
+    ordering = ('-date_joined',)
     filter_horizontal = ('groups', 'permissions',)
 
 
@@ -94,17 +120,6 @@ class SiteUpdateAdmin(admin.ModelAdmin):
     list_display = ('commit_message', 'started', 'finished')
     # list_filter = ('public', )
 
-
-class ProxyUser(User):
-    class Meta:
-        proxy = True
-        app_label = 'auth'
-        auto_created = True
-        verbose_name = User._meta.verbose_name
-        verbose_name_plural = User._meta.verbose_name_plural
-
-
-admin.site.register(ProxyUser, UserAdmin)
 
 # from django.contrib import admin
 # from .models import *

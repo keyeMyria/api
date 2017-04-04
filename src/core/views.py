@@ -1,19 +1,22 @@
 import os
 import json
 import logging
-import datetime
+# import datetime
 from datetime import date
 from django.views.generic import TemplateView
 from django.conf import settings
 from core import get_client_ip
 # from django.utils.translation import ugettext as _
-from django.http import (HttpResponseNotFound, HttpResponseRedirect,
-                         HttpResponse)
+from django.http import (
+    # HttpResponseNotFound,
+    HttpResponseRedirect,
+    HttpResponse
+)
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
 from subprocess import call, Popen, PIPE
-from rest_framework.views import APIView
+# from rest_framework.views import APIView
 from django.contrib.auth import logout
 # from django.core.urlresolvers import reverse
 from core import reverse
@@ -22,6 +25,8 @@ from .forms import Login as LoginForm
 from django.contrib.auth import login
 from . import now
 from .menu import Menu
+from braces import views
+# from django.utils.timezone import now
 
 log = logging.getLogger(__name__)
 
@@ -39,14 +44,16 @@ class EnsureCsrfCookieMixin(object):
 
 # class Base(EnsureCsrfCookieMixin, TemplateView):
 class BaseView(TemplateView):
-    only_superuser = False
-
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
         c["domain"] = settings.DOMAIN
         c["host"] = self.request.host
-        c['utcnow'] = datetime.datetime.utcnow()
-        c['now'] = datetime.datetime.now()
+
+        # c['utcnow'] = datetime.datetime.utcnow()
+        # c['now'] = datetime.datetime.now()
+        c['utcnow'] = now()
+        c['now'] = now()
+
         c['year'] = date.today().year
         c['user'] = self.request.user
         c['DEBUG'] = settings.DEBUG
@@ -88,10 +95,6 @@ class BaseView(TemplateView):
         if redirect:
             return HttpResponseRedirect(redirect)
 
-        # Pages for superuser only
-        if self.only_superuser and not c['user'].is_superuser:
-            return HttpResponseNotFound('')
-
         return self.render_to_response(c, status=c['status'])
 
 
@@ -107,9 +110,11 @@ class TreeEdit(BaseView):
         return c
 
 
-class Celery(BaseView):
+class Celery(views.LoginRequiredMixin,
+             views.SuperuserRequiredMixin,
+             BaseView):
     template_name = "core_celery.jinja"
-    only_superuser = True
+    # only_superuser = True
 
     def get_context_data(self, **kwargs):
         c = super(Celery, self).get_context_data(**kwargs)
@@ -203,9 +208,11 @@ class Celery(BaseView):
 
 # Travis payload format:
 # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
-class Updates(BaseView):
+class Updates(views.LoginRequiredMixin,
+              views.SuperuserRequiredMixin,
+              BaseView):
     template_name = "core_updates.jinja"
-    only_superuser = True
+    # only_superuser = True
 
     def get_context_data(self, **kwargs):
         c = super(Updates, self).get_context_data(**kwargs)
@@ -216,9 +223,11 @@ class Updates(BaseView):
         return c
 
 
-class Nginx(BaseView):
+class Nginx(views.LoginRequiredMixin,
+            views.SuperuserRequiredMixin,
+            BaseView):
     template_name = "core_nginx.jinja"
-    only_superuser = True
+    # only_superuser = True
 
     def get_context_data(self, **kwargs):
         c = super(Nginx, self).get_context_data(**kwargs)

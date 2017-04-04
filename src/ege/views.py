@@ -1,20 +1,21 @@
 import logging
-from pashinin.views import Base as B
 from core.views import BaseView
-from django.conf import settings
+# from django.conf import settings
 from .models import Subject, Exam
 from core import now
 from edu.models import Task
 import pymorphy2
 # from django.core.urlresolvers import reverse
 from core import reverse
+from braces import views
 
 morph = pymorphy2.MorphAnalyzer()
 log = logging.getLogger(__name__)
 
 
-class Base(BaseView):
-    only_superuser = True
+class Base(views.LoginRequiredMixin,
+           views.SuperuserRequiredMixin,
+           BaseView):
 
     def get_context_data(self, **kwargs):
         c = super(Base, self).get_context_data(**kwargs)

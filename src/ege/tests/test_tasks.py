@@ -1,3 +1,4 @@
+import lxml
 import pytest
 from core.tasks import get
 from edu.models import Task
@@ -7,7 +8,8 @@ from ..tasks import (
     ege_subjects_and_urls,
     get_subject_sections,
     extract_tasks_from_url,
-    process_tasks
+    process_tasks,
+    tag_contents
     # create_subjects
 )
 
@@ -109,7 +111,46 @@ def test_process_tasks(settings):
 
     result = process_tasks.delay(tasks)
     assert result.successful()
+    assert result.info == 10  # return value
 
+    # There should be 10 added tasks by now
     tasks = Task.objects.filter()
-    assert tasks.count() > 9
-    assert tasks.count() < 20
+    assert tasks.count() == 10
+
+    # process old tasks
+    # set 1 as old and see how many processed
+    task = tasks.filter(text__icontains='Степаненко')[0]
+    assert task.debug['v'] >= 2
+    task.debug['v'] = 0
+    task.save()
+    result = process_tasks.delay()
+    assert result.successful()
+    assert result.info == 1
+
+    task.refresh_from_db()
+    # print(task.text)
+
+    assert task.text != task.debug['html']
+    # print(task.debug['html'])
+    # assert task.text == ''
+
+    # all done already
+    result = process_tasks.delay()
+    assert result.successful()
+    assert result.info == 0
+
+
+def test_html():
+    html = """<p>p1<p> <table><tr><td>1</td></tr>
+<tr><td>2 <b>b</b></td></tr>
+</table> p2
+"""
+    tree = lxml.html.fromstring(html)
+    # for el in tree.xpath("child::node()"):
+    print(tag_contents(tree))
+
+    # assert False
+    # for el in tree:
+    # for el in tag.iterdescendants("*"):
+    # res.append(tag_to_text(el))
+    # return tag_contents(tree)

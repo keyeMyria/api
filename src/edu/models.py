@@ -140,6 +140,12 @@ class Task(models.Model):
     #     blank=True,
     #     through='TasksCategories',
     # )
+    marked_solved_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name="edu_solved_tasks",
+        verbose_name=_('People who solved'),
+    )
     published = models.BooleanField(
         default=False,
         db_index=True,

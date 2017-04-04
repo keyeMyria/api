@@ -28,7 +28,7 @@ function toJSON( form ) {
 };
 
 const isValidElement = el => {
-	return el.name && el.value && el.type!="submit";
+	return el !=undefined && el.name && el.value && el.type!="submit";
 };
 const formToJSON = elements => [].reduce.call(elements, (data, el) => {
 	// if (el.type != "submit")

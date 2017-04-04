@@ -1,0 +1,289 @@
+{% extends "pashinin_base.jinja" %}
+
+
+{% set hour_px = 40 %}
+
+
+
+{% block style %}
+{{super()}}
+  #week{transition: all 0.1s linear;}
+  .day{}
+  .lesson{cursor:pointer;overflow:hidden;border:1px solid transparent}
+  .lesson:hover{background-color:rgba(0,0,0,0.04);}
+  .busy{background-color:rgba(255,0,0,0.05);}
+  .lesson.selected{border-color:blue; background-color:rgba(0,0,255,0.05);}
+{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("pashinin_students.js") }}?v=1"></script>
+{% endblock %}
+
+
+{% block title %}Ученики{% endblock %}
+
+
+
+{% block main %}
+  <div class="w">
+	<div class="flex equal">
+	  <div id="today" class="pad-sm mart bred" style="min-width:400px">
+		{# <span class="hide date">{{date_format(today.date, 'Y-m-d')}}</span> #}
+		<span class="hide date">{{today.date}}</span>
+		<div class="flex">
+		  <div><a class="prev" href=""><i class="icon icon-left-open">&#xE802; </i></a></div>
+		  <div class="current">{{date_format(today.date, 'l, d E')}}</div>
+		  <div><a class="next" href=""><i class="icon icon-right-open">&#xE803; </i></a></div>
+		</div>
+		{# <h1>Ученики</h1> #}
+		{# {% for student in students.active %} #}
+		{#   <div class="pad-sm cursor"> #}
+		{# 	<div> #}
+		{# 	  <a class="student" data-id="{{student.pk}}" href="#">{{student}}</a> #}
+		{# 	</div> #}
+
+		{# 	Понедельник #}
+		{#   </div> #}
+		{# {% endfor %} #}
+
+		<div class="lessons">
+		  {% for lesson in today.schedule %}
+			{# {{today.date.weekday()}} #}
+			{# {% for lesson in today.lessons %} #}
+			<div class="lesson{{loop.index}}{% if lesson.student %} busy{% endif %}">
+			  {# {{localtime(lesson.start)}} <br/> #}
+			  {# {{localtime(lesson.end)}} #}
+			  {# <br/> #}
+			  <span title="{{localtime(lesson.start)}}" class="start">{{date_format(localtime(lesson.start), 'H:i')}}</span>
+			  -
+			  <span title="{{localtime(lesson.end)}}" class="end">{{date_format(localtime(lesson.end), 'H:i')}}</span>
+			  <span class="student">{{lesson.student}}</span>
+			</div>
+		  {% endfor %}
+		</div>
+
+
+		{# {% for student in students.inactive %} #}
+		{#   <div> #}
+		{# 	<a class="student" data-id="{{student.pk}}" href="#">{{student}}</a> #}
+		{#   </div> #}
+		{# {% endfor %} #}
+	  </div>
+
+	  <div id="worklog" class="bred2 pad-sm">
+		<div class="" style="max-width:500px">
+		  {# <a class="close" href="#">Закрыть</a> #}
+		  {# <h1>asd</h1> #}
+		</div>
+	  </div>
+
+	  <div class="bred2 pad-sm">
+		<div id="edit_student" class="" style="max-width:500px">
+		  {# <a class="close" href="#">Закрыть</a> #}
+		  {# <h1></h1> #}
+		  <input name="first_name" type="text" value=""/>
+		  <div class="schedule">
+			Понедельник 18:00 <a href="">x</a>
+		  </div>
+		</div>
+	  </div>
+
+	</div>
+
+
+	<div class="flex2 hide">
+	  <div>
+		{% for lesson in today.schedule %}
+		  <div class="lesson pad-sm{% if lesson.student %} busy{% endif %}"
+			   style="height:{{round(hour_px * lesson.mins / 60)}}px;"
+			   >
+			<form action="" class="hide">
+			  {% if lesson.student %}
+				<input name="student_id" type="hidden" value="{{lesson.student.id}}"/>
+			  {% endif %}
+			</form>
+
+			<span class="time start hour">{{localtime(lesson.start).hour}}</span>:<span class="time end hour">{{"%02d" % lesson.start.minute}}</span>
+			-
+			{{localtime(lesson.end).hour}}:{{"%02d" % lesson.end.minute}}
+
+			{# {{lesson.start.time()}} - {{lesson.end.time()}} #}
+			<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>
+			{# (<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>) #}
+			<br/>
+
+			{% if lesson.student %}
+			  <a href="{{lesson.pk}}">{{lesson.student}}</a>
+			{% endif %}
+
+			{% if lesson %}
+			{% endif %}
+		  </div>
+		  {% if not loop.last %}
+			<div style="height:{{round(hour_px * pause_mins / 60)}}px;background-color:rgba(0,255,0,0.1)"></div>
+		  {% endif %}
+		{% endfor %}
+	  </div>
+	  <div>2</div>
+	</div>
+  </div>
+
+
+  <div class="pad">
+	<div class="hide">
+	  <div id="week" class="">
+		<div class="flex">
+		  <div class="">
+			<a href="">&lt;&lt; Пред неделя</a>
+		  </div>
+		  <div class="center">
+			<b>Текущая неделя</b>
+			{% if not localtime(utcnow).weekday() == 0 %}
+			  / <a href="">Часть этой + следующая</a>
+			{% endif %}
+		  </div>
+		  <div class="" style="text-align:right">
+			<a href="">След. неделя &gt;&gt;</a>
+		  </div>
+
+		</div>
+		<div class="flex padtb equal">
+		  {% for day in days %}
+			{% set is_today = localtime(utcnow).date() == localtime(day.date).date() %}
+			<div
+			  class="day padlr-sm {% if is_today %}class="bred"{% endif %}"
+			  style="{% if is_today %}border-left:3px solid red{% endif %}"
+			  {# style="background-color:rgba({{255-min((day-utcnow).days, 7)/7*100}},255,255,1)" #}
+			  >
+
+			  {{day.date.date()}}
+
+			  {# before today #}
+
+			  {# {% if is_today %} <b>Сегодня</b> {% endif %} #}
+			  {# {% if day.next_week_last_day %} #}
+			  {#   <b>Через неделю</b> #}
+			  {# {% endif %} #}
+
+
+
+			  <br/>
+
+			  {# {{day.schedule}} #}
+
+
+			  {% for lesson in day.schedule %}
+				<div class="lesson pad-sm{% if lesson.student %} busy{% endif %}"
+					 style="height:{{round(hour_px * lesson.mins / 60)}}px;"
+					 >
+				  <form action="" class="hide">
+					{% if lesson.student %}
+					  <input name="student_id" type="hidden" value="{{lesson.student.id}}"/>
+					{% endif %}
+				  </form>
+
+				  <span class="time start hour">{{localtime(lesson.start).hour}}</span>:<span class="time end hour">{{"%02d" % lesson.start.minute}}</span>
+				  -
+				  {{localtime(lesson.end).hour}}:{{"%02d" % lesson.end.minute}}
+
+				  {# {{lesson.start.time()}} - {{lesson.end.time()}} #}
+				  <time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>
+				  {# (<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>) #}
+				  <br/>
+
+				  {% if lesson.student %}
+					<a href="{{lesson.pk}}">{{lesson.student}}</a>
+				  {% endif %}
+
+				  {% if lesson %}
+				  {% endif %}
+				</div>
+				{% if not loop.last %}
+				  <div style="height:{{round(hour_px * pause_mins / 60)}}px;background-color:rgba(0,255,0,0.1)"></div>
+				{% endif %}
+			  {% endfor %}
+
+
+			  {# {% if (day-utcnow).days == 0 %}Сегодня{% endif %} #}
+			  {# {% if (day-utcnow).days == 1 %}Завтра{% endif %} #}
+			  {# {{(day-utcnow).days}} #}
+			  {# {% for start, end in times %} #}
+			  {#   <div> #}
+			  {# 	<a class="day-time {% if today %}{% endif %}" href="#">{{start.seconds // 3600}}:{{ "%02d" % ((start.seconds % 3600)/60)}}</a> #}
+			  {#   </div> #}
+			  {# {% endfor %} #}
+			  <a href=""></a>
+			</div>
+		  {% endfor %}
+		</div>
+	  </div>
+
+
+	  <div class="flex equal">
+		{# left #}
+		<div class="">
+		  Ученик | История (задач)
+		  {% for student in students.active %}
+			<div>
+			  <a class="student" data-id="{{student.pk}}" href="#">{{student}}</a>
+			</div>
+		  {% endfor %}
+		</div>
+
+		{# right #}
+		<div class="">
+		  <div class="">
+			{# <div class="grow0 padlr"> #}
+			  {# 	<input id="new_student_btn" class="btn btn-primary btn-large" type="submit" name="" value="Новый ученик" /> #}
+			  {# </div> #}
+			<div class="pad">
+			  <div id="edit_lesson" class="hide" style="max-width:500px">
+				<h2 class="title">Новый ученик</h2>
+				<form id="new_student_form" action="{{url("students", host=host.name)}}">
+				  <textarea cols="30" id="" name="problem" rows="2" placeholder="ЕГЭ / Python / C++ / C# / другое"></textarea>
+				  <div class="flex">
+					<input name="name" type="text" value="" placeholder="Имя" style="width:170px"/>
+					<input class="marl" name="contact" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
+				  </div>
+
+				  <div class="classtime">
+					<select>
+					  {% for day in days %}
+						<option>{{day}}</option>
+					  {% endfor %}
+					</select>
+					с <input name="" type="text" value="" placeholder="12:00" style="width:100px"/>
+					до
+					<input name="" type="text" value="" placeholder="13:00" style="width:100px"/>
+					<br/>
+					{# Предыдущего занятия нет #}
+					После занятия: свободное время (1ч)
+				  </div>
+
+				  <input name="" type="text" value="" placeholder="Возраст (класс, курс)"/>
+				  <input name="" type="text" value="" placeholder="Город" style="width:200px"/>
+
+				  <div class="flex">
+					<input name="" type="text" value="" placeholder="Мама" style="width:170px"/>
+					<input class="marl" name="" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
+				  </div>
+				  <div class="flex">
+					<input name="" type="text" value="" placeholder="Папа" style="width:170px"/>
+					<input class="marl" name="" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
+				  </div>
+
+				  <textarea cols="30" id="" name="" rows="2" placeholder="Комментарий"></textarea>
+
+				  <input id="add_new_student" class="btn btn-primary btn-large" type="submit" name="" value="Добавить" />
+				</form>
+			  </div>
+			</div>
+
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+{% endblock %}

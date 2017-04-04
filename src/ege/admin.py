@@ -35,7 +35,8 @@ class MembershipInline(admin.TabularInline):
 # class SubjectsListFilter(admin.SimpleListFilter):
 
 #     """
-#     This filter will always return a subset of the instances in a Model, either filtering by the
+#     This filter will always return a subset of the instances in a Model,
+#     either filtering by the
 #     user choice or by a default value.
 #     """
 #     # Human-readable title which will be displayed in the
@@ -81,7 +82,8 @@ class MembershipInline(admin.TabularInline):
 #         value = super(SubjectsListFilter, self).value()
 #         if value is None:
 #             if self.default_value is None:
-#                 # If there is at least one Species, return the first by name. Otherwise, None.
+#                 # If there is at least one Species, return the first by name.
+#                 # Otherwise, None.
 #                 first_species = Species.objects.order_by('name').first()
 #                 value = None if first_species is None else first_species.id
 #                 self.default_value = value
