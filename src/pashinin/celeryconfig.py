@@ -50,14 +50,14 @@ CELERYD_HIJACK_ROOT_LOGGER = False
 CELERYBEAT_SCHEDULE = {
     # 'discover_open_ports': {
     #     'task': 'cms.ip.tasks.discover_open_ports',
-    #     # hour=‘0,8-17/2’ (at midnight, and every two hours during
+    #     # hour='0,8-17/2' (at midnight, and every two hours during
     #     # office hours).
     #     'schedule': crontab(minute='*/2'),
     #     # 'options': {"expires": 10.0}
     # },
     # 'get_new_gosts': {
     #     'task': 'gost.tasks.get_new_gosts',
-    #     # hour=‘0,8-17/2’ (at midnight, and every two hours during
+    #     # hour='0,8-17/2' (at midnight, and every two hours during
     #     # office hours).
     #     'schedule': crontab(hour='*/3', minute=0),
     #     # 'options': {"expires": 10.0}
