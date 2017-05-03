@@ -4,19 +4,64 @@
    contain the root `toctree` directive.
 
 pashinin.com
-============
+************
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+How to start?
+=============
 
-   installation
-   static
-   long-running-tasks
-   tests
-   algo
-   mailserver
-   auth
+#. Register at Github_ and fork `this repository <https://github.com/pashinin-com/pashinin.com>`_.
+#. Clone your new repo to your PC (Mac and Win users - just use `Github Desktop <https://desktop.github.com/>`_)
+#. Start development server
+#. Do changes
+#. Make a pull request or `report a problem <https://github.com/pashinin-com/pashinin.com/issues>`_
+
+All this in detail should be below...
+
+
+`Docker`_ is used for containers.
+
+
+
+Linux
+-----
+
+Clone your new repo (replace :code:`<YOUR_NAME>` with your Github login):
+
+.. code-block:: bash
+
+   git clone git@github.com:<YOUR_NAME>/pashinin.com.git
+   make         # start Docker images
+   make tmux    # start Django server and Gulp
+
+In your browser go to http://example.org or http://localhost.
+
+
+Windows
+-------
+
+.. warning::
+
+   Docker for Windows runs on 64bit Windows 10 Pro, Enterprise and
+   Education (1511 November update, Build 10586 or later). `And
+   more... <https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install>`_
+
+Windows 10 64bit Pro or Enterprise
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Install `Docker for Windows <https://store.docker.com/editions/community/docker-ce-desktop-windows?tab=description>`_
+#. Run setup.exe.
+#. In your browser go to http://example.org or http://localhost.
+
+Windows 7
+^^^^^^^^^
+
+Install `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_
+
+
+Mac
+---
+
+Install Docker.
 
 
 Update process
@@ -79,6 +124,24 @@ Migrations
    INSERT INTO django_migrations (app, name, applied) VALUES ('auth', '0001_initial', '2016-11-01 12:00:00');
 
 
+What next?
+==========
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   static
+   long-running-tasks
+   tests
+   algo
+   mailserver
+   auth
+
+
 .. _core/tasks.py: https://github.com/pashinin-com/pashinin.com/blob/master/src/core/tasks.py
 .. _travis_secret_settings: https://github.com/pashinin-com/pashinin.com/blob/master/configs/settings.py.mustache#L334
 .. _travis.yml: https://github.com/pashinin-com/pashinin.com/blob/master/.travis.yml#L105-L106
+.. _Docker: https://www.docker.com/
+.. _Linux: https://www.ubuntu.com/
+.. _Github: https://github.com
