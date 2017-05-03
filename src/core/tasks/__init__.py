@@ -1,9 +1,8 @@
+import os
 import pickle
 import hashlib
 import requests
 import re
-import lxml
-from lxml.cssselect import CSSSelector as S
 from celery import shared_task
 from django.core.cache import cache
 # from raven.contrib.django.raven_compat.models import client
@@ -33,6 +32,10 @@ url_get_version = 7
 def get(url, charset='utf-8', force=False):
     """Just GETs an URL."""
     # v = 7
+
+    import lxml
+    from lxml.cssselect import CSSSelector as S
+
     cookies = '/tmp/cookies.txt'
     headers = {
         'User-Agent':
@@ -73,3 +76,159 @@ def get(url, charset='utf-8', force=False):
         return html, {'r': r}
     else:
         return r.text, {'r': r}
+
+
+@shared_task
+def Popen(cmd):
+    from subprocess import Popen
+    if isinstance(cmd, str):
+        cmd = cmd.split()
+    Popen(cmd)
+
+
+@shared_task
+def install_pkg(pkg_name):
+    from subprocess import Popen
+    import platform
+    # import subprocess
+
+    # check if we are root
+    # if os.geteuid() != 0:
+    #     raise ValueError("Need to be root to install packages")
+
+    if 'Linux' == platform.system():
+        # platform.linux_distribution() deprecated in 3.7
+
+        # Arch
+        pacman = '/usr/bin/pacman'
+        if os.path.isfile(pacman):
+            p = Popen(['sudo', '-S', pacman, '-S', '--noconfirm', pkg_name])
+            p.communicate()
+            p.wait()
+            # sudo_prompt = p.communicate(sudo_password + '\n')[1]
+        else:
+            raise NotImplementedError(
+                "don't know how to install packages in this Linux")
+
+    elif 'Windows' == platform.system():
+        raise NotImplementedError(
+            "don't know how to install packages in Windows")
+    else:
+        raise NotImplementedError(
+            "don't know how to install packages in Unknown")
+
+
+def service_is_running(service):
+    # systemctl is-active sshd
+    from subprocess import Popen
+    exit_code = Popen(['systemctl', '-q', 'is-active', service]).wait()
+    return exit_code == 0
+
+
+def configure_docker():
+    import docker
+    cli = docker.from_env()
+    try:
+        cli.images.get('ubuntu:17.04')
+    except:
+        print('Getting Ubuntu image...')
+        cli.images.pull('ubuntu:17.04')
+
+    try:
+        cli.images.get('postgres:latest')
+    except:
+        print('Getting Postgres image...')
+        cli.images.pull('postgres:latest')
+
+    print(os.getcwd())
+    cli.images.build(path='../docker/', tag='pashinin.com')
+    # container = cli.containers.run('pashinin.com',
+    #                                detach=True)
+
+    print(cli.containers.list())
+    print(cli.images.list())
+
+
+def install(program):
+    from shutil import which
+    from subprocess import Popen
+    if which(program) is not None:
+
+        if program == 'docker':
+            if service_is_running('docker'):
+                print('Docker is running')
+            else:
+                print('starting Docker...')
+                p = Popen(['sudo', '-S', 'systemctl', 'start', 'docker'])
+                p.communicate()
+                p.wait()
+
+            # check docker images
+            try:
+                import docker
+                docker.from_env()
+            except:
+                print('Installing docker via pip')
+                p = Popen(['sudo', 'pip', 'install', 'docker'])
+                p.communicate()
+                p.wait()
+
+            # if permission denied - add user to "docker" group
+            try:
+                import docker
+                client = docker.from_env()
+                client.containers.list()
+            except Exception as e:
+                print(e)
+                # gpasswd -a user docker
+                import getpass
+                p = Popen(['sudo', 'gpasswd', '-a', getpass.getuser(),
+                           'docker'])
+                p.communicate()
+                p.wait()
+                msg = """You were added to group "docker".
+Please restart! Logout and login may not help!"""
+                print('*'*len(msg))
+                print(msg)
+                print('*'*len(msg))
+                raise ValueError("Restart!")
+
+            configure_docker()
+
+        return
+
+    import platform
+
+    pkgs = {
+        'flake8': {
+            'ubuntu': 'python-flake8',
+            'arch': 'flake8',
+        },
+        'docker': {
+            # 'ubuntu': 'python-flake8',
+            'arch': 'docker',
+        },
+        'docker-compose': {
+            # 'ubuntu': 'python-flake8',
+            'arch': 'docker-compose',
+        },
+    }
+    if program in pkgs:
+        if 'Linux' == platform.system():
+            # platform.linux_distribution() deprecated in 3.7
+
+            # Arch
+            if os.path.isfile('/usr/bin/pacman'):
+                install_pkg(pkgs[program]['arch'])
+            else:
+                raise NotImplementedError(
+                    f"don't know how to install {program} in this Linux")
+
+        elif 'Windows' == platform.system():
+            raise NotImplementedError(
+                "don't know how to install packages in Windows")
+        else:
+            raise NotImplementedError(
+                "don't know how to install packages in Unknown")
+    else:
+        raise ValueError("Don't know how to install {}".format(program))

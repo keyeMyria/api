@@ -1,0 +1,33 @@
+FROM python:3.6-alpine
+
+RUN apk update && \
+    apk add nodejs && \
+    rm -rf /tmp/src && \
+    rm -rf /var/cache/apk/*
+
+RUN npm install -g gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps && \
+    rm -rf /tmp/*
+# RUN npm install -g gulp-sass
+
+RUN pip install django-jinja
+
+RUN mkdir -p /var/www/project
+
+# ENTRYPOINT ["gulp"]
+
+
+# FROM jimlei/alpine-nodejs
+# MAINTAINER Jim Leirvik <jim@jimleirvik.no>
+
+# RUN npm i -g gulp && \
+#     rm -rf /tmp/*
+
+# RUN mkdir -p /data
+# VOLUME /data
+
+WORKDIR /var/www/project
+
+
+
+
+# ENTRYPOINT ["gulp"]

@@ -1,0 +1,18 @@
+FROM postgres:alpine
+
+# COPY requirements.txt /tmp/
+COPY db_init.sql /docker-entrypoint-initdb.d/
+COPY db_init.sh /docker-entrypoint-initdb.d/
+
+# RUN apk update && \
+#     apk add python3 py-pip && \
+#     rm -rf /tmp/src && \
+#     rm -rf /var/cache/apk/*
+
+# # (cd /var/www/project/src; ./manage.py)
+
+# COPY requirements.txt /tmp/
+# RUN pip3 install pip -U
+# RUN pip3 install -r /tmp/requirements.txt --no-cache-dir && \
+#     rm -rf /tmp/src && \
+#     rm -rf /var/cache/apk/*

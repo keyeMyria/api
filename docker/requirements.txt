@@ -26,7 +26,7 @@ chardet                # encoding detection
 # solid_i18n
 # django-admin-bootstrapped
 # django-bootstrap3
-django>=1.10.4
+django>=1.11
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
 
@@ -62,7 +62,7 @@ django-redis-cache
 # https://github.com/martinrusev/django-redis-sessions
 django-redis-sessions
 
-django-sendfile
+# django-sendfile           # https://github.com/johnsensible/django-sendfile
 #django-polymorphic>=v0.6   # https://github.com/chrisglass/django_polymorphic
 # git+https://github.com/chrisglass/django_polymorphic.git
 django-sortedm2m           # https://pypi.python.org/pypi/django-sortedm2m
@@ -78,7 +78,7 @@ guess_language
 iptools
 ipython>=2.3.0
 pillow
-ply
+# ply
 psycopg2
 #git+https://github.com/lericson/pylibmc.git
 
@@ -122,7 +122,7 @@ six
 # tl
 # tl.rename
 
-tornado
+# tornado
 # uwsgi
 # werkzeug
 # git+git://github.com/pashinin/autopy.git
@@ -134,9 +134,9 @@ tornado
 gitpython
 django-netfields
 django-gravatar2
-py-moneyed
+# py-moneyed     # https://github.com/limist/py-moneyed
 
-wikipedia
+# wikipedia
 
 # Celery - Distributed Task Queue
 # pypi - https://pypi.python.org/pypi/celery/
@@ -173,7 +173,7 @@ telepot
 
 setuptools>=30.4.0
 
-rparser>=0.1.16
+rparser>=0.1.19
 psutil   # view system processes
 
 # склонение слов в русском языке

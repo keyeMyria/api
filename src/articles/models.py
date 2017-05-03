@@ -1,4 +1,10 @@
-from rparser import article_render as A
+from django.core.exceptions import ImproperlyConfigured
+try:
+    from rparser import article_render
+except:
+    raise ImproperlyConfigured('Run: "pip install rparser"')
+
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
@@ -88,7 +94,7 @@ class Article(AddedChanged):
     @property
     def as_html(self):
         try:
-            html, info = A(self.src)
+            html, info = article_render(self.src)
 
             missing_links = info.get("missing_links", tuple())
             set_links = {}

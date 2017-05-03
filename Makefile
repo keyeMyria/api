@@ -3,9 +3,27 @@
 python = `./configs/makeve.py`
 vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret.json`
 d = `pwd`
-vm = docker_web_1
+# vm = docker_web_1
+# vm = pashinin.com:latest
+vm = pashinin/pashinin.com:latest
+container = pashinin/pashinin.com:latest
+# container = pashinin.com
 manage = $(python) src/manage.py
-dockermanage.py = docker exec --user user -it $(vm) python ./manage.py
+dockermanage.py = docker exec --user user -it $(container) python ./manage.py
+# docker_run = docker-compose run --rm --env DJANGO_SETTINGS_MODULE='pashinin.settings' --env LD_LIBRARY_PATH='/var/www/pashinin.com/tmp/ve/lib' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container)
+docker_run = docker-compose run --rm django
+
+
+all: install-docker-compose
+	(cd docker;export UID; docker-compose up -d redis db django gulp)
+# (cd docker;export UID; docker-compose up gulp)
+
+
+install-docker-compose:
+	which docker-compose || sudo pip install docker-compose
+
+# docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
 
 # docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
 # docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
@@ -17,13 +35,22 @@ docker: configs
 	sleep 2
 	(cd docker; docker-compose up migration)
 	(cd docker; docker-compose up -d web)
-	docker exec -it $(vm) adduser user --uid `id -u` --quiet --disabled-password --gecos ""
-# docker exec -it $(vm) ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.6/rparser
+	docker exec -it $(container) adduser user --uid `id -u` --quiet --disabled-password --gecos ""
 
-# docker exec -it docker_web_1 userdel user
-	# (cd docker; docker-compose up -d db redis)
-# docker-compose up --force-recreate
-# --no-deps db redis
+docker-rebuild:
+	docker build -t pashinin.com docker/
+
+# Run "docker login" first
+docker-push:
+	docker tag pashinin.com pashinin/pashinin.com
+	docker push pashinin/pashinin.com
+	docker tag gulp pashinin/gulp
+	docker push pashinin/gulp
+	docker tag db pashinin/db
+	docker push pashinin/db
+
+configs:
+	(cd configs; make templates)
 
 dev: dev_pkgs
 
@@ -31,11 +58,11 @@ dev: dev_pkgs
 
 start: docker
 
-dev_pkgs:
+npm:
 	npm install gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps
 
 bash:
-	docker exec -it $(vm) bash
+	$(docker_run) bash
 
 # --noworker - runserver will NOT start workers
 django:
@@ -47,9 +74,6 @@ glusterfs:
 
 gulp:
 	docker exec $(vm) gulp
-
-configs:
-	(cd configs; make templates)
 
 # For new app (no migrations, no changes detected) - create app with
 # manage.py!
@@ -65,15 +89,23 @@ migrate-docker:
 	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
 	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings
 
+migrate:
+	(cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=pashinin.settings)
+
 vm:
 	(cd docker; make vm)
 
 psql:
-	docker exec -it --user postgres docker_db_1 psql
+	docker run -it --rm --link db:postgres postgres psql -h postgres -U pashinin
+# docker run -e POSTGRES_USER="pashinin" -e POSTGRES_PASSWORD="superpass" -it db psql
+# docker exec -it --user postgres docker_db_1 psql
 
-recreate: stop
+
+# docker rm docker_db_1;
+
+build-docker: stop
 	# sudo find -type d -name migrations -exec rm -rf {} \;
-	(cd docker; docker rm docker_db_1; docker rm docker_web_1;)
+	(cd docker; docker rm docker_web_1;)
 	make docker
 
 stop:
@@ -106,14 +138,15 @@ ve:
 # TODO: upgrade pip
 
 link_debug_parser:
-	ln -sf /var/www/parser/build/lib/rparser/ /usr/local/lib/python3.6/rparser/
+	ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.6/rparser
 # docker exec -it $(vm)
 
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
 
 pip-docker:
-	docker exec -it $(vm) pip3 install -r ../docker/requirements.txt
+	$(docker_run) pip install -r ../docker/requirements.txt
+# docker exec -it $(vm) pip3 install -r ../docker/requirements.txt
 
 pull:
 	sudo -H -u www-data git pull
@@ -148,13 +181,13 @@ prod: pull
 # sudo -H -u www-data make prod
 
 dbinit-docker:
-	docker exec -it $(vm) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
+	docker exec -it $(container) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
 
 collectstatic:
 	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 
 collectstatic-dev:
-	docker exec --user user -it $(vm) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
+	docker exec --user user -it $(container) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 
@@ -175,7 +208,11 @@ shell:
 	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
 shell-docker:
-	docker exec --user user -it $(vm) ./manage.py shell
+	docker run --env DJANGO_SETTINGS_MODULE='pashinin.settings' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container) ./manage.py shell
+# docker exec --user user -it $(vm) ./manage.py shell
+
+python-docker:
+	$(docker_run) ipython
 
 ege:
 	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(vm) ./manage.py runserver 0.0.0.0:8001
@@ -192,15 +229,39 @@ localecompile:
 py:
 	$(python)
 
+# testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
+testcmd = /bin/sh -c "pytest -vv --durations=3"
+# test: flake8 install_docker
+# install_docker
 test:
-	docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -v -n3 --durations=3"
+	(cd docker; $(docker_run) $(testcmd))
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
 
-flake8:
+flake8: install_flake8
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
+
+install_flake8:
+	(cd src; python3 -c 'from core.tasks import install;install("flake8")')
+# sudo apt-get install python-flake8
+
+install_docker:
+	(cd src; python3 -c 'from core.tasks import install;install("docker")')
+
+tidy:
+	curl https://pashinin.com | tidy -config configs/tidy.conf
 
 render:
 	mkdir -p configs/tmp
 	(cd configs;./config.py secret-example.json secret.json)
 	(cd configs/; ./render.py)
 	(cd src; python3 -c 'from core.tasks import generate_settings;generate_settings()')
+
+# docker kill $(docker ps -q)
+clean:
+	docker rm `docker ps --no-trunc -aq`
+
+
+hosts:
+	(cd configs; sudo python hosts.py)
