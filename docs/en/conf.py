@@ -159,5 +159,5 @@ texinfo_documents = [
 ]
 
 
-locale_dirs = ['locale/']   # path is example but recommended.
+locale_dirs = ['../translated/']   # path is example but recommended.
 gettext_compact = False     # optional.
