@@ -62,3 +62,7 @@ output/%/index.html: po/%.mo
 	@echo "HTML $*"
 	@mkdir -p "output/$*"
 	@sphinx-build docs/$*/ output/$*
+
+links:
+	ln -sf ../en/index.rst ru/index.rst
+	ln -sf ../en/Makefile ru/Makefile
