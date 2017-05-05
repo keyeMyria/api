@@ -19,6 +19,7 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+.PHONY: locale
 locale:
 	make gettext
 	sphinx-intl update -p _build/gettext -l ru

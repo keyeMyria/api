@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-05 10:35+0300\n"
+"PO-Revision-Date: 2017-05-05 10:36+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: ../../index.rst:7
+msgid "pashinin.com"
+msgstr ""
+
+#: ../../index.rst:10
+msgid "How to start?"
+msgstr "С чего начать?"
+
+#: ../../index.rst:12
+msgid ""
+"Register at Github_ and fork `this repository <https://github.com"
+"/pashinin-com/pashinin.com>`_."
+msgstr ""
+
+#: ../../index.rst:13
+msgid ""
+"Clone your new repo to your PC (Mac and Win users - just use `Github "
+"Desktop <https://desktop.github.com/>`_)"
+msgstr ""
+
+#: ../../index.rst:14
+msgid "Start development server"
+msgstr ""
+
+#: ../../index.rst:15
+msgid "Do changes"
+msgstr ""
+
+#: ../../index.rst:16
+msgid ""
+"Make a pull request or `report a problem <https://github.com/pashinin-"
+"com/pashinin.com/issues>`_"
+msgstr ""
+
+#: ../../index.rst:18
+msgid "All this in detail should be below..."
+msgstr ""
+
+#: ../../index.rst:21
+msgid "`Docker`_ is used for containers."
+msgstr ""
+
+#: ../../index.rst:26
+msgid "Linux"
+msgstr ""
+
+#: ../../index.rst:28
+msgid "Clone your new repo (replace :code:`<YOUR_NAME>` with your Github login):"
+msgstr ""
+
+#: ../../index.rst:36 ../../index.rst:53
+msgid "In your browser go to http://example.org or http://localhost."
+msgstr ""
+
+#: ../../index.rst:40
+msgid "Windows"
+msgstr ""
+
+#: ../../index.rst:44
+msgid ""
+"Docker for Windows runs on 64bit Windows 10 Pro, Enterprise and Education"
+" (1511 November update, Build 10586 or later). `And more... "
+"<https://docs.docker.com/docker-for-windows/install/#what-to-know-before-"
+"you-install>`_"
+msgstr ""
+
+#: ../../index.rst:49
+msgid "Windows 10 64bit Pro or Enterprise"
+msgstr ""
+
+#: ../../index.rst:51
+msgid ""
+"Install `Docker for Windows <https://store.docker.com/editions/community"
+"/docker-ce-desktop-windows?tab=description>`_"
+msgstr ""
+
+#: ../../index.rst:52
+msgid "Run setup.exe."
+msgstr ""
+
+#: ../../index.rst:56
+msgid "Windows 7"
+msgstr ""
+
+#: ../../index.rst:58
+msgid "Install `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_"
+msgstr ""
+
+#: ../../index.rst:62
+msgid "Mac"
+msgstr ""
+
+#: ../../index.rst:64
+msgid "Install Docker."
+msgstr ""
+
+#: ../../index.rst:68
+msgid "Update process"
+msgstr ""
+
+#: ../../index.rst:70
+msgid "Commit -> Github -> Travis"
+msgstr ""
+
+#: ../../index.rst:72
+msgid ""
+"When travis build is OK Travis sends info to a webhook (see travis.yml_)."
+" URL is:"
+msgstr ""
+
+#: ../../index.rst:80
+msgid ""
+"Secret part is defined in travis_secret_settings_ `settings.py` and is "
+"for being sure only Travis can contact us. TODO: See `Travis notes about "
+"making it secure <https://docs.travis-ci.com/user/notifications"
+"#Verifying-Webhook-requests>`_."
+msgstr ""
+
+#: ../../index.rst:88
+msgid ""
+"Tasks that do update process are defined in `core/tasks.py`_ (clone repo,"
+" create css, collect static, restart server). Code that runs an update "
+"process:"
+msgstr ""
+
+#: ../../index.rst:98
+msgid "To run it manually:"
+msgstr ""
+
+#: ../../index.rst:113
+msgid "Migrations"
+msgstr ""
+
+#: ../../index.rst:128
+msgid "What next?"
+msgstr ""
+
+#: ../../index.rst:130
+msgid "Contents:"
+msgstr ""
+

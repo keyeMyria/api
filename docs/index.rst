@@ -46,7 +46,7 @@ Windows
    more... <https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install>`_
 
 Windows 10 64bit Pro or Enterprise
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Install `Docker for Windows <https://store.docker.com/editions/community/docker-ce-desktop-windows?tab=description>`_
 #. Run setup.exe.
@@ -137,6 +137,8 @@ What next?
    algo
    mailserver
    auth
+   cache
+   maildb-sql
 
 
 .. _core/tasks.py: https://github.com/pashinin-com/pashinin.com/blob/master/src/core/tasks.py

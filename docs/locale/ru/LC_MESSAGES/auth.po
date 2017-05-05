@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-05 09:48+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: ../../auth.rst:2
+msgid "Auth"
+msgstr ""
+
+#: ../../auth.rst:4
+msgid ""
+"For Single Sing On (SSO) on **different domains** (not subdomains) use "
+"CAS."
+msgstr ""
+
+#: ../../auth.rst:6
+msgid "CAS - https://wiki.jasig.org/display/CAS/Home"
+msgstr ""
+
+#: ../../auth.rst:8
+msgid "pip install django-mama-cas"
+msgstr ""
+
+#: ../../auth.rst:10
+msgid "When using **subdomains only** it's enough to just set 2 variables:"
+msgstr ""
+
+#: ../../auth.rst:23
+msgid "Permissions"
+msgstr ""
+
+#: ../../auth.rst:25
+msgid "https://djangopackages.org/grids/g/perms/"
+msgstr ""
+
+#: ../../auth.rst:27
+msgid "django-guardian_ vs django-rules_."
+msgstr ""
+

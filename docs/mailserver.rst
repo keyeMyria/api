@@ -39,7 +39,7 @@ SQL configuration
 
 dovecot-sql.conf - in this file we say Dovecot
 
-.. code-block:: conf
+.. code-block:: ini
 
    driver = pgsql
    connect = host=127.0.0.1 dbname=postfix user=<USER> password=<PASSWORD>
@@ -53,7 +53,7 @@ Password schemes: http://wiki2.dovecot.org/Authentication/PasswordSchemes
 MD5-CRYPT: A weak but common scheme often used in /etc/shadow. The
 encrypted password will start with $1$
 
-.. code-block:: conf
+.. code-block:: ini
 
     %u = entire user@domain
     %n = user part of user@domain (user)
@@ -128,7 +128,7 @@ Create sieve file:
 Dovecot mailboxes.conf:
 
 
-.. code-block:: conf
+.. code-block:: ini
 
    mailbox Junk {
      special_use = \Junk
@@ -139,7 +139,7 @@ Dovecot mailboxes.conf:
 Dovecot lda.conf:
 
 
-.. code-block:: conf
+.. code-block:: ini
 
    protocol lda {
         postmaster_address = postmaster
@@ -156,7 +156,7 @@ Dovecot lda.conf:
 
 Edit /etc/dovecot/conf.d/90-sieve.conf:
 
-.. code-block:: conf
+.. code-block:: ini
 
    # point to your sieve config
    plugin {
