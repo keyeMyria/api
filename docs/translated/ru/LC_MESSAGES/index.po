@@ -6,155 +6,174 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pashinin.com \n"
+"Project-Id-Version: pashinin.com\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-05 10:35+0300\n"
-"PO-Revision-Date: 2017-05-05 10:36+0300\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2017-05-05 23:09+0300\n"
+"PO-Revision-Date: 2017-05-05 23:26+0300\n"
+"Last-Translator: \n"
+"Language: ru\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 "
+"&& (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: ../../index.rst:7
 msgid "pashinin.com"
-msgstr ""
+msgstr "pashinin.com"
 
-#: ../../index.rst:10
-msgid "How to start?"
-msgstr "С чего начать?"
-
-#: ../../index.rst:12
+#: ../../index.rst:9
 msgid ""
-"Register at Github_ and fork `this repository <https://github.com"
-"/pashinin-com/pashinin.com>`_."
+"This is an open source web-site. If you know a little about web technologies "
+"you probably can learn something. And if you can program already - play with "
+"code and send me fixes or new ideas about this site."
 msgstr ""
+"Это сайт с открытым исходным кодом. Если Вы не много знаете о веб-технологиях - "
+"Вы, возможно, можете научиться чему-то. А если Вы уже умеете программировать - "
+"поиграйте с кодом и отправьте мне исправления или Ваши идеи по этому сайту."
 
 #: ../../index.rst:13
 msgid ""
-"Clone your new repo to your PC (Mac and Win users - just use `Github "
-"Desktop <https://desktop.github.com/>`_)"
+"You can suggest changes and improvements `here <https://github.com/pashinin-com/"
+"pashinin.com/issues>`_."
 msgstr ""
+"Вы можете предлагать изменения и улучшения `тут <https://github.com/pashinin-"
+"com/pashinin.com/issues>`_."
 
-#: ../../index.rst:14
+#: ../../index.rst:17
+msgid "How to start?"
+msgstr "С чего начать?"
+
+#: ../../index.rst:19
+msgid ""
+"Register at Github_ and fork `this repository <https://github.com/pashinin-com/"
+"pashinin.com>`_."
+msgstr ""
+"Зарегистрируйтесь на Github_ и форкните `этот репозиторий <https://github.com/"
+"pashinin-com/pashinin.com>`_."
+
+#: ../../index.rst:20
+msgid ""
+"Clone your new repo to your PC (Mac and Win users - just use `Github Desktop "
+"<https://desktop.github.com/>`_)"
+msgstr ""
+"Клонируйте ваш новый репозиторий на ПК (пользователи Mac и Windows - просто "
+"используйте `Github Desktop <https://desktop.github.com/>`_)"
+
+#: ../../index.rst:21
 msgid "Start development server"
 msgstr ""
 
-#: ../../index.rst:15
+#: ../../index.rst:22
 msgid "Do changes"
 msgstr ""
 
-#: ../../index.rst:16
+#: ../../index.rst:23
 msgid ""
-"Make a pull request or `report a problem <https://github.com/pashinin-"
-"com/pashinin.com/issues>`_"
+"Make a pull request or `report a problem <https://github.com/pashinin-com/"
+"pashinin.com/issues>`_"
 msgstr ""
 
-#: ../../index.rst:18
+#: ../../index.rst:25
 msgid "All this in detail should be below..."
 msgstr ""
 
-#: ../../index.rst:21
+#: ../../index.rst:28
 msgid "`Docker`_ is used for containers."
 msgstr ""
 
-#: ../../index.rst:26
+#: ../../index.rst:33
 msgid "Linux"
-msgstr ""
+msgstr "Linux"
 
-#: ../../index.rst:28
+#: ../../index.rst:35
 msgid "Clone your new repo (replace :code:`<YOUR_NAME>` with your Github login):"
 msgstr ""
 
-#: ../../index.rst:36 ../../index.rst:53
+#: ../../index.rst:43 ../../index.rst:60
 msgid "In your browser go to http://example.org or http://localhost."
 msgstr ""
 
-#: ../../index.rst:40
+#: ../../index.rst:47
 msgid "Windows"
-msgstr ""
-
-#: ../../index.rst:44
-msgid ""
-"Docker for Windows runs on 64bit Windows 10 Pro, Enterprise and Education"
-" (1511 November update, Build 10586 or later). `And more... "
-"<https://docs.docker.com/docker-for-windows/install/#what-to-know-before-"
-"you-install>`_"
-msgstr ""
-
-#: ../../index.rst:49
-msgid "Windows 10 64bit Pro or Enterprise"
-msgstr ""
+msgstr "Windows"
 
 #: ../../index.rst:51
 msgid ""
-"Install `Docker for Windows <https://store.docker.com/editions/community"
-"/docker-ce-desktop-windows?tab=description>`_"
-msgstr ""
-
-#: ../../index.rst:52
-msgid "Run setup.exe."
+"Docker for Windows runs on 64bit Windows 10 Pro, Enterprise and Education (1511 "
+"November update, Build 10586 or later). `And more... <https://docs.docker.com/"
+"docker-for-windows/install/#what-to-know-before-you-install>`_"
 msgstr ""
 
 #: ../../index.rst:56
-msgid "Windows 7"
+msgid "Windows 10 64bit Pro or Enterprise"
 msgstr ""
 
 #: ../../index.rst:58
+msgid ""
+"Install `Docker for Windows <https://store.docker.com/editions/community/docker-"
+"ce-desktop-windows?tab=description>`_"
+msgstr ""
+
+#: ../../index.rst:59
+msgid "Run setup.exe."
+msgstr ""
+
+#: ../../index.rst:63
+msgid "Windows 7"
+msgstr "Windows 7"
+
+#: ../../index.rst:65
 msgid "Install `Docker Toolbox <https://www.docker.com/products/docker-toolbox>`_"
 msgstr ""
 
-#: ../../index.rst:62
+#: ../../index.rst:69
 msgid "Mac"
-msgstr ""
+msgstr "Mac"
 
-#: ../../index.rst:64
+#: ../../index.rst:71
 msgid "Install Docker."
 msgstr ""
 
-#: ../../index.rst:68
+#: ../../index.rst:75
 msgid "Update process"
 msgstr ""
 
-#: ../../index.rst:70
+#: ../../index.rst:77
 msgid "Commit -> Github -> Travis"
 msgstr ""
 
-#: ../../index.rst:72
+#: ../../index.rst:79
 msgid ""
-"When travis build is OK Travis sends info to a webhook (see travis.yml_)."
-" URL is:"
+"When travis build is OK Travis sends info to a webhook (see travis.yml_). URL "
+"is:"
 msgstr ""
 
-#: ../../index.rst:80
+#: ../../index.rst:87
 msgid ""
-"Secret part is defined in travis_secret_settings_ `settings.py` and is "
-"for being sure only Travis can contact us. TODO: See `Travis notes about "
-"making it secure <https://docs.travis-ci.com/user/notifications"
-"#Verifying-Webhook-requests>`_."
+"Secret part is defined in travis_secret_settings_ `settings.py` and is for "
+"being sure only Travis can contact us. TODO: See `Travis notes about making it "
+"secure <https://docs.travis-ci.com/user/notifications#Verifying-Webhook-"
+"requests>`_."
 msgstr ""
 
-#: ../../index.rst:88
+#: ../../index.rst:95
 msgid ""
-"Tasks that do update process are defined in `core/tasks.py`_ (clone repo,"
-" create css, collect static, restart server). Code that runs an update "
-"process:"
+"Tasks that do update process are defined in `core/tasks.py`_ (clone repo, "
+"create css, collect static, restart server). Code that runs an update process:"
 msgstr ""
 
-#: ../../index.rst:98
+#: ../../index.rst:105
 msgid "To run it manually:"
 msgstr ""
 
-#: ../../index.rst:113
+#: ../../index.rst:120
 msgid "Migrations"
 msgstr ""
 
-#: ../../index.rst:128
+#: ../../index.rst:135
 msgid "What next?"
 msgstr ""
-
-#: ../../index.rst:130
-msgid "Contents:"
-msgstr ""
-

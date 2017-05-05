@@ -6,6 +6,13 @@
 pashinin.com
 ************
 
+This is an open source web-site. If you know a little about web
+technologies you probably can learn something. And if you can program
+already - play with code and send me fixes or new ideas about this site.
+
+You can suggest changes and improvements `here
+<https://github.com/pashinin-com/pashinin.com/issues>`_.
+
 How to start?
 =============
 
