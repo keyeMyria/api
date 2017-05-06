@@ -1,16 +1,17 @@
 # -*- Makefile -*-
 
-python = `../configs/makeve.py`
+#python = `python ../configs/makeve.py`
+python = python
 S = /tmp/conf.json
 supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
 output = tmp
 dir = `realpath $(output)`
-domain = `./config.py -p domain secret-example.json secret.json`
+domain = `python config.py -p domain secret-example.json secret.json`
 
 templates:
 	mkdir -p $(output)
-	./config.py secret-example.json secret.json
+	python config.py secret-example.json secret.json
 	# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf

@@ -8,8 +8,8 @@ services:
     # trying this:
 
     # either "build" or "image"
-    # image: pashinin/pashinin.com:latest
-    image: pashinin.com
+    image: pashinin/pashinin.com:latest
+    # image: pashinin.com
     # build: .
 
     container_name: django
@@ -22,7 +22,7 @@ services:
       - /dev/fuse
 
     # command: sleep infinity
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
 
     # these 2 are for getting output from commands like djangos debug server
     # stdin_open: true
@@ -36,7 +36,7 @@ services:
       - "81:8001"
     volumes:
       - ../:/var/www/project
-      - ../../parser:/var/www/parser
+      # - ../../parser:/var/www/parser
     depends_on:
       - redis
       - db
@@ -60,7 +60,7 @@ services:
   gulp:
     # privileged: true
     tty: true
-    image: gulp
+    image: pashinin/gulp:latest
     container_name: gulp
     volumes:
       - ../:/var/www/project
@@ -81,10 +81,10 @@ services:
   # https://hub.docker.com/_/postgres/
   db:
     # image: postgres:alpine
-    image: db
+    image: pashinin/db:latest
     container_name: db
     volumes:
-      - ../:/var/www/project
+      - ./:/var/www/project
     ports:
       - "5432:5432"
     environment:

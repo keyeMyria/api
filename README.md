@@ -29,3 +29,10 @@ make tmux
 <!-- Manually with IPython shell: -->
 
 <!--     ./manage.py shell -->
+
+
+## Windows
+
+Install https://git-lfs.github.com/
+
+setup.exe is premake 4.4 beta5 actually.
