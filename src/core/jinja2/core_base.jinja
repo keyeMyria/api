@@ -37,7 +37,44 @@ nav{overflow: visible;margin-top:0em;font-size:1.1em;}
 <style media="print">.noprint, .noprint *{display: none !important;}</style>
 {% include "core_head.jinja" %}
 {% block head %}{% endblock %}
+{% if FIRST_RUN %}
+<script type="text/javascript">
+{let ready=function(e){
+	document.getElementById("download_project_files").addEventListener("click", function(e){
+  e.preventDefault();
+fetch('/_/files/download_core', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				"X-CSRFToken": getCookie('csrftoken'),
+				"Accept": "application/json",
+				"Content-type": "application/x-www-form-urlencoded"
+			},
+			body: {}
+		})
+			.then(r => r.json())
+			.then(data => {
+				console.log(data);
+});
+	});
+};
+ if (document.readyState === 'complete' || document.readyState !== 'loading') {
+	 ready();
+ } else {
+	 document.addEventListener('DOMContentLoaded', ready);
+ }
+}
+</script>
+{% endif %}
 </head><body>
+{% if FIRST_RUN %}
+  <div style="background-color:#507299;color:#fff">
+	<div class="w pad-sm">
+	  Файлы проекта не скачаны (поэтому нет изображений на страницах и других файлов).
+	  <a style="color:#fff" id="download_project_files" href="#">Скачать</a>
+	</div>
+  </div>
+{% endif %}
 {% block prebody %}{% endblock %}
 <div class="flex01a flex 0 col">
 <header style="border-bottom: 1px solid rgba(0,0,0,0.075);">

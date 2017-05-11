@@ -49,6 +49,10 @@ class BaseView(TemplateView):
         c["domain"] = settings.DOMAIN
         c["host"] = self.request.host
 
+        nodir = not os.path.isdir(settings.FILES_ROOT)
+        nofiles = len(os.listdir(settings.FILES_ROOT)) < 3
+        c['FIRST_RUN'] = nodir or nofiles
+
         # c['utcnow'] = datetime.datetime.utcnow()
         # c['now'] = datetime.datetime.now()
         c['utcnow'] = now()

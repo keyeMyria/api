@@ -56,26 +56,27 @@ class File(DirtyFieldsMixin, AddedChanged):
 
     @classmethod
     def filename_from_hash(cls, **kwargs):
-        """Return a filename string from hash string"""
-        ext = kwargs.get('ext', '')
-        public = kwargs.get('public', False)
+        """Return a full filename string from SHA1.
+
+        Example:
+
+        sha1 = '012319f8340cb23cd9568ada37de023ecfedf138'
+        File.filename_from_hash(sha1=sha1)
+        > /mnt/files/012/319/f8340cb23cd9568ada37de023ecfedf138
+
+        Where "/mnt/files/" is FILES_ROOT variable (settings.py)
+        """
+
+        # ext = kwargs.get('ext', '')
+        # public = kwargs.get('public', False)
         if 'sha1' in kwargs:
             sha1 = kwargs['sha1']
-            if public:
-                return os.path.join(
-                    settings.FILES_ROOT,
-                    'public',
-                    sha1[:3],
-                    sha1[3:6],
-                    sha1[6:] + ext
-                )
-            else:
-                return os.path.join(
-                    settings.FILES_ROOT,
-                    sha1[:3],
-                    sha1[3:6],
-                    sha1[6:]
-                )
+            return os.path.join(
+                settings.FILES_ROOT,
+                sha1[:3],
+                sha1[3:6],
+                sha1[6:]
+            )
 
     @property
     def filename(self):
@@ -97,6 +98,8 @@ class File(DirtyFieldsMixin, AddedChanged):
 
     @classmethod
     def get_sha1(cls, f):
+        "Calculate SHA1 of a file."
+
         blocksize = 32768  # multiple of 128
         hasher = hashlib.sha1()
 
@@ -111,14 +114,14 @@ class File(DirtyFieldsMixin, AddedChanged):
                 hasher.update(chunk)
         else:
             raise ValueError(
-                "Unknown variable to get SHA1 from: {}".format(type(f)))
+                "Don't know how to get SHA1 from: {}".format(type(f)))
 
         return hasher.hexdigest()
     # client.captureException()
 
     @classmethod
     def copy_to_archive(cls, filename):
-        """Copy a file to an archive, return a File model"""
+        """Copy a file to our archive, return a File model"""
         # fname = os.path.abspath(fname)
         sha1 = cls.get_sha1(filename)
         d = os.path.join(settings.FILES_ROOT, sha1[:3], sha1[3:6])
@@ -134,21 +137,23 @@ class File(DirtyFieldsMixin, AddedChanged):
             f.save()
         return f
 
-    # @classmethod
-    # def from_url(cls, url):
-    #     #assert False, url
-    #     # "url" start after /_sp/ ...   (so -5)
-    #     filename = os.path.join(settings.MEDIA_ROOT,
-    #                            url[len(settings.MEDIA_URL)-5:])
-    #     d, created = Data.objects.get_or_create(md5=cls.get_md5(filename),
-    #                                             size=os.path.getsize(filename))
-    #     #o, created = cls.objects.get_or_create(data=d)
-    #     try:
-    #         return cls.objects.filter(data=d)[0]
-    #     except:
-    #         f = cls(data=d)
-    #         f.save()
-    #         return f
+    @classmethod
+    def from_url(cls, url):
+        "Add a file to our archive from an URL."
+
+        # Download to a temporary file...
+        import tempfile
+        import urllib
+        with tempfile.NamedTemporaryFile() as f:
+            with urllib.request.urlopen(url) as response:
+                data = response.read()  # a `bytes` object
+                f.write(data)
+                f.flush()
+                # print(len(data))
+            # urllib.urlretrieve(url, f.name)
+            # print(f.name)
+            return File.copy_to_archive(f.name)
+
 
     # @classmethod
     # def from_bytes(cls, b):

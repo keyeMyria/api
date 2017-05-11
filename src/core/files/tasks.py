@@ -19,8 +19,12 @@ def ensure_fs_ready():
         if not os.path.isdir(settings.FILES_ROOT):
             os.makedirs(settings.FILES_ROOT, exist_ok=True)
     else:
-        if not os.path.ismount(settings.FILES_ROOT):
-            raise FileSystemNotReady(settings.FILES_ROOT)
+        if settings.DEBUG:
+            if not os.path.isdir(settings.FILES_ROOT):
+                raise FileSystemNotReady(settings.FILES_ROOT)
+        else:
+            if not os.path.ismount(settings.FILES_ROOT):
+                raise FileSystemNotReady(settings.FILES_ROOT)
 
 
 v = 1  # version of algorithm

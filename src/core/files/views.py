@@ -2,7 +2,7 @@ import json
 import os
 from core.views import BaseView
 from .sendfile import send_file
-from .models import File as F, UploadedFile
+from .models import File, UploadedFile
 from core import now
 from .tasks import ensure_fs_ready
 from .forms import UploadedFileForm
@@ -14,14 +14,14 @@ from django.conf import settings
 from os.path import isfile, isdir, join
 
 
-class File(BaseView):
+class FileView(BaseView):
     def get(self, request, **kwargs):
         download = 'd' in self.request.GET  # Download or display in a browser
         sha1 = kwargs.get('sha1', None)
         try:
-            f = F.objects.get(sha1=sha1)
+            f = File.objects.get(sha1=sha1)
             return send_file(f, attachment=download)
-        except F.DoesNotExist:
+        except File.DoesNotExist:
             #
             # If there is no info in a DB about this file return file
             # anyway (if exists) and then run a task to process file and
@@ -45,6 +45,52 @@ class File(BaseView):
 # c['uploads'] = UploadFile.objects.all().annotate(
 #             null_position=Count('date_uploaded')).order_by('-null_position',
 #             '-date_uploaded')
+
+def iter_files(path, ending):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith(ending):
+                yield os.path.join(root, name)
+        # for name in dirs:
+        #     print(os.path.join(root, name))
+
+
+def files_used_in_this_repo():
+    """Return a list of SHA1 hashes of used files.
+
+    Files are used in jinja templates like this:
+
+        {{file("sha1-hash")}}
+    """
+    import re
+    files = []
+    for filename in iter_files(settings.REPO_PATH, '.jinja'):
+        with open(filename, 'r') as f:
+            data = f.read()
+            for sha1 in re.findall('[a-z0-9]{40}', data):
+                if sha1 not in files:
+                    files.append(sha1)
+    return files
+
+
+class DownloadCore(BaseView):
+    def post(self, request, **kwargs):
+        if not settings.DEBUG:
+            return HttpResponse('[]')
+
+        ensure_fs_ready()
+
+        files = files_used_in_this_repo()  # sha1 list
+        for f in files:
+            url = f'https://pashinin.com/_/files/{f}'
+            File.from_url(url)
+
+        return HttpResponse(json.dumps({
+            'dir': settings.REPO_PATH,
+            'files': json.dumps(files),
+            'len': len(files)
+        }), content_type='application/json')
+
 
 class Upload(BaseView):
     def post(self, request, **kwargs):
@@ -122,8 +168,8 @@ class Files(BaseView):
     def get_context_data(self, **kwargs):
         c = super(Files, self).get_context_data(**kwargs)
 
-        c['files_count'] = F.objects.count()
-        c['files'] = F.objects.filter().order_by('-added')[:10]
+        c['files_count'] = File.objects.count()
+        c['files'] = File.objects.filter().order_by('-added')[:10]
         c['dropzone'] = True
         c['timeago'] = True
 
