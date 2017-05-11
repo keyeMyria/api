@@ -1,14 +1,16 @@
 [
-  {
-    "model": "core.user",
-    "pk": 1,
-    "fields": {
-      "email": "anon@example.org",
-        "username": "Anonymous",
-        "is_staff": false,
-        "is_active": true,
-        "is_active": true,
-        "date_joined": "2016-10-30T13:19:37+00:00"
+    {
+        "model": "core.user",
+        "pk": 1,
+        "fields": {
+            "email": "admin@example.org",
+            "username": "Admin",
+            "password": "pbkdf2_sha256$36000$eoz312xDQJuk$JnBbgfuus63O8J9XBzXhpD/QqDcownEK9ZmpiweYhKs=",
+            "is_staff": true,
+            "is_active": true,
+            "is_active": true,
+            "is_superuser": true,
+            "date_joined": "2016-10-30T13:19:37+00:00"
+        }
     }
-  }
 ]
