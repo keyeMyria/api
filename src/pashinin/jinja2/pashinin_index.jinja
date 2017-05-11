@@ -38,17 +38,20 @@
   		</div>
   		<div class="flex grow0 padr-sm" style="position:relative;padding-top:0.4em;font-size:1.1em">
 		  <div>
-  			<img class="photo myphotosize marr ib" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
+  			<img class="photo myphotosize marr ib" alt="Сергей Пашинин"
+				 src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}"
   				 style="width:70px;height:70px;border-radius:3px;border:1px solid #aaa;"/>
 		  </div>
 		  <div>
   			<b>{{phone}}</b><br/>
   			<span class="" style="font-size:0.9em">Сергей Александрович</span>
 			<br/>
-			<span style="color:#888;font-size:0.9em">
-			  {{'%02d' % localtime(now).hour}}:{{ '%02d' % localtime(now).minute }}
-			  МСК
-			</span>
+			<a href="{{url("contacts")}}" style="font-size:0.9em">все контакты...</a>
+			{# Time #}
+			{# <span style="color:#888;font-size:0.9em"> #}
+			{#   {{'%02d' % localtime(now).hour}}:{{ '%02d' % localtime(now).minute }} #}
+			{#   МСК #}
+			{# </span> #}
 		  </div>
   		</div>
   	  </div>
@@ -153,8 +156,8 @@
 
 <h2 class="title2">Очное обучение</h2>
 <div class="" style="overflow:auto;">
-  <img class="left marr" alt="м. Сходненская" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/>
-  <p style="margin-bottom:1rem">Москва, ул. Туристская 19/1</p>
+  <img class="left marr" alt="м. Сходненская" src="{{file("6d31596ca529c2e9ec02ea01e23f74a499cabd32")}}" style="width:40%;border-radius:0%;border:1px solid #aaa"/>
+  <p style="margin-bottom:1rem">Москва, ул. Туристская 19к1</p>
   <b>Как добраться?</b>
   <p>
 	От м. Сходненская практически любым автобусом (43, 96, 199, 212, 267, 432, 678) можно доехать до

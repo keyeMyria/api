@@ -43,6 +43,9 @@ $dark: #5171a9;
 .ib{display:inline-block}
 .nowrap{white-space: nowrap}
 .indent{text-indent: 1rem;}
+.clearfix {
+	display: block;
+}
 .clearfix:after {
 	content: " ";
 	display: block;

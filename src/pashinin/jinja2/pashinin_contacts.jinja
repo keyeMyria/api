@@ -3,8 +3,52 @@
 {% block style %}
 {{super()}}
 div.c{padding-top:1em;padding-bottom:1em; border-bottom:0px solid #ddd}
-div.soc>div{text-align:center}
+  div.soc>div{text-align:center}
+div.contacts_block{color:#000;border-top:1px solid #e7e8ec;margin-bottom:1.8em}
+  div.contacts_header{position:relative;margin:-12px 0 4px}
+.ch_title{background-color:#fff;padding-right:1em}
+.info_row{padding-top:1em}
+.info_left{width:200px;color:#828282;float:left}
+  .info_right{overflow:hidden}
+
+.my-gallery {
+  width: 100%;
+  float: left;
+}
+.my-gallery img {
+  {# width: 100%; #}
+  {# height: auto; #}
+  width: auto;
+  height: 100%;
+}
+.my-gallery figure {
+  display: block;
+  float: left;
+  margin: 0 5px 5px 0;
+  {# max-width: 250px; #}
+  height: 130px;
+}
+.my-gallery figcaption {
+  display: none;
+}
 {% endblock %}
+
+
+
+{% block css %}
+{{super()}}
+<link rel="stylesheet" href="{{ static("photoswipe4.1.2/photoswipe.css") }}">
+<link rel="stylesheet" href="{{ static("photoswipe4.1.2/default-skin/default-skin.css") }}">
+{% endblock %}
+
+
+{% block head %}
+{{super()}}
+<script defer src="{{ static("photoswipe4.1.2/photoswipe.min.js") }}"></script>
+<script defer src="{{ static("photoswipe4.1.2/photoswipe-ui-default.min.js") }}"></script>
+<script defer src="{{ static("pashinin_contacts.js") }}"></script>
+{% endblock %}
+
 
 {% block title %}Контакты - Сергей Пашинин{% endblock %}
 
@@ -29,10 +73,12 @@ skype: sergey-pashinin
 
 
 {% block content %}
-  <div class="pad-sm padt2" style="position:relative;" itemscope itemtype="http://schema.org/Person">
+  <div class="pad-sm padt2 padb marb" style="position:relative;" itemscope itemtype="http://schema.org/Person">
 	<div class="flex">
-	  <div class="flex0" style="flex:0 0 120px;position:relative">
-		<img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин" src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}"
+	  <div class="flex0" style="flex:0 0 150px;position:relative">
+		<img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин"
+			 {# src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}" #}
+			 src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}"
 			 style="
 			 {# box-shadow: 0px 0px 3px #000;width:120px;height:120px #}
 			 border: 1px solid #999;
@@ -61,102 +107,261 @@ skype: sergey-pashinin
 
 
   <div class="pad-sm">
-	<div class="c pad flex grow0" style="color:#000">
-	  <div class="marr pad-sm">
-		<img alt="" src="{{file('3f260399ed74343d31b1c3dde1319ef9aa4f8e14')}}" style="width:60px"/>
+	<div class="contacts_block">
+	  <div class="contacts_header">
+		<span class="ch_title">Основные контакты</span>
 	  </div>
-	  <div>
-		<h3><b>{{phone}}</b> <span style="font-size:1rem">(Москва, Теле2)</span></h3>
-		<p>Звоните до 21:00 по московскому времени. Сейчас в Москве {{'%02d' % now.hour}}:{{ '%02d' % now.minute }}.</p>
+	  <div class="clearfix">
+		<div class="info_left">Моб. телефон</div>
+		<div class="info_right">
+		  {{phone}} <span style="color:#888;font-size:0.9em">(Теле2 Москва)</span>
+
+		</div>
+		{# <h3><b>{{phone}}</b> <span style="font-size:1rem">(Москва, Теле2)</span></h3> #}
+		{# <p>Звоните до 21:00 по московскому времени. Сейчас в Москве {{'%02d' % now.hour}}:{{ '%02d' % now.minute }}.</p> #}
+	  </div>
+
+	  <div class="clearfix">
+		<div class="info_left">Email</div>
+		<div class="info_right"><a href="mailto:{{email}}">{{email}}</a></div>
+	  </div>
+
+	  <div class="clearfix">
+		<div class="info_left">Вконтакте</div>
+		<div class="info_right"><a target="_blank" href="https://vk.com/pashinin">vk.com/pashinin</a></div>
 	  </div>
 	</div>
 
-	<div class="c pad flex grow0" style="color:#000">
-	  <div class="marr pad-sm">
-		<img alt="" src="{{file('1a3dce321f75e7d7e81f82ff36fd9d1518125b6e')}}" style="width:60px"/>
-	  </div>
-	  <div>
-		<h3><a href="mailto:{{email}}">{{email}}</a></h3>
-		<p>Отправьте мне файлы задач или просто свои вопросы по занятиям.</p>
-	  </div>
-	</div>
+	{# <div> #}
+	{#   <h3><a href="mailto:{{email}}">{{email}}</a></h3> #}
+	{#   <p>Отправьте мне файлы задач или просто свои вопросы по занятиям.</p> #}
+	{# </div> #}
+
+	{# <div class="c pad flex grow0" style="color:#000"> #}
+	{#   <div class="marr pad-sm padl"> #}
+	{# 	<a href="https://vk.com/pashinin"><img style="max-width:50px" alt="Вконтакте" src="{{ file("ed63a9e7645f1ae4c0476a0c1439b961821292ad") }}"/></a> #}
+	{#   </div> #}
+	{#   <div> #}
+	{# 	<h3><a href="https://vk.com/pashinin">ВКонтакте</a></h3> #}
+	{# 	<p>Можете также использовать контакт для связи. Я там часто бываю.</p> #}
+	{#   </div> #}
+	{# </div> #}
 
 
-	<div class="c pad flex grow0" style="color:#000">
-	  <div class="marr pad-sm padl">
-		<a href="https://vk.com/pashinin"><img style="max-width:50px" alt="Вконтакте" src="{{ file("ed63a9e7645f1ae4c0476a0c1439b961821292ad") }}"/></a>
+	<div class="contacts_block">
+	  <div class="contacts_header">
+		<span class="ch_title">Мессенджеры</span>
 	  </div>
-	  <div>
-		<h3><a href="https://vk.com/pashinin">ВКонтакте</a></h3>
-		<p>Можете также использовать контакт для связи. Я там часто бываю.</p>
-	  </div>
-	</div>
 
-
-	<h2 class="pad-sm">Мессенджеры</h2>
-
-	<div class="c pad flex grow0" style="color:#000">
-	  <div class="marr pad-sm padl">
-		<img style="max-width:60px" alt="Вконтакте" src="{{ file("60548aa40ce01b58153356051a40fa212f8529e5") }}"/>
+	  <div class="clearfix">
+		<div class="info_left">Discord</div>
+		<div class="info_right">Сергей Пашинин#6974</div>
 	  </div>
-	  <div>
-		<h3>Discord</h3>
-		<span style="color:#777">Сергей Пашинин#6974</span> | <a target="_blank" href="https://discordapp.com/">Скачать</a>
-		<p>Лучшее качество звука. Пока нет передачи видео.</p>
+
+	  <div class="clearfix">
+		<div class="info_left">Skype</div>
+		<div class="info_right">sergey-pashinin</div>
 	  </div>
+
+		{# <div class="c pad flex grow0" style="color:#000"> #}
+		{# <div class="marr pad-sm padl"> #}
+		  {# 	<img style="max-width:60px" alt="Вконтакте" src="{{ file("60548aa40ce01b58153356051a40fa212f8529e5") }}"/> #}
+		  {# </div> #}
+		{# <div> #}
+	  {# 	<h3>Discord</h3> #}
+	  {# 	<span style="color:#777">Сергей Пашинин#6974</span> | <a target="_blank" href="https://discordapp.com/">Скачать</a> #}
+	  {# 	<p>Лучшее качество звука. Пока нет передачи видео.</p> #}
+	  {# </div> #}
 	</div>
 
 
 	{# Skype #}
-	<div class="c pad flex grow0" style="color:#000">
-	  <div class="marr pad-sm padl">
-		<img style="max-width:60px" alt="Skype" src="{{ file("14a6ee6b082c752332121ef9e91a0a56141edb35") }}"/>
+	{# <div class="c pad flex grow0" style="color:#000"> #}
+	{#   <div class="marr pad-sm padl"> #}
+	{# 	<img style="max-width:60px" alt="Skype" src="{{ file("14a6ee6b082c752332121ef9e91a0a56141edb35") }}"/> #}
+	{#   </div> #}
+	{#   <div> #}
+	{# 	<h3>Skype</h3> #}
+	{# 	<span style="color:#777">sergey-pashinin</span> #}
+	{# 	<a target="_blank" href="https://skype.com/">Скачать</a> #}
+	{# 	<p>Cкоро не останется причин использовать эту поделку.</p> #}
+	{#   </div> #}
+	{# </div> #}
+
+
+	{# <div class="c flex equal soc"> #}
+	{#   {\# <div> #\} #}
+	{# 	{\#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #\} #}
+	{# 	  {\# 	<br> #\} #}
+	{# 	  {\# 	fb.com/pashinin #\} #}
+	{# 	  {\#   </a> #\} #}
+	{# 	{\# </div> #\} #}
+	{#   {\# <div><a href="https://youtube.com/sergeypashinin"><img alt="Youtube" src="{{ static("youtube-logo.png") }}"/></a></div> #\} #}
+	{# </div> #}
+
+	<div class="contacts_block">
+	  <div class="contacts_header">
+		<span class="ch_title">Адрес и карта</span>
 	  </div>
-	  <div>
-		<h3>Skype</h3>
-		<span style="color:#777">sergey-pashinin</span>
-		<a target="_blank" href="https://skype.com/">Скачать</a>
-		<p>Cкоро не останется причин использовать эту поделку.</p>
+
+	  <div class="clearfix">
+		<div class="info_left">Метро</div>
+		<div class="info_right">
+		  Сходненская
+		</div>
 	  </div>
+
+	  <div class="clearfix">
+		<div class="info_left">Адрес</div>
+		<div class="info_right">
+		  Москва, СЗАО, ул. Туристская 19к1
+		  <p>
+			<a target="_blank" href="https://yandex.ru/maps/-/CZgObT-1"><img alt="Яндекс карты" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> на Яндекс.Картах</a> <br/>
+			<a target="_blank" href="https://yandex.ru/maps/213/moscow/?ll=37.423959%2C55.850292&z=16&l=stv%2Csta&panorama%5Bpoint%5D=37.422127%2C55.851877&panorama%5Bdirection%5D=277.054704%2C12.745488&panorama%5Bspan%5D=120.000000%2C64.684224">
+			  <img alt="Панорама" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Панорама</a>
+		  </p>
+		</div>
+	  </div>
+
+
+	  <div class="clearfix">
+		<div class="info_left">Как доехать</div>
+		<div class="info_right">
+		  м. Сходненская, первый вагон из центра, у выхода - налево.
+
+		  <p>
+			Практически любым автобусом (43, 96, 199, 212, 267, 432, 678) можно доехать до
+			ост. "Туристская улица" и далее ~5мин пешком.
+		  </p>
+		  <p>
+			На автобусе №96 можно проехать еще 1 остановку (до ост. "Узел
+			связи") и быть сразу почти на месте.
+		  </p>
+		</div>
+	  </div>
+
+	  {# <div class="" style="border-top:0px solid #ddd;overflow:auto;"> #}
+		{# <img class="right marr" alt="Занятия проходят тут" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/> #}
+	  {# </div> #}
+	</div>
+
 	</div>
 
 
-	<div class="c flex equal soc">
-	  {# <div> #}
-		{#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #}
-		  {# 	<br> #}
-		  {# 	fb.com/pashinin #}
-		  {#   </a> #}
-		{# </div> #}
-	  {# <div><a href="https://youtube.com/sergeypashinin"><img alt="Youtube" src="{{ static("youtube-logo.png") }}"/></a></div> #}
-	</div>
-  </div>
 
-  <div class="w pad-sm padt2">
-<img alt="Здание" src="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" style="width:100%"/>
-<div class="pad" style="border-top:1px solid #ddd;overflow:auto;">
-  <img class="right marr" alt="Занятия проходят тут" src="{{file("ee08db3c7b876df8b9e28b0249dd8f7b99ebd546")}}" style="width:30%;border-radius:5%"/>
-  <h2>Как добраться</h2>
-  <b>Москва, СЗАО, ул. Туристская 19к1</b>
 
-  <p>
-	<b><div style="line-height:1.2em;color:red;font-size:1em;border:1px solid red;border-radius:50%;display:inline-block;width:20px;height:20px;text-align:center">М</div> Сходненская</b>, первый вагон из центра, у выхода - налево.
-  </p>
-  <p>
-	Практически любым автобусом (43, 96, 199, 212, 267, 432, 678) можно доехать до
-	ост. "Туристская улица" и далее ~5мин пешком.
-  </p>
-  <p>
-	На автобусе №96 можно проехать еще 1 остановку (до ост. "Узел
-	связи") и быть сразу почти на месте.
-  </p>
+  {# <div class="w pad-sm padt2"> #}
+	  {# <img alt="Здание" src="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" style="width:100%"/> #}
 
-  <p>
-	<a target="_blank" href="https://yandex.ru/maps/-/CZgObT-1"><img alt="Яндекс карты" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Карта</a>
-	<br/>
-	<a target="_blank" href="https://yandex.ru/maps/213/moscow/?ll=37.423959%2C55.850292&z=16&l=stv%2Csta&panorama%5Bpoint%5D=37.422127%2C55.851877&panorama%5Bdirection%5D=277.054704%2C12.745488&panorama%5Bspan%5D=120.000000%2C64.684224">
-	  <img alt="Панорама" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Панорама</a>
-  </p>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="my-gallery pad-sm" itemscope itemtype="http://schema.org/ImageGallery">
+  <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a href="{{file("6d31596ca529c2e9ec02ea01e23f74a499cabd32")}}" itemprop="contentUrl" data-size="1000x667">
+      <img src="{{file("6d31596ca529c2e9ec02ea01e23f74a499cabd32")}}" itemprop="thumbnail" alt="Image description" />
+    </a>
+    <figcaption itemprop="caption description">Ваше рабочее место (слева)</figcaption>
+  </figure>
+
+  <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a href="{{file("4b3273b2872a63744d8be172df5ebcd843beadff")}}" itemprop="contentUrl" data-size="667x1000">
+      <img src="{{file("4b3273b2872a63744d8be172df5ebcd843beadff")}}" itemprop="thumbnail" alt="Image description" />
+    </a>
+    <figcaption itemprop="caption description">Еще раз рабочее место</figcaption>
+  </figure>
+
+  <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a href="{{file("be2d01d58f2db45e598918534f74756f050072f6")}}" itemprop="contentUrl" data-size="1000x667">
+      <img src="{{file("be2d01d58f2db45e598918534f74756f050072f6")}}" itemprop="thumbnail" alt="Image description" />
+    </a>
+    <figcaption itemprop="caption description">Если нужно привыкнуть к клавиатуре</figcaption>
+  </figure>
+
+  <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a href="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" itemprop="contentUrl" data-size="1000x450">
+      <img src="{{file("7868aa7d761f44e061f7fb5f1b5518f01f06be07")}}" itemprop="thumbnail" alt="Image description" />
+    </a>
+    <figcaption itemprop="caption description">Image caption  1</figcaption>
+  </figure>
+
+  {# <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> #}
+  {#   <a href="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}" itemprop="contentUrl" data-size="500x500"> #}
+  {#     <img src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}" itemprop="thumbnail" alt="Image description" /> #}
+  {#   </a> #}
+  {#   <figcaption itemprop="caption description">Image caption 2</figcaption> #}
+  {# </figure> #}
+
+
+
 
 </div>
+
+
 {% endblock %}
