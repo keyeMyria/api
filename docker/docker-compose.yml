@@ -1,8 +1,6 @@
 version: '3'
 services:
   django:
-    tty: true
-
     # fixes: cannot open /dev/fuse (Operation not permitted)
     # --cap-add SYS_ADMIN --device /dev/fuse
     # trying this:
@@ -25,8 +23,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
 
     # these 2 are for getting output from commands like djangos debug server
-    # stdin_open: true
-    # tty: true
+    stdin_open: true
+    tty: true
 
     user: $UID
     restart: always
@@ -85,8 +83,6 @@ services:
     container_name: db
     volumes:
       - ./:/var/www/project
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: pashinin
       POSTGRES_PASSWORD: superpass

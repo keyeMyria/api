@@ -4,7 +4,7 @@ FROM python:3.6-alpine
 
 # add "tidyhtml" with alpine 3.5
 RUN apk update && \
-    apk add --no-cache postgresql-dev jpeg-dev zlib-dev libpq libxslt-dev libxslt python3-dev libc-dev linux-headers libxml2 libxml2-dev gcc musl-dev g++ libc6-compat libmagic make
+    apk add --no-cache postgresql-dev jpeg-dev zlib-dev libpq libxslt-dev libxslt python3-dev libc-dev linux-headers libxml2 libxml2-dev gcc musl-dev g++ libc6-compat libmagic make libffi-dev
     # rm -rf /tmp/src && \
     # rm -rf /var/cache/apk/*
 
@@ -13,7 +13,7 @@ RUN pip install pip -U
 RUN pip install -r /tmp/requirements.txt --no-cache-dir && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/*
-	
+
 # Install ruby and ruby-bundler
 RUN apk add --no-cache ruby
 RUN gem install --no-document mustache
@@ -32,6 +32,7 @@ RUN apk del postgresql-dev jpeg-dev zlib-dev libxslt-dev python3-dev libc-dev li
 
 
 RUN mkdir /mnt/files
+RUN chmod 777 /mnt/files
 #CMD iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000
 WORKDIR /var/www/project/src
 EXPOSE 8000

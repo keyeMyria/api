@@ -194,3 +194,7 @@ django-hosts
 # CAS is an enterprise Single Sign-On solution for web services
 django-mama-cas
 django-cas-ng
+
+
+# for Django daphne http2 support
+Twisted[tls,http2]
