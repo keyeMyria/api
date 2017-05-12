@@ -37,7 +37,7 @@ nav{overflow: visible;margin-top:0em;font-size:1.1em;}
 <style media="print">.noprint, .noprint *{display: none !important;}</style>
 {% include "core_head.jinja" %}
 {% block head %}{% endblock %}
-{% if FIRST_RUN %}
+{% if FIRST_RUN and DEBUG %}
 <script type="text/javascript">
 {let ready=function(e){
 	document.getElementById("download_project_files").addEventListener("click", function(e){
@@ -67,7 +67,7 @@ fetch('/_/files/download_core', {
 </script>
 {% endif %}
 </head><body>
-{% if FIRST_RUN %}
+{% if FIRST_RUN and DEBUG %}
   <div style="background-color:#507299;color:#fff">
 	<div class="w pad-sm">
 	  Файлы проекта не скачаны (поэтому нет изображений на страницах и других файлов).
