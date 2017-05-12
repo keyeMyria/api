@@ -28,14 +28,18 @@
 
 {% block main %}
   <div class="w">
+	<div>
+	  <i class="icon icon-spin1" style="animation: spin 2s infinite linear;font-size:3em;">&#xE830;</i>
+	</div>
+
 	<div class="flex equal">
 	  <div id="today" class="pad-sm mart bred" style="min-width:400px">
 		{# <span class="hide date">{{date_format(today.date, 'Y-m-d')}}</span> #}
 		<span class="hide date">{{today.date}}</span>
 		<div class="flex">
-		  <div><a class="prev" href=""><i class="icon icon-left-open">&#xE802; </i></a></div>
+		  <div><a class="prev" href=""><i class="icon icon-left-open">&#xE804; </i></a></div>
 		  <div class="current">{{date_format(today.date, 'l, d E')}}</div>
-		  <div><a class="next" href=""><i class="icon icon-right-open">&#xE803; </i></a></div>
+		  <div><a class="next" href=""><i class="icon icon-right-open">&#xE805; </i></a></div>
 		</div>
 		{# <h1>Ученики</h1> #}
 		{# {% for student in students.active %} #}
