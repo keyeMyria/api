@@ -10,7 +10,10 @@ from braces import views
 class ArticlesBase(views.LoginRequiredMixin,
                    views.SuperuserRequiredMixin,
                    Base):
-    pass
+    def get_context_data(self, **kwargs):
+        c = super(ArticlesBase, self).get_context_data(**kwargs)
+        c["menu"].current = 'articles'
+        return c
 
 
 class ArticleView(ArticlesBase):

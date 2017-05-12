@@ -60,7 +60,9 @@
 			{# </div> #}
 			{% for k, v in menu.items() %}
 			  {% if v %}
-				<a class="{% if k == menu.current %}current{% endif %}" href="{{v.url}}">
+				<a class="{% if k == menu.current %}current{% endif %}" href="{{v.url}}"
+				   {% if v.hint %}title="{{v.hint}}"{% endif %}
+				   >
 				  {# {% if loop.index==1 %}<i class="icon icon-menu">&#61641; </i>{% endif %} #}
 				  {% if v.img %}
 					<img alt="" src="{{v.img}}" style="max-width:30px;max-height:30px;"/>
