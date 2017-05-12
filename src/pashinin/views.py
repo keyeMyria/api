@@ -31,8 +31,8 @@ class Base(BaseView):
         c = super(Base, self).get_context_data(**kwargs)
         c["phone"] = '+7 (977) 801-25-41'
         c["email"] = 'sergey@pashinin.com'
-        c["price"] = 900
-        c["price45"] = 700
+        c["price"] = 1000
+        c["price45"] = 800
         c["menu_id"] = "services"
 
         c['menu'] = Menu(
