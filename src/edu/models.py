@@ -4,10 +4,10 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 # from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.postgres.fields import JSONField
+from core.models import Tree
 
 
-# class Tag(Tree):
-class Tag(models.Model):
+class Category(Tree):
     name = models.CharField(
         max_length=100,
         help_text="Тема задачи или уникальная метка "
@@ -32,10 +32,14 @@ class Tag(models.Model):
     #     db_table = 'edu_task'
 
     def __str__(self):
-        if self.hint:
-            return "{} ({})".format(self.name, self.hint)
+        if self.parent:
+            return f"{self.parent} > {self.name}"
         else:
-            return "{}".format(self.name)
+            return self.name
+        # if self.hint:
+        #     return "{} ({})".format(self.name, self.hint)
+        # else:
+        #     return "{}".format(self.name)
 
 
 class Task(models.Model):
@@ -131,7 +135,7 @@ class Task(models.Model):
     #     verbose_name = _('Tags')
     # )
     tags = models.ManyToManyField(
-        'Tag',
+        'Category',
         blank=True,
         verbose_name=_('Tags'),
     )

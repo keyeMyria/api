@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Tag
+from .models import Task, Category
 from .forms import TaskChangeForm
 from django.forms import TextInput
 from django.db import models
@@ -16,7 +16,7 @@ def unpublish(modeladmin, request, queryset):
     make_published.short_description = _("Hide")+" (published=False)"
 
 
-admin.site.register(Tag)
+# admin.site.register(Tag)
 # class TaskAdmin(admin.ModelAdmin):
 
 
@@ -48,3 +48,8 @@ class TaskAdmin(admin.ModelAdmin):
             'fields': ('debug', ),
         }),
     )
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'parent')

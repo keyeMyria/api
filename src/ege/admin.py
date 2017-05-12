@@ -115,7 +115,7 @@ class ExamAdmin(admin.ModelAdmin):
            'fields': ('published', 'type', 'subject', 'year')
         }),
         (_('Description'), {
-            'fields': ('info', ),
+            'fields': ('time', 'info', ),
         }),
         # ('Задачи экзамена', {
         #     'fields': ('exam_tasks', ),

@@ -11,10 +11,11 @@ container = pashinin/pashinin.com:latest
 manage = $(python) src/manage.py
 dockermanage.py = docker exec --user user -it $(container) python ./manage.py
 # docker_run = docker-compose run --rm --env DJANGO_SETTINGS_MODULE='pashinin.settings' --env LD_LIBRARY_PATH='/var/www/pashinin.com/tmp/ve/lib' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container)
-docker_run = docker-compose run --rm django
+docker_run = docker-compose -f docker/docker-compose.yml run --rm django
 
 
 all: install-docker-compose
+	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
 	(cd docker;export UID; docker-compose up -d redis db django gulp)
 # (cd docker;export UID; docker-compose up gulp)
 
@@ -62,7 +63,7 @@ npm:
 	npm install gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps
 
 bash:
-	$(docker_run) bash
+	$(docker_run) sh
 
 # --noworker - runserver will NOT start workers
 django:
@@ -70,7 +71,7 @@ django:
 # docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 
 glusterfs:
-	docker exec $(vm) mount.glusterfs 10.254.239.1:/v3 /mnt/files
+	$(docker_run) mount.glusterfs 10.254.239.1:/v3 /mnt/files
 
 gulp:
 	docker exec $(vm) gulp
@@ -90,28 +91,22 @@ migrate-docker:
 	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings
 
 migrate:
-	(cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=pashinin.settings)
+	(cd docker;export UID;docker-compose run --rm django ./manage.py makemigrations --settings=pashinin.settings)
+	(cd docker;export UID;docker-compose run --rm django ./manage.py migrate --settings=pashinin.settings)
+# (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=pashinin.settings)
+
+loaddata:
+	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings initial_data.json articles_examples.json ege_subjects.json)
+	# (cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings )
 
 vm:
 	(cd docker; make vm)
 
 psql:
-	docker run -it --rm --link db:postgres postgres psql -h postgres -U pashinin
-# docker run -e POSTGRES_USER="pashinin" -e POSTGRES_PASSWORD="superpass" -it db psql
-# docker exec -it --user postgres docker_db_1 psql
-
-
-# docker rm docker_db_1;
-
-build-docker: stop
-	# sudo find -type d -name migrations -exec rm -rf {} \;
-	(cd docker; docker rm docker_web_1;)
-	make docker
+	export UID; docker-compose -f docker/docker-compose.yml run --rm db psql -h db -U pashinin
 
 stop:
-	docker stop $(vm)
-	docker stop docker_db_1
-	docker stop docker_redis_1
+	docker-compose -f docker/docker-compose.yml stop
 
 tmux:
 	export LANG=en_US.UTF-8
@@ -205,7 +200,8 @@ sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
 
 shell:
-	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
+	(cd docker;export UID; docker-compose run --rm django python manage.py shell)
+# sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
 shell-docker:
 	docker run --env DJANGO_SETTINGS_MODULE='pashinin.settings' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container) ./manage.py shell
@@ -265,3 +261,6 @@ clean:
 
 hosts:
 	(cd configs; sudo python hosts.py)
+
+files:
+	ag -o --nofilename --nogroup "{{\s*file\(.+}}"

@@ -35,8 +35,8 @@
 	<h1 style="margin-top:0;padding-top:0">{{subject}} ({{year}})</h1>
 	<div id="subject_menu" class="flex grow0">
 	  <a href="{{url("subject:index", host=host.name, kwargs={'subj': subj})}}">Об экзамене</a>
-	  <a href="{{url("subject:tasks:index", host=host.name, kwargs={'subj': subj})}}">Все задачи</a>
-	  <a href="{{url("subject:theory", host=host.name, kwargs={'subj': subj})}}">Теория</a>
+	  <a href="{{url("subject:tasks:index", host=host.name, kwargs={'subj': subj})}}">Задачи</a>
+	  {# <a href="{{url("subject:theory", host=host.name, kwargs={'subj': subj})}}">Теория</a> #}
 	</div>
   </div>
 </div>

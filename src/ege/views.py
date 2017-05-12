@@ -13,14 +13,16 @@ morph = pymorphy2.MorphAnalyzer()
 log = logging.getLogger(__name__)
 
 
-class Base(views.LoginRequiredMixin,
-           views.SuperuserRequiredMixin,
-           BaseView):
+class Base(
+        views.LoginRequiredMixin,
+        views.SuperuserRequiredMixin,
+        BaseView):
 
     def get_context_data(self, **kwargs):
         c = super(Base, self).get_context_data(**kwargs)
-        c["phone"] = '+7 (977) 801-25-41'
-        c["email"] = 'sergey@pashinin.com'
+        c['year'] = kwargs.get('year', None)
+        if not c['year']:
+            c['year'] = c.get('now', now()).year
 
         # c["host"] = self.request.host
 
@@ -32,9 +34,23 @@ class Base(views.LoginRequiredMixin,
         c['exam_type_str'] = 'ЕГЭ' if c['EGE'] else 'ОГЭ'
 
         c['menu']['index'] = {
-            'title': 'Главная',
+            'title': 'ЕГЭ' if c['EGE'] else 'ОГЭ',
             'url': reverse('index', host=c['host'].name),
+            'hint': 'Единый государственный экзамен' if c['EGE'] else
+            'Основной государственный экзамен'
         }
+        c['menu'].current = 'index'
+        c['subjects'] = Subject.objects.filter(published=True) \
+                                       .order_by('name')
+        for subj in c['subjects']:
+            c['menu'][subj.slug] = {
+                'title': subj.name,
+                'url': reverse(
+                    'subject:index',
+                    host=c['host'].name,
+                    kwargs={'subj': subj.slug}
+                ),
+            }
         # c['menu'] = Menu(
         #     [
         #         ('index', {
@@ -93,6 +109,7 @@ class SubjectView(Base):
                 slug=subj,
                 published=True
             )
+            c['menu'].current = subj
             # дательный падеж:
             c['po_subject'] = " ".join([
                 morph.parse(w)[0].inflect({'datv'}).word

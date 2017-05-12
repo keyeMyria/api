@@ -205,7 +205,9 @@ class Tree(MPTTModel):
         null=True,
         blank=True,
         db_index=True,
-        related_name="%(app_label)s_%(class)s_parent",
+        # related_name="%(app_label)s_%(class)s_parent",
+        # related_name="%(app_label)s_%(class)s_children",
+        related_name='children',
         verbose_name=_("Parent element")
     )
 

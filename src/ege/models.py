@@ -22,6 +22,12 @@ class Exam(models.Model):
         verbose_name='Тип экзамена'
     )
     year = models.IntegerField()
+    time = models.IntegerField(
+        default=None,
+        blank=True,
+        null=True,
+        help_text=_("Отведённое время, мин")
+    )
     subject = models.ForeignKey('Subject')
     info = models.TextField(
         blank=True,
@@ -144,7 +150,7 @@ class Task(models.Model):
         verbose_name='Нужно решить'
     )
     tags = models.ManyToManyField(
-        'edu.Tag',
+        'edu.Category',
         verbose_name=_('Tags'),
         related_name='ege_tasks',  # to get Task types from Tag model
         help_text='Все тэги, которые подходят для этой задачи в этом экзамене'
