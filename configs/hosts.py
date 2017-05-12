@@ -26,6 +26,8 @@ tld = 'example.org'
 add = [
     tld,
     'baumanka.'+tld,
+    'ege.'+tld,
+    'oge.'+tld,
 ]
 
 
