@@ -152,7 +152,7 @@ update:
 	make pip
 	sudo -H -u www-data make configs
 	(cd configs; make ln_nginx)
-	(cd src; ./manage.py migrate)
+	(cd src; $(python) manage.py migrate)
 	sudo supervisorctl restart worker-pashinin.com
 	sudo service nginx reload
 
