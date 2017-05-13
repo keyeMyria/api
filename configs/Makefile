@@ -1,7 +1,8 @@
 # -*- Makefile -*-
 
-#python = `python ../configs/makeve.py`
-python = python3.6
+python = `python makeve.py`
+# python = `python ../configs/makeve.py`
+# python = ../tmp/ve/python
 S = tmp/conf.json
 supervisor_confd = /etc/supervisor/conf.d
 # supervisor_confd = .
