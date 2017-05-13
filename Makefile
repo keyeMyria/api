@@ -108,6 +108,11 @@ psql:
 stop:
 	docker-compose -f docker/docker-compose.yml stop
 
+recreate-db:
+	docker container stop db
+	docker container rm db
+	(cd docker;export UID; docker-compose up -d redis db django gulp)
+
 tmux:
 	export LANG=en_US.UTF-8
 	tmux new-session -s dev -d || echo "session created"

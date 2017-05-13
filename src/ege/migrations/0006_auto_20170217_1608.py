@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('type', models.IntegerField(choices=[(0, '1 единственная задача'), (1, '1 задача из N на выбор')], default=0, verbose_name='Нужно решить')),
                 ('order', models.IntegerField(verbose_name='Номер задачи в экзамене, например от 1 до 27')),
-                ('tags', models.ManyToManyField(help_text='Все тэги, которые подходят для этой задачи в этом экзамене', related_name='ege_tasks', to='edu.Tag', verbose_name='Tags')),
+                ('tags', models.ManyToManyField(help_text='Все тэги, которые подходят для этой задачи в этом экзамене', related_name='ege_tasks', to='edu.Category', verbose_name='Tags')),
             ],
         ),
         migrations.AddField(
