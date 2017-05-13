@@ -1,7 +1,8 @@
 # -*- Makefile -*-
 
-python = `python makeve.py`
-# python = `python ../configs/makeve.py`
+# really need this - back and forward to 'configs' folder
+# (we may be inside 'src' dir, not 'configs')
+python = `python ../configs/makeve.py`
 # python = ../tmp/ve/python
 S = tmp/conf.json
 supervisor_confd = /etc/supervisor/conf.d
