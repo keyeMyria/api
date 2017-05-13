@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # TODO: pip install --upgrade virtualenv
 
     if (
-            sys.version_info >= (3, 5) and
+            sys.version_info >= (3, 6) and
             not sys.executable == "/usr/local/bin/python"
     ):
         print(sys.executable, end="")
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     # create ve
     p = subprocess.Popen(
-        ["virtualenv", "-p", "/usr/bin/python3", ve],
+        ["virtualenv", "-p", "/usr/bin/python3.6", ve],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
