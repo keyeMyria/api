@@ -15,7 +15,7 @@ import json
 # final JSON settings to "output" variable, default: /tmp/conf.json
 #
 
-output = '/tmp/conf.json'
+output = 'tmp/conf.json'
 repo_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 pythonbin = os.path.abspath(os.path.join(
     repo_path,
