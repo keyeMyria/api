@@ -156,6 +156,8 @@ update:
 	sudo -H -u www-data git pull
 	make pip
 	sudo -H -u www-data make configs
+	sudo -H -u www-data make css
+	sudo -H -u www-data make collectstatic
 	(cd configs; make ln_nginx)
 	(cd src; `python ../configs/makeve.py` manage.py migrate)
 	sudo supervisorctl restart worker-pashinin.com
@@ -184,7 +186,7 @@ dbinit-docker:
 	docker exec -it $(container) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
 
 collectstatic:
-	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
+	tmp/ve/bin/python src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 
 collectstatic-dev:
 	docker exec --user user -it $(container) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
