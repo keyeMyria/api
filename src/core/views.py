@@ -50,7 +50,7 @@ class BaseView(TemplateView):
         c["host"] = self.request.host
 
         nodir = not os.path.isdir(settings.FILES_ROOT)
-        nofiles = len(os.listdir(settings.FILES_ROOT)) < 300
+        nofiles = len(os.listdir(settings.FILES_ROOT)) < 3
         c['FIRST_RUN'] = nodir or nofiles
 
         # c['utcnow'] = datetime.datetime.utcnow()
