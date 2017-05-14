@@ -114,10 +114,10 @@ server {
         return 200 "google-site-verification: google586e4080b1ba1d35.html";
     }
 
-    location ~ ^/baumanka/ {
-        rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
-        rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
-    }
+    # location ~ ^/baumanka/ {
+    #     rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
+    #     rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
+    # }
     location ~ ^/baumanka/sem- {
         rewrite ^/baumanka/sem-0(.*)/(.*)$ https://baumanka.{{domain}}/IU2/sem$1/$2 permanent;
         rewrite ^/baumanka/sem-(.*)/(.*)$ https://baumanka.{{domain}}/IU2/sem$1/$2 permanent;
