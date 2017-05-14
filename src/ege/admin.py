@@ -112,7 +112,12 @@ class ExamAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-           'fields': ('published', 'type', 'subject', 'year')
+           'fields': (
+               'published',
+               # 'type',
+               'subject',
+               'year',
+           )
         }),
         (_('Description'), {
             'fields': ('time', 'info', ),

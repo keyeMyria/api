@@ -136,19 +136,6 @@ class Task(models.Model):
         'то будут использованы тэги',
     )
 
-    Type = (
-        (0, '1 единственная задача'),
-        (1, '1 задача из N на выбор'),
-
-        # или больше, в этом случае в модели ЕГЭ должны повторяться
-        # записи Task с одинаковыми полями "order".  То есть больше
-        # одной задачи с одним и тем же порядковым номером
-    )
-    type = models.IntegerField(
-        default=0,
-        choices=Type,
-        verbose_name='Нужно решить'
-    )
     tags = models.ManyToManyField(
         'edu.Category',
         verbose_name=_('Tags'),
