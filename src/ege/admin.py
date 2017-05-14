@@ -25,7 +25,7 @@ class SubjectAdmin(admin.ModelAdmin):
     actions = [unpublish, make_published]
 
 
-class MembershipInline(admin.TabularInline):
+class ExamTaskInline(admin.TabularInline):
     model = Task
     # show_change_link = True
     extra = 0
@@ -95,6 +95,7 @@ class MembershipInline(admin.TabularInline):
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags',)
+    list_display = ('exam', 'order', 'topic')
     # inlines = [
     #     TagInline,
     # ]
@@ -104,7 +105,7 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
     inlines = [
-        MembershipInline,
+        ExamTaskInline,
     ]
     exclude = ('tasks',)
 

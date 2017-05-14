@@ -140,7 +140,7 @@ class Task(models.Model):
         'edu.Category',
         verbose_name=_('Tags'),
         related_name='ege_tasks',  # to get Task types from Tag model
-        help_text='Все тэги, которые подходят для этой задачи в этом экзамене'
+        help_text='Все категории, которые подходят для этой задачи в экзамене'
     )
 
     def __str__(self):
