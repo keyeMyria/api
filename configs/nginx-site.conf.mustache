@@ -119,11 +119,11 @@ server {
         rewrite ^/baumanka/(.*)$ https://baumanka.{{domain}}/$1 permanent;
     }
     location ~ ^/baumanka/sem- {
-        rewrite ^/baumanka/sem-0(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
-        rewrite ^/baumanka/sem-(.*)/(.*)$ https://{{domain}}/baumanka/IU2/sem$1/$2 permanent;
+        rewrite ^/baumanka/sem-0(.*)/(.*)$ https://baumanka.{{domain}}/IU2/sem$1/$2 permanent;
+        rewrite ^/baumanka/sem-(.*)/(.*)$ https://baumanka.{{domain}}/IU2/sem$1/$2 permanent;
     }
     location ~ ^/baumanka/DIPLOM {
-        rewrite ^/baumanka/DIPLOM/(.*)$ https://{{domain}}/baumanka/IU2/sem12/$1 permanent;
+        rewrite ^/baumanka/DIPLOM/(.*)$ https://baumanka.{{domain}}/IU2/sem12/$1 permanent;
     }
     # location = /baumanka {
     #     return 301 $uri/;
