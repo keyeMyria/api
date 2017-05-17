@@ -1,7 +1,19 @@
 {% extends "ege_subject.jinja" %}
 
 {% block content %}
-  <div class="pad-sm">
-	as
-  </div>
+
+<div class="pad-sm">
+  <h1>Задача {{exam_task.order}}. {{exam_task}}</h1>
+
+  {% for task in exam_task.examples() %}
+	<div class="pad-sm bred2">
+	  {{task.as_html}}
+	</div>
+	{% if not loop.last %}
+	  <hr/>
+	{% endif %}
+  {% else %}
+	Нет опубликованных примеров задач для {{exam_task.order}} задачи экзамена.
+  {% endfor %}
+</div>
 {% endblock %}

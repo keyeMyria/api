@@ -1,3 +1,4 @@
+import mptt
 from django.contrib import admin
 from .models import Task, Category
 from .forms import TaskChangeForm
@@ -50,10 +51,13 @@ class TaskAdmin(admin.ModelAdmin):
     )
 
 
+# mptt.admin.MPTTModelAdmin
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = (
-        'name',
-        'parent',
-    )
+class CategoryAdmin(mptt.admin.DraggableMPTTAdmin):
+    # list_display = (
+    #     'name',
+    #     'parent',
+    #     'tree_id',
+    #     'level',
+    # )
     search_fields = ('name', )

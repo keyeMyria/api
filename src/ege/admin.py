@@ -96,14 +96,14 @@ class ExamTaskInline(admin.TabularInline):
 class TaskAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags',)
     list_display = ('exam', 'order', 'topic')
-    # inlines = [
-    #     TagInline,
-    # ]
+    readonly_fields = ('exam', 'order')
     list_filter = ('exam__subject', 'exam__year', )
 
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
+    save_on_top = True
+    save_as = True
     inlines = [
         ExamTaskInline,
     ]
@@ -115,7 +115,7 @@ class ExamAdmin(admin.ModelAdmin):
         (None, {
            'fields': (
                'published',
-               # 'type',
+               'type',
                'subject',
                'year',
            )

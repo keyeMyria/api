@@ -1,9 +1,9 @@
 import logging
 from core.views import BaseView
 # from django.conf import settings
-from .models import Subject, Exam
+from .models import Subject, Exam, Task
 from core import now
-from edu.models import Task
+from edu.models import Task as EDUTask
 import pymorphy2
 # from django.core.urlresolvers import reverse
 from core import reverse
@@ -29,7 +29,6 @@ class Base(
         # c['EGE'] = settings.SITE_ID == 2
         c['EGE'] = self.request.host.name == 'ege'
         c['OGE'] = self.request.host.name == 'oge'
-
         c['exam_type'] = 0 if c['EGE'] else 1
         c['exam_type_str'] = 'ЕГЭ' if c['EGE'] else 'ОГЭ'
 
@@ -90,7 +89,7 @@ class YearView(Base):
     def get_context_data(self, **kwargs):
         c = super(YearView, self).get_context_data(**kwargs)
         c['year'] = kwargs.get('year', c.get('now', now()).year)
-        c['tasks'] = Task.objects.filter()
+        c['tasks'] = EDUTask.objects.filter()
         return c
 
 
@@ -126,7 +125,7 @@ class SubjectView(Base):
             c['exam'] = Exam.objects.get(
                 subject=c['subject'],
                 year=c['year'],
-                type=0
+                type=c['exam_type']
             )
             c['tasks'] = c['exam'].tasks.filter().order_by('order')
         except Exam.DoesNotExist:
@@ -145,6 +144,12 @@ class TaskView(SubjectView):
 
 class ExamTaskView(SubjectView):
     template_name = "ege_subject_exam_task.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(ExamTaskView, self).get_context_data(**kwargs)
+        id = kwargs.get('id', None)
+        c['exam_task'] = Task.objects.get(pk=id)
+        return c
 
 
 class SubjectTheoryView(SubjectView):

@@ -96,7 +96,7 @@ migrate:
 # (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=pashinin.settings)
 
 loaddata:
-	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings initial_data.json articles_examples.json ege_subjects.json)
+	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings initial_data.json articles_examples.json ege_subjects.json ege_exam.json ege_tasks.json categories.json tasks.json)
 	# (cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings )
 
 vm:

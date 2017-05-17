@@ -11,14 +11,14 @@ class Exam(models.Model):
     Включая год, предмет, типы задач.
 
     """
-    ExamType = (
+    Types = (
         (0, 'ЕГЭ (11 кл)'),
         (1, 'ОГЭ (9 кл)'),
     )
 
     type = models.IntegerField(
         default=0,
-        choices=ExamType,
+        choices=Types,
         verbose_name='Тип экзамена'
     )
     year = models.IntegerField()
@@ -56,8 +56,8 @@ class Exam(models.Model):
     published = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _("ЕГЭ / ОГЭ")
-        verbose_name_plural = _("ЕГЭ / ОГЭ")
+        verbose_name = "Экзамен (ЕГЭ / ОГЭ)"
+        verbose_name_plural = "Экзамены (ЕГЭ / ОГЭ)"
         unique_together = ("type", "year", "subject")
 
     @property
@@ -142,6 +142,21 @@ class Task(models.Model):
         related_name='ege_tasks',  # to get Task types from Tag model
         help_text='Все категории, которые подходят для этой задачи в экзамене'
     )
+
+    def examples(self, only_published=True):
+        from edu.models import Task, Category
+        categories = Category.objects.get_queryset_descendants(
+            self.tags, include_self=True)
+        # get_descendants
+        # names_to_exclude = [o.name for o in objects_to_exclude]
+        # Foo.objects.exclude(name__in=names_to_exclude)
+        if only_published:
+            return Task.objects.filter(
+                tags__in=categories,
+                published=True,
+            )
+        else:
+            return Task.objects.filter(tags__in=categories)
 
     def __str__(self):
         if self.topic:

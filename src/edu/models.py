@@ -148,7 +148,7 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         related_name="edu_solved_tasks",
-        verbose_name=_('People who solved'),
+        verbose_name=_('People who think they solved it'),
     )
     published = models.BooleanField(
         default=False,
@@ -167,12 +167,9 @@ class Task(models.Model):
         verbose_name_plural = _("Tasks")
 
     @property
-    def have_solution(self):
-        return bool(self.solution)
-
-    @property
     def as_html(self):
-        return 'TODO'
+        # TODO: display as article
+        return self.text
 
     def get_absolute_url(self):
         if settings.SITE_ID == 2:
