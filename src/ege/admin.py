@@ -94,6 +94,7 @@ class ExamTaskInline(admin.TabularInline):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
+    save_on_top = True
     filter_horizontal = ('tags',)
     list_display = ('exam', 'order', 'topic')
     readonly_fields = ('exam', 'order')

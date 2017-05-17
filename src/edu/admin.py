@@ -25,6 +25,7 @@ def unpublish(modeladmin, request, queryset):
 class TaskAdmin(admin.ModelAdmin):
     form = TaskChangeForm
 
+    save_on_top = True
     list_display = ('title', 'taken_from', 'comment')
     actions = [unpublish, make_published]
     ordering = ['published', '-added']
