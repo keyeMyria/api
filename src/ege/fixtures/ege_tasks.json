@@ -1,0 +1,12 @@
+[
+    {
+        "model": "ege.task",
+        "pk": 1,
+        "fields": {
+            "order": 1,
+            "exam": 1,
+            "topic": "task 1",
+            "tags": [1]
+        }
+    }
+]

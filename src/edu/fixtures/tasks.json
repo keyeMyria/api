@@ -1,0 +1,29 @@
+[
+    {
+        "model": "edu.task",
+        "pk": 1,
+        "fields": {
+            "title": "EDU task 1, cat 1",
+            "added": "2016-10-30T13:19:37+00:00",
+            "tags": [1]
+        }
+    },
+    {
+        "model": "edu.task",
+        "pk": 2,
+        "fields": {
+            "title": "EDU task 2, cat 1.1",
+            "added": "2016-10-30T13:19:37+00:00",
+            "tags": [2]
+        }
+    },
+    {
+        "model": "edu.task",
+        "pk": 3,
+        "fields": {
+            "title": "EDU task 3, cat 2",
+            "added": "2016-10-30T13:19:37+00:00",
+            "tags": [3]
+        }
+    }
+]

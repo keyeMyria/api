@@ -1,0 +1,25 @@
+[
+    {
+        "model": "edu.category",
+        "pk": 1,
+        "fields": {
+            "name": "Информатика",
+            "level": 0,
+            "lft": 0,
+            "rght": 3,
+            "tree_id": 1
+        }
+    },
+    {
+        "model": "edu.category",
+        "pk": 2,
+        "fields": {
+            "name": "Системы счисления",
+            "level": 1,
+            "lft": 0,
+            "rght": 0,
+            "tree_id": 1,
+            "parent": 1
+        }
+    }
+]

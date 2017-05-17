@@ -1,0 +1,14 @@
+[
+    {
+        "model": "ege.exam",
+        "pk": 1,
+        "fields": {
+            "type": 0,
+            "year": 2017,
+            "subject": 1,
+            "time": 235,
+            "info": "some info",
+            "published": "True"
+        }
+    }
+]
