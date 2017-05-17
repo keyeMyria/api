@@ -169,7 +169,9 @@ class Task(models.Model):
     @property
     def as_html(self):
         # TODO: display as article
-        return self.text
+        from rparser import article_render
+        html, info = article_render(self.text)
+        return html
 
     def get_absolute_url(self):
         if settings.SITE_ID == 2:

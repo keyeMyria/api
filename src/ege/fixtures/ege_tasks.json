@@ -5,7 +5,7 @@
         "fields": {
             "order": 1,
             "exam": 1,
-            "topic": "task 1",
+            "topic": "Системы счисления",
             "tags": [1]
         }
     }

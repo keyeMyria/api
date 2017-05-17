@@ -7,7 +7,7 @@
 
   {% for task in exam_task.examples() %}
 	<div class="pad-sm bred2">
-	  {{task.as_html}}
+	  {{task.as_html|safe}}
 	</div>
 	{% if not loop.last %}
 	  <hr/>
