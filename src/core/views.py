@@ -83,10 +83,9 @@ class BaseView(TemplateView):
         c['ip'] = get_client_ip(self.request)
         c["analytics"] = not (
             c['user'].is_superuser or
-            c['ip'] in (
-                '10.254.239.2',
-                '10.92.209.1',
-            ))
+            c['ip'].startswith('10.')
+        )
+        c["analytics"] = True  # just always if not DEBUG
         c['status'] = 200
         # c['mobile'] = is_mobile(self.request)
         return c
