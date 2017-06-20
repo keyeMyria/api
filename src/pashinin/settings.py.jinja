@@ -275,7 +275,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.postgres',
     'sortedm2m',
-    'django_extensions',
+    'django_extensions',  # shell_plus, runserver_plus, ...
     'rest_framework',
     'django_nose',
     'mptt',
@@ -640,6 +640,15 @@ CACHEOPS = {
     # And since ops is empty by default you can rewrite last line as:
     '*.*': {'timeout': 60*60},
 }
+
+# from django.core.management import call_command
+SHELL_PLUS_PRE_IMPORTS = [
+    # ('module.submodule1', ('class1', 'function2')),
+    # ('module.submodule2', 'function3'),
+    # ('module.submodule3', '*'),
+    # 'module.submodule4'
+    ('django.core.management', ('call_command', ))
+]
 
 if DEBUG:
     CACHEOPS_ENABLED = False

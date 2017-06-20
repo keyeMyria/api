@@ -1,3 +1,5 @@
+src/rparser
+.ipython/
 *.map
 /static
 **/static/**/*.css

@@ -141,6 +141,15 @@ link_debug_parser:
 	ln -sf /var/www/parser/build/lib/rparser /usr/local/lib/python3.6/rparser
 # docker exec -it $(vm)
 
+rparser:
+	ln -sf ../rparser/rparser src/rparser
+	(cd ../rparser/rparser; ln -sf ../build/lib/rparser/librparser.so librparser.so)
+	(cd docker;export UID; docker-compose restart django)
+# (cd docker;export UID; docker-compose run --rm django ls)
+# (cd docker;export UID; docker-compose run --rm django ln -sf ../../rparser/build/lib/rparser/librparser.so ../../rparser/rparser/librparser.so)
+	# (cd docker;export UID; docker-compose up -d django)
+# (cd docker;export UID; docker-compose run --rm django python manage.py shell)
+
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
 
@@ -207,7 +216,7 @@ sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
 
 shell:
-	(cd docker;export UID; docker-compose run --rm django python manage.py shell)
+	(cd docker;export UID; docker-compose run --rm django python manage.py shell_plus)
 # sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
 shell-docker:

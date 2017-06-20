@@ -34,7 +34,7 @@ services:
       - "81:8001"
     volumes:
       - ../:/var/www/project
-      # - ../../parser:/var/www/parser
+      - ../../rparser:/var/www/rparser
     depends_on:
       - redis
       - db
@@ -51,6 +51,7 @@ services:
 
     environment:
       DJANGO_SETTINGS_MODULE: pashinin.settings
+      IPYTHONDIR: /var/www/project/.ipython
 
 
   # Run Gulp manually with:

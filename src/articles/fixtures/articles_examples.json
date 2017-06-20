@@ -8,5 +8,15 @@
             "added": "2016-10-30T13:19:37+00:00",
             "changed": "2016-10-30T13:19:37+00:00"
         }
+    },
+    {
+        "model": "articles.article",
+        "pk": 2,
+        "fields": {
+            "title": "Parser test",
+            "src": "# Header 1\n## Header 2\n### Header 3\n#### Header 4\n##### Header 5\n###### Header 6\n\n```\nCode block\n```",
+            "added": "2016-10-30T13:19:37+00:00",
+            "changed": "2016-10-30T13:19:37+00:00"
+        }
     }
 ]
