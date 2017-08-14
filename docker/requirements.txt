@@ -79,7 +79,7 @@ iptools
 ipython>=2.3.0
 pillow
 # ply
-psycopg2
+# psycopg2           # this one is not working with PyPy
 #git+https://github.com/lericson/pylibmc.git
 
 # PyEnchant is a spellchecking library for Python, based on the excellent Enchant library.

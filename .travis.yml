@@ -1,6 +1,6 @@
 sudo: false
 language: python
-dist: trusty
+# dist: trusty
 
 git:
   depth: 3
@@ -35,7 +35,7 @@ services:
     - redis-server
 
 install:
-  - pip install -r docker/requirements.txt
+  - make requirements
   - pip install coveralls
   - pip install flake8
   - make render
