@@ -30,10 +30,12 @@ me. Write your ideas `here
 
 
 How to start?
-=============
+*************
 
 #. Register at Github_ and fork `this repository <https://github.com/pashinin-com/pashinin.com>`_.
-#. Then see "How to start" for your OS:
+#. Then see :doc:`How to start </how_to_start>`
+
+..
    :doc:`Linux </how_to_start_linux>` (better),
    :doc:`Windows </how_to_start_win>`,
    :doc:`Mac </how_to_start_mac>`
@@ -43,16 +45,16 @@ How to start?
    :maxdepth: 2
    :caption: Contents:
 
+   how_to_start
+   docs
    static
    long-running-tasks
    tests
    algo
    mailserver
-   fixtures
    auth
    cache
    maildb-sql
-   how_to_start_linux
    update
    parser
    django

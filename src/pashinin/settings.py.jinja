@@ -398,6 +398,8 @@ if TESTING:
 # Authentication
 #
 AUTHENTICATION_BACKENDS = (
+    # 'rules.permissions.ObjectPermissionBackend',
+
     # ModelBackend on Github:
     # https://github.com/django/django/blob/master/django/contrib/auth/backends.py
     'django.contrib.auth.backends.ModelBackend',

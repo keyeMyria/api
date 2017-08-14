@@ -13,8 +13,6 @@ from django.core.files.uploadedfile import (TemporaryUploadedFile,
                                             InMemoryUploadedFile)
 from . import CT_CHOICES
 
-MEDIA_URL = settings.MEDIA_URL
-
 
 class File(DirtyFieldsMixin, AddedChanged):
     basename = models.CharField(max_length=200, blank=True, null=True)
@@ -40,7 +38,7 @@ class File(DirtyFieldsMixin, AddedChanged):
     comment = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
-        default_permissions = ()
+        default_permissions = ()  # Defaults to ('add', 'change', 'delete')
         verbose_name = _("File")
         verbose_name_plural = _('Files')
         index_together = (("content_type", "content_subtype"), )
@@ -202,6 +200,10 @@ class File(DirtyFieldsMixin, AddedChanged):
         from .sendfile import send_file
         return send_file(self.filename, attachment=True)
 
+    def as_response(self):
+        from .sendfile import send_file
+        return send_file(self.filename, attachment=True)
+
     def get_absolute_url(self):
         return reverse("core:files:file", kwargs={
             'sha1': self.sha1,
@@ -217,14 +219,14 @@ class UpToDateFile(AddedChanged):
     # groups = models.ManyToManyField(Group)
 
     class Meta:
-        default_permissions = ()
+        default_permissions = ()  # Defaults to ('add', 'change', 'delete')
 
 
 class UpToDateFileSet(AddedChanged):
     files = models.ManyToManyField(UpToDateFile)
 
     class Meta:
-        default_permissions = ()
+        default_permissions = ()  # Defaults to ('add', 'change', 'delete')
 
 
 class UploadedFile(models.Model):

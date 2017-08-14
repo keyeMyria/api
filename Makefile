@@ -1,5 +1,6 @@
 .PHONY: docker configs
 
+SHELL := /bin/bash
 python = `./configs/makeve.py`
 vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret.json`
 d = `pwd`
@@ -12,16 +13,33 @@ manage = $(python) src/manage.py
 dockermanage.py = docker exec --user user -it $(container) python ./manage.py
 # docker_run = docker-compose run --rm --env DJANGO_SETTINGS_MODULE='pashinin.settings' --env LD_LIBRARY_PATH='/var/www/pashinin.com/tmp/ve/lib' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container)
 docker_run = docker-compose -f docker/docker-compose.yml run --rm django
+os = `lsb_release -i | cut -zb 17-`
+codename = `lsb_release -cs`
 
-
-all: install-docker-compose
+all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	(cd docker;export UID; docker-compose up -d redis db django gulp)
+	(cd docker;export UID; docker-compose up -d redis db django gulp) || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
 # (cd docker;export UID; docker-compose up gulp)
 
 
 install-docker-compose:
 	which docker-compose || sudo pip install docker-compose
+
+install-docker:
+	which docker || \
+	if [[ "$(os)" == "Ubuntu" ]] ; then make install-docker-ubuntu; fi;
+
+install-docker-ubuntu:
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+$(codename) \
+stable"
+	sudo apt-get update
+	sudo apt-get install docker-ce
+	sudo gpasswd -a `whoami` docker
+	echo "You were added to the docker group. Log out and log in again!!!"
+	sudo systemctl restart docker
 
 # docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
