@@ -15,7 +15,7 @@ cache:
 python:
   - "3.5"
   # - "nightly" # currently points to 3.7-dev
-  - "pypy"
+  - "pypy3"
 
 env:
   - DJANGO_SETTINGS_MODULE=pashinin.settings
