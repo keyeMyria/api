@@ -1,5 +1,4 @@
 sudo: false
-# sudo: required
 language: python
 dist: trusty
 
@@ -16,7 +15,7 @@ cache:
 python:
   - "3.5"
   # - "nightly" # currently points to 3.7-dev
-  # - "pypy"
+  - "pypy"
 
 env:
   - DJANGO_SETTINGS_MODULE=pashinin.settings
