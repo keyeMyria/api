@@ -170,8 +170,8 @@ rparser:
 
 requirements:
 	pip install -r docker/requirements.txt
-	if [[ "$TRAVIS" == "true" ]] && [[ "$TRAVIS_PYTHON_VERSION" == "pypy" ]] ; then pip install psycopg2cffi; fi;
-	if [[ "$TRAVIS" == "true" ]] && [[ "$TRAVIS_PYTHON_VERSION" != "pypy" ]] ; then pip install psycopg2; fi;
+	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" == "pypy" ]] ; then pip install psycopg2cffi; fi;
+	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" != "pypy" ]] ; then pip install psycopg2; fi;
 
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
