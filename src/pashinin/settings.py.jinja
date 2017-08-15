@@ -1,7 +1,11 @@
 # -*- mode: python -*-
 import os
 import sys
+import platform
 from os.path import dirname, abspath, basename
+
+
+PYPY = platform.python_implementation() == 'PyPy'
 
 TESTING = os.getenv('TRAVIS') or (
     'test' in sys.argv or
@@ -44,6 +48,12 @@ SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 # django.db.backends.postgresql_psycopg2
 # django.contrib.gis.db.backends.postgis
 #
+try:
+    import psycopg2
+except ImportError:
+    # Fall back to psycopg2cffi
+    from psycopg2cffi import compat
+    compat.register()
 DB_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DATABASES = {
     'default': {
