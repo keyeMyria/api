@@ -47,6 +47,7 @@ if __name__ == "__main__":
         data["dbhost"] = "127.0.0.1"
 
     # Put some additional variables
+    data['out'] = output
     data['repo'] = repo_path
     data['wwwdata'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
 

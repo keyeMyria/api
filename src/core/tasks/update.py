@@ -220,7 +220,8 @@ def generate_settings():
     to render a file.
 
     """
-    data = json.load(open('/tmp/conf.json', 'r'))
+    conf = os.path.join(settings.REPO_PATH, "configs", "tmp", "conf.py")
+    data = json.load(open(conf, 'r'))
     for app, path in apps():
         templates = [os.path.join(path, f) for f in os.listdir(path)
                      if re.match(r'settings.*\.jinja', f)]

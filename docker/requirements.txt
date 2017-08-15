@@ -178,7 +178,7 @@ psutil   # view system processes
 
 # склонение слов в русском языке
 pymorphy2
-# pymorphy2[fast]
+# pymorphy2[fast]  # need "dawg" pkg to install (cannot install with PyPy)
 pymorphy2-dicts-ru
 
 # for python lxml lib
