@@ -33,7 +33,7 @@ class Category(Tree):
 
     def __str__(self):
         if self.parent:
-            return f"{self.parent} > {self.name}"
+            return "{} > {}".format(self.parent, self.name)
         else:
             return self.name
         # if self.hint:
