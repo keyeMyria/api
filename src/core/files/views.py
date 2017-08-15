@@ -82,7 +82,7 @@ class DownloadCore(BaseView):
 
         files = files_used_in_this_repo()  # sha1 list
         for f in files:
-            url = f'https://pashinin.com/_/files/{f}'
+            url = 'https://pashinin.com/_/files/{}'.format(f)
             File.from_url(url)
 
         return HttpResponse(json.dumps({

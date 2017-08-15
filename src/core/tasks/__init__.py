@@ -222,7 +222,8 @@ Please restart! Logout and login may not help!"""
                 install_pkg(pkgs[program]['arch'])
             else:
                 raise NotImplementedError(
-                    f"don't know how to install {program} in this Linux")
+                    "don't know how to install {} in this Linux"
+                    .format(program))
 
         elif 'Windows' == platform.system():
             raise NotImplementedError(
