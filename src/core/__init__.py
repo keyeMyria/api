@@ -7,6 +7,19 @@ from django.core.validators import URLValidator
 default_app_config = 'core.apps.CoreConfig'
 
 
+def get_git_root(path):
+    try:
+        import git
+    except:
+        import pip
+        pip.main(['install', '--user', 'gitpython'])
+        import git
+
+    git_repo = git.Repo(path, search_parent_directories=True)
+    git_root = git_repo.git.rev_parse("--show-toplevel")
+    return git_root
+
+
 def now():
     return datetime.datetime.utcnow().replace(tzinfo=utc)
 

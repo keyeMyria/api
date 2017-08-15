@@ -7,7 +7,7 @@ from celery import shared_task
 from celery import chain
 from subprocess import call, Popen, PIPE
 from django.conf import settings
-from .. import now, apps
+from .. import now, apps, get_git_root
 
 
 def updatelog(sha1, msg=None, clear=False):
@@ -220,7 +220,13 @@ def generate_settings():
     to render a file.
 
     """
-    conf = os.path.join(settings.REPO_PATH, "configs", "tmp", "conf.py")
+    from os.path import abspath
+    conf = os.path.join(
+        get_git_root(abspath(__file__)),
+        "configs",
+        "tmp",
+        "conf.json"
+    )
     data = json.load(open(conf, 'r'))
     for app, path in apps():
         templates = [os.path.join(path, f) for f in os.listdir(path)
