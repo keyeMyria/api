@@ -152,7 +152,6 @@ class File(DirtyFieldsMixin, AddedChanged):
             # print(f.name)
             return File.copy_to_archive(f.name)
 
-
     # @classmethod
     # def from_bytes(cls, b):
     #     d = Data.from_bytes(b)
