@@ -45,6 +45,9 @@ if __name__ == "__main__":
     if os.getenv('TRAVIS', '') == 'true':
         data["redis_server"] = "127.0.0.1"
         data["dbhost"] = "127.0.0.1"
+        data["dbname"] = "travis"
+        data["dbuser"] = "travis"
+        data["dbpass"] = "travis"
 
     # Put some additional variables
     data['out'] = output
