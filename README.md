@@ -6,17 +6,15 @@
 [![PEP8](https://img.shields.io/badge/style-pep8-blue.svg)](https://www.python.org/dev/peps/pep-0008/)
 [![Coverage Status](https://coveralls.io/repos/github/pashinin-com/pashinin.com/badge.svg?branch=master)](https://coveralls.io/github/pashinin-com/pashinin.com?branch=master)
 
+## Linux
 
 ```bash
-make dev_pkgs
 make
-make glusterfs
-make tmux
 ```
 
-## tmux help
+<!-- ## tmux help -->
 
-<kbd>Ctrl</kbd>-<kbd>b</kbd> <kbd>w</kbd> - choose window
+<!-- <kbd>Ctrl</kbd>-<kbd>b</kbd> <kbd>w</kbd> - choose window -->
 
 
 <!-- ## Tests -->
