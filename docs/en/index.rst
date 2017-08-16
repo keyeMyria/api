@@ -49,7 +49,7 @@ How to start?
    docs
    static
    long-running-tasks
-   tests
+   testing
    algo
    mailserver
    auth

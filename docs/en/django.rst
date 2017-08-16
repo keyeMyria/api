@@ -61,7 +61,14 @@ Migrations
 Fixtures
 ========
 
-Fixtures are example records that are inserted into a database.
+.. warning::
+
+   Fixtures may cause pain.
+
+`factory_boy <https://github.com/FactoryBoy/factory_boy>`_ is a fixtures
+replacement.
+F
+ixtures are example records that are inserted into a database.
 
 
 Create fixture
