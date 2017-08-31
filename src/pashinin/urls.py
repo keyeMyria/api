@@ -12,7 +12,15 @@ from .views import (
     FAQ,
     Contacts,
     Students,
+    CourseView
 )
+
+
+courses_urls = [
+    url(r'^(?P<slug>.+)$', CourseView.as_view(), name="course"),
+    # url(r'^$', include('core.urls', namespace='core')),
+    # url(r'^articles/', include('articles.urls', namespace='articles')),
+]
 
 # Error handlers
 #
@@ -45,6 +53,7 @@ urlpatterns = [
     #     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^articles/', include('articles.urls', namespace='articles')),
     url(r'^api/', include(api_urls, namespace='api')),
+    url(r'^courses/', include(courses_urls, namespace='courses')),
     # url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
     url(r'^_/', include('core.urls', namespace='core')),
 ]

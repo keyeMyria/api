@@ -66,8 +66,7 @@ function csrfSafeMethod(method) {
 
 
 function showFormErrors(errors, form, showtext=false) {
-	// "errors" is a dictionary like:
-	// {formfield1: ["error1", "error2"], ...}
+	// `errors' - a dictionary like {formfield1: ["error1", "error2"], ...}
 	Array.from(form.querySelectorAll('[class^=ERR]')).forEach(function(el) {
 		el.parentNode.removeChild(el);
 	});

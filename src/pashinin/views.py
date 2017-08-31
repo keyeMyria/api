@@ -9,10 +9,10 @@ from django.utils.timezone import now, localtime
 from . import student_info
 from core import reverse
 # from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 # from django.contrib.auth.models import User
-from .forms import Enroll, AddStudent
-from .models import Lesson
+from .forms import Enroll, AddStudent, CourseEnrollForm
+from .models import Lesson, CourseLead, Course
 # from django.utils.decorators import method_decorator
 # from raven.contrib.django.raven_compat.models import client
 # from django.views.decorators.csrf import ensure_csrf_cookie
@@ -287,6 +287,97 @@ class Day:
 
     def __str__(self):
         return str(self.date)
+
+
+class CourseView(Base):
+    template_name = "pashinin_course.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(CourseView, self).get_context_data(**kwargs)
+        try:
+            c['course'] = Course.objects.get(slug=c['slug'])
+        except:
+            raise Http404
+
+        if c['user'].is_authenticated:
+            c['leads'] = CourseLead.objects.filter(
+                student=c['user'],
+                course=c['course']
+            )
+        else:
+            c['leads'] = CourseLead.objects.filter(
+                student=None,
+                course=c['course'],
+                session_key=self.request.session.session_key,
+            )
+
+        if c['leads'].count() > 0:
+            c['lead'] = c['leads'][0]
+            c['enrolled'] = c['lead'].status != 1
+        else:
+            c['lead'] = None
+            c['enrolled'] = False
+        return c
+
+    def post(self, request, **kwargs):
+        c = self.get_context_data(**kwargs)
+
+        # cancel course enroll
+        if 'cancel' == request.POST.get('action'):
+            if c['user'].is_authenticated:
+                lead = CourseLead.objects.get(
+                    course=c['course'],
+                    student=c['user']
+                )
+            else:
+                if not request.session.session_key:
+                    request.session.save()
+                lead = CourseLead.objects.get(
+                    course=c['course'],
+                    session_key=request.session.session_key,
+                    student=None
+                )
+            lead.status = 1
+            lead.save()
+            # TODO: change lead status to "cancelled by user"
+            return HttpResponse(json.dumps({'code': 0}))
+
+        # enroll here
+        f = CourseEnrollForm(request.POST)
+        if f.is_valid():
+            data = f.json()
+            data['course'] = c['slug']
+
+            new_lead = True
+            if c['user'].is_authenticated:
+                lead, new_lead = CourseLead.objects.get_or_create(
+                    course=c['course'],
+                    student=c['user']
+                )
+            else:
+                if not request.session.session_key:
+                    request.session.save()
+                lead, new_lead = CourseLead.objects.get_or_create(
+                    course=c['course'],
+                    session_key=request.session.session_key,
+                    student=None
+                )
+
+            lead.name = data['name']
+            lead.contact = data['contact']
+            lead.comment = data['comment']
+            if new_lead:
+                Channel('course-enroll').send(data)
+            else:
+                if lead.status != 0:
+                    lead.status = 0
+                    lead.save()
+            lead.save()
+            return HttpResponse(json.dumps({'code': 0}))
+        else:
+            return HttpResponse(json.dumps({
+                'errors': f.errors,
+            }))
 
 
 class Students(views.LoginRequiredMixin,

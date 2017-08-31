@@ -38,7 +38,8 @@ from channels.generic.websockets import WebsocketDemultiplexer
 from .consumers import (
     Default,
     Celery,
-    send_lead
+    send_lead,
+    send_lead_course
 )
 
 
@@ -82,4 +83,5 @@ channel_routing = [
     # include("chat.routing.custom_routing"),
 
     route('send-me-lead', send_lead),
+    route('course-enroll', send_lead_course),
 ]

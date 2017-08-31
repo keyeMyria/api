@@ -1,9 +1,77 @@
 from django.db import models
-# from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 # from django.db.models.signals import pre_save
 # from django.dispatch import receiver
 # from django.core.urlresolvers import reverse
 from django.conf import settings
+
+
+class Course(models.Model):
+    slug = models.SlugField(max_length=60, unique=True)
+    name = models.CharField(
+        max_length=150,
+        verbose_name=_('Name')
+    )
+    desc = models.TextField(blank=True, null=True)
+    results = models.TextField(blank=True, null=True)
+    prereq = models.TextField(blank=True, null=True)
+    program = models.TextField(blank=True, null=True)
+    time_cost = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class CourseLead(models.Model):
+    statuses = (
+        (0, 'заявка создана (не обработана)'),
+        (1, 'отменено'),
+        (2, 'спам'),
+        (3, 'время подтверждено'),
+        (4, 'я не дозвонился до клиента'),
+    )
+    status = models.IntegerField(
+        default=0,
+        choices=statuses,
+        verbose_name='Статус'
+    )
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='leads',
+    )
+    session_key = models.CharField(
+        max_length=150,
+        # verbose_name='session_key'
+        blank=True, null=True
+    )
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=True, null=True
+        # related_name='courses_enrolled',
+    )
+    name = models.CharField(
+        max_length=150,
+        verbose_name=_('Name'),
+        blank=True, null=True
+    )
+    contact = models.CharField(
+        max_length=150,
+        verbose_name=_('Contact'),
+        blank=True, null=True
+    )
+    comment = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        if self.student:
+            return "{} from {}".format(self.course, self.student)
+        else:
+            return "{} from {}".format(self.course, self.session_key)
+
+    class Meta:
+        unique_together = ("course", "session_key", "student")
 
 
 class Lesson(models.Model):

@@ -1,0 +1,100 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block style %}
+{{super()}}
+ol li{margin-top:1em}
+{% endblock %}
+
+{% block title %}{{course.name}}{% endblock %}
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("pashinin_course.js") }}?v=1"></script>
+{% endblock %}
+
+
+{% block header2 %}
+  <h1>{{course.name}}</h1>
+  <table>
+    <tr>
+      <td style="vertical-align:top">
+		<img alt="" src="{{static("python_sh-340x340.png")}}" style="max-width:150px; max-height:150px"/>
+	  </td>
+      <td class="padl" style="vertical-align:top">
+		{{course.desc}}
+		{# <br/> #}
+		{# <a class="btn btn-primary btn-large mart" href="#enroll">Записаться</a> #}
+	  </td>
+    </tr>
+  </table>
+{% endblock %}
+
+
+{% block content %}
+  <div class="pad-sm">
+	{% if course.results %}
+	  <h2>По окончании курса</h2>
+	  {{course.results}}
+	{# {% elif user.is_superuser %} #}
+	{#   <div> #}
+	{# 	<form action=""> #}
+	{# 	  <textarea cols="30" id="" name="results" rows="10" placeholder="Вы будете знать..." style="height:5em"></textarea> #}
+	{# 	</form> #}
+	{#   </div> #}
+	{% endif %}
+
+
+	{% if course.prereq %}
+	  <h2>Предварительная подготовка</h2>
+	  {{course.prereq}}
+	{% endif %}
+
+	{% if course.program %}
+	  <h2>Программа курса</h2>
+	  {{course.program}}
+	{% endif %}
+
+
+	<h2>Время</h2>
+
+	{{course.time_cost | safe}}
+
+  </div>
+{% endblock %}
+
+
+{% block mainbot %}
+  <div style="background-color:#eee;">
+	<div class="w pad-sm" >
+	  <h2>Запись</h2>
+
+	  <p>
+		<table>
+		  <tr>
+			<td>Курс</td>
+			<td><b>{{course.name}}</b></td>
+		  </tr>
+		  <tr>
+			<td class="padr">Статус</td>
+			<td>
+			  {{enrolled}}
+			  <span class="enroll-status-indb{% if not enrolled %} hide{% endif %}">Заявка отправлена (в базе данных)</span>
+			  <span class="enroll-status-no{% if enrolled %} hide{% endif %}">Вы не записаны</span>
+			</td>
+		  </tr>
+		</table>
+		<form id="enroll" action="{{request.path}}" method="POST">
+		  {{ csrf_input }}
+		  <input name="name" type="text" value="" placeholder="Ваше имя"/>
+		  <input name="contact" type="text" value="" placeholder="Контакт: Телефон / Skype / Email"/>
+		  <textarea cols="30" name="comment" rows="10" placeholder="Дополнительная информация (удобное время для занятий)" style="height:5em"></textarea>
+		  {# <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if leads.count() == 0 %}Записаться{% else %}Обновить{% endif %}" /> #}
+		  <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if leads.count() == 0 %}Записаться{% else %}Обновить{% endif %}" />
+		  {% if leads.count() > 0 %}
+			<input id="cancel_enroll" class="btn btn-large mart" type="button" name="" value="Отменить запись" />
+		  {% endif %}
+		</form>
+	  </p>
+	</div>
+  </div>
+{% endblock %}

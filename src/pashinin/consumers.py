@@ -64,6 +64,25 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def send_lead_course(f):
+    from .models import CourseLead, Course
+    course = Course.objects.get(slug=f['course'])
+    # CourseLead.objects.get_or_create(course=course)
+
+    title = "Запись на \"{}\"".format(
+        course.name
+    )
+    body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
+        datetime.datetime.now(),
+        f['name'],
+        f['contact'],
+        f['comment']
+    )
+    from_str = "{} <ROBOT@pashinin.com>".format(f['name'])
+    recipients = ["sergey@pashinin.com"]
+    send_mail(title, body, from_str, recipients)
+
+
 def send_lead(f):
     """Send a form from main page
 

@@ -10,15 +10,19 @@ vm = pashinin/pashinin.com:latest
 container = pashinin/pashinin.com:latest
 # container = pashinin.com
 manage = $(python) src/manage.py
-dockermanage.py = docker exec --user user -it $(container) python ./manage.py
 # docker_run = docker-compose run --rm --env DJANGO_SETTINGS_MODULE='pashinin.settings' --env LD_LIBRARY_PATH='/var/www/pashinin.com/tmp/ve/lib' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container)
-docker_run = docker-compose -f docker/docker-compose.yml run --rm django
+
 os = `lsb_release -i | cut -zb 17-`
 codename = `lsb_release -cs`
+settings=pashinin.settings
+# docker-compose=cd docker;export UID; docker-compose
+docker-compose=export UID; docker-compose -f docker/docker-compose.yml
+dockermanage.py = docker exec --user user -it $(container) python ./manage.py
+docker_run = $(docker-compose) run --rm django
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	(cd docker;export UID; docker-compose up -d redis db django gulp) || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	$(docker-compose) up -d redis db django gulp || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
 # (cd docker;export UID; docker-compose up gulp)
 
 
@@ -85,7 +89,7 @@ bash:
 
 # --noworker - runserver will NOT start workers
 django:
-	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) ./manage.py runserver 0.0.0.0:8000
+	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='$(settings)' -it $(vm) ./manage.py runserver 0.0.0.0:8000
 # docker run -it -v `pwd`:/var/www/pashinin.com pashinin.com ./manage.py runserver 0.0.0.0:8000 --settings=pashinin.settings
 
 glusterfs:
@@ -103,18 +107,18 @@ gulp:
 # docker exec --user user -it docker_web_1 ./manage.py makemigrations articles
 #
 # ./manage.py migrate --fake default
-migrate-docker:
-	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb --settings=pashinin.settings
-	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=pashinin.settings
-	docker exec --user user -it $(vm) ./manage.py migrate --settings=pashinin.settings
+# migrate-docker:
+# 	docker exec --user user -it $(vm) ./manage.py migrate --run-syncdb --settings=$(settings)
+# 	docker exec --user user -it $(vm) ./manage.py makemigrations --settings=$(settings)
+# 	docker exec --user user -it $(vm) ./manage.py migrate --settings=$(settings)
 
 migrate:
-	(cd docker;export UID;docker-compose run --rm django ./manage.py makemigrations --settings=pashinin.settings)
-	(cd docker;export UID;docker-compose run --rm django ./manage.py migrate --settings=pashinin.settings)
-# (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=pashinin.settings)
+	$(docker-compose) run --rm django ./manage.py makemigrations --settings=$(settings)
+	$(docker-compose) run --rm django ./manage.py migrate --settings=$(settings)
+# (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=$(settings))
 
 loaddata:
-	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings initial_data.json articles_examples.json ege_subjects.json ege_exam.json ege_tasks.json categories.json tasks.json)
+	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=$(settings) initial_data.json articles_examples.json ege_subjects.json ege_exam.json ege_tasks.json categories.json tasks.json)
 	# (cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings )
 
 vm:
@@ -129,7 +133,7 @@ stop:
 recreate-db:
 	docker container stop db
 	docker container rm db
-	(cd docker;export UID; docker-compose up -d redis db django gulp)
+	($(docker-compose) up -d redis db django gulp)
 
 tmux:
 	export LANG=en_US.UTF-8
@@ -162,10 +166,10 @@ link_debug_parser:
 rparser:
 	ln -sf ../rparser/rparser src/rparser
 	(cd ../rparser/rparser; ln -sf ../build/lib/rparser/librparser.so librparser.so)
-	(cd docker;export UID; docker-compose restart django)
+	$(docker-compose) restart django
 # (cd docker;export UID; docker-compose run --rm django ls)
 # (cd docker;export UID; docker-compose run --rm django ln -sf ../../rparser/build/lib/rparser/librparser.so ../../rparser/rparser/librparser.so)
-	# (cd docker;export UID; docker-compose up -d django)
+# (cd docker;export UID; docker-compose up -d django)
 # (cd docker;export UID; docker-compose run --rm django python manage.py shell)
 
 requirements:
@@ -239,7 +243,7 @@ sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
 
 shell:
-	(cd docker;export UID; docker-compose run --rm django python manage.py shell_plus)
+	$(docker-compose) run --rm django python manage.py shell_plus
 # sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
 shell-docker:

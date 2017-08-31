@@ -194,7 +194,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif self.email:
             return self.email
         else:
-            return "ID {}".format(self.pk)
+            return "User {}".format(self.pk)
 
 
 # pip install django-mptt

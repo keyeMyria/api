@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lesson
+from .models import Lesson, Course, CourseLead
 # from django.utils.translation import ugettext_lazy as _
 from core.models import User
 # from adminfilters.models import Species, Breed
@@ -17,3 +17,15 @@ class LessonAdmin(admin.ModelAdmin):
     save_as = True
     # raw_id_fields = ("student",)
     # inlines = [UserAdminInline]
+
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    ordering = ['id']
+
+
+@admin.register(CourseLead)
+class CourseLeadAdmin(admin.ModelAdmin):
+    list_display = ('status', 'course', 'student', 'session_key')
+    # ordering = ['id']

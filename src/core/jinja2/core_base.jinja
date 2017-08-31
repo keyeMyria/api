@@ -81,13 +81,13 @@ fetch('/_/files/download_core', {
 {% block header %}{% endblock %}
 </header>
 <main>{% block main %}{% endblock %}</main>
+{% block mainbot %}{% endblock %}
 </div>
 <footer class="padtb" style="background:#242729;color:#aaa">{% block footer %}
 <div class="w noprint pad-sm">
   {% block footer_content %}
 	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
 	<a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
-	{# <a href="{{url("baumanka:kafedra", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a> #}
 	<a href="{{url("kafedra", host="baumanka", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
 	{% if user.is_superuser %}
 	  <br/><a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
