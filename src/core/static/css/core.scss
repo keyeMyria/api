@@ -395,7 +395,7 @@ table {
     border-collapse: collapse;
 	font-size: 100%;
 
-	td{padding: 0}
+	td{padding: 0; vertical-align:top}
 	&.tdpad{
 		& td{
 			padding: 0.4rem !important;
