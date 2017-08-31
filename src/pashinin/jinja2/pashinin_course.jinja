@@ -17,7 +17,7 @@ ol li{margin-top:1em}
   <h1>{{course.name}}</h1>
   <table>
     <tr>
-      <td style="vertical-align:top">
+      <td>
 		<img alt="" src="{{static("python_sh-340x340.png")}}" style="max-width:150px; max-height:150px"/>
 	  </td>
       <td class="padl" style="vertical-align:top">
@@ -66,7 +66,7 @@ ol li{margin-top:1em}
 {% block mainbot %}
   <div style="background-color:#eee;">
 	<div class="w pad-sm" >
-	  <h2>Запись</h2>
+	  <h2>Запись <i class="icon icon-ok-circle" style="font-size:2em;float:right">&#xE802;</i></h2>
 
 	  <p>
 		<table>
@@ -77,22 +77,20 @@ ol li{margin-top:1em}
 		  <tr>
 			<td class="padr">Статус</td>
 			<td>
-			  {{enrolled}}
 			  <span class="enroll-status-indb{% if not enrolled %} hide{% endif %}">Заявка отправлена (в базе данных)</span>
 			  <span class="enroll-status-no{% if enrolled %} hide{% endif %}">Вы не записаны</span>
+			  <p>Я перезвоню Вам как только освобожусь</p>
 			</td>
 		  </tr>
 		</table>
 		<form id="enroll" action="{{request.path}}" method="POST">
 		  {{ csrf_input }}
-		  <input name="name" type="text" value="" placeholder="Ваше имя"/>
-		  <input name="contact" type="text" value="" placeholder="Контакт: Телефон / Skype / Email"/>
+		  <input name="name" type="text" value="{% if lead %}{{lead.name}}{% endif %}" placeholder="Ваше имя"/>
+		  <input name="contact" type="text" value="{% if lead %}{{lead.contact}}{% endif %}" placeholder="Контакт: Телефон / Skype / Email"/>
 		  <textarea cols="30" name="comment" rows="10" placeholder="Дополнительная информация (удобное время для занятий)" style="height:5em"></textarea>
 		  {# <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if leads.count() == 0 %}Записаться{% else %}Обновить{% endif %}" /> #}
-		  <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if leads.count() == 0 %}Записаться{% else %}Обновить{% endif %}" />
-		  {% if leads.count() > 0 %}
-			<input id="cancel_enroll" class="btn btn-large mart" type="button" name="" value="Отменить запись" />
-		  {% endif %}
+		  <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if not enrolled %}Записаться{% else %}Обновить{% endif %}" />
+		  <input id="cancel_enroll" class="btn btn-large mart" {% if not enrolled %}style="display:none"{% endif %} type="button" name="" value="Отменить запись" />
 		</form>
 	  </p>
 	</div>

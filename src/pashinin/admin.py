@@ -27,5 +27,14 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(CourseLead)
 class CourseLeadAdmin(admin.ModelAdmin):
-    list_display = ('status', 'course', 'student', 'session_key')
+    list_display = (
+        'name',
+        'contact',
+        'course',
+        'status',
+        'student',
+        'session_key'
+    )
+    list_filter = ('status', )
+    ordering = ['status']
     # ordering = ['id']
