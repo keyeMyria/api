@@ -7,6 +7,13 @@ var gulp = require('gulp'),
 	fs = require("fs"),
 	path = require("path");
 var exec = require('child_process').exec;
+var ts = require('gulp-typescript');
+var uglify = require('gulp-uglify');
+var buffer = require('gulp-buffer');
+var browserify = require('browserify');
+var tap = require('gulp-tap');
+var gutil = require('gulp-util');
+var transform = require('vinyl-transform');
 
 // function get_apps(srcpath) {
 // 	return fs.readdirSync(srcpath).filter(function(file) {
@@ -53,17 +60,89 @@ gulp.task('watch-secrets', function() {
 // Processing SCSS
 gulp.task('css', function() {
 	return gulp.src('src/**/*.scss', {base: "./"})
+	// {base: "./"} - ?
 		.pipe(sass())
 		.pipe(gulp.dest('.', { ext: '.css' }))
 		.pipe(livereload());
 });
 
+// Processing Javascript (Typescript actually)
+gulp.task('scripts', function() {
+    // var tsResult = gulp.src('src/**/*.ts')
+    //     .pipe(ts({
+    //         declaration: true
+    //     }));
+	var browserified = transform(function(filename) {
+		var b = browserify(filename);
+		return b.bundle();
+	});
+
+    // return merge([
+    //     tsResult.dts.pipe(gulp.dest('release/definitions')),
+    //     tsResult.js.pipe(gulp.dest('release/js'))
+    // ]);
+	return gulp.src('src/**/*.ts', {base: "./"})
+		// .pipe(sourcemaps.init())
+        .pipe(ts({
+            // declaration: true
+			allowJs: true,
+			lib: ["dom", "es2016"]
+        }))
+		// .pipe(tap(function (file) {
+		// 	gutil.log('bundling ' + file.path);
+
+		// 	// replace file contents with browserify's bundle stream
+		// 	file.contents = browserify(file.path, {debug: true}).bundle();
+
+	// }))
+		// .pipe(uglify())  // no need to minimize dev-version
+		// .pipe(sourcemaps.write())
+		// .pipe(browserified)
+		// .pipe(gulp.dest('.', { ext: '.min.js' }))
+		.pipe(livereload());
+});
+
+// gulp.task('js', function () {
+
+// 	return gulp.src('src/**/*.js', {read: false}) // no need of reading file because browserify does.
+
+//     // transform file objects using gulp-tap plugin
+// 		.pipe(tap(function (file) {
+
+// 			gutil.log('bundling ' + file.path);
+
+// 			// replace file contents with browserify's bundle stream
+// 			file.contents = browserify(file.path, {debug: true}).bundle();
+
+// 		}))
+
+//     // transform streaming contents into buffer contents (because gulp-sourcemaps does not support streaming contents)
+// 		.pipe(buffer())
+
+//     // load and init sourcemaps
+// 		.pipe(sourcemaps.init({loadMaps: true}))
+
+// 		.pipe(uglify())
+
+//     // write sourcemaps
+// 		.pipe(sourcemaps.write('./'))
+
+// 		.pipe(gulp.dest('dest'));
+
+// });
+
+
 // Reload when changing Jinja templates
 gulp.watch('src/**/jinja2/*.jinja').on('change', livereload.changed);
 
-// Watching SCSS
+// Watching .scss
 gulp.task('scss', function() {
 	gulp.watch('src/**/*.scss', ['css']);
+});
+
+// Watching .ts
+gulp.task('ts', function() {
+	gulp.watch('src/**/*.ts', ['scripts']);
 });
 
 // Start livereload server
@@ -77,6 +156,7 @@ gulp.task('livereload', function() {
 gulp.task('default', [
 	'livereload',
 	'scss',
+	'ts',
 	'settings',
 	'watch-secrets'
 ]);

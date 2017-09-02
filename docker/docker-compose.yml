@@ -32,19 +32,25 @@ services:
     ports:
       - "80:8000"
       - "81:8001"
+      # - "35729:35729"
     volumes:
       - ../:/var/www/project
       - ../../rparser:/var/www/rparser
     depends_on:
       - redis
       - db
+      # - gulp
       # - dbinit
       # - migration
 
     links:
       - db
       - redis
+      # - gulp
       # - "db:database"
+
+    expose:
+      - "35729"  # gulp-livereload port
 
     extra_hosts:
       - "pashinin.com:10.254.239.1"
@@ -56,20 +62,23 @@ services:
 
   # Run Gulp manually with:
   # docker run -v `pwd`:/var/www/pashinin.com --user=`id -u` -it gulp sh -c "gulp"
-  gulp:
-    # privileged: true
-    tty: true
-    image: pashinin/gulp:latest
-    container_name: gulp
-    volumes:
-      - ../:/var/www/project
-    command: sh -c "(cd configs;./config.py secret-example.json secret.json);npm link gulp-sass;npm link gulp-livereload;npm link gulp-shell;npm link gulp-sourcemaps;gulp"
-    # restart: always
-    user: $UID
-    working_dir: /var/www/project
-    # run:
-    #   # link: ["redis:redis"]
-    #   detach: true
+  # gulp:
+  #   # privileged: true
+  #   tty: true
+  #   image: pashinin/gulp:latest
+  #   container_name: gulp
+  #   volumes:
+  #     - ../:/var/www/project
+  #   command: sh -c "(cd configs;./config.py secret-example.json secret.json);npm link gulp-sass;npm link gulp-livereload;npm link gulp-shell;npm link gulp-sourcemaps;npm link gulp-typescript;npm link gulp-uglify;npm link gulp-buffer;npm link gulp-tap;npm link gulp-util;npm link browserify;gulp"
+  #   # command: sh -c "gulp"
+  #   # restart: always
+  #   user: $UID
+  #   working_dir: /var/www/project
+  #   # run:
+  #   #   # link: ["redis:redis"]
+  #   #   detach: true
+  #   expose:
+  #     - "35729"  # gulp-livereload port
 
   # https://hub.docker.com/_/redis/
   redis:

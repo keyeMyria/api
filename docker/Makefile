@@ -9,7 +9,14 @@ rebuild:
 	docker build -t db -f Dockerfile-postgres .
 	docker build -t gulp -f Dockerfile-gulp .
 
+rebuild-gulp:
+	docker build -t gulp -f Dockerfile-gulp .
+
 # Run "docker login" first
 docker-push:
 	docker tag pashinin.com pashinin/pashinin.com
 	docker push pashinin/pashinin.com
+
+push-gulp:
+	docker tag gulp pashinin/gulp
+	docker push pashinin/gulp
