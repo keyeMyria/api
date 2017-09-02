@@ -41,7 +41,9 @@ def send_file(f, *args, **kwargs):
     if not os.path.isfile(filename):
         if settings.DEBUG:
             return HttpResponseNotFound(
-                'File not found\n\nDebug info:\n  File: {}'.format(filename),
+                'File not found\n\nDebug info:\n  Missing file: {}'.format(
+                    filename
+                ),
                 content_type="text/plain")
         else:
             return HttpResponseNotFound(
