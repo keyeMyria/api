@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "allowSyntheticDefaultImports": true,
+        "noEmit": false,
+        "noImplicitAny": false,
+        "allowJs": false,
+        "checkJs": false,
+        "noEmitOnError": false,
+        "jsx": "react",
+        "lib": [ "dom", "es2016" ]
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
