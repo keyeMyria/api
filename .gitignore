@@ -100,3 +100,4 @@ ENV/
 .ropeproject
 
 package-lock.json
+*.min.js
