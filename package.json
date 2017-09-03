@@ -1,0 +1,24 @@
+{
+    "name": "pashinin.com",
+    "version": "0.1.0",
+    "license": "GPL-3.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pashinin-com/pashinin.com.git"
+    },
+    "devDependencies": {
+        "gulp": "latest",
+        "gulp-sass": "latest",
+        "gulp-livereload": "latest",
+        "gulp-shell": "latest",
+        "gulp-sourcemaps": "latest",
+        "gulp-typescript": "latest",
+        "gulp-uglify": "latest",
+        "gulp-util": "latest",
+        "gulp-buffer": "latest",
+        "browserify": "latest",
+        "gulp-tap": "latest",
+        "typescript": "latest",
+        "vinyl-transform": "latest"
+    }
+}
