@@ -1,6 +1,6 @@
 {
     "name": "pashinin.com",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "GPL-3.0",
     "repository": "https://github.com/pashinin-com/pashinin.com.git",
     "devDependencies": {
@@ -19,5 +19,9 @@
         "vinyl-transform": "latest"
     },
     "main": "index.js",
-    "author": "Sergey Pashinin <sergey@pashinin.com>"
+    "author": "Sergey Pashinin <sergey@pashinin.com>",
+    "scripts": {
+        "lint": "jshint **.js",
+        "test": "mocha test/"
+    }
 }
