@@ -2,7 +2,7 @@
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 {% if favicon %}<link rel="shortcut icon" href="/favicon.ico?v={{favicon}}" />{% endif %}
 {# {% if ravenjs %} #}
-<script defer src="{{ static("ravenjs_3.9.1.min.js") }}"></script>
+<script defer src="{{ static("ravenjs_3.9.1.mini.js") }}"></script>
 {# {% endif %} #}
 
 {# https://github.com/github/fetch #}
@@ -29,7 +29,7 @@ h.appendChild(s);
 {% if dragula %}
 <script defer src="{{ static("dragula/3.7.2.min.js") }}"></script>
 {% endif %}
-{% if DEBUG %}<script src="{{static("js/livereload.js")}}"></script>{% endif %}
+{% if DEBUG %}<script src="{{static("js/livereload.mini.js")}}"></script>{% endif %}
 {% if timeago %}{# https://github.com/hustcc/timeago.js #}
 <script defer src="{{ static("timeago/timeago.min.js") }}"></script>
 {% if LANGUAGE_CODE == "ru" %}<script defer src="{{ static("timeago/ru.js") }}"></script>{% endif %}

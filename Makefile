@@ -22,7 +22,7 @@ docker_run = $(docker-compose) run --rm django
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	$(docker-compose) up -d redis db django gulp || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	$(docker-compose) up -d redis db django || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
 # (cd docker;export UID; docker-compose up gulp)
 
 
@@ -81,11 +81,11 @@ dev: dev_pkgs
 
 start: docker
 
-npm:
-	npm install gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps
-
 bash:
-	$(docker_run) sh
+	$(docker_run) bash
+
+test-livereload:
+	$(docker_run) curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Host: example.org" -H "Origin: http://example.org" http://example.org
 
 # --noworker - runserver will NOT start workers
 django:
@@ -95,8 +95,14 @@ django:
 glusterfs:
 	$(docker_run) mount.glusterfs 10.254.239.1:/v3 /mnt/files
 
+npm:
+	npm install gulp gulp-sass gulp-livereload gulp-shell gulp-sourcemaps \
+					 gulp-typescript typescript gulp-buffer
+
 gulp:
-	docker exec $(vm) gulp
+	gulp
+#$(docker-compose) run gulp
+
 
 # For new app (no migrations, no changes detected) - create app with
 # manage.py!
@@ -128,7 +134,11 @@ psql:
 	export UID; docker-compose -f docker/docker-compose.yml run --rm db psql -h db -U pashinin
 
 stop:
-	docker-compose -f docker/docker-compose.yml stop
+	$(docker-compose) stop
+
+restart-gulp:
+	$(docker-compose) stop gulp
+	$(docker-compose) start gulp
 
 recreate-db:
 	docker container stop db
@@ -239,6 +249,11 @@ css: sass
 	find . -type f -name "*.scss" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
 -print | parallel --no-notice sass --cache-location /tmp/sass --style compressed --sourcemap=none {} {.}.css
 
+typescript:
+	find ./src -type f -name "*.ts" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
+-print | parallel --no-notice tsc --lib es6,dom {}
+# {.}.min.js
+
 sass:
 	sass -v > /dev/null || sudo su -c "gem install sass"
 
@@ -273,7 +288,7 @@ testcmd = /bin/sh -c "pytest -vv --durations=3"
 # test: flake8 install_docker
 # install_docker
 test:
-	(cd docker; $(docker_run) $(testcmd))
+	$(docker_run) $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
@@ -307,3 +322,20 @@ hosts:
 
 files:
 	ag -o --nofilename --nogroup "{{\s*file\(.+}}"
+
+# For ES5 (2009): sudo npm install -g uglify-js
+# For ES6 (2015): sudo npm install -g uglify-es
+#
+# $ uglifyjs -V
+# uglify-js 3.0.28
+minify-js:
+	find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice \
+uglifyjs {} -m -o {.}.min.js
+
+test-js-style:
+	./node_modules/eslint/bin/eslint.js ./src
+# find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice \
+# ./node_modules/standard/bin/cmd.js --env browser {}
+
+test-python-style:
+	make flake8

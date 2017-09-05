@@ -518,7 +518,7 @@
     _ref = document.getElementsByTagName('script');
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       element = _ref[_i];
-      if ((src = element.src) && (m = src.match(/^[^:]+:\/\/(.*)\/z?livereload\.js(?:\?(.*))?$/))) {
+      if ((src = element.src) && (m = src.match(/^[^:]+:\/\/(.*)\/z?livereload\.mini\.js(?:\?(.*))?$/))) {
         options = new Options();
         options.https = src.indexOf("https") === 0;
         if (mm = m[1].match(/^([^\/:]+)(?::(\d+))?$/)) {

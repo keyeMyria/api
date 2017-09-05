@@ -1,6 +1,10 @@
 Javascript, CSS
 ===============
 
+Javascript styles: Google, AirBnB, Standard. I use AirBnB, really
+cool. Google style for example also requires jsdoc strings for every
+function and class (like Emacs).
+
 All common static files like javascript libraries are located under
 `core/static`.
 
