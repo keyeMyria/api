@@ -134,7 +134,7 @@ class DaySchedule {
   updateSchdeule(lessons) {
     this.clear();
     let i = 1;
-    lessons.forEach((lesson) => {
+    Array.from(lessons).forEach((lesson) => {
       this.updateLesson(i, lesson);
       i += 1;
     });
@@ -168,7 +168,7 @@ class Student {
     editbox.classList.remove('hide');
     // editbox.classList.remove("hide");
     // this.selectSchedule();
-    document.querySelectorAll('.lesson').forEach((lesson) => {
+    Array.from(document.querySelectorAll('.lesson')).forEach((lesson) => {
       lesson.classList.add('selected');
     });
   }
@@ -224,7 +224,7 @@ class Students {
     // });
 
     // for (let element of document.getElementsByClassName('student')) {
-    document.getElementsByClassName('student').forEach((element) => {
+    Array.from(document.getElementsByClassName('student')).forEach((element) => {
       // let id = parseInt(element.getAttribute("data-id"));
       // // console.log(id);
       // this.addStudents(id);
@@ -343,7 +343,7 @@ class Lesson {
 class Week {
   constructor() {
     // for (let lesson of document.getElementsByClassName('lesson')) {
-    document.getElementsByClassName('lesson').forEach((lesson) => {
+    Array.from(document.getElementsByClassName('lesson')).forEach((lesson) => {
       lesson.addEventListener('click', () => {
         // e.preventDefault();
         const L = new Lesson(this);
@@ -373,7 +373,7 @@ class Week {
     });
 
     // for (let time of document.getElementsByClassName('day-time')) {
-    document.getElementsByClassName('day-time').forEach((time) => {
+    Array.from(document.getElementsByClassName('day-time')).forEach((time) => {
       time.addEventListener('click', (e) => {
         e.preventDefault();
         // console.log(e.target);

@@ -66,7 +66,9 @@ ol li{margin-top:1em}
 {% block mainbot %}
   <div style="background-color:#eee;">
 	<div class="w pad-sm" >
-	  <h2>Запись <i class="icon icon-ok-circle" style="font-size:2em;float:right">&#xE802;</i></h2>
+	  <h2>Запись
+		{# <i class="icon icon-ok-circle" style="font-size:2em;float:right">&#xE802;</i> #}
+	  </h2>
 
 	  <p>
 		<table>
@@ -79,7 +81,7 @@ ol li{margin-top:1em}
 			<td>
 			  <span class="enroll-status-indb{% if not enrolled %} hide{% endif %}">Заявка отправлена (в базе данных)</span>
 			  <span class="enroll-status-no{% if enrolled %} hide{% endif %}">Вы не записаны</span>
-			  <p>Я перезвоню Вам как только освобожусь</p>
+			  {# <p>Я перезвоню Вам как только освобожусь</p> #}
 			</td>
 		  </tr>
 		</table>
