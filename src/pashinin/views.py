@@ -14,7 +14,7 @@ from django.http import HttpResponse, Http404
 from .forms import Enroll, AddStudent, CourseEnrollForm
 from .models import Lesson, CourseLead, Course
 # from django.utils.decorators import method_decorator
-# from raven.contrib.django.raven_compat.models import client
+from raven.contrib.django.raven_compat.models import client
 # from django.views.decorators.csrf import ensure_csrf_cookie
 # from rest_framework.views import APIView
 from channels import Channel
@@ -324,21 +324,25 @@ class CourseView(Base):
 
         # cancel course enroll
         if 'cancel' == request.POST.get('action'):
-            if c['user'].is_authenticated:
-                lead = CourseLead.objects.get(
-                    course=c['course'],
-                    student=c['user']
-                )
+            try:
+                if c['user'].is_authenticated:
+                    lead = CourseLead.objects.get(
+                        course=c['course'],
+                        student=c['user']
+                    )
+                else:
+                    if not request.session.session_key:
+                        request.session.save()
+                    lead = CourseLead.objects.get(
+                        course=c['course'],
+                        session_key=request.session.session_key,
+                        student=None
+                    )
+            except CourseLead.DoesNotExist:
+                client.captureException()
             else:
-                if not request.session.session_key:
-                    request.session.save()
-                lead = CourseLead.objects.get(
-                    course=c['course'],
-                    session_key=request.session.session_key,
-                    student=None
-                )
-            lead.status = 1
-            lead.save()
+                lead.status = 1
+                lead.save()
             # TODO: change lead status to "cancelled by user"
             return HttpResponse(json.dumps({'code': 0}))
 
