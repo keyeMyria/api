@@ -4,6 +4,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/pashinin-com/pashinin.com.git",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "browserify": "latest",
     "chokidar": "latest",
     "eslint": "^4.6.1",
@@ -31,7 +32,8 @@
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js ./src",
     "lint2": "./node_modules/standard/bin/cmd.js",
-    "test": "mocha test/"
+    "test": "mocha test/",
+    "build": "babel src -d src"
   },
   "standard": {
     "ignore": [
@@ -40,5 +42,8 @@
       "/lib/ckeditor/",
       "tmp.js"
     ]
+  },
+  "babel": {
+
   }
 }
