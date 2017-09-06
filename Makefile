@@ -283,16 +283,6 @@ localecompile:
 py:
 	$(python)
 
-# testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
-testcmd = /bin/sh -c "pytest -vv --durations=3"
-# test: flake8 install_docker
-# install_docker
-test:
-	$(docker_run) $(testcmd)
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
-
 flake8: install_flake8
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
@@ -323,19 +313,36 @@ hosts:
 files:
 	ag -o --nofilename --nogroup "{{\s*file\(.+}}"
 
+
+# Javascript
+js_files = find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice
+
 # For ES5 (2009): sudo npm install -g uglify-js
 # For ES6 (2015): sudo npm install -g uglify-es
 #
 # $ uglifyjs -V
 # uglify-js 3.0.28
 minify-js:
-	find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice \
-uglifyjs {} -m -o {.}.min.js
+	$(js_files) ./node_modules/uglify-es/bin/uglifyjs {.}.min.js -m -o {.}.min.js
+
+babel-js:
+	$(js_files) ./node_modules/babel-cli/bin/babel.js {} --minified --no-comments -o {.}.min.js
+
+
+# Tests
 
 test-js-style:
 	./node_modules/eslint/bin/eslint.js ./src
-# find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice \
-# ./node_modules/standard/bin/cmd.js --env browser {}
 
 test-python-style:
 	make flake8
+
+# testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
+testcmd = /bin/sh -c "pytest -vv --durations=3"
+# test: flake8 install_docker
+# install_docker
+test:
+	$(docker_run) $(testcmd)
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
+# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"

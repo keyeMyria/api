@@ -5,6 +5,8 @@
   "repository": "https://github.com/pashinin-com/pashinin.com.git",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
     "browserify": "latest",
     "chokidar": "latest",
     "eslint": "^4.6.1",
@@ -14,6 +16,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "global": "^4.3.2",
     "gulp": "latest",
+    "gulp-babel": "^7.0.0",
     "gulp-buffer": "latest",
     "gulp-livereload": "latest",
     "gulp-sass": "latest",
@@ -25,6 +28,7 @@
     "gulp-util": "latest",
     "standard": "^10.0.3",
     "typescript": "latest",
+    "uglify-es": "^3.0.28",
     "vinyl-transform": "latest"
   },
   "main": "index.js",
@@ -44,6 +48,25 @@
     ]
   },
   "babel": {
-
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 3 Chrome versions",
+              "last 3 Firefox versions",
+              "last 2 ChromeAndroid versions",
+              "last 2 FirefoxAndroid versions",
+              "last 2 iOS versions"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "write": "^1.0.3"
   }
 }

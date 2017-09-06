@@ -14,6 +14,9 @@ var browserify = require('browserify')
 // var tap = require('gulp-tap')
 // var gutil = require('gulp-util')
 var transform = require('vinyl-transform')
+const gbabel = require('gulp-babel');
+const babel = require('babel-core');
+const writeFile = require('write');
 
 // function get_apps(srcpath) {
 // return fs.readdirSync(srcpath).filter(function(file) {
@@ -64,27 +67,29 @@ gulp.task('css', function () {
 })
 
 // Processing Javascript (Typescript actually)
-gulp.task('scripts', function () {
-    // var tsResult = gulp.src('src/**/*.ts')
-    //     .pipe(ts({
-    //         declaration: true
-    //     }));
+gulp.task('scripts', () => {
+  // var tsResult = gulp.src('src/**/*.ts')
+  //     .pipe(ts({
+  //         declaration: true
+  //     }));
   // var browserified = transform(function (filename) {
   //   var b = browserify(filename)
   //   return b.bundle()
   // })
 
-    // return merge([
-    //     tsResult.dts.pipe(gulp.dest('release/definitions')),
-    //     tsResult.js.pipe(gulp.dest('release/js'))
-    // ]);
-  return gulp.src('src/**/*.ts', {base: './'})
+  // return merge([
+  //     tsResult.dts.pipe(gulp.dest('release/definitions')),
+  //     tsResult.js.pipe(gulp.dest('release/js'))
+  // ]);
+  return gulp.src('src/**/*[^.min].js', { base: './' })
+    .pipe(babel())
   // .pipe(sourcemaps.init())
-    .pipe(ts({
-      // declaration: true
-      allowJs: true,
-      lib: ['dom', 'es2016']
-    }))
+  // console.log(output)
+    // .pipe(ts({
+    //   // declaration: true
+    //   allowJs: true,
+    //   lib: ['dom', 'es2016']
+    // }))
   // .pipe(tap(function (file) {
   //     gutil.log('bundling ' + file.path);
 
@@ -95,9 +100,9 @@ gulp.task('scripts', function () {
   // .pipe(uglify())  // no need to minimize dev-version
   // .pipe(sourcemaps.write())
   // .pipe(browserified)
-  // .pipe(gulp.dest('.', { ext: '.min.js' }))
-    .pipe(livereload())
-})
+    .pipe(gulp.dest('.', { ext: '.min.js' }))
+    .pipe(livereload());
+});
 
 // gulp.task('js', function () {
 
@@ -129,29 +134,51 @@ gulp.task('scripts', function () {
 // });
 
 // Reload when changing Jinja templates
-gulp.watch('src/**/jinja2/*.jinja').on('change', livereload.changed)
+gulp.watch('src/**/jinja2/*.jinja').on('change', livereload.changed);
 
 // Watching .scss
-gulp.task('scss', function () {
-  gulp.watch('src/**/*.scss', ['css'])
-})
+gulp.task('scss', () => {
+  gulp.watch('src/**/*.scss', ['css']);
+});
 
-// Watching .ts
-gulp.task('ts', function () {
-  gulp.watch('src/**/*.ts', ['scripts'])
-})
+// Watching .js
+gulp.task('js', () => {
+  // gulp.watch('src/**/*[^.min].js', ['scripts']);
+  gulp.watch('src/**/*.js').on('change', (info) => {
+    if (info.path.endsWith('.min.js') || info.path.endsWith('.mini.js')) return;
+    console.log(info.path);
+    const output = `${info.path.substr(0, info.path.lastIndexOf('.'))}.min.js`;
+    babel.transformFile(info.path, (err, result) => {
+      // result; // => { code, map, ast }
+      writeFile(output, result.code)
+        .then(() => {
+          console.log(output);
+        });
+    });
+  // exec('./configs/render.py ' + info.path, function (err, stdout, stderr) {
+  //   console.log(stdout)
+  //   console.log(stderr)
+  // })
+  // // exec('mustache /tmp/conf.json '+ info.path +' > ' +
+  // output, function (err, stdout, stderr) {
+  // // console.log(stdout);
+  // // console.log(stderr);
+  // // });
+  // livereload()
+  });
+});
 
 // Start livereload server
-gulp.task('livereload', function () {
-  livereload.listen()
-})
+gulp.task('livereload', () => {
+  livereload.listen();
+});
 
 // The default task (called when you run `gulp` from cli)
 // gulp.task('default', ['watch', 'scripts', 'images']);
 gulp.task('default', [
   'livereload',
   'scss',
-  'ts',
+  'js',
   'settings',
-  'watch-secrets'
-])
+  'watch-secrets',
+]);
