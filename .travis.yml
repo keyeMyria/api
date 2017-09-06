@@ -22,7 +22,9 @@ python:
   # - "pypy3"
 
 env:
-  - DJANGO_SETTINGS_MODULE=pashinin.settings
+  - DEBUG=true DJANGO_SETTINGS_MODULE=pashinin.settings
+  - DEBUG=false DJANGO_SETTINGS_MODULE=pashinin.settings
+
 
 matrix:
   fast_finish: true
