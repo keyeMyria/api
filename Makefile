@@ -231,11 +231,23 @@ prod: pull
 dbinit-docker:
 	docker exec -it $(container) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
 
+#  Static files
+#
+# --noinput     Do NOT prompt the user for input of any kind
+#
+# -i            ignore some files
+# The default ignored pattern list, ['CVS', '.*', '*~']
+#
+#
+# --dry-run, -n¶
+#     Do everything except modify the filesystem.
+
+static_files = -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 collectstatic:
-	tmp/ve/bin/python src/manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
+	tmp/ve/bin/python src/manage.py collectstatic --noinput $(static_files)
 
 collectstatic-dev:
-	docker exec --user user -it $(container) ./manage.py collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
+	$(docker_run) sh -c "./manage.py collectstatic --noinput $(static_files)"
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 

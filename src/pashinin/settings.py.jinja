@@ -165,6 +165,15 @@ STATICFILES_FINDERS = (
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# Use ManifestStaticFilesStorage for static files versioning
+# (instead of manually writing file.min.js?v=1.2.3)
+#
+# 1. Works only if DEBUG=false
+# 2. Do not forget to run "collectstatic"
+#
+# Default: 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '{{SECRET_KEY}}'
 

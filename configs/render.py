@@ -10,7 +10,8 @@ import json
 #  ./render.py template.jinja ...
 #
 
-config_file = 'tmp/conf.json'
+config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                           'tmp', 'conf.json')
 
 
 def render(filename, data, outdir=None):
