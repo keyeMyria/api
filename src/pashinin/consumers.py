@@ -65,7 +65,7 @@ log = logging.getLogger(__name__)
 
 
 def send_lead_course(f):
-    from .models import CourseLead, Course
+    from .models import Course  # CourseLead
     course = Course.objects.get(slug=f['course'])
     # CourseLead.objects.get_or_create(course=course)
 
