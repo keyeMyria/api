@@ -19,10 +19,6 @@ h.appendChild(s);
 </script>
 
 <script defer src="{{ static("js/serialize.min.js") }}"></script>
-{% if jquery and False %}
-<script defer src="{{ static("js/jquery-3.1.1.mini.js") }}"></script>
-<script defer src="{{ static("js/serialize-object.2.5.0.mini.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
-{% endif %}
 {% if momentjs %}
 <script defer src="{{ static("js/moment.2.17.1.mini.js") }}"></script>
 {% endif %}
