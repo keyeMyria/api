@@ -172,8 +172,10 @@ STATICFILES_FINDERS = (
 # 2. Do not forget to run "collectstatic"
 #
 # Default: 'django.contrib.staticfiles.storage.StaticFilesStorage'
-if not DEBUG:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+if DEBUG or TESTING:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '{{SECRET_KEY}}'
