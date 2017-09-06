@@ -18,21 +18,21 @@ h.appendChild(s);
 };
 </script>
 
-<script defer src="{{ static("js/serialize.js") }}?v=2"></script>
+<script defer src="{{ static("js/serialize.min.js") }}?v=2"></script>
 {% if jquery and False %}
-<script defer src="{{ static("js/jquery-3.1.1.min.js") }}"></script>
-<script defer src="{{ static("js/serialize-object.2.5.0.min.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
+<script defer src="{{ static("js/jquery-3.1.1.mini.js") }}"></script>
+<script defer src="{{ static("js/serialize-object.2.5.0.mini.js") }}"></script>{# https://github.com/macek/jquery-serialize-object #}
 {% endif %}
 {% if momentjs %}
-<script defer src="{{ static("js/moment.2.17.1.min.js") }}"></script>
+<script defer src="{{ static("js/moment.2.17.1.mini.js") }}"></script>
 {% endif %}
 {% if dragula %}
-<script defer src="{{ static("dragula/3.7.2.min.js") }}"></script>
+<script defer src="{{ static("dragula/3.7.2.mini.js") }}"></script>
 {% endif %}
 {% if DEBUG %}<script src="{{static("js/livereload.mini.js")}}"></script>{% endif %}
 {% if timeago %}{# https://github.com/hustcc/timeago.js #}
-<script defer src="{{ static("timeago/timeago.min.js") }}"></script>
-{% if LANGUAGE_CODE == "ru" %}<script defer src="{{ static("timeago/ru.js") }}"></script>{% endif %}
+<script defer src="{{ static("timeago/timeago.mini.js") }}"></script>
+{% if LANGUAGE_CODE == "ru" %}<script defer src="{{ static("timeago/ru.mini.js") }}"></script>{% endif %}
 {# <script>$.timeago.settings.allowFuture = true;</script> #}
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function(event) {
