@@ -25,10 +25,10 @@ const writeFile = require('write');
 // }
 
 // settings.py
-gulp.task('settings', function () {
-  gulp.watch('src/**/settings*.jinja').on('change', function (info) {
+gulp.task('settings', () => {
+  gulp.watch('src/**/settings*.jinja').on('change', (info) => {
     console.log(info.path)
-    var output = info.path.substr(0, info.path.lastIndexOf('.'))
+    var output = info.path.substr(0, info.path.lastIndexOf('.'))  // cut off ".jinja"
     console.log(output)
     exec('./configs/render.py ' + info.path, function (err, stdout, stderr) {
       console.log(stdout)
