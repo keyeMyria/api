@@ -201,6 +201,9 @@ key for temporary users")
         return self.email
 
     def __str__(self):
+        if self.is_lazy:
+            return "{}".format(_('Anonymous'))
+
         if self.first_name:
             return self.first_name
         elif self.email:
