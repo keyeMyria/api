@@ -41,11 +41,6 @@ class CourseLead(models.Model):
         on_delete=models.CASCADE,
         related_name='leads',
     )
-    session_key = models.CharField(
-        max_length=150,
-        # verbose_name='session_key'
-        blank=True, null=True
-    )
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -65,13 +60,10 @@ class CourseLead(models.Model):
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        if self.student:
-            return "{} from {}".format(self.course, self.student)
-        else:
-            return "{} from {}".format(self.course, self.session_key)
+        return "{} from {}".format(self.course, self.student)
 
     class Meta:
-        unique_together = ("course", "session_key", "student")
+        unique_together = ("course", "student")
 
 
 class Lesson(models.Model):

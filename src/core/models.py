@@ -14,6 +14,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 from django_gravatar.helpers import get_gravatar_url
 from . import now
+from lazysignup.utils import is_lazy_user
 
 
 # Travis payload format:
@@ -82,13 +83,16 @@ class AddedChanged(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
-        if not email:
-            raise ValueError('Users must have an email address')
+    def create_user(self, username, email=None, password=None):
+        if email:
+            email = self.normalize_email(email)
+        # else:
+        #     raise ValueError('Users must have an email address')
+        # But not Anons
 
         user = self.model(
-            email=self.normalize_email(email),
-            username=username,
+            email=username,  # this is on purpose! I use email as an unique identifier
+            username=None,
             is_staff=False,
             is_active=True,
             is_superuser=False,
@@ -123,7 +127,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='Email',
         max_length=255,
-        # unique=True,
+        unique=True,
         db_index=True,
         blank=True, null=True,
         default=None,
@@ -131,7 +135,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=200,
         db_index=True,
+        # unique=True,
+        default='',
         blank=True, null=True,
+        help_text=_("This is an unique identifier, not actual username. Can be a session \
+key for temporary users")
     )
     # is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(
@@ -179,6 +187,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     # def social_accounts(self):
     #     """Return authorized social accounts"""
     #     return UserSocialAuth.objects.filter(user=self)
+
+    @property
+    def is_lazy(self):
+        return is_lazy_user(self)
 
     def get_full_name(self):
         "Used in Admin. Dajngo wants this to be defined."

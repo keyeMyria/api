@@ -33,7 +33,6 @@ class CourseLeadAdmin(admin.ModelAdmin):
         'course',
         'status',
         'student',
-        'session_key'
     )
     list_filter = ('status', )
     ordering = ['status']

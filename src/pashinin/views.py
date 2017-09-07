@@ -13,7 +13,8 @@ from django.http import HttpResponse, Http404
 # from django.contrib.auth.models import User
 from .forms import Enroll, AddStudent, CourseEnrollForm
 from .models import Lesson, CourseLead, Course
-# from django.utils.decorators import method_decorator
+from django.utils.decorators import method_decorator
+from lazysignup.decorators import allow_lazy_user
 from raven.contrib.django.raven_compat.models import client
 # from django.views.decorators.csrf import ensure_csrf_cookie
 # from rest_framework.views import APIView
@@ -289,6 +290,7 @@ class Day:
         return str(self.date)
 
 
+@method_decorator(allow_lazy_user, name='dispatch')
 class CourseView(Base):
     template_name = "pashinin_course.jinja"
 
@@ -299,17 +301,10 @@ class CourseView(Base):
         except:
             raise Http404
 
-        if c['user'].is_authenticated:
-            c['leads'] = CourseLead.objects.filter(
-                student=c['user'],
-                course=c['course']
-            )
-        else:
-            c['leads'] = CourseLead.objects.filter(
-                student=None,
-                course=c['course'],
-                session_key=self.request.session.session_key,
-            )
+        c['leads'] = CourseLead.objects.filter(
+            student=c['user'],
+            course=c['course']
+        )
 
         if c['leads'].count() > 0:
             c['lead'] = c['leads'][0]

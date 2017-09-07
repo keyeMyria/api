@@ -26,6 +26,8 @@ from django.contrib.auth import login
 from . import now
 from .menu import Menu
 from braces import views
+from django.utils.decorators import method_decorator
+from lazysignup.decorators import allow_lazy_user
 # from django.utils.timezone import now
 
 log = logging.getLogger(__name__)
@@ -43,6 +45,7 @@ class EnsureCsrfCookieMixin(object):
 
 
 # class Base(EnsureCsrfCookieMixin, TemplateView):
+@method_decorator(allow_lazy_user, name='dispatch')
 class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
@@ -257,7 +260,7 @@ class Login(EnsureCsrfCookieMixin, BaseView):
 
     def get(self, request, **kwargs):
         c = self.get_context_data(**kwargs)
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_lazy:
             return HttpResponseRedirect(reverse("index", host=c['host'].name))
         else:
             return self.render_to_response(c, status=c['status'])

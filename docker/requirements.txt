@@ -60,7 +60,7 @@ django-optimizations
 django-redis-cache
 
 # https://github.com/martinrusev/django-redis-sessions
-django-redis-sessions
+django-redis-sessions==0.5.6
 
 # django-sendfile           # https://github.com/johnsensible/django-sendfile
 #django-polymorphic>=v0.6   # https://github.com/chrisglass/django_polymorphic
@@ -199,3 +199,7 @@ django-cas-ng
 
 # for Django daphne http2 support
 Twisted[tls,http2]
+
+# to work with anons as users
+# django-lazysignup
+git+git://github.com/pashinin/django-lazysignup.git

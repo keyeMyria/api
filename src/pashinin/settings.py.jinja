@@ -302,6 +302,7 @@ INSTALLED_APPS = (
     'django_nose',
     'mptt',
     'raven.contrib.django.raven_compat',
+    'lazysignup',
     # 'social.apps.django_app.default',
 
 
@@ -426,6 +427,7 @@ AUTHENTICATION_BACKENDS = (
     # https://github.com/django/django/blob/master/django/contrib/auth/backends.py
     'django.contrib.auth.backends.ModelBackend',
     # 'core.backends.EmailBackend',
+    'lazysignup.backends.LazySignupBackend',  # for anons to interact as users
     'django_cas_ng.backends.CASBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
@@ -501,6 +503,15 @@ MIGRATION_MODULES = {
 
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS_HOST = '{{redis_server}}'
+# For new version:
+# SESSION_REDIS = {
+#     'host': '{{redis_server}}',
+#     # 'port': 6379,
+#     # 'db': 0,
+#     # 'password': 'password',
+#     # 'prefix': 'session',
+#     # 'socket_timeout': 1
+# }
 
 
 CACHES = {

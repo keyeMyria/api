@@ -4,16 +4,17 @@ vm:
 # docker build --build-arg user=`whoami` Dockerfile
 
 
-rebuild:
+rebuild-main:
 	docker build -t pashinin.com -f Dockerfile .
+
+rebuild-db:
 	docker build -t db -f Dockerfile-postgres .
-	docker build -t gulp -f Dockerfile-gulp .
 
 rebuild-gulp:
 	docker build -t gulp -f Dockerfile-gulp .
 
 # Run "docker login" first
-docker-push:
+push-main:
 	docker tag pashinin.com pashinin/pashinin.com
 	docker push pashinin/pashinin.com
 
