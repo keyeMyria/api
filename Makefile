@@ -242,6 +242,12 @@ dbinit-docker:
 # --dry-run, -n¶
 #     Do everything except modify the filesystem.
 
+createinitialrevisions-dev:
+	$(docker_run) sh -c "./manage.py createinitialrevisions"
+
+createinitialrevisions:
+	tmp/ve/bin/python src/manage.py createinitialrevisions
+
 static_files = -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
 collectstatic:
 	tmp/ve/bin/python src/manage.py collectstatic --noinput $(static_files)

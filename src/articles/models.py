@@ -5,6 +5,7 @@ except:
     raise ImproperlyConfigured('Run: "pip install rparser"')
 
 
+import reversion
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import strip_tags
@@ -38,6 +39,7 @@ log = logging.getLogger(__name__)
 
 
 # class Article(DirtyFieldsMixin, Approved, AddedChanged, Debug, Translated):
+@reversion.register()
 class Article(AddedChanged):
     title = models.CharField(
         max_length=765,
@@ -83,6 +85,12 @@ class Article(AddedChanged):
             'id': self.pk,
             'slug': self.slug
         })
+
+    @property
+    def revision_count(self):
+        from reversion.models import Version
+        versions = Version.objects.get_for_object(self)
+        return len(versions)
 
     def get_header(self):
         if self.header:

@@ -46,8 +46,14 @@
 	  {{article.as_html|safe}}
 	</div>
 	{% if DEBUG %}
-	  <div class="pad-sm" style="color:#aaa">
-		{{article.as_latex|safe}}
+	  <div class="pad-sm" style="border:1px solid #ccc">
+		<h3 style="color:#aaa">DEBUG info</h3>
+		<div class="" style="color:#aaa">
+		  {{article.as_latex|safe}}
+		</div>
+		<div>
+		  Revisions: {{article.revision_count}}
+		</div>
 	  </div>
 	{% endif %}
   {% else %}

@@ -203,3 +203,6 @@ Twisted[tls,http2]
 # to work with anons as users
 # django-lazysignup
 git+git://github.com/pashinin/django-lazysignup.git
+
+# adding history to models:
+django-reversion
