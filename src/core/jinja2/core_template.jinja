@@ -88,7 +88,7 @@
 	  <div style="text-align:right;position:relative;height:100%;overflow:visible;padding-right:.3em;line-height:34px">
 		<nav>
 		  <a id="profile" class="ib padlr-sm" href="" style="text-decoration:none;height:50px;">
-			<img class="hpad2 ib" alt="" src="{{ user.gravatar(30) }}" style="border:0px solid #ccc; width:30px;border-radius:2px"/>
+			<img class="hpad2 ib" alt="" src="{% if user.gravatar %}{{ user.gravatar(30) }}{% endif %}" style="border:0px solid #ccc; width:30px;border-radius:2px"/>
 			<span class="ib" style="width: 0; height: 0; border:4px solid transparent; border-top-color: #000;"></span>
 		  </a>
 		</nav>
