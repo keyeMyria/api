@@ -248,12 +248,12 @@ createinitialrevisions-dev:
 createinitialrevisions:
 	tmp/ve/bin/python src/manage.py createinitialrevisions
 
-static_files = -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i *.md
+static_files = -i *.scss -i *.sass -i *.less -i *.coffee -i *.map -i "*.md"
 collectstatic:
 	tmp/ve/bin/python src/manage.py collectstatic --noinput $(static_files)
 
 collectstatic-dev:
-	$(docker_run) sh -c "./manage.py collectstatic --noinput $(static_files)"
+	$(docker_run) ./manage.py collectstatic --noinput $(static_files)
 
 # sudo -H -u www-data tmp/ve/bin/python src/manage.py collectstatic
 
