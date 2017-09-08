@@ -43,7 +43,7 @@ class Category(Tree):
 
 
 class Task(models.Model):
-    """Any task. Anything that can be solved."""
+    """Any education task. Anything that can be solved."""
 
     # Solution status
     NO_SOLUTION = 0

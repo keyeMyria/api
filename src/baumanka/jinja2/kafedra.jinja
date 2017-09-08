@@ -45,7 +45,12 @@ div.k{padding-top:1rem}
 {% for sem in sems %}
   {% if sem.have_data %}
 	<p><a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem.i})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>
+  {% else %}
+	{% if DEBUG %}
+	  <p>DEBUG: no files in /Семестр {{ sem.i }}</p>
+	{% endif %}
   {% endif %}
+{% else %}
 {% endfor %}
 
 

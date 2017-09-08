@@ -2,6 +2,7 @@
 from django.db import models
 # from raven.contrib.django.raven_compat.models import client
 from core.models import AddedChanged
+from core.files.models import File
 from dirtyfields import DirtyFieldsMixin
 # from django.core.urlresolvers import reverse
 
@@ -9,7 +10,8 @@ from dirtyfields import DirtyFieldsMixin
 class EduMaterial(DirtyFieldsMixin, AddedChanged):
     subject = models.CharField(max_length=200)
     semestr = models.SmallIntegerField()
-    files = models.ForeignKey("corefiles.UpToDateFileSet")
+    # files = models.ForeignKey("corefiles.UpToDateFileSet")
+    files = models.ManyToManyField(File)
     comment = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:

@@ -20,27 +20,32 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
     Can't be changed or updated with a new version
 
     """
-    basename = models.CharField(max_length=200, blank=True, null=True)
+    # basename = models.CharField(max_length=200, blank=True, null=True)
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
     size = models.BigIntegerField(null=True, blank=True, editable=False)
     content_type = models.IntegerField(
         blank=True,
         null=True,
-        choices=CT_CHOICES
+        choices=CT_CHOICES,
+        editable=False,
     )
-    content_subtype = models.CharField(max_length=96, blank=True, null=True)
-    public = models.BooleanField(
-        default=False,
-        help_text=_("Anyone can access this file")
+    content_subtype = models.CharField(
+        max_length=96,
+        blank=True, null=True,
+        editable=False,
     )
-    uploader = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        default=None,
-        null=True,
-        blank=True,
-        db_column='uploader'
-    )
-    comment = models.CharField(max_length=200, null=True, blank=True)
+    # public = models.BooleanField(
+    #     default=False,
+    #     help_text=_("Anyone can access this file")
+    # )
+    # uploader = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     default=None,
+    #     null=True,
+    #     blank=True,
+    #     db_column='uploader'
+    # )
+    # comment = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         default_permissions = ()  # Defaults to ('add', 'change', 'delete')
@@ -71,7 +76,6 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         """
 
         # ext = kwargs.get('ext', '')
-        # public = kwargs.get('public', False)
         if 'sha1' in kwargs:
             sha1 = kwargs['sha1']
             return os.path.join(
@@ -83,7 +87,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
 
     @property
     def filename(self):
-        return BaseFile.filename_from_hash(sha1=self.sha1, public=self.public)
+        return BaseFile.filename_from_hash(sha1=self.sha1)
 
     @classmethod
     def get_md5(cls, filename):
@@ -218,9 +222,26 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         return self.sha1
 
 
-class UpToDateFile(AddedChanged):
-    basename = models.CharField(max_length=200, blank=True, null=True)
-    current_file = models.ForeignKey(BaseFile)
+class File(AddedChanged):
+    """File that can be used in other places, renamed and updated.
+
+    New File objects are created for every place requesting a file.
+
+    Example: an article requests files like:
+    \file{name_of_file}. A File object is created with
+    name=name_of_file. Then a file is uploaded or chosen.
+
+    """
+    name = models.CharField(
+        max_length=200,
+        blank=True, null=True
+        # not unique since 2 articles may want different files but name
+        # them the same.
+    )
+    basefile = models.ForeignKey(
+        BaseFile,
+        null=True, blank=True,
+    )
     # groups = models.ManyToManyField(Group)
 
     class Meta:
@@ -228,7 +249,7 @@ class UpToDateFile(AddedChanged):
 
 
 class UpToDateFileSet(AddedChanged):
-    files = models.ManyToManyField(UpToDateFile)
+    files = models.ManyToManyField(BaseFile)
 
     class Meta:
         default_permissions = ()  # Defaults to ('add', 'change', 'delete')
