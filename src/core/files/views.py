@@ -2,7 +2,7 @@ import json
 import os
 from core.views import BaseView
 from .sendfile import send_file
-from .models import File, UploadedFile
+from .models import BaseFile as File, UploadedFile
 from core import now
 from .tasks import ensure_fs_ready
 from .forms import UploadedFileForm

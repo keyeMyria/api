@@ -39,13 +39,13 @@ def admin_user(db, django_user_model, django_username_field):
     username_field = django_username_field
 
     try:
-        user = UserModel._default_manager.get(**{username_field: 'admin'})
+        user = UserModel._default_manager.get(**{username_field: 'admin@example.org'})
     except UserModel.DoesNotExist:
         extra_fields = {}
         if username_field != 'username' and username_field != 'email':
             extra_fields[username_field] = 'admin'
         user = UserModel._default_manager.create_superuser(
-            'admin', 'admin@example.com', 'password', **extra_fields)
+            'admin@example.org', 'admin', 'password', **extra_fields)
         return user
 
 

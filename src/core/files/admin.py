@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import File
+from .models import BaseFile
 from .forms import FileForm, FileAddForm
 
 
-@admin.register(File)
-class FileAdmin(admin.ModelAdmin):
+@admin.register(BaseFile)
+class BaseFileAdmin(admin.ModelAdmin):
     # list_display_links = ('title', 'year')
     list_display = ('size', 'content_type', 'content_subtype', 'uploader',
                     'added', 'basename')

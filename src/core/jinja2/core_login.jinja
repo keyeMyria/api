@@ -25,11 +25,9 @@ ol li{margin-top:1em}
   <form id="login" action="{{url("core:login", host=host.name)}}" method="POST">
 	{# {{ csrf_input }} #}
 
-	Email:
-	<input name="username" type="text" value=""/>
+	<input name="username" type="text" value="" placeholder="{{_("Email")}}"/>
 
-	Password:
-	<input name="password" type="password" value=""/>
+	<input name="password" type="password" value="" placeholder="{{_("Password")}}"/>
 	<p></p>
 	<input class="btn btn-primary w100" name="submit" type="submit" value="Sign in"/>
   </form>

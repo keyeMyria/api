@@ -14,7 +14,12 @@ from django.core.files.uploadedfile import (TemporaryUploadedFile,
 from . import CT_CHOICES
 
 
-class File(DirtyFieldsMixin, AddedChanged):
+class BaseFile(DirtyFieldsMixin, AddedChanged):
+    """A single file and it's properties.
+
+    Can't be changed or updated with a new version
+
+    """
     basename = models.CharField(max_length=200, blank=True, null=True)
     sha1 = models.CharField(max_length=40, editable=False, unique=True)
     size = models.BigIntegerField(null=True, blank=True, editable=False)
@@ -59,7 +64,7 @@ class File(DirtyFieldsMixin, AddedChanged):
         Example:
 
         sha1 = '012319f8340cb23cd9568ada37de023ecfedf138'
-        File.filename_from_hash(sha1=sha1)
+        BaseFile.filename_from_hash(sha1=sha1)
         > /mnt/files/012/319/f8340cb23cd9568ada37de023ecfedf138
 
         Where "/mnt/files/" is FILES_ROOT variable (settings.py)
@@ -78,10 +83,11 @@ class File(DirtyFieldsMixin, AddedChanged):
 
     @property
     def filename(self):
-        return File.filename_from_hash(sha1=self.sha1, public=self.public)
+        return BaseFile.filename_from_hash(sha1=self.sha1, public=self.public)
 
     @classmethod
     def get_md5(cls, filename):
+        "Return 32 char MD5 hash"
         blocksize = 32768  # multiple of 128
         hasher = hashlib.md5()
         try:
@@ -150,7 +156,7 @@ class File(DirtyFieldsMixin, AddedChanged):
                 # print(len(data))
             # urllib.urlretrieve(url, f.name)
             # print(f.name)
-            return File.copy_to_archive(f.name)
+            return BaseFile.copy_to_archive(f.name)
 
     # @classmethod
     # def from_bytes(cls, b):
@@ -183,7 +189,7 @@ class File(DirtyFieldsMixin, AddedChanged):
                     for chunk in f.chunks():
                         fd.write(chunk)
         else:
-            raise ValueError("File.write(): how to write {}".format(type(f)))
+            raise ValueError("BaseFile.write(): how to write {}".format(type(f)))
         return filename
 
     @property
@@ -214,7 +220,7 @@ class File(DirtyFieldsMixin, AddedChanged):
 
 class UpToDateFile(AddedChanged):
     basename = models.CharField(max_length=200, blank=True, null=True)
-    current_file = models.ForeignKey(File)
+    current_file = models.ForeignKey(BaseFile)
     # groups = models.ManyToManyField(Group)
 
     class Meta:
@@ -256,7 +262,7 @@ class UploadedFile(models.Model):
     def get_sha1(self):
         if self.sha1:
             return self.sha1
-        self.sha1 = File.get_sha1(self.filename)
+        self.sha1 = BaseFile.get_sha1(self.filename)
         self.save()
         return self.sha1
 
@@ -269,7 +275,7 @@ class UploadedFile(models.Model):
     def in_archive_already(self):
         """Located in private or public folders?"""
         return os.path.isfile(
-            File.filename_from_hash(
+            BaseFile.filename_from_hash(
                 sha1=self.get_sha1()
             )
         )

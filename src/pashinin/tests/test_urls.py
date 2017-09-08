@@ -24,14 +24,14 @@ def test_urls_tidy(admin_client):
 def test_urls_as_admin(admin_client):
     urls = ['/', '/contacts', '/faq', '/articles/']
     urls += ['/_/celery', '/_/nginx', '/_/updates',
-             '/_/django/corefiles/file/']
+             '/_/django/corefiles/basefile/']
     for url in urls:
         r = admin_client.get(url)
         assert r.status_code == 200
 
 
 @pytest.mark.urls('pashinin.urls')
-def test_urls_as_anon(client):
+def test_urls_as_anon(client, db):
     urls = ['/', '/contacts', '/faq']
     for url in urls:
         r = client.get(url)
@@ -50,14 +50,28 @@ def test_login_logout(admin_client, settings):
     assert r.status_code == 302
 
     # admin_client.login(username='admin@example.com', password='password')
+    from core.models import User
+    u = User.objects.filter()[0]
+    assert User.objects.all().count() == 1
+    assert u.email == 'admin@example.org'
+    # assert u.is_superuser
 
     # try to log in again
     r = admin_client.post(settings.LOGIN_URL, {
-        'username': 'admin@example.com',
-        'password': 'password'
+        # these credentials are defined in /conftest.py file.
+        # not any fixtures!
+        'username': 'admin@example.org', 'password': 'password'
     })
     assert r.json() == {'code': 0}
     assert r.status_code == 200
 
+    # non-existent user must fail
+    r = admin_client.post(settings.LOGIN_URL, {
+        'username': 'admin2', 'password': 'password2'
+    })
+    assert 'errors' in r.json()
+    assert r.status_code == 200
+
+    # Logged in admin should have access to Updates page
     r = admin_client.get('/_/updates')
     assert r.status_code == 200

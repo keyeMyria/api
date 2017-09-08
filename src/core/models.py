@@ -83,16 +83,13 @@ class AddedChanged(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email=None, password=None):
-        if email:
-            email = self.normalize_email(email)
-        # else:
-        #     raise ValueError('Users must have an email address')
-        # But not Anons
+    def create_user(self, email, username=None, password=None):
+        if not email:
+            raise ValueError('Users must have an email address')
 
         user = self.model(
-            email=username,  # this is on purpose! I use email as an unique identifier
-            username=None,
+            email=self.normalize_email(email),
+            username=username,
             is_staff=False,
             is_active=True,
             is_superuser=False,
@@ -111,8 +108,8 @@ class UserManager(BaseUserManager):
             random_index = randint(0, count - 1)
             return self.all()[random_index]
 
-    def create_superuser(self, username, email, password):
-        user = self.create_user(username, email, password)
+    def create_superuser(self, email, username, password):
+        user = self.create_user(email, username, password)
         user.is_active = True
         user.is_staff = True
         user.is_superuser = True

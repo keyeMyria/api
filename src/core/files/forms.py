@@ -1,6 +1,6 @@
 import os
 from django import forms
-from .models import UploadedFile, File
+from .models import UploadedFile, BaseFile
 
 
 class UploadedFileForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class FileAddForm(forms.ModelForm):
         return m
 
     class Meta:
-        model = File
+        model = BaseFile
         # exclude = ['sha1']
         fields = ['file', 'comment', 'public']
 
@@ -98,7 +98,7 @@ class FileForm(forms.ModelForm):
         return data
 
     class Meta:
-        model = File
+        model = BaseFile
         # exclude = ['restrictions', 'added_on', 'rev']
         fields = ['comment', 'public']
         # widgets = {'title': TextInput(attrs={'class': 'spanX'})}

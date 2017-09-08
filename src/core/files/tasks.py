@@ -1,6 +1,6 @@
 import os
 from os.path import isfile
-from .models import File, UploadedFile
+from .models import BaseFile, UploadedFile
 from celery import shared_task
 from django.conf import settings
 from raven.contrib.django.raven_compat.models import client
@@ -57,8 +57,8 @@ def process_file(f):
 @shared_task
 def files_process():
     try:
-        # for f in File.objects.exclude(debug__gte={'v': v}):
-        for f in File.objects.filter():
+        # for f in BaseFile.objects.exclude(debug__gte={'v': v}):
+        for f in BaseFile.objects.filter():
             process_file(f)
     except Exception:
         client.captureException()
@@ -77,10 +77,10 @@ def move_all_uploads():
 def move_upload_to_files(upload):
     if isfile(upload.filename):
         if not upload.in_archive_already:
-            File.copy_to_archive(upload.filename)
+            BaseFile.copy_to_archive(upload.filename)
         os.remove(upload.filename)
     upload.delete()
-    f, c = File.objects.get_or_create(sha1=upload.get_sha1())
+    f, c = BaseFile.objects.get_or_create(sha1=upload.get_sha1())
 
     # Set Content-type for a file
     if f.content_type is None or f.content_subtype is None:

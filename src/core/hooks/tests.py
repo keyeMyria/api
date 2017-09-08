@@ -3,7 +3,7 @@ import pytest
 
 
 @pytest.mark.urls('core.hooks.urls')
-def test_hooks(client):
+def test_hooks(client, db):
     r = client.get('/github')
     assert r.status_code == 404           # no get, only post
     r = client.post('/_/hooks/github', {})

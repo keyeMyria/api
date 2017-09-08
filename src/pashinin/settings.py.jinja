@@ -213,6 +213,10 @@ MIDDLEWARE_CLASSES = (
     # AuthenticationMiddleware
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
 
+    # Wrap the every request that isn’t GET, HEAD or OPTIONS in a
+    # revision block:
+    'reversion.middleware.RevisionMiddleware',
+
 
     'django.contrib.messages.middleware.MessageMiddleware',
 

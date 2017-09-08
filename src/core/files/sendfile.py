@@ -4,7 +4,7 @@ import magic         # mimetypes based on content (better)
 from django.http import HttpResponse, HttpResponseNotFound
 from django.conf import settings
 from core import underDjangoDebugServer
-from .models import File
+from .models import BaseFile
 
 
 def _convert_file_to_url(filename):
@@ -28,7 +28,7 @@ def send_file(f, *args, **kwargs):
     # To have the file downloaded rather than viewed:
     #   Content-Type: application/pdf
     #   Content-Disposition: attachment; "filename.pdf"
-    if isinstance(f, File):
+    if isinstance(f, BaseFile):
         filename = f.filename
     elif isinstance(f, str):
         filename = f
@@ -53,7 +53,7 @@ def send_file(f, *args, **kwargs):
     response = HttpResponse()
 
     # Set Content-type
-    if isinstance(f, File) and f.content_type is not None and f.content_subtype:  # noqa
+    if isinstance(f, BaseFile) and f.content_type is not None and f.content_subtype:  # noqa
         response['Content-type'] = f.content_type_string
     else:
         # Always need to set a content type
