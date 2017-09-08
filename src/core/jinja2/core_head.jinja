@@ -121,9 +121,9 @@ timeagoInstance.render(document.querySelectorAll('.timeago'));}});
 {% endif %}
 <script defer src="{{ static("js/main.js") }}?v=4"></script>
 {% if dropzone %}{# should be after main.js (getCookie() function) #}
-<script defer src="{{ static("dropzone/dropzone.min.js") }}"></script>
+<script defer src="{{ static("dropzone/dropzone.mini.js") }}"></script>
 {% if user.is_superuser %}
-<script defer src="{{ static("dropzones/body.js") }}?v=2"></script>
+<script defer src="{{ static("dropzones/body.js") }}"></script>
 {% endif %}
 {% endif %}
 {% if hljs %}
