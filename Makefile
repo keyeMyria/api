@@ -203,6 +203,8 @@ update:
 	make pip
 	sudo -H -u www-data make configs
 	sudo -H -u www-data make css
+	sudo -H -u www-data make babel-js
+	sudo -H -u www-data make minify-js
 	sudo -H -u www-data make collectstatic
 	(cd configs; make ln_nginx)
 	(cd src; `python ../configs/makeve.py` manage.py migrate)
