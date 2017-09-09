@@ -48,7 +48,6 @@ def test_download_core_files(client, db, settings):
     assert r.json()['len'] > 10  # number of files > 10
 
 
-
 @pytest.mark.urls('pashinin.urls')
 def test_urls_as_anon(client, db):
     urls = ['/', '/contacts', '/faq']
