@@ -33,6 +33,8 @@ def test_urls_as_admin(admin_client):
         assert r.status_code == 200
 
 
+@pytest.mark.ci
+@pytest.mark.xfail(reason='domain points to localhost on Travis')
 @pytest.mark.urls('pashinin.urls')
 def test_download_core_files(client, db, settings):
     settings.DEBUG = False
