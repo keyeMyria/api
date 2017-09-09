@@ -76,11 +76,17 @@ class Index(Base):
         f = Enroll(request.POST)
         if f.is_valid():
             Channel('send-me-lead').send(f.json())
-            return HttpResponse(json.dumps({'code': 0}))
+            return HttpResponse(
+                json.dumps({'code': 0}),
+                content_type='application/json'
+            )
         else:
-            return HttpResponse(json.dumps({
-                'errors': f.errors,
-            }))
+            return HttpResponse(
+                json.dumps({
+                    'errors': f.errors,
+                }),
+                content_type='application/json'
+            )
 
 
 class Contacts(Base):

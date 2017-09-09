@@ -26,6 +26,7 @@ def test_urls_as_admin(admin_client):
     urls += [
         '/_/celery', '/_/nginx', '/_/updates',
         # '/_/django/corefiles/basefile/'
+        '/students'
     ]
     for url in urls:
         r = admin_client.get(url)
@@ -76,4 +77,23 @@ def test_login_logout(admin_client, settings):
 
     # Logged in admin should have access to Updates page
     r = admin_client.get('/_/updates')
+    assert r.status_code == 200
+
+
+@pytest.mark.urls('pashinin.urls')
+def test_enroll_from_main_page(client, db):
+    r = client.post('/', {
+        'name': 'admin',
+        'phone': '12345',
+        'message': 'comment'
+    })
+    assert r.json() == {'code': 0}
+    assert r.status_code == 200
+
+    # should fail (no contact field)
+    r = client.post('/', {
+        'name': 'admin',
+        'message': 'comment'
+    })
+    assert 'errors' in r.json()
     assert r.status_code == 200
