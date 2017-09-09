@@ -355,7 +355,7 @@ test-js-style:
 	./node_modules/eslint/bin/eslint.js ./src
 
 test-python-style:
-	make flake8
+	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 # testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
 testcmd = /bin/sh -c "pytest -vv --durations=3"

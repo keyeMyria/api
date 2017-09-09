@@ -2,7 +2,8 @@ from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
 
 
-class StaticViewSitemap(sitemaps.Sitemap):
+# example.org
+class RootSitemap(sitemaps.Sitemap):
     priority = 1
     changefreq = 'daily'
     location = '/'
@@ -11,7 +12,9 @@ class StaticViewSitemap(sitemaps.Sitemap):
 
     def items(self):
         return [
-            'baumanka:index'
+            'index',
+            'faq',
+            'contacts',
         ]
 
     def location(self, item):

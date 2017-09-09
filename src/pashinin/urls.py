@@ -3,8 +3,8 @@ from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 # from django.template.loader import render_to_string
 # from django.http import HttpResponseNotFound
-# from django.contrib.sitemaps.views import sitemap
-from .sitemaps import StaticViewSitemap
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import RootSitemap
 # from core.views import Login
 from .api.urls import urlpatterns as api_urls
 from .views import (
@@ -45,12 +45,12 @@ courses_urls = [
 # handler404 = IndexView.as_view()
 
 sitemaps = {
-    'static': StaticViewSitemap,
+    'static': RootSitemap,
 }
 
 urlpatterns = [
-    # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-    #     name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
     url(r'^articles/', include('articles.urls', namespace='articles')),
     url(r'^api/', include(api_urls, namespace='api')),
     url(r'^courses/', include(courses_urls, namespace='courses')),

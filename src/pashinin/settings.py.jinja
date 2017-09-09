@@ -296,7 +296,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.postgres',
@@ -696,16 +696,17 @@ if DEBUG:
 
 # Do not create temporary users for these "browsers":
 LAZYSIGNUP_USER_AGENT_BLACKLIST = (
-    'AhrefsBot',
-    'Go-http-client',
-    'MJ12bot',  # http://mj12bot.com/
-    'NetcraftSurveyAgent',
+    'ahrefsBot',
     'baiduspider',
     'bingbot',
     'crawler',
+    'go-http-client',
     'googlebot',
     'linkdexbot',
+    'mj12bot',  # MJ12bot http://mj12bot.com/
     'msnbot',
+    'netcraftSurveyAgent',
+    'scanbot',
     'sentry',
     'slurp',
     'yandex',

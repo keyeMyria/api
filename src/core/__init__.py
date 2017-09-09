@@ -3,6 +3,11 @@ import sys
 import datetime
 from django.utils.timezone import utc
 
+from django_hosts.resolvers import reverse as reverse_hosts
+reverse = reverse_hosts
+# from django.core.urlresolvers import reverse as reverse_django
+# reverse = reverse_django
+
 default_app_config = 'core.apps.CoreConfig'
 
 
@@ -54,12 +59,6 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR', '')
     return ip
-
-
-from django_hosts.resolvers import reverse as reverse_hosts
-reverse = reverse_hosts
-# from django.core.urlresolvers import reverse as reverse_django
-# reverse = reverse_django
 
 
 # Detecting mobile device
