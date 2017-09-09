@@ -267,10 +267,6 @@ class Day:
                 self.schedule.append(lesson)
 
     @property
-    def title(self):
-        return 'asd'
-
-    @property
     def lessons(self):
         """Lessons in this day + scheduled lessons."""
         a = (Lesson.objects.filter(

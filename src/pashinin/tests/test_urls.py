@@ -97,3 +97,18 @@ def test_enroll_from_main_page(client, db):
     })
     assert 'errors' in r.json()
     assert r.status_code == 200
+
+
+@pytest.mark.urls('pashinin.urls')
+def test_StudentsView_some_lessons(admin_client, db):
+    from pashinin.models import Lesson
+    from core import now
+    assert Lesson.objects.filter().count() == 0
+    Lesson.objects.create(
+        status=0,
+        start=now(),
+        end=now()
+    )
+    assert Lesson.objects.filter().count() > 0
+    r = admin_client.get('/students')
+    assert r.status_code == 200
