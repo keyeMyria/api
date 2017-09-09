@@ -75,7 +75,7 @@ class UserAdmin(UserAdmin):
     add_form = UserCreationForm
 
     list_display = ('id', 'email', 'date_joined',
-                    'is_active', 'browser_on_creation')
+                    'browser_on_creation', 'created_from_ip')
     list_display_links = ('id', 'email')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
@@ -87,6 +87,7 @@ class UserAdmin(UserAdmin):
             'password',
             'city',
             'browser_on_creation',
+            'created_from_ip',
         )}),
         (_('Permissions'), {
             'fields': (
