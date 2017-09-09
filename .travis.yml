@@ -33,6 +33,9 @@ matrix:
 
 addons:
   postgresql: "9.6"
+
+  # Travis CI will automatically configure the hostnames in /etc/hosts
+  # and resolve them to 127.0.0.1.
   hosts:
     - pashinin.com
 
