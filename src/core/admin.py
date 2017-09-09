@@ -74,9 +74,9 @@ class UserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('id', 'first_name', 'email', 'username', 'date_joined',
-                    'is_active')
-    list_display_links = ('id', 'date_joined')
+    list_display = ('id', 'email', 'date_joined',
+                    'is_active', 'browser_on_creation')
+    list_display_links = ('id', 'email')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
     fieldsets = (
@@ -86,6 +86,7 @@ class UserAdmin(UserAdmin):
             'email',
             'password',
             'city',
+            'browser_on_creation',
         )}),
         (_('Permissions'), {
             'fields': (

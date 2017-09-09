@@ -63,6 +63,9 @@ class BaseView(TemplateView):
 
         c['year'] = date.today().year
         c['user'] = self.request.user
+        if c['user'].is_lazy and not c['user'].browser_on_creation:
+            c['user'].browser_on_creation = self.request.META.get('HTTP_USER_AGENT', None)
+            c['user'].save()
         c['DEBUG'] = settings.DEBUG
         c['DOMAIN'] = settings.DOMAIN
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC

@@ -155,6 +155,13 @@ key for temporary users")
     discord = models.CharField(max_length=200, blank=True, null=True)
     phone = models.CharField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=200, blank=True, null=True)
+    browser_on_creation = models.CharField(
+        max_length=200,
+        db_index=True,
+        default=None,
+        blank=True, null=True,
+        help_text=_("Browser string used when this user was created")
+    )
     # avatar = models.ForeignKey(
     #     'images.Image',
     #     null=True,
