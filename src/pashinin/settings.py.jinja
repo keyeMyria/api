@@ -692,3 +692,15 @@ SHELL_PLUS_PRE_IMPORTS = [
 
 if DEBUG:
     CACHEOPS_ENABLED = False
+
+
+# Do not create temporary users for these "browsers":
+LAZYSIGNUP_USER_AGENT_BLACKLIST = (
+    'slurp',
+    'googlebot',
+    'yandex',
+    'msnbot',
+    'baiduspider',
+    'AhrefsBot',
+    'bingbot',
+)
