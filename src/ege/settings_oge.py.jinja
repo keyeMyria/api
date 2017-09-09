@@ -348,7 +348,8 @@ SKIP_SOUTH_TESTS = True      # To disable South's own unit tests
 # Authentication
 #
 AUTHENTICATION_BACKENDS = (
-    'core.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    # 'core.backends.EmailBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.google.GoogleOAuth2',
