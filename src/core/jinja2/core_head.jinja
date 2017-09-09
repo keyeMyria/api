@@ -119,11 +119,11 @@ timeagoInstance.render(document.querySelectorAll('.timeago'));}});
 {% if filesizejs %}
 <script src="{{ static("filesize.js/3.3.0.js") }}"></script>
 {% endif %}
-<script defer src="{{ static("js/main.js") }}"></script>
+<script defer src="{{ static("js/main.min.js") }}"></script>
 {% if dropzone %}{# should be after main.js (getCookie() function) #}
 <script defer src="{{ static("dropzone/dropzone.mini.js") }}"></script>
 {% if user.is_superuser %}
-<script defer src="{{ static("dropzones/body.js") }}"></script>
+<script defer src="{{ static("dropzones/body.min.js") }}"></script>
 {% endif %}
 {% endif %}
 {% if hljs %}
