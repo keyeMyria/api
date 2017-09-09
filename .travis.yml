@@ -51,6 +51,7 @@ before_install:
   - sudo apt-get install -y -qq yarn
 
 install:
+  - mkdir -p tmp/files
   - make requirements
   - pip install coveralls
   - pip install flake8
