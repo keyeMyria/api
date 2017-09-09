@@ -34,6 +34,22 @@ def test_urls_as_admin(admin_client):
 
 
 @pytest.mark.urls('pashinin.urls')
+def test_download_core_files(client, db, settings):
+    settings.DEBUG = False
+    r = client.post('/_/files/download_core', {})
+    assert r.status_code == 200
+    assert r.json() == []  # return empty list if DEBUG=False
+
+    settings.DEBUG = True
+    r = client.post('/_/files/download_core', {})
+    assert r.status_code == 200
+
+    # a dict with some data if DEBUG=True
+    assert r.json()['len'] > 10  # number of files > 10
+
+
+
+@pytest.mark.urls('pashinin.urls')
 def test_urls_as_anon(client, db):
     urls = ['/', '/contacts', '/faq']
     for url in urls:

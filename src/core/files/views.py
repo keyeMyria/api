@@ -76,7 +76,7 @@ def files_used_in_this_repo():
 class DownloadCore(BaseView):
     def post(self, request, **kwargs):
         if not settings.DEBUG:
-            return HttpResponse('[]')
+            return HttpResponse('[]', content_type='application/json')
 
         ensure_fs_ready()
 
