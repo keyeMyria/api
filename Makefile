@@ -362,7 +362,9 @@ testcmd = /bin/sh -c "pytest -vv --durations=3"
 # test: flake8 install_docker
 # install_docker
 test:
-	$(docker_run) $(testcmd)
+	mkdir -p tmp/files
+	if [[ "$(TRAVIS)" == "true" ]] ; then pytest --cov-config .coveragerc --cov src --cov-report term-missing -v --durations=3; fi;
+	if [[ "$(TRAVIS)" != "true" ]] ; then $(docker_run) $(testcmd); fi;
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"

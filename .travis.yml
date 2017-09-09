@@ -51,7 +51,6 @@ before_install:
   - sudo apt-get install -y -qq yarn
 
 install:
-  - mkdir -p tmp/files
   - make requirements
   - pip install coveralls
   - pip install flake8
@@ -61,7 +60,7 @@ install:
 script:
   - make test-python-style
   - make test-js-style
-  - pytest --cov-config .coveragerc --cov src --cov-report term-missing -v --durations=3
+  - make test
 
 after_success:
   - coveralls
