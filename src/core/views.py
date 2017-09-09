@@ -66,15 +66,16 @@ class BaseView(TemplateView):
         c['user'] = self.request.user
         c['ip'] = get_client_ip(self.request)
 
-        if c['user'].is_lazy and not c['user'].browser_on_creation:
-            c['user'].browser_on_creation = self.request.META.get('HTTP_USER_AGENT', None)
-            c['user'].save()
-        try:
-            if c['user'].is_lazy and not c['user'].created_from_ip:
-                c['user'].created_from_ip = c['ip']
+        if c['user'].is_authenticated:
+            if c['user'].is_lazy and not c['user'].browser_on_creation:
+                c['user'].browser_on_creation = self.request.META.get('HTTP_USER_AGENT', None)
                 c['user'].save()
-        except Exception:
-            client.captureException()
+            try:
+                if c['user'].is_lazy and not c['user'].created_from_ip:
+                    c['user'].created_from_ip = c['ip']
+                    c['user'].save()
+            except Exception:
+                client.captureException()
         # created_from_ip
 
         c['DEBUG'] = settings.DEBUG
