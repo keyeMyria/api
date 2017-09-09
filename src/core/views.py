@@ -26,6 +26,7 @@ from django.contrib.auth import login
 from . import now
 from .menu import Menu
 from braces import views
+from raven.contrib.django.raven_compat.models import client
 from django.utils.decorators import method_decorator
 from lazysignup.decorators import allow_lazy_user
 # from django.utils.timezone import now
@@ -63,9 +64,19 @@ class BaseView(TemplateView):
 
         c['year'] = date.today().year
         c['user'] = self.request.user
+        c['ip'] = get_client_ip(self.request)
+
         if c['user'].is_lazy and not c['user'].browser_on_creation:
             c['user'].browser_on_creation = self.request.META.get('HTTP_USER_AGENT', None)
             c['user'].save()
+        try:
+            if c['user'].is_lazy and not c['user'].created_from_ip:
+                c['user'].created_from_ip = c['ip']
+                c['user'].save()
+        except Exception:
+            client.captureException()
+        # created_from_ip
+
         c['DEBUG'] = settings.DEBUG
         c['DOMAIN'] = settings.DOMAIN
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC
