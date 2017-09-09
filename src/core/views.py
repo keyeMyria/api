@@ -82,7 +82,6 @@ class BaseView(TemplateView):
         c['DEBUG'] = settings.DEBUG
         c['DOMAIN'] = settings.DOMAIN
         c['RAVEN_PUBLIC'] = settings.RAVEN_PUBLIC
-        # c['INSTALLED_APPS'] = settings.INSTALLED_APPS
 
         # libraries
         c["jquery"] = True
@@ -94,17 +93,6 @@ class BaseView(TemplateView):
                    else 'ru'
 
         c['menu'] = Menu([])
-
-        try:
-            c['o'] = settings.OPTIONS
-        except:
-            c['o'] = {}
-        c['ip'] = get_client_ip(self.request)
-        c["analytics"] = not (
-            c['user'].is_superuser or
-            c['ip'].startswith('10.')
-        )
-        c["analytics"] = True  # just always if not DEBUG
         c['status'] = 200
         # c['mobile'] = is_mobile(self.request)
         return c

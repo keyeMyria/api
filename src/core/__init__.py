@@ -2,7 +2,6 @@ import os
 import sys
 import datetime
 from django.utils.timezone import utc
-from django.core.validators import URLValidator
 
 default_app_config = 'core.apps.CoreConfig'
 
@@ -48,15 +47,6 @@ def apps():
         yield (app, path)
 
 
-def correctURL(url):
-    val = URLValidator()
-    try:
-        val(url)
-        return True
-    except:
-        return False
-
-
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
     if x_forwarded_for:
@@ -66,18 +56,10 @@ def get_client_ip(request):
     return ip
 
 
-# def reverse(lookup_view, *args, **kwargs):
-#     if 'host' in kwargs:
-#         return reverse_hosts(lookup_view, *args, **kwargs)
-#     else:
-#         return reverse_django(lookup_view, *args, **kwargs)
-
-try:
-    from django_hosts.resolvers import reverse as reverse_hosts
-    reverse = reverse_hosts
-except:
-    from django.core.urlresolvers import reverse as reverse_django
-    reverse = reverse_django
+from django_hosts.resolvers import reverse as reverse_hosts
+reverse = reverse_hosts
+# from django.core.urlresolvers import reverse as reverse_django
+# reverse = reverse_django
 
 
 # Detecting mobile device
