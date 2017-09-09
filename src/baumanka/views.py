@@ -6,8 +6,9 @@ from core.menu import Menu
 from . import faculties
 from django.conf import settings
 # from core.models import Comment
-# from django.core.urlresolvers import reverse
+# from django.http import Http404
 from core import reverse
+from raven.contrib.django.raven_compat.models import client
 # from .models import EduMaterial
 
 
@@ -125,9 +126,18 @@ class Kafedra(Base):
                     )
                 )
             } for i in range(1, 13)]
-        except:
+            if settings.DEBUG:
+                for sem in c["sems"]:
+                    sem['semdir'] = os.path.join(
+                        baumanka_dir,
+                        c["kafurl"],
+                        'sem'+str(sem['i'])
+                    )
+        except Exception:
             if settings.DEBUG:
                 raise
+            else:
+                client.captureException()
             c['status'] = 404
             # c['kaf'] = {'title': 'no such kaf'}
         return c
@@ -144,6 +154,7 @@ class Sem(Kafedra, DirView):
             kwargs.get('F')+kwargs.get('K'), 'sem'+kwargs.get('sem'))
         c = super(Sem, self).get_context_data(**kwargs)
 
+        c['dropzone'] = True
         c['menu'] = Menu(
             [
                 (c['kafurl'].lower(), {
