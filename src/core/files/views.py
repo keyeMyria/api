@@ -116,9 +116,11 @@ class Upload(BaseView):
             new_file.save()
             from .tasks import move_upload_to_files
             f = move_upload_to_files(new_file)
-            if not f.uploader and user is not None and not user.is_anonymous:
-                f.uploader = user
-                f.save()
+
+            # 'BaseFile' object has no attribute 'uploader'
+            # if not f.uploader and user is not None and not user.is_anonymous:
+            #     f.uploader = user
+            #     f.save()
 
         # TODO: optimize uploaded JPGs
         #
