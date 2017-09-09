@@ -87,3 +87,12 @@ def test_upload(client):
     # downloading
     r2 = client.get('/_/files/' + r.json()['sha1'])
     assert r2.status_code == 200
+
+
+@pytest.mark.django_db
+def test_missing_file(client):
+    sha1 = '0000000000000000000000000000000000000000'
+
+    # downloading
+    r2 = client.get('/_/files/' + sha1)
+    assert r2.status_code == 404
