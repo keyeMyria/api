@@ -122,12 +122,12 @@ class Upload(BaseView):
             #     f.uploader = user
             #     f.save()
 
-        # TODO: optimize uploaded JPGs
-        #
-        # jpegtran -copy none -optimize -perfect inputimage.jpg >
-        # outputimage.jpg
+            # TODO: optimize uploaded JPGs
+            #
+            # jpegtran -copy none -optimize -perfect inputimage.jpg >
+            # outputimage.jpg
 
-                # user.avatar = Image.from_file(f)
+            # user.avatar = Image.from_file(f)
             return HttpResponse(json.dumps({
                 'url': f.get_absolute_url(),
                 'id': f.pk,

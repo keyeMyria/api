@@ -1,5 +1,5 @@
-from django.contrib import admin
-from .models import BaseFile
+# from django.contrib import admin
+# from .models import BaseFile
 # from .forms import FileForm, FileAddForm
 
 

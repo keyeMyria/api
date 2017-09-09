@@ -193,7 +193,9 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
                     for chunk in f.chunks():
                         fd.write(chunk)
         else:
-            raise ValueError("BaseFile.write(): how to write {}".format(type(f)))
+            raise ValueError(
+                "BaseFile.write(): how to write {}".format(type(f))
+            )
         return filename
 
     @property
