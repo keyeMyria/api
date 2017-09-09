@@ -14,10 +14,12 @@ def test_deploy_project(settings):
     # assert result.successful()
 
 
-# @pytest.mark.ci
-# def test_get_url():
-#     from . import get
-#     html, info = get("https://google.com")
-#     print(html, info)
-#     assert html is not None
-#     assert False
+@pytest.mark.ci
+def test_get_url():
+    from . import get
+    # (string, requests object)
+    html, r = get("https://google.com")
+    # print(html, info)
+    assert html is not None
+    assert r is not None
+    # assert False

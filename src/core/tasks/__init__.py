@@ -30,7 +30,11 @@ url_get_version = 7
 
 @shared_task
 def get(url, charset='utf-8', force=False):
-    """Just GETs an URL."""
+    """Get URL with GET method.
+
+    Return a tuple: (str, {'r': <response object>})
+
+    """
     # v = 7
 
     import lxml
@@ -78,12 +82,12 @@ def get(url, charset='utf-8', force=False):
         return r.text, {'r': r}
 
 
-@shared_task
-def Popen(cmd):
-    from subprocess import Popen
-    if isinstance(cmd, str):
-        cmd = cmd.split()
-    Popen(cmd)
+# @shared_task
+# def Popen(cmd):
+#     from subprocess import Popen
+#     if isinstance(cmd, str):
+#         cmd = cmd.split()
+#     Popen(cmd)
 
 
 @shared_task
