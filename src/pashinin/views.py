@@ -303,8 +303,9 @@ class CourseView(Base):
         except:
             raise Http404
 
+        user = c['user'] if c['user'].is_authenticated else None
         c['leads'] = CourseLead.objects.filter(
-            student=c['user'],
+            student=user,
             course=c['course']
         )
 

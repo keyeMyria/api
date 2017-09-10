@@ -73,17 +73,17 @@ ol li{margin-top:1em}
 	  <p>
 		<table>
 		  <tr>
-			<td>Курс</td>
-			<td><b>{{course.name}}</b></td>
+			<td class="pad-sm">Курс</td>
+			<td class="pad-sm"><b>{{course.name}}</b></td>
 		  </tr>
-		  <tr>
-			<td class="padr">Статус</td>
-			<td>
-			  <span class="enroll-status-indb{% if not enrolled %} hide{% endif %}">Заявка отправлена (в базе данных)</span>
-			  <span class="enroll-status-no{% if enrolled %} hide{% endif %}">Вы не записаны</span>
-			  {# <p>Я перезвоню Вам как только освобожусь</p> #}
-			</td>
-		  </tr>
+		  {# <tr> #}
+		  {# 	<td class="padr">Статус</td> #}
+		  {# 	<td> #}
+		  {# 	  <span class="enroll-status-indb{% if not enrolled %} hide{% endif %}">Заявка отправлена (в базе данных)</span> #}
+		  {# 	  <span class="enroll-status-no{% if enrolled %} hide{% endif %}">Вы не записаны</span> #}
+		  {# 	  {\# <p>Я перезвоню Вам как только освобожусь</p> #\} #}
+		  {# 	</td> #}
+		  {# </tr> #}
 		</table>
 		<form id="enroll" action="{{request.path}}" method="POST">
 		  {{ csrf_input }}

@@ -62,8 +62,8 @@ class CourseLead(models.Model):
     def __str__(self):
         return "{} from {}".format(self.course, self.student)
 
-    class Meta:
-        unique_together = ("course", "student")
+    # class Meta:
+    #     unique_together = ("course", "student")
 
 
 class Lesson(models.Model):
