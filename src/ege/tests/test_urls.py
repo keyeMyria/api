@@ -14,9 +14,9 @@ def test_urls_as_admin(admin_client, settings):
     assert r.status_code == 302
 
 
-@pytest.mark.skip(reason='not published yet')
+# @pytest.mark.skip(reason='not published yet')
 @pytest.mark.urls('ege.urls')
-def test_urls_as_anon(client, settings):
+def test_urls_as_anon(client, settings, db):
     urls = ['/', settings.LOGIN_URL]
     for url in urls:
         r = client.get(url)
