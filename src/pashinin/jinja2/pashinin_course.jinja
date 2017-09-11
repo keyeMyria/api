@@ -87,12 +87,12 @@ ol li{margin-top:1em}
 		</table>
 		<form id="enroll" action="{{request.path}}" method="POST">
 		  {{ csrf_input }}
-		  <input name="name" type="text" value="{% if lead %}{{lead.name}}{% endif %}" placeholder="Ваше имя"/>
-		  <input name="contact" type="text" value="{% if lead %}{{lead.contact}}{% endif %}" placeholder="Контакт: Телефон / Skype / Email"/>
+		  <input name="name" type="text" value="" placeholder="Ваше имя"/>
+		  <input name="contact" type="text" value="" placeholder="Контакт: Телефон / Skype / Email"/>
 		  <textarea cols="30" name="comment" rows="10" placeholder="Дополнительная информация (удобное время для занятий)" style="height:5em"></textarea>
 		  {# <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if leads.count() == 0 %}Записаться{% else %}Обновить{% endif %}" /> #}
 		  <input class="btn btn-primary btn-large mart" type="submit" name="" value="{% if not enrolled %}Записаться{% else %}Обновить{% endif %}" />
-		  <input id="cancel_enroll" class="btn btn-large mart" {% if not enrolled %}style="display:none"{% endif %} type="button" name="" value="Отменить запись" />
+		  <input id="cancel_enroll" class="btn btn-large mart" {% if not enrolled or True %}style="display:none"{% endif %} type="button" name="" value="Отменить запись" />
 		</form>
 	  </p>
 	</div>
