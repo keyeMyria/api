@@ -28,6 +28,7 @@ templates:
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
 	sudo ln -sf $(dir)/$(domain).zone /etc/bind/$(domain).zone
+	sudo chown bind $(dir)/$(domain).zone
 
 ln_nginxmain:
 	sudo ln -sf $(dir)/nginx.conf /etc/nginx/nginx.conf
