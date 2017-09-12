@@ -24,6 +24,12 @@
 
 
 {% block header %}
+  <div id="notification" {% if self.notification() %}class="pad-sm"{% endif %}
+	   style="border-top:2px solid #F48024;">
+	<div class="w">
+	  {% block notification %}{% endblock %}
+	</div>
+  </div>
 {% if self.adminmenu() and user.is_superuser and False %}
   <div class="w">
 	{% block adminmenu %}
