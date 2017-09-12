@@ -9,7 +9,6 @@ from .views import (
     SubjectTheoryView,
     SubjectTasks
 )
-from core.views import Login
 
 
 # /subj(/year)?/tasks/
@@ -24,6 +23,7 @@ subject_patterns = [
     url(r'^$', SubjectView.as_view(), name="index"),
     url(r'^tasks/', include(tasks_patterns, namespace='tasks')),
     url(r'^theory$', SubjectTheoryView.as_view(), name='theory'),
+    url(r'^(?P<year>\d+)$', SubjectView.as_view(), name="year"),
     # url(r'^(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
 ]
 
@@ -32,17 +32,16 @@ urlpatterns = [
     url(r'^$', Index.as_view(), name='index'),
     # url(r'^task/(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
 
-    # subjects by year
-    url(r'^(?P<year>\d{4})/$', YearView.as_view(), name="year"),
+    # /yyyy - all subjects by year
+    url(r'^(?P<year>\d{4})$', YearView.as_view(), name="year"),
     # url(r'^(?P<year>\d+)(/(?P<subj>\w+))?/$',
     #     SubjectView.as_view(), name="subject"),
 
-    # by subject
-    url(r'^(?P<subj>[a-z]([a-z]|\-)*)(/(?P<year>\d+))?/',
+    # /subject[/yyyy]
+    url(r'^(?P<subj>[a-z]([a-z]|\-)*)/',
         include(subject_patterns, namespace='subject')),
 
 
-    url(r'^login$', Login.as_view(), name='login'),
     url(r'^_/', include('core.urls', namespace='core')),
     url(r'^_/django/', include(admin.site.urls)),
 ]

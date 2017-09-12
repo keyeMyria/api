@@ -237,7 +237,7 @@ CORS_ORIGIN_WHITELIST = (
 
 PARENT_HOST = DOMAIN
 DEFAULT_HOST = 'pashinin'
-ROOT_HOSTCONF = app+'.hosts'  # django-hosts parameter (for subdomains)
+ROOT_HOSTCONF = 'pashinin.hosts'  # django-hosts parameter (for subdomains)
 ROOT_URLCONF = app+'.urls'
 
 # Context processors:
@@ -318,11 +318,13 @@ INSTALLED_APPS = (
     'articles',
     'edu',
     'ege',
-    app,
+    'pashinin',
 
     'mama_cas',
     'django_cas_ng',
 )
+if not app in INSTALLED_APPS:
+    INSTALLED_APPS += (app, )
 
 REST_FRAMEWORK = {
     # TokenAuthentication needed to remove CSRF errors

@@ -6,13 +6,16 @@ things that Travis does are described in :code:`/.travis.yml` file.
 
 Use pytest_. `pytest-django`_ is a plugin for pytest.
 
-.. note::
+Coverage
+--------
 
-   Test coverage helps to discover redundant code or code that is not
-   tested. Current status:
+Status: |coverage|
 
-   .. image:: https://coveralls.io/repos/github/pashinin-com/pashinin.com/badge.svg?branch=master
-      :target: https://coveralls.io/github/pashinin-com/pashinin.com?branch=master
+.. |coverage| image:: https://coveralls.io/repos/github/pashinin-com/pashinin.com/badge.svg?branch=master
+   :target: https://coveralls.io/github/pashinin-com/pashinin.com?branch=master
+
+Test coverage helps to discover redundant code or code that is not
+tested. All coverage settings are in :code:`.coveragerc`
 
 
 .. code-block:: python

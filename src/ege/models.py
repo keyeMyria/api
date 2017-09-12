@@ -75,7 +75,8 @@ class Exam(models.Model):
 
 @receiver(pre_save, sender=Exam)
 def ege_pre_save(instance, *args, **kwargs):
-    instance.info = instance.info.replace("\r\n", "\n")
+    if instance.info:
+        instance.info = instance.info.replace("\r\n", "\n")
 
 
 class Subject(models.Model):

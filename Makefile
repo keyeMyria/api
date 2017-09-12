@@ -358,12 +358,12 @@ test-python-style:
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 # testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
-testcmd = /bin/sh -c "pytest -vv --durations=3"
+testcmd = pytest -vv --durations=3
 # test: flake8 install_docker
 # install_docker
 test:
 	mkdir -p tmp/files
-	if [[ "$(TRAVIS)" == "true" ]] ; then pytest --cov-config .coveragerc --cov src --cov-report term-missing -v --durations=3; fi;
+	if [[ "$(TRAVIS)" == "true" ]] ; then $(testcmd) --cov-config .coveragerc --cov src --cov-report term-missing; fi;
 	if [[ "$(TRAVIS)" != "true" ]] ; then $(docker_run) $(testcmd); fi;
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
