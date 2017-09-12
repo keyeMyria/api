@@ -27,6 +27,7 @@ templates:
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
+	sudo ln -sf $(dir)/$(domain).zone /etc/bind/$(domain).zone
 
 ln_nginxmain:
 	sudo ln -sf $(dir)/nginx.conf /etc/nginx/nginx.conf
@@ -37,7 +38,6 @@ links: ln_nginx ln_nginxmain
 	sudo ln -sf $(dir)/celery.conf $(supervisor_confd)/celery-$(domain).conf
 	sudo ln -sf $(dir)/celery_flower.conf $(supervisor_confd)/celery_flower-$(domain).conf
 	sudo ln -sf $(dir)/phpfpm_params /etc/nginx/phpfpm_params
-	sudo ln -sf $(dir)/$(domain).zone /etc/bind/$(domain).zone
 
 removelinks:
 	sudo rm /etc/nginx/sites-enabled/$(domain).conf
