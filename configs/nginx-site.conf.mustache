@@ -10,8 +10,13 @@ server {
 }
 
 server {
-    server_name    {{domain}};
+    server_name    {{domain}} baumanka.{{domain}};
     listen         80;
+
+    location = /yandex_6ee311da09ea9ea5.html {
+        default_type text/html;
+        return 200 "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>Verification: 6ee311da09ea9ea5</body></html>";
+    }
 
     {{#production}}
     # Redirect from an IP address to a domain name:
