@@ -8,6 +8,7 @@ def test_urls_as_admin(admin_client, settings):
     assert r.status_code == 404
 
     a = ArticleFactory()
+    assert a.revision_count == 0
 
     # redirect to the correct slug
     r = admin_client.get('/articles/{}/asd'.format(a.id))

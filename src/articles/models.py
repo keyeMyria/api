@@ -1,10 +1,3 @@
-from django.core.exceptions import ImproperlyConfigured
-try:
-    from rparser import article_render
-except:
-    raise ImproperlyConfigured('Run: "pip install rparser"')
-
-
 import reversion
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -13,6 +6,7 @@ from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
+from rparser import article_render
 # from dirtyfields import DirtyFieldsMixin
 # from elasticsearch import Elasticsearch
 from unidecode import unidecode
@@ -91,13 +85,6 @@ class Article(AddedChanged):
         from reversion.models import Version
         versions = Version.objects.get_for_object(self)
         return len(versions)
-
-    def get_header(self):
-        if self.header:
-            return self.header
-        self.header = strip_tags(self.html)[:265]
-        self.save()
-        return self.header
 
     @property
     def as_html(self):
