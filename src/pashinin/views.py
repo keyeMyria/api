@@ -1,22 +1,15 @@
 import datetime
-# import json
 from core import json
 from core.views import BaseView
 from core.menu import Menu
 from django.utils.timezone import now, localtime
-# from django.utils.translation import ugettext as _
-# from django.core.urlresolvers import reverse
 from core import reverse
-# from django.conf import settings
 from django.http import HttpResponse, Http404
-# from django.contrib.auth.models import User
 from .forms import Enroll, AddStudent, CourseEnrollForm
 from .models import Lesson, CourseLead, Course
 from django.utils.decorators import method_decorator
 from lazysignup.decorators import allow_lazy_user
 from raven.contrib.django.raven_compat.models import client
-# from django.views.decorators.csrf import ensure_csrf_cookie
-# from rest_framework.views import APIView
 from channels import Channel
 from braces import views
 from django.contrib.auth import get_user_model
