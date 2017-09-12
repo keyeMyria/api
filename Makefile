@@ -210,6 +210,7 @@ update:
 	(cd src; `python ../configs/makeve.py` manage.py migrate)
 	sudo supervisorctl restart worker-pashinin.com
 	sudo service nginx reload
+	sudo service bind9 reload
 
 # TODO: edit pg_hba.conf - put 127.0.0.1 trust
 prod: pull

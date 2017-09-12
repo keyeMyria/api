@@ -1,0 +1,40 @@
+; -*- mode:dns -*-
+$TTL    604800
+@   IN  SOA ns0.{{domain}}. sergey.{{domain}}. (
+            23        ; Serial
+            604800   ; Refresh
+            86400    ; Retry
+            2419200  ; Expire
+            604800 ) ; Negative Cache TTL
+
+         NS  ns0.{{domain}}.
+         NS  ns1.{{domain}}.
+
+ns0		IN	A   {{ip}}
+ns1		IN	A   {{ip}}
+
+{{domain}}.		IN	A	{{ip}}
+s1  	        IN	A	{{ip}}
+www  	        IN	A	{{ip}}
+sentry          IN	A	{{ip}}
+baumanka        IN	A	{{ip}}
+celery          IN	A	{{ip}}
+ege             IN	A	{{ip}}
+oge             IN	A	{{ip}}
+autoconfig      IN	A	{{ip}}
+
+
+;_service._proto.name TTL class SRV priority weight port target
+_jabber._tcp.{{domain}}.  IN  SRV 5           0   5269 {{domain}}.
+_xmpp-client.{{domain}}   IN  SRV 10          0   5222 {{domain}}.
+_xmpp-server.{{domain}}   IN  SRV 10          0   5269 {{domain}}.
+
+@   IN  TXT    "v=spf1 +mx +ip4:{{ip}} +a:{{domain}} +a:sagestyle.ru +a:server451.static.corbina.ru -all"
+
+; key#1, domain {{domain}}, /etc/amavis/{{domain}}-default.key.pem
+default._domainkey.{{domain}}.        3600 TXT (
+  "v=DKIM1; p="
+  "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDs874Fb/vJ6hl9QboYoOeMhOVw"
+  "XC1qPhLKU5KV56umJf+tqr8cX7EfcNGvaQnb9e4jPUFfnKEAC9fmM+4VkeyTPXTw"
+  "MLkGlLxvy02ccDdArVc2ohW7DLNGhafFY2mTXd36kL3F0VkDDUDVTsQhVEuCEBtP"
+  "DQVqMC6MXk4aCEAEawIDAQAB")
