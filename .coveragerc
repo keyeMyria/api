@@ -12,6 +12,7 @@ omit =
     *asgi.py
     *manage.py
     *migrations*
+    *settings*.py
     src/core/hooks/*.py
 
 exclude_lines =
