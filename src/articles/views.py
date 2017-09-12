@@ -5,6 +5,8 @@ from .models import Article  # Revision, ArticleCategory
 from django.core.urlresolvers import reverse
 # from raven.contrib.django.raven_compat.models import client
 from braces import views
+import logging
+log = logging.getLogger(__name__)
 
 
 class ArticlesBase(views.LoginRequiredMixin,
@@ -44,7 +46,7 @@ class ArticleView(ArticlesBase):
                 "articles:article",
                 kwargs={'id': id, 'slug': article.slug}
             )
-            print("redirect: ", c['redirect'])
+            log.debug("redirect: ", c['redirect'])
 
         c["article"] = article
         # c["menu"]['items'][1]['current'] = True

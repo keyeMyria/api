@@ -206,3 +206,6 @@ git+git://github.com/pashinin/django-lazysignup.git
 
 # adding history to models:
 django-reversion
+
+# for generating data in tests
+factory_boy
