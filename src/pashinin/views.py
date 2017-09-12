@@ -6,7 +6,6 @@ from core.menu import Menu
 from django.utils.timezone import now, localtime
 # from django.utils.translation import ugettext as _
 # from django.core.urlresolvers import reverse
-from . import student_info
 from core import reverse
 # from django.conf import settings
 from django.http import HttpResponse, Http404
@@ -443,7 +442,11 @@ class Students(views.LoginRequiredMixin,
         utcnow = localtime(now())
 
         return HttpResponse(
-            json.dumps([student_info(u) for u in User.objects.filter(
+            json.dumps([{
+                'id': u.pk,
+                'name': u.first_name,
+                'email': u.email
+            } for u in User.objects.filter(
                 lessons__start__gt=utcnow-self.last_lesson_period
             )]),
             content_type='application/json'
