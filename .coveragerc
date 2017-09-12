@@ -12,12 +12,11 @@ omit =
     *asgi.py
     *manage.py
     *migrations*
-    *settings*.py
+    src/core/hooks/*.py
 
 exclude_lines =
     pragma: no cover
     def __repr__
-    class Telegram(APIView):
     if self.debug:
     if settings.DEBUG
     raise AssertionError

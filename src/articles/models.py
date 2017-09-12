@@ -1,7 +1,7 @@
 import reversion
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.utils.html import strip_tags
+# from django.utils.html import strip_tags
 from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver

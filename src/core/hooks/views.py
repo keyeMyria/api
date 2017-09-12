@@ -1,10 +1,17 @@
 import json
 import urllib
+import base64
+import requests
+import logging
 from django.http import HttpResponse
 # from django.db.models import Count
-from django.conf import settings
+# from django.conf import settings
 # from django.utils.translation import gettext_lazy as _
+from OpenSSL.crypto import verify, load_publickey, FILETYPE_PEM, X509
+from OpenSSL.crypto import Error as SignatureError
 from rest_framework.views import APIView
+from django.http import HttpResponseBadRequest  # , JsonResponse
+log = logging.getLogger(__name__)
 
 
 class Github(APIView):
@@ -24,27 +31,72 @@ class Github(APIView):
 
 
 class Travis(APIView):
-    "Travis web hook"
+    """Travis CI web hook.
+
+    https://docs.travis-ci.com/user/notifications/#Configuring-webhook-notifications
+
+    Webhooks are delivered with a application/x-www-form-urlencoded
+    content type using HTTP POST, with the body including a payload
+    parameter that contains the JSON webhook payload in a URL-encoded
+    format.
+
+    """
+
+    # Make sure you use the correct config URL, the .org and .com
+    # have different keys!
+    # https://api.travis-ci.org/config
+    # https://api.travis-ci.com/config
+    #
+    # org for free repos, com for companies?
+    TRAVIS_CONFIG_URL = 'https://api.travis-ci.org/config'
 
     def post(self, request, **kwargs):
-        # Security check
-        # Check not anyone can run update but only Travis
-        secret = kwargs.get('secret', None)
-        TRAVIS_SECRET = settings.TRAVIS_SECRET
-        if not TRAVIS_SECRET or TRAVIS_SECRET != secret:
-            return HttpResponse("")
+        # request.body - bytes
+        try:
+            s = request.body.decode("utf-8")  # string
+            d = urllib.parse.parse_qs(s)      # dict with 1 key - "payload"
+            # d["payload"]    is a list with only 1 item - a string
+            # This string contains JSON object described here:
+            # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
+            payload = json.loads(d["payload"][0])
+            # json_payload = parse_qs(request.body)['payload'][0]
+        except Exception as e:
+            log.error({
+                "message": "Bad Travis data",
+                'error': str(e)
+            })
+            return HttpResponseBadRequest({
+                'status': 'failed',
+                'reason': 'malformed data'
+            })
 
+        # Auth
+        # ---------
+        signature = self._get_signature(request)
+        try:
+            public_key = self._get_travis_public_key()
+        except requests.Timeout:
+            log.error({
+                "message": "Timed out retrieving Travis CI public key"
+            })
+            return HttpResponseBadRequest({'status': 'failed'})
+        except requests.RequestException as e:
+            log.error({
+                "message": "Failed to retrieve Travis CI public key",
+                'error': e.message
+            })
+            return HttpResponseBadRequest({'status': 'failed'})
+
+        try:
+            self.check_authorized(signature, public_key, d["payload"][0])
+        except SignatureError:
+            # Log the failure somewhere
+            return HttpResponseBadRequest({'status': 'unauthorized'})
+        # ---------
+        #
         # We are sure it's Travis now
         # Do the job
 
-        # request.body - bytes
-        s = request.body.decode("utf-8")  # string
-        d = urllib.parse.parse_qs(s)      # dict with only 1 key - "payload"
-
-        # d["payload"]    is a list with only 1 item - a string
-        # This string contains JSON object described here:
-        # https://docs.travis-ci.com/user/notifications#Webhooks-Delivery-Format
-        payload = json.loads(d["payload"][0])
         SUCCEDED = payload['result'] == 0
         NOTAG = payload['tag'] is None
         if SUCCEDED and not NOTAG:
@@ -60,6 +112,31 @@ class Travis(APIView):
             project_update.delay(commit_sha1)
 
         return HttpResponse("")
+
+    def check_authorized(self, signature, public_key, payload):
+        """
+        Convert the PEM encoded public key to a format palatable for pyOpenSSL,
+        then verify the signature
+        """
+        pkey_public_key = load_publickey(FILETYPE_PEM, public_key)
+        certificate = X509()
+        certificate.set_pubkey(pkey_public_key)
+        verify(certificate, signature, payload, str('sha1'))
+
+    def _get_signature(self, request):
+        """
+        Extract the raw bytes of the request signature provided by travis
+        """
+        signature = request.META['HTTP_SIGNATURE']
+        return base64.b64decode(signature)
+
+    def _get_travis_public_key(self):
+        """
+        Returns the PEM encoded public key from the Travis CI /config endpoint
+        """
+        r = requests.get(self.TRAVIS_CONFIG_URL, timeout=10.0)
+        r.raise_for_status()
+        return r.json()['config']['notifications']['webhook']['public_key']
 
 
 # telepot: https://github.com/nickoala/telepot
