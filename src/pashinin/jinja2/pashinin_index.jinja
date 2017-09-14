@@ -13,7 +13,7 @@
 {% endblock %}
 
 
-{% block title %}Репетитор по информатике (Москва, Онлайн){% endblock %}
+{% block title %}Репетитор по информатике, курсы программирования{% if city_specific %} в {{in_city}}{% else %}{% endif %} ({% if remote_only %}Skype{% else %}+Skype{% endif %}){% endblock %}
 
 {% block metadescription %}Занятия по информатике: подготовка к ОГЭ, ЕГЭ, разбор профессиональных задач. {{price45}}р/45мин. Индивидуальные занятия, никаких мини-групп.{% endblock %}
 
@@ -30,11 +30,25 @@
 
 {% block header %}
   {{super()}}
-    <div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
+  <div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
   	<div class="w" style="overflow:visible">
   	  <div class="pad-sm flex">
   		<div class="hide-if-less-800">
-  		  <h1>Информатика и программирование</h1>
+  		  <h1 style="margin-bottom:0.3em">Информатика и программирование</h1>
+		  {# <div> #}
+		  {# 	<i class="icon icon-flag-filled">&#xE803;</i> #}
+		  {# 	<a id="city_switcher" href="#" #}
+		  {# 	   style="text-decoration:none;border-bottom: 1px dotted !important; #}
+		  {# 			  color:#444"> #}
+		  {# 	  {% if city_specific %} #}
+		  {# 		{{city}} #}
+		  {# 		{\# {% if remote_only %}, дистанционно{% endif %} #\} #}
+		  {# 	  {% else %} #}
+		  {# 		Россия #}
+		  {# 		{\# : дистанционно или в Москве #\} #}
+		  {# 	  {% endif %} #}
+		  {# 	</a> #}
+		  {# </div> #}
   		</div>
   		<div class="flex grow0 padr-sm" style="position:relative;padding-top:0.4em;font-size:1.1em">
 		  <div>

@@ -222,7 +222,6 @@ class Updates(views.LoginRequiredMixin,
               views.SuperuserRequiredMixin,
               BaseView):
     template_name = "core_updates.jinja"
-    # only_superuser = True
 
     def get_context_data(self, **kwargs):
         c = super(Updates, self).get_context_data(**kwargs)
@@ -242,10 +241,20 @@ class Nginx(views.LoginRequiredMixin,
     def get_context_data(self, **kwargs):
         c = super(Nginx, self).get_context_data(**kwargs)
         try:
-            p = Popen(['nginx', '-V'])
-            nginxv, err = p.communicate(stdout=PIPE)
-        except:
-            nginxv = '''nginx version: nginx/1.10.0 (Ubuntu)...'''
+            p = Popen(['nginx', '-V'], stdout=PIPE, stderr=PIPE)
+            out, err = p.communicate()
+            nginxv = err.decode('utf8')  # WTF? but this is in err, really
+        except Exception as e:
+            nginxv = str(e)
+
+        from .tasks.geoip import versions_file
+        versions = json.load(open(versions_file, 'r'))
+        c['city_version'] = versions.get('city', '')
+        c['country_version'] = versions.get('country', '')
+
+        c['modules'] = {
+            'geoip': '--with-http_geoip_module' in nginxv
+        }
 
         c["nginxv"] = nginxv
         c["arguments"] = nginxv

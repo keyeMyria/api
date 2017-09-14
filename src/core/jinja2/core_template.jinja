@@ -103,7 +103,7 @@
 			{# Add some superuser menu items: #}
 			{% if user.is_superuser %}
 			  <a class="padlr" href="{{url("index", host=host.name)}}">Main page</a>
-			  <a class="padlr" href="{{url("admin:index", host=host.name)}}">Django admin</a>
+			  <a class="padlr" href="{{url("core:admin:index", host=host.name)}}">Django admin</a>
 			  <a class="padlr" href="{{url("core:files:index", host=host.name)}}">Files</a>
 			  <a class="padlr" href="{{url("core:celery", host=host.name)}}">Celery</a>
 			  <a class="padlr" href="{{url("core:nginx", host=host.name)}}">Nginx</a>

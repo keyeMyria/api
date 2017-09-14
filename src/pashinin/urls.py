@@ -1,11 +1,7 @@
-from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
-# from django.template.loader import render_to_string
-# from django.http import HttpResponseNotFound
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import RootSitemap
-# from core.views import Login
 from .api.urls import urlpatterns as api_urls
 from .views import (
     Index,
@@ -66,7 +62,7 @@ urlpatterns += i18n_patterns(
     url(r'^faq$', FAQ.as_view(), name="faq"),
     # url(r'^login$', Login.as_view(), name='login'),
 
-    url(r'^_/django/', include(admin.site.urls)),
+    # url(r'^_/django/', include(admin.site.urls)),
     prefix_default_language=False
 )
 

@@ -1,20 +1,44 @@
 {% extends "pashinin_base.jinja" %}
 
 {% block head %}
-{{super()}}
-{# <script defer src="{{ static("js/core_updates.js") }}"></script> #}
+  {{super()}}
+  {# <script defer src="{{ static("js/core_nginx.js") }}"></script> #}
 {% endblock %}
+
 
 {% block header %}
   {{super()}}
-
-<div class="w pad-sm">
-  <h1>Nginx</h1>
-</div>
+  <div class="w pad-sm">
+	<h1>Nginx</h1>
+  </div>
 {% endblock %}
 
+
 {% block content %}
-<div class="pad-sm">
-  <pre>{{nginxv}}</pre>
-</div>
+  <div class="pad-sm padb">
+	<pre>nginx -V</pre>
+	<pre>{{nginxv}}</pre>
+
+	<p>{{modules}}</p>
+
+
+	<div class="">
+	  <h2>GeoIP</h2>
+	  {% if modules.geoip %}
+		<p>Nginx скомпилирован с модулем GeoIP.</p>
+	  {% endif %}
+	  Базы <a id="update_geoip_bases" href="#">Обновить базы</a>
+
+	  <table style="border-spacing:10px 10px">
+		<tr>
+          <td>City</td>
+		  <td>{{ city_version }}</td>
+		</tr>
+		<tr>
+		  <td>Country</td>
+          <td>{{ country_version }}</td>
+		</tr>
+	  </table>
+	</div>
+  </div>
 {% endblock %}

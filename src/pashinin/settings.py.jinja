@@ -587,11 +587,15 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'core': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+
+
+        # If you uncomment it then log messages from "core" will be displayed
+        # twice. For 'core' and '' loggers.
+        # 'core': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
 
         # "catch-all" logger
         '': {

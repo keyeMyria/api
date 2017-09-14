@@ -1,12 +1,15 @@
 import os
 import sys
 import datetime
+import pymorphy2
 from django.utils.timezone import utc
 
 from django_hosts.resolvers import reverse as reverse_hosts
 reverse = reverse_hosts
 # from django.core.urlresolvers import reverse as reverse_django
 # reverse = reverse_django
+
+morph = pymorphy2.MorphAnalyzer()
 
 default_app_config = 'core.apps.CoreConfig'
 

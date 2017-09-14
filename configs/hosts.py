@@ -28,6 +28,8 @@ add = [
     'baumanka.'+tld,
     'ege.'+tld,
     'oge.'+tld,
+    'moskva.'+tld,
+    'spb.'+tld,
 ]
 
 

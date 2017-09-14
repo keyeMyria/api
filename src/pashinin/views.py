@@ -14,9 +14,18 @@ from channels import Channel
 from braces import views
 from django.contrib.auth import get_user_model
 import logging
+from pymorphy2.shapes import restore_capitalization
+from core import morph
+from django.conf import settings
 
 log = logging.getLogger(__name__)
 User = get_user_model()
+
+
+cities = {
+    'moskva': 'Москва',
+    'spb': 'Санкт-Петербург',
+}
 
 
 class Base(BaseView):
@@ -27,6 +36,31 @@ class Base(BaseView):
         c["price"] = 1000
         c["price45"] = 800
         c["menu_id"] = "services"
+
+        h = self.request.META.get('HTTP_HOST', '')  # hostname
+        c['city_host'] = h.split('.')[0] if len(h.split('.')) >= 3 else h
+        c['remote_only'] = h != settings.DOMAIN and \
+            c['city_host'] != 'moskva'
+
+        city = cities.get(c['city_host'], None)
+        c['city_specific'] = city is not None
+        city = cities.get(c['city_host'], 'Россия')
+
+        c['city'] = city
+        c['in_city'] = restore_capitalization(
+            morph.parse(city)[0].inflect({'loct'}).word,
+            city
+        )
+        c['cities'] = (
+            {
+                'name': 'Москва',
+                'url': 'moskva.{}'.format(settings.DOMAIN),
+            },
+            {
+                'name': 'Санкт-Петербург',
+                'url': 'spb.{}'.format(settings.DOMAIN),
+            }
+        )
 
         c['menu'] = Menu(
             [
