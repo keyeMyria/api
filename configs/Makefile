@@ -21,6 +21,7 @@ templates:
 	(cd ../src; $(python) -c 'from core.tasks.update import generate_settings;generate_settings()')
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
 
+	# remove this chown in future
 	sudo chown www-data $(dir)/$(domain).zone
 	mustache $(S) bind.zone.mustache > $(output)/$(domain).zone
 
@@ -30,8 +31,10 @@ templates:
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
-	sudo ln -sf $(dir)/$(domain).zone /etc/bind/$(domain).zone
-	sudo chown bind $(dir)/$(domain).zone
+
+	# Realy need to copy! No symlinks! Bind does not read symlinks
+	sudo cp -f $(dir)/$(domain).zone /etc/bind/$(domain).zone
+	sudo chown bind /etc/bind/$(domain).zone
 
 ln_nginxmain:
 	sudo ln -sf $(dir)/nginx.conf /etc/nginx/nginx.conf
