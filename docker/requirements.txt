@@ -143,7 +143,8 @@ django-gravatar2
 # docs -
 #
 Celery>=4.1.0
-jobtastic   # plugin for Celery (progress, status of a task)
+jobtastic   # plugin for Celery (progress, status of a task, out of date)
+django-celery-beat  # keep Celery schedule in a db
 # vine        # for celery (amqp)
 #django-celery          # err with py3
 #https://github.com/celery/django-celery/zipball/master
