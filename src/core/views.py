@@ -248,9 +248,12 @@ class Nginx(views.LoginRequiredMixin,
             nginxv = str(e)
 
         from .tasks.geoip import versions_file
-        versions = json.load(open(versions_file, 'r'))
-        c['city_version'] = versions.get('city', '')
-        c['country_version'] = versions.get('country', '')
+        try:
+            versions = json.load(open(versions_file, 'r'))
+        except:
+            versions = {}
+            c['city_version'] = versions.get('city', '')
+            c['country_version'] = versions.get('country', '')
 
         c['modules'] = {
             'geoip': '--with-http_geoip_module' in nginxv
