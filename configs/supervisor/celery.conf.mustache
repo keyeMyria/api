@@ -6,7 +6,8 @@
 #
 [program:celery]
 # [program:daphne-{{domain}}]
-command={{vebin}}/celery -A pashinin worker --loglevel=ERROR --pidfile={{repo}}/tmp/celery.pid
+command={{vebin}}/celery -A pashinin worker -q --loglevel=ERROR --pidfile={{repo}}/tmp/celery.pid
+# -q argument now disables the startup banner
 # command=/pyenvs/xdev/bin/celery -A proj worker --loglevel=ERROR --beat --pidfile=/var/www/xdev/tmp/celery.pid -s /var/www/xdev/tmp/celerybeat-schedule
 #command=&#x2F;pyenvs&#x2F;xdev&#x2F;bin/celery -A proj worker --loglevel=WARNING
 #command=&#x2F;pyenvs&#x2F;xdev&#x2F;bin/celery -A proj worker --loglevel=INFO

@@ -142,7 +142,7 @@ django-gravatar2
 # pypi - https://pypi.python.org/pypi/celery/
 # docs -
 #
-Celery>=4.0.2
+Celery>=4.1.0
 jobtastic   # plugin for Celery (progress, status of a task)
 # vine        # for celery (amqp)
 #django-celery          # err with py3
