@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
@@ -62,7 +63,11 @@ urlpatterns += i18n_patterns(
     url(r'^faq$', FAQ.as_view(), name="faq"),
     # url(r'^login$', Login.as_view(), name='login'),
 
-    # url(r'^_/django/', include(admin.site.urls)),
+    # This really needs to be here, not just in 'core' urls.py.
+    # Because admin templates are getting reverse urls with "admin:..."
+    # So if you wrap admin inside some app - reverse will throw an error
+    url(r'^_/django/', include(admin.site.urls)),
+
     prefix_default_language=False
 )
 
