@@ -38,6 +38,9 @@ ln_nginx:
 	sudo cp -f $(dir)/$(domain).zone /etc/bind/$(domain).zone
 	sudo chown bind /etc/bind/$(domain).zone
 
+	# Link Celery beat
+	sudo ln -sf $(dir)/celerybeat.conf $(supervisor_confd)/celerybeat-$(domain).conf
+
 ln_nginxmain:
 	sudo ln -sf $(dir)/nginx.conf /etc/nginx/nginx.conf
 
