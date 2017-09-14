@@ -17,6 +17,7 @@ templates:
 	# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
+	mustache $(S) supervisor/celerybeat.conf.mustache > $(output)/celerybeat.conf
 	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
 	(cd ../src; $(python) -c 'from core.tasks.update import generate_settings;generate_settings()')
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
@@ -43,6 +44,7 @@ links: ln_nginx ln_nginxmain
 	sudo ln -sf $(dir)/daphne.conf $(supervisor_confd)/daphne-$(domain).conf
 	sudo ln -sf $(dir)/worker.conf $(supervisor_confd)/worker-$(domain).conf
 	sudo ln -sf $(dir)/celery.conf $(supervisor_confd)/celery-$(domain).conf
+	sudo ln -sf $(dir)/celerybeat.conf $(supervisor_confd)/celerybeat-$(domain).conf
 	sudo ln -sf $(dir)/celery_flower.conf $(supervisor_confd)/celery_flower-$(domain).conf
 	sudo ln -sf $(dir)/phpfpm_params /etc/nginx/phpfpm_params
 

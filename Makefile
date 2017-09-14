@@ -211,6 +211,7 @@ update:
 	sudo supervisorctl restart worker-pashinin.com
 	sudo service nginx reload
 	sudo service bind9 reload
+	# TODO: check bind config before restart. How? Do it in Travis?
 
 # TODO: edit pg_hba.conf - put 127.0.0.1 trust
 prod: pull
