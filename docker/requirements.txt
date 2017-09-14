@@ -142,7 +142,11 @@ django-gravatar2
 # pypi - https://pypi.python.org/pypi/celery/
 # docs -
 #
-Celery>=4.1.0
+
+# has problem with django-celery-beat:
+# https://github.com/celery/django-celery-beat/issues/70
+# Celery>=4.1.0
+Celery==4.0.2
 jobtastic   # plugin for Celery (progress, status of a task, out of date)
 django-celery-beat  # keep Celery schedule in a db
 # vine        # for celery (amqp)
