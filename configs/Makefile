@@ -20,7 +20,10 @@ templates:
 	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
 	(cd ../src; $(python) -c 'from core.tasks.update import generate_settings;generate_settings()')
 	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
+
+	sudo chown www-data $(dir)/$(domain).zone
 	mustache $(S) bind.zone.mustache > $(output)/$(domain).zone
+
 	mustache $(S) phpfpm_params.mustache > $(output)/phpfpm_params
 	mustache $(S) nginx-site.conf.mustache > $(output)/$(domain).conf
 	mustache $(S) dbinit.sql.template > $(output)/dbinit.sql
