@@ -7,11 +7,11 @@
 from django.conf import settings
 
 # Register our serializer methods into kombu
-from kombu.serialization import register
-from core.json import my_dumps, my_loads
-register('myjson', my_dumps, my_loads,
-         content_type='application/json',
-         content_encoding='utf-8')
+# from kombu.serialization import register
+# from core.json import my_dumps, my_loads
+# register('myjson', my_dumps, my_loads,
+#          content_type='application/json',
+#          content_encoding='utf-8')
 
 
 # CELERY_RESULT_BACKEND = 'redis://'
@@ -22,10 +22,11 @@ CELERY_RESULT_BACKEND = settings.BROKER_URL
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
 
 # Tell celery to use your new serializer:
-CELERY_ACCEPT_CONTENT = ['myjson']
+# CELERY_ACCEPT_CONTENT = ['myjson']
+# CELERY_TASK_SERIALIZER = 'myjson'
+# CELERY_RESULT_SERIALIZER = 'myjson'
+
 # CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'myjson'
-CELERY_RESULT_SERIALIZER = 'myjson'
 # CELERY_ACCEPT_CONTENT = ['json']
 # CELERY_TASK_SERIALIZER = 'json'
 # CELERY_RESULT_SERIALIZER = 'json'
