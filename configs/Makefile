@@ -13,7 +13,8 @@ domain = `python config.py -p domain secret-example.json secret.json`
 
 templates:
 	mkdir -p $(output)
-	python3.6 config.py secret-example.json secret.json
+	# used "python3.6" command here
+	python config.py secret-example.json secret.json
 	# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
 	mustache $(S) worker.conf.mustache > $(output)/worker.conf
 	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
