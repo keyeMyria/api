@@ -116,7 +116,12 @@ LOCALE_PATHS = (
 USE_L10N = False       # needs to be False for DATETIME_FORMAT to work
 
 # If you set this to False, Django will not use timezone-aware datetimes.
+#
+# Celery has some problems with "USE_TZ = True"
+# https://github.com/celery/django-celery-beat/pull/68
 USE_TZ = True
+
+
 DATETIME_FORMAT = "Y-m-d H:i:sO"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
