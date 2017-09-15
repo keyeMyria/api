@@ -153,7 +153,8 @@ jobtastic   # plugin for Celery (progress, status of a task, out of date)
 # django-celery-beat  # keep Celery schedule in a db
 # Release v1.0.2 has problems (can't enable/disable tasks)
 # git+git://github.com/celery/django-celery-beat.git
-git+git://github.com/DDevine/django-celery-beat@6c92cc67ca2a2494215d5557f2d5a5f3777da145#egg=django_celery_beat
+# git+git://github.com/DDevine/django-celery-beat@6c92cc67ca2a2494215d5557f2d5a5f3777da145#egg=django_celery_beat
+git+git://github.com/pashinin/django-celery-beat.git
 git+git://github.com/celery/celery@a20e7922b3641d03110df2b770b7480c3f32b42c#egg=celery
 
 # vine        # for celery (amqp)
