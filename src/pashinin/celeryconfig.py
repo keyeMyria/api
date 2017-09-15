@@ -35,7 +35,12 @@ CELERYD_POOL_RESTARTS = True
 CELERY_SEND_EVENTS = True
 CELERY_SEND_TASK_SENT_EVENT = True
 EMAIL_HOST = "10.254.239.1"
-CELERY_TIMEZONE = 'Europe/Moscow'
+
+
+# Problems if have TZ = TZ from Django project settings file
+# CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
 
 
 # If Sentry logging in Django/Celery stopped working use:
@@ -48,7 +53,8 @@ CELERYD_HIJACK_ROOT_LOGGER = False
 # task should expire. The task will not be executed after the expiration
 # time.
 
-CELERYBEAT_SCHEDULE = {
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CELERYBEAT_SCHEDULE = {
     # 'discover_open_ports': {
     #     'task': 'cms.ip.tasks.discover_open_ports',
     #     # hour='0,8-17/2' (at midnight, and every two hours during
@@ -75,4 +81,4 @@ CELERYBEAT_SCHEDULE = {
     #    'schedule': crontab(minute='*/1'),
     #    #'args': (1, 2)
     # },
-}
+# }
