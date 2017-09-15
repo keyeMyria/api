@@ -143,12 +143,17 @@ django-gravatar2
 # docs -
 #
 
-# has problem with django-celery-beat:
+# 4.1.0 has problem with django-celery-beat:
 # https://github.com/celery/django-celery-beat/issues/70
 # Celery>=4.1.0
-Celery==4.0.2
+# Celery==4.0.2
+git+git://github.com/celery/celery.git
 jobtastic   # plugin for Celery (progress, status of a task, out of date)
-django-celery-beat  # keep Celery schedule in a db
+
+# django-celery-beat  # keep Celery schedule in a db
+# Release v1.0.2 has problems (can't enable/disable tasks)
+git+git://github.com/celery/django-celery-beat.git
+
 # vine        # for celery (amqp)
 #django-celery          # err with py3
 #https://github.com/celery/django-celery/zipball/master
