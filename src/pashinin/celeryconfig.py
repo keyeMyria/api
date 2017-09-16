@@ -38,6 +38,9 @@ EMAIL_HOST = "10.254.239.1"
 
 
 # Problems if have TZ = TZ from Django project settings file
+# 1. https://github.com/celery/celery/issues/4184
+# 2. https://github.com/celery/celery/issues/4177
+# 3. https://github.com/celery/celery/issues/4169
 # CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True

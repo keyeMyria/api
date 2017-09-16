@@ -6,7 +6,7 @@
 # environment=CELERYD_PID_FILE=/tmp/celerybeat.pid
 environment=CELERYD_PID_FILE={{repo}}/tmp/celery.pid
 
-command={{vebin}}/celery beat -A pashinin --loglevel=WARNING --pidfile={{repo}}/tmp/celerybeat.pid --scheduler django_celery_beat.schedulers:DatabaseScheduler
+command={{vebin}}/celery beat -A pashinin --loglevel=ERROR --pidfile={{repo}}/tmp/celerybeat.pid --scheduler django_celery_beat.schedulers:DatabaseScheduler
 # --loglevel=  DEBUG, INFO, WARNING, ERROR, CRITICAL, or FATAL.
 #
 #
