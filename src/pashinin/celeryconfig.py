@@ -46,42 +46,6 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
 
 
+# Please do not touch (and change) my logger, Celery!
 # If Sentry logging in Django/Celery stopped working use:
 CELERYD_HIJACK_ROOT_LOGGER = False
-
-# Options:
-
-# "expires" - Either a int, describing the number of seconds, or a
-# datetime object that describes the absolute time and date of when the
-# task should expire. The task will not be executed after the expiration
-# time.
-
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# CELERYBEAT_SCHEDULE = {
-    # 'discover_open_ports': {
-    #     'task': 'cms.ip.tasks.discover_open_ports',
-    #     # hour='0,8-17/2' (at midnight, and every two hours during
-    #     # office hours).
-    #     'schedule': crontab(minute='*/2'),
-    #     # 'options': {"expires": 10.0}
-    # },
-    # 'get_new_gosts': {
-    #     'task': 'gost.tasks.get_new_gosts',
-    #     # hour='0,8-17/2' (at midnight, and every two hours during
-    #     # office hours).
-    #     'schedule': crontab(hour='*/3', minute=0),
-    #     # 'options': {"expires": 10.0}
-    # },
-    # 'debug_task': {
-    #     'task': 'proj.celery.debug_task',
-    #     # 'schedule': crontab(minute='*/10'),
-    #     "schedule": timedelta(seconds=10),
-    #     # 'args': (1, 2),
-    #     # 'options': {"expires": 10.0}
-    # },
-    # 'every-minute': {
-    #    'task': 'proj.celery.debug_task',
-    #    'schedule': crontab(minute='*/1'),
-    #    #'args': (1, 2)
-    # },
-# }
