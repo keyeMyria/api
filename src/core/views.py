@@ -10,7 +10,8 @@ from core import get_client_ip
 from django.http import (
     # HttpResponseNotFound,
     HttpResponseRedirect,
-    HttpResponse
+    HttpResponse,
+    JsonResponse
 )
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -146,6 +147,7 @@ class Celery(views.LoginRequiredMixin,
                     running = True
                     break
             except Exception as e:
+                # Got: list index out of range
                 log.debug("Error finding celery process: {}".format(
                     str(e)
                 ))
@@ -213,7 +215,7 @@ class Celery(views.LoginRequiredMixin,
             if "program:celery" in config:
                 params = config["program:celery"]
                 res['params'] = dict(params)
-        return HttpResponse(json.dumps(res))
+        return JsonResponse(res)
 
 
 # Travis payload format:
@@ -287,15 +289,10 @@ class Login(EnsureCsrfCookieMixin, BaseView):
         # Check form input data (email and password)
         if f.is_valid():
             login(request, f.cleaned_data['user'])
-            return HttpResponse(
-                json.dumps({'code': 0}),
-                content_type='application/json'
-            )
+            return JsonResponse({'code': 0})
         else:
-            return HttpResponse(
-                json.dumps({'errors': f.errors}),
-                content_type='application/json'
-            )
+            log.debug(f.errors)
+            return JsonResponse({'errors': f.errors})
 
 
 # class Logout(APIView):

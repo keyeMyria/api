@@ -52,12 +52,7 @@ Message
 """
 
 import datetime
-# from channels.generic import BaseConsumer
-# from channels.channel import Group
-# from channels.generic.websockets import WebsocketConsumer, \
-#     JsonWebsocketConsumer as JSONC
 import subprocess
-# from django.core.cache import cache
 from django.core.mail import send_mail
 from core.consumers import JsonWebsocketConsumer, SuperuserConsumer
 import logging
