@@ -1,19 +1,19 @@
 // Watch files changes, restart services
-var gulp = require('gulp')
-var sass = require('gulp-sass')
-var livereload = require('gulp-livereload')
-var shell = require('gulp-shell')
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const livereload = require('gulp-livereload');
+const shell = require('gulp-shell');
 // var sourcemaps = require('gulp-sourcemaps')
-// var fs = require('fs')
+const fs = require('fs');
 // var path = require('path')
 var exec = require('child_process').exec
 var ts = require('gulp-typescript')
 // var uglify = require('gulp-uglify')
 // var buffer = require('gulp-buffer')
-var browserify = require('browserify')
+const browserify = require('browserify')
 // var tap = require('gulp-tap')
 // var gutil = require('gulp-util')
-var transform = require('vinyl-transform')
+const transform = require('vinyl-transform')
 const gbabel = require('gulp-babel');
 const babel = require('babel-core');
 const writeFile = require('write');
@@ -142,6 +142,7 @@ gulp.task('scss', () => {
 });
 
 // Watching .js
+// Babel config is in package.json
 gulp.task('js', () => {
   // gulp.watch('src/**/*[^.min].js', ['scripts']);
   gulp.watch('src/**/*.js').on('change', (info) => {
@@ -155,6 +156,7 @@ gulp.task('js', () => {
           console.log(output);
         });
     });
+    browserify([output]).bundle().pipe(fs.createWriteStream(output));
   // exec('./configs/render.py ' + info.path, function (err, stdout, stderr) {
   //   console.log(stdout)
   //   console.log(stderr)
