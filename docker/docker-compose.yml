@@ -7,6 +7,8 @@ services:
 
     # either "build" or "image"
     image: pashinin/pashinin.com:latest
+
+    # for debugging (locally built docker image):
     # image: pashinin.com
     # build: .
 
@@ -36,6 +38,7 @@ services:
     volumes:
       - ../:/var/www/project
       - ../../rparser:/var/www/rparser
+      - ../tmp/files:/mnt/files
     depends_on:
       - redis
       - db

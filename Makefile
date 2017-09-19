@@ -204,6 +204,7 @@ update:
 	sudo -H -u www-data make configs
 	sudo -H -u www-data make css
 	sudo -H -u www-data make babel-js
+	sudo -H -u www-data make api
 	sudo -H -u www-data make minify-js
 	sudo -H -u www-data make collectstatic
 	(cd configs; make ln_nginx)
@@ -371,3 +372,6 @@ test:
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
 # docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
+
+api:
+	./node_modules/browserify/bin/cmd.js src/core/static/js/api.min.js -t --outfile  src/core/static/js/api.min.js

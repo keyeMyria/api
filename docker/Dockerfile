@@ -14,7 +14,7 @@ FROM python:3.6
 #     apk add --no-cache postgresql-dev jpeg-dev zlib-dev libpq libxslt-dev libxslt python3-dev libc-dev linux-headers libxml2 libxml2-dev gcc musl-dev g++ libc6-compat libmagic make libffi-dev
 
 RUN apt-get update && \
-    apt-get install -y libxslt-dev python3-dev libc-dev libxml2 libxml2-dev gcc musl-dev g++ make libffi-dev ruby && \
+    apt-get install -y libxslt-dev python3-dev libc-dev libxml2 libxml2-dev gcc musl-dev g++ make libffi-dev ruby nginx && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/
