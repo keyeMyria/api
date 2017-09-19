@@ -109,6 +109,12 @@
       "src": "typicons"
     },
     {
+      "uid": "671f29fa10dda08074a4c6a341bb4f39",
+      "css": "bell-alt",
+      "code": 61683,
+      "src": "fontawesome"
+    },
+    {
       "uid": "1d367cbe96de7746890d5bcf30e8f2fa",
       "css": "left",
       "code": 59392,
