@@ -295,7 +295,10 @@ from pashinin.celeryconfig import *
 INSTALLED_APPS = (
     'django_hosts',  # for subdomains
     'redis_cache',                 # pip install django-redis-cache
+
     'channels',
+    'channels_api',
+
     'cacheops',
     'corsheaders',
     'django.contrib.auth',
@@ -734,3 +737,8 @@ LAZYSIGNUP_USER_AGENT_BLACKLIST = (
     'slurp',
     'yandex',
 )
+
+
+CHANNELS_API = {
+  'DEFAULT_PAGE_SIZE': 25
+}
