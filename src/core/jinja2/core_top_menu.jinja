@@ -1,0 +1,82 @@
+<div id="top-bar" style="background-color:#fafafb;overflow:visible;box-shadow: 0 1px 0 rgba(12,13,14,0.15);z-index:2;height:50px">
+  <div class="w" style="overflow:visible;">
+	<div class="flex">
+	  {% if menu %}
+		<div id="top-bar-left" style="line-height:35px;overflow:hidden;flex-grow:0">
+		  <nav style="white-space:nowrap;">
+			{% set parent = menu["parent"] %}
+
+			<span class="{# hide-if-more-800 #}"> </span>
+
+			{% spaceless %}
+			  {% for k, v in menu.items() %}
+				{% if v %}
+				  <a class="{% if k == menu.current %}current{% endif %}" href="{{v.url}}"
+					 {% if v.hint %}title="{{v.hint}}"{% endif %}
+					 >
+					 {# {% if loop.index==1 %}<i class="icon icon-menu">&#61641; </i>{% endif %} #}
+					 {% if v.img %}
+					   <img alt="" src="{{v.img}}" style="max-width:30px;max-height:30px;"/>
+					 {% endif %}
+					 {{v.title}}
+				  </a>
+				{% endif %}
+			  {% endfor %}
+			{% endspaceless %}
+		  </nav>
+		</div>
+	  {% endif %}
+
+	  <div id="top-bar-middle" class=""></div>
+
+	  <div id="top-bar-right" class="wrapper" style="text-align:right;position:relative;height:100%;overflow:visible;padding-right:.3em;flex-grow:0">
+		<nav id="nav-right" class="flex" >
+		  {% spaceless %}
+			<a id="notify-btn" href="" class="ib"
+			   style="{% if not user.is_superuser %}display:none{% endif %}">
+			  <i class="icon 1active icon-bell-alt" style="font-size:1.5em;line-height:50px;">&#xF0F3;</i>
+			</a>
+			<a id="profile"
+			   href=""
+			   class="ib padlr-sm"
+			   style="display: table-cell;"
+			   >
+			  <div class="ib"
+					  style="
+							 background:url({% if user.gravatar %}{{ user.gravatar(30) }}{% endif %}) no-repeat;
+							 vertical-align:middle;
+							 width:30px;height:30px;
+							 line-height:50px"
+				   >
+			  </div>
+			  {# <img class="hpad2 ib" alt="" src="{% if user.gravatar %}{{ user.gravatar(30) }}{% endif %}" style="width:30px;border-radius:0px"/> #}
+			  <span class="ib" style="width: 0;margin-left:4px; height: 0; border:4px solid transparent; border-top-color: #000;"></span>
+			</a>
+		  {% endspaceless %}
+		</nav>
+
+		<div id="loginbox" class="hide popup" style="top:50px">
+		  {% if user.is_authenticated and not user.is_lazy %}
+			{# Add some superuser menu items: #}
+			{% if user.is_superuser %}
+			  <a class="padlr" href="{{url("index", host=host.name)}}">Main page</a>
+			  <a class="padlr" href="{{url("core:admin:index", host=host.name)}}">Django admin</a>
+			  <a class="padlr" href="{{url("core:files:index", host=host.name)}}">Files</a>
+			  <a class="padlr" href="{{url("core:celery", host=host.name)}}">Celery</a>
+			  <a class="padlr" href="{{url("core:nginx", host=host.name)}}">Nginx</a>
+			  <a class="padlr" href="{{url("core:updates", host=host.name)}}">Updates</a>
+			{% endif %}
+
+			<a id="exit" class="padlr" href="{{url("core:logout", host=host.name)}}">Выход</a>
+		  {% else %} {# user is not authenticated or is lazy #}
+			{% if user.is_lazy %}
+			  <p class="padlr">Временный аккаунт</p>
+			{% endif %}
+			<a class="padlr" href="{{url("core:login", host=host.name)}}?next={{request.get_full_path()}}">Войти</a>
+		  {% endif %}
+		</div>
+	  </div>
+
+	</div>
+  </div>
+</div>

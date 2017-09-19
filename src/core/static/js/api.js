@@ -1,5 +1,3 @@
-/* global alert, channels */
-
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 /**

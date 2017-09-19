@@ -3,11 +3,16 @@ from django.utils.translation import gettext_lazy as _
 # from django.db.models.signals import pre_save
 # from django.dispatch import receiver
 # from django.core.urlresolvers import reverse
+from channels.binding.websockets import WebsocketBinding
 from django.conf import settings
 
 
 class Course(models.Model):
-    slug = models.SlugField(max_length=60, unique=True)
+    slug = models.SlugField(
+        max_length=60,
+        unique=True,
+        blank=False, null=False
+    )
     name = models.CharField(
         max_length=150,
         verbose_name=_('Name')
@@ -20,6 +25,19 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CourseBinding(WebsocketBinding):
+    model = Course
+    stream = "courses"
+    fields = ["name", "desc"]
+
+    @classmethod
+    def group_names(cls, *args, **kwargs):
+        return ["binding.values"]
+
+    def has_permission(self, user, action, pk):
+        return True
 
 
 class CourseLead(models.Model):

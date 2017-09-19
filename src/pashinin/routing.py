@@ -41,27 +41,40 @@ from .consumers import (
     send_lead,
     send_lead_course
 )
+# from .models import CourseBinding
+from .bindings import CourseBinding
 
 
 # WebsocketDemultiplexer doesn't work with class-based consumers
 class Demultiplexer(WebsocketDemultiplexer):
+    # stream -> Consumer
+    consumers = {
+        "courses": CourseBinding.consumer,
+    }
+    groups = ["binding.values"]
+
     # Mapping
     # stream -> channel
-    # Javascript sends data through WS like this:
-    # {'stream': 'search', 'payload': {data here}}
-    mapping = {
-        "0": "websocket",
-        # "intval": "binding.intval",
-        # "stats": "internal.stats",
-    }
+    # mapping = {
+    #     "mystream": Default,
+    #     # "0": "websocket",
+    #     # "intval": "binding.intval",
+    #     # "stats": "internal.stats",
+    # }
 
 
+# Mapping
+# =======
+# Channel -> Consumer
 channel_routing = [
     # route_class(Demultiplexer),
     route_class(Celery, path=r"^/admin/celery$"),
 
+    # route_class(Demultiplexer, path='^/stream/?$'),
+    route_class(Demultiplexer),
+
     # default at the end
-    route_class(Default),
+    # route_class(Default),
 
     # route("websocket.connect", ws_connect),
 
