@@ -66,21 +66,15 @@ skype: sergey-pashinin
 {% endblock %}
 
 
-{# {% block breadcrumb %} #}
-{# <h1 class="nomar nopad">Контакты</h1> #}
-{# {% endblock %} #}
-
-
-
 {% block content %}
   <div class="pad-sm padt2 padb marb" style="position:relative;" itemscope itemtype="http://schema.org/Person">
 	<div class="flex">
 	  <div class="flex0" style="flex:0 0 150px;position:relative">
-		<img itemprop="image" class="ib photo myphotosize" alt="Сергей Пашинин"
+		<img itemprop="image" class="ib photo" alt="Сергей Пашинин"
 			 {# src="{{file("6c594f1a87e27c9004712bd45eada05380dcbf15")}}" #}
 			 src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}"
 			 style="
-			 {# box-shadow: 0px 0px 3px #000;width:120px;height:120px #}
+			 max-width:150px;
 			 border: 1px solid #999;
 			 border-radius:3px;
 			 "/>
@@ -131,21 +125,6 @@ skype: sergey-pashinin
 		<div class="info_right"><a target="_blank" href="https://vk.com/pashinin">vk.com/pashinin</a></div>
 	  </div>
 	</div>
-
-	{# <div> #}
-	{#   <h3><a href="mailto:{{email}}">{{email}}</a></h3> #}
-	{#   <p>Отправьте мне файлы задач или просто свои вопросы по занятиям.</p> #}
-	{# </div> #}
-
-	{# <div class="c pad flex grow0" style="color:#000"> #}
-	{#   <div class="marr pad-sm padl"> #}
-	{# 	<a href="https://vk.com/pashinin"><img style="max-width:50px" alt="Вконтакте" src="{{ file("ed63a9e7645f1ae4c0476a0c1439b961821292ad") }}"/></a> #}
-	{#   </div> #}
-	{#   <div> #}
-	{# 	<h3><a href="https://vk.com/pashinin">ВКонтакте</a></h3> #}
-	{# 	<p>Можете также использовать контакт для связи. Я там часто бываю.</p> #}
-	{#   </div> #}
-	{# </div> #}
 
 
 	<div class="contacts_block">

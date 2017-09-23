@@ -43,7 +43,7 @@
 {% block content %}
   {% if article %}
 	<div class="pad-sm">
-	  {{article.as_html|safe}}
+	  {{article.html|safe}}
 	</div>
 	{% if DEBUG %}
 	  <div class="pad-sm" style="border:1px solid #ccc">

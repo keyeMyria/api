@@ -1,47 +1,82 @@
 {% extends "articles_base.jinja" %}
 
+{% block style %}
+{{super()}}
+  .article a.title{font-weight:bold;color:#333}
+  .article a.title:hover{color:#555}
+
+  .badges a {
+  border: 0px solid #ccc;
+  font-size:0.8em;
+  background-color:#d7614b;
+  color:#fff;
+  }
+  .badges a:visited {
+  color:#fff;
+  }
+{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("js/articles.min.js") }}"></script>
+{% endblock %}
+
+
 {% block title %}{{_("Articles")}}{% endblock %}
 
 
 {% block header %}
-{{super()}}
-<div class="pad-sm w flex padt">
-  <div>
-	<h1>Все статьи</h1>
-  </div>
-  {% if user.is_superuser %}
-	<div>
-	  <p style="margin-top:0;padding-top:0">Информация по статьям</p>
-	  {# <span style="color:#777">Россия, Москва</span> #}
-	  <div class="flex grow0 col">
-		<div>Всего {{stats.count}}</div>
-		<div>Черновиков {{stats.drafts}}</div>
-	  </div>
+  {{super()}}
+  <div class="pad-sm w flex padt">
+	<div class="grow0">
+	  {# <input id="new-article-btn" class="btn" type="button" name="" value="Новая статья" /> #}
 	</div>
-  {% endif %}
-  {# <div style="text-align:right"> #}
-  {# 	<input class="btn btn-primary btn-large" type="submit" name="" value="+ Добавить факультет" />  #}
-  {# </div> #}
-</div>
+	<div class=""></div>
+	{% if user.is_superuser %}
+	  <div class="grow0">
+		<div class="flex grow0 col">
+		  <div>Всего {{stats.count}}</div>
+		  <div>Черновиков {{stats.drafts}}</div>
+		</div>
+	  </div>
+	{% endif %}
+  </div>
 {% endblock %}
 
+
+{% block prebody %}
+  {{super()}}
+  {% include "template_articlelist_item.jinja" %}
+{% endblock %}
 
 
 {% block content %}
-<div class="pad-sm">
+  <div class="pad-sm padb">
+	<div id="article-edit" class="hide">
+	  <form action="">
+		<input name="" type="text" value="" placeholder="Заголовок статьи"/>
+		<textarea class="w100" cols="30" id="" name="" rows="10" placeholder="Содержание"></textarea>
+		<input id="save-article-btn" class="btn btn-primary" type="button" name="" value="Сохранить" />
+	  </form>
 
-{% for a in articles %}
-<div>
-  <a href="{{a.get_absolute_url()}}">{{a.title}}</a>
-  {% if not a.published %}
-	(черновик)
-  {% endif %}
-</div>
-{% else %}
-No articles
-{% endfor %}
-</div>
+	  <div id="help">
+		<h2>Справка</h2>
+		<h3>Файлы</h3>
+		<pre>\file{sha1}</pre>
+	  </div>
+	</div>
+
+	<div id="article-list" class="hide2 marb"></div>
+	<div id="drafts-list" class="hide marb">drafts</div>
+  </div>
 {% endblock %}
 
 
-{# {% block footer %}{% endblock %} #}
+{% block right %}
+  <nav class="menu" aria-label="Person settings">
+	<a id="showArticles" class="menu-item selected" href="#url" aria-current="page">Статьи</a>
+	<a id="showDrafts" class="menu-item" href="#url">Черновики (<span id="drafts_count"></span>)</a>
+	<a id="new-article-btn" class="menu-item" href="#url">Новая статья</a>
+  </nav>
+{% endblock %}
