@@ -1,10 +1,8 @@
-{% extends "pashinin_base.jinja" %}
+{% extends "core_template.jinja" %}
+
 
 {% block title %}Статьи{% endblock %}
 
-{% block topleft %}
-<a href="{{url("articles:index")}}">Статьи</a>
-{% endblock %}
 
 {% block breadcrumb %}
 {# <a href="{{url("articles:index")}}">{{_("Articles")}}</a> - #}

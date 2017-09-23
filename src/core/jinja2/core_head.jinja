@@ -2,7 +2,7 @@
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 <link rel="shortcut icon" href="{{ static("favicon.ico") }}" />
 {# {% if ravenjs %} #}
-<script defer src="{{ static("ravenjs_3.9.1.mini.js") }}"></script>
+<script defer src="{{ static("js/libs/raven.min.js") }}"></script>
 {# {% endif %} #}
 
 {# https://github.com/github/fetch #}
@@ -13,31 +13,24 @@ h = d.getElementsByTagName('head')[0],
 s = d.createElement('script');
 s.type = 'text/javascript';
 s.async = true;
-s.src = "{{ static("js/fetch2.0.2.mini.js") }}";
+s.src = "{{ static("js/fetch.min.js") }}";
 h.appendChild(s);
 };
 </script>
 
 <script defer src="{{ static("js/serialize.min.js") }}"></script>
+
 {% if momentjs %}
-<script defer src="{{ static("js/moment.2.17.1.mini.js") }}"></script>
+  <script defer src="{{ static("js/libs/moment.min.js") }}"></script>
+  <script defer src="{{ static("js/libs/moment-timezone-with-data.min.js") }}"></script>
+  <script defer src="{{ static("js/libs/moment.ru.min.js") }}"></script>
 {% endif %}
+
 {% if dragula %}
 <script defer src="{{ static("dragula/3.7.2.mini.js") }}"></script>
 {% endif %}
 {% if DEBUG %}<script src="{{static("js/livereload.mini.js")}}"></script>{% endif %}
-{% if timeago %}{# https://github.com/hustcc/timeago.js #}
-<script defer src="{{ static("timeago/timeago.mini.js") }}"></script>
-{% if LANGUAGE_CODE == "ru" %}<script defer src="{{ static("timeago/ru.mini.js") }}"></script>{% endif %}
-{# <script>$.timeago.settings.allowFuture = true;</script> #}
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(event) {
-if (typeof timeago == 'function') {
-var timeagoInstance = new timeago();
-timeagoInstance.render(document.querySelectorAll('.timeago'));}});
-</script>
-{# <script defer src="{{ static("timeago/timeago.js") }}"></script> #}
-{% endif %}
+{% if timeago %}{# https://github.com/hustcc/timeago.js #}{% endif %}
 {% if user.is_superuser %}
 {# <script defer src="{{ static("SIPml-api.js") }}"></script> #}
 {# <script defer src="{{ static("jssip2.0.3.min.js") }}"></script> #}
@@ -119,23 +112,25 @@ timeagoInstance.render(document.querySelectorAll('.timeago'));}});
 {% if filesizejs %}
 <script src="{{ static("filesize.js/3.3.0.js") }}"></script>
 {% endif %}
+
 {% if user.is_superuser %}
 <script defer src="{{ static("js/api.min.js") }}"></script>
 {% endif %}
+
 <script defer src="{{ static("js/main.min.js") }}"></script>
 {% if dropzone %}{# should be after main.js (getCookie() function) #}
-<script defer src="{{ static("dropzone/dropzone.mini.js") }}"></script>
+<script defer src="{{ static("js/libs/dropzone.min.js") }}"></script>
 {% if user.is_superuser %}
 <script defer src="{{ static("dropzones/body.min.js") }}"></script>
 {% endif %}
 {% endif %}
+
 {% if hljs %}
-{# <link rel="stylesheet" href="{{ static("js/hljs/src/styles/docco.css") }}"> #}
-  {# <script src="{{ static("js/hljs/build/highlight.pack.js") }}"></script> #}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 {% endif %}
+
 {% if chartjs %}
 <script src="/_s/js/chartjs/Chart.min.js"></script>
 <script>

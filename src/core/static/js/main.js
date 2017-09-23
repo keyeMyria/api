@@ -1,4 +1,4 @@
-/* global alert, fetch */
+/* global alert, fetch, moment */
 
 function closest(el, selector) {
   const matchesSelector = el.matches || el.webkitMatchesSelector ||
@@ -107,6 +107,27 @@ window.showFormErrors = (errors, form, showtext = false) => {
 
 {
   const ready = () => {
+    // const $ = document.querySelector.bind(document);
+    const $$ = document.querySelectorAll.bind(document);
+
+    // Moment.js
+    if (typeof moment === 'function') {
+      moment.locale('ru');
+      const updateTime = () => {
+        // const newYork = moment.tz("America/New_York").format('HH:mm a');
+        Array.from($$('time')).forEach((time) => {
+          const t = time;
+          t.innerHTML = moment(time.getAttribute('datetime')).fromNow();
+        });
+      };
+      // moment.tz.add('America/New_York|EST EDT|50 40|0101|1Lz50 1zb0 Op0');
+      updateTime();
+      setInterval(() => {
+        updateTime();
+      }, 30000);
+    }
+
+    // Button "Profile" click
     const profile = document.getElementById('profile');
     if (profile) {
       profile.addEventListener('click', (e) => {

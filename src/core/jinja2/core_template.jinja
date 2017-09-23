@@ -45,7 +45,7 @@
 
 {% block main %}
 {% block maintop %}{% endblock %}
-<div class="w flex" style="height:100%;">
+<div class="w flex">
   {% if self.left() %}
 	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
   {% endif %}
@@ -63,7 +63,7 @@
 	</div>
   {% endif %}
   {% if self.right() %}
-	<aside class="pad noprint" style="flex:0 0 250px;position:relative;">{% block right %}{% endblock %}</aside>
+	<aside class="noprint grow0 pad-sm" style="max-width:30%;{# background-color:#edeef0 #}">{% block right %}{% endblock %}</aside>
   {% endif %}
 </div>
 {% endblock %}

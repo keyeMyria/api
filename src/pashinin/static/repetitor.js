@@ -1,7 +1,6 @@
+/* global fetch, serialize, formToJSON, getCookie, showFormErrors, alert */
 {
-  /* global fetch, serialize, formToJSON, getCookie, showFormErrors, alert */
   const ready = () => {
-
     // main page, enroll button
     document.getElementById('enrollform').addEventListener('submit', (e) => {
       e.preventDefault();

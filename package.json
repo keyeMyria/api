@@ -49,7 +49,9 @@
   },
   "babel": {
     "comments": false,
-    "plugins": ["transform-object-rest-spread"],
+    "plugins": [
+      "transform-object-rest-spread"
+    ],
     "presets": [
       [
         "env",
@@ -70,7 +72,16 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "dropzone": "^5.1.1",
+    "highlight.js": "^9.12.0",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "primer-buttons": "^2.3.0",
+    "primer-navigation": "^1.3.0",
+    "primer-support": "^4.3.0",
+    "raven-js": "^3.17.0",
     "reconnecting-websocket": "^3.2.1",
+    "whatwg-fetch": "^2.0.3",
     "write": "^1.0.3"
   }
 }

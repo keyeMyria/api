@@ -19,6 +19,7 @@ settings=pashinin.settings
 docker-compose=export UID; docker-compose -f docker/docker-compose.yml
 dockermanage.py = docker exec --user user -it $(container) python ./manage.py
 docker_run = $(docker-compose) run --rm django
+uglifyjs = ./node_modules/uglify-es/bin/uglifyjs
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
@@ -201,8 +202,10 @@ pull:
 update:
 	sudo -H -u www-data git pull
 	make pip
+	sudo -H -u www-data yarn install
 	sudo -H -u www-data make configs
 	sudo -H -u www-data make css
+	sudo -H -u www-data make links
 	sudo -H -u www-data make babel-js
 	sudo -H -u www-data make api
 	sudo -H -u www-data make minify-js
@@ -361,17 +364,19 @@ test-js-style:
 test-python-style:
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
-# testcmd = /bin/sh -c "cd ..;pytest -vv --durations=3"
 testcmd = pytest -vv --durations=3
-# test: flake8 install_docker
-# install_docker
 test:
 	mkdir -p tmp/files
 	if [[ "$(TRAVIS)" == "true" ]] ; then $(testcmd) --cov-config .coveragerc --cov src --cov-report term-missing; fi;
 	if [[ "$(TRAVIS)" != "true" ]] ; then $(docker_run) $(testcmd); fi;
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(testcmd)
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(testcmd)
-# docker exec --user user --env DJANGO_SETTINGS_MODULE='pashinin.settings' -it $(vm) /bin/sh -c "cd ..;pytest -vv -n3 --durations=3 --cov src --cov-report term-missing"
 
 api:
 	./node_modules/browserify/bin/cmd.js src/core/static/js/api.min.js -t --outfile  src/core/static/js/api.min.js
+
+links:
+	cp -f node_modules/moment/min/moment.min.js src/core/static/js/libs/
+	cp -f node_modules/moment/locale/ru.js src/core/static/js/libs/moment.ru.min.js
+	cp -f node_modules/moment-timezone/builds/moment-timezone-with-data.min.js src/core/static/js/libs/
+	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
+	$(uglifyjs) node_modules/dropzone/dist/dropzone.js -m -o src/core/static/js/libs/dropzone.min.js
+	$(uglifyjs) node_modules/whatwg-fetch/fetch.js -m -o src/core/static/js/libs/fetch.min.js

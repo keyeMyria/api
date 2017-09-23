@@ -61,7 +61,9 @@ gulp.task('watch-secrets', function () {
 gulp.task('css', function () {
   return gulp.src('src/**/*.scss', {base: './'})
   // {base: "./"} - ?
-    .pipe(sass())
+    .pipe(sass({
+      includePaths: ['./node_modules'],
+    }))
     .pipe(gulp.dest('.', { ext: '.css' }))
     .pipe(livereload())
 })
@@ -156,7 +158,9 @@ gulp.task('js', () => {
           console.log(output);
         });
     });
-    browserify([output]).bundle().pipe(fs.createWriteStream(output));
+    if (info.path.endsWith('api.js')) {
+      browserify([output]).bundle().pipe(fs.createWriteStream(output));
+    }
   // exec('./configs/render.py ' + info.path, function (err, stdout, stderr) {
   //   console.log(stdout)
   //   console.log(stderr)

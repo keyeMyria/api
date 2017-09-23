@@ -20,12 +20,19 @@ class API {
      */
     // this.defaultStream = stream;
     this.socket = null;
+
     this.streams = {};
+    this.onopen = {};
+
+    this.uid = undefined;
+    this.timezone = undefined;
+
     this.default_cb = null;
     this.options = { ...options };
     this.connect();
-    this.listen((action, stream) => {
-      console.log(`Unknown stream ${stream}`);
+    // this.listen((action, stream) => {
+    this.listen(() => {
+      // console.log(`Unknown stream ${stream}`);
     });
   }
 
@@ -53,6 +60,21 @@ class API {
       u = url;
     }
     this.socket = new ReconnectingWebSocket(u, protocols, options);
+    this.socket.onopen = (e) => {
+      // get user info
+      this.stream('users').send({
+        action: 'info',
+        data: {},
+      });
+
+      // run callbacks
+      Object.keys(this.onopen).forEach((stream) => {
+        const f = this.onopen[stream];
+        if (f) f(e);
+      });
+      // console.log('Opening a connection...');
+      // window.identified = false;
+    };
   }
 
   /**
@@ -72,11 +94,14 @@ class API {
     this.default_cb = cb;
     this.socket.onmessage = (event) => {
       const msg = JSON.parse(event.data);
-      console.log('MSG: ', msg);
 
       if (msg.stream !== undefined) {
         const { payload, stream } = msg;
-        // stream = msg.stream;
+        if (stream === 'users' && payload.action === 'info') {
+          this.uid = payload.data.pk;
+          this.timezone = payload.timezone_str;
+        }
+
         const callback = this.streams[stream];
         if (callback) {
           // callback(payload, stream);
@@ -148,19 +173,20 @@ class API {
         };
         this.send(msg);
       },
+      api: this,
+      onopen: (f) => {
+        if (this.socket.readyState === this.socket.OPEN) f();
+        this.onopen[stream] = f;
+      },
       list: () => this.send({ stream, payload: { action: 'list' } }),
     };
   }
 }
 window.api = new API();
-window.api.extend('courses', (payload) => {
-  const {
-    errors,
-    data,
-    action,
-    response_status,
-  } = payload;
-  console.log(data);
+// window.api.extend('courses', (payload) => {
+window.api.extend('courses', () => {
+  // const {errors, data, action, response_status} = payload;
+  // console.log(data);
 });
 window.courses = window.api.stream('courses');
 // window.courses = new API('courses');
