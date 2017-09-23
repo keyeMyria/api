@@ -1,6 +1,7 @@
 import reversion
 from django.db import models
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from core import reverse
 # from django.utils.html import strip_tags
 from django.conf import settings
 from django.db.models.signals import pre_save, post_save
@@ -44,6 +45,11 @@ class Article(AddedChanged):
         null=True,
         blank=True,
     )
+    cut = models.TextField(
+        default=None,
+        null=True,
+        blank=True,
+    )
     slug = models.SlugField(
         max_length=765,
         verbose_name="In URL",
@@ -54,15 +60,14 @@ class Article(AddedChanged):
         help_text="/articles/.../how-to-install-linux"
     )
     author = models.ForeignKey(
-        'core.User',
-        default=None,
-        null=True,
-        blank=True
+        settings.AUTH_USER_MODEL,
+        # default=None,
+        # null=True,
+        # blank=True
     )
     published = models.BooleanField(
         default=False,
         db_index=True,
-        # help_text=_("Published in the DB?")
     )
 
     class Meta:
@@ -87,9 +92,9 @@ class Article(AddedChanged):
         return len(versions)
 
     @property
-    def as_html(self):
+    def html(self):
         try:
-            html, info = article_render(self.src)
+            html, info = article_render(self.src or '')
 
             missing_links = info.get("missing_links", tuple())
             set_links = {}
@@ -111,6 +116,11 @@ class Article(AddedChanged):
             else:
 
                 return "Error happened! I know about it."
+
+    @property
+    def cut_html(self):
+        html, info = article_render(self.cut or '')
+        return html
 
     @property
     def as_latex(self):

@@ -225,8 +225,8 @@ MIDDLEWARE_CLASSES = (
     # revision block:
     'reversion.middleware.RevisionMiddleware',
 
-
-    # 'django.contrib.messages.middleware.MessageMiddleware',
+    # Admin panel does not work without messages:
+    'django.contrib.messages.middleware.MessageMiddleware',
 
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -304,7 +304,10 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'django.contrib.messages',
+
+    # Admin panel does not work without messages:
+    'django.contrib.messages',
+
     # 'django.contrib.humanize',
     'django.contrib.staticfiles',
     # 'django.contrib.sites',
@@ -376,7 +379,10 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': (
     #    'drf_ujson.renderers.UJSONRenderer',
     # )
+    # 'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S%z",
 }
+
+
 if not DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
         'rest_framework.renderers.JSONRenderer',
@@ -740,5 +746,5 @@ LAZYSIGNUP_USER_AGENT_BLACKLIST = (
 
 
 CHANNELS_API = {
-  'DEFAULT_PAGE_SIZE': 25
+  'DEFAULT_PAGE_SIZE': 5
 }

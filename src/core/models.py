@@ -163,6 +163,11 @@ key for temporary users")
         help_text=_("Browser string used when this user was created")
     )
     created_from_ip = models.GenericIPAddressField(blank=True, null=True)
+    timezone_str = models.CharField(
+        max_length=50,
+        db_index=True,
+        default='UTC',
+    )
     # avatar = models.ForeignKey(
     #     'images.Image',
     #     null=True,

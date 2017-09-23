@@ -5,16 +5,21 @@ from .models import Article  # Revision, ArticleCategory
 from django.core.urlresolvers import reverse
 # from raven.contrib.django.raven_compat.models import client
 from braces import views
+from django.http import Http404
 import logging
 log = logging.getLogger(__name__)
 
 
-class ArticlesBase(views.LoginRequiredMixin,
-                   views.SuperuserRequiredMixin,
-                   Base):
+class ArticlesBase(
+        views.LoginRequiredMixin,
+        views.SuperuserRequiredMixin,
+        Base
+):
     def get_context_data(self, **kwargs):
         c = super(ArticlesBase, self).get_context_data(**kwargs)
         c["menu"].current = 'articles'
+        c['timeago'] = True
+        c['momentjs'] = True
         return c
 
 
@@ -34,11 +39,10 @@ class ArticleView(ArticlesBase):
         try:
             article = Article.objects.get(pk=id)
         except Article.DoesNotExist:
-            pass
+            raise Http404
 
-        if article is None:
-            c['status'] = 404
-            return c
+        if not article.published and not c['user'].is_superuser:
+            raise Http404
 
         # Redirect article if wrong slug used
         if article.slug != slug:
@@ -49,14 +53,6 @@ class ArticleView(ArticlesBase):
             log.debug("redirect: ", c['redirect'])
 
         c["article"] = article
-        # c["menu"]['items'][1]['current'] = True
-
-        # If there is no article with such title - display error
-        # or admin's "Add new article" page
-
-        # if article.debug and article.debug.get('formula'):
-        #     c["mathjax"] = True
-
         # When 'pdf' parameter exists - download article in PDF format
         # if 'pdf' in self.request.GET:
         #     try:
@@ -85,6 +81,8 @@ class Articles(ArticlesBase):
             'count': Article.objects.count(),
             'drafts': Article.objects.filter(published=False).count(),
         }
+        # import pytz
+        # c['tz'] = pytz.timezone('Europe/Moscow')
         c["menu"].current = 'articles'
         # c["categories"] = ArticleCategory.objects.filter(
         #                 parent=None, lng_id=lng) \

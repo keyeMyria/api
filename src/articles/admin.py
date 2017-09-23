@@ -8,4 +8,5 @@ from .models import Article
 
 @admin.register(Article)
 class ArticleModelAdmin(VersionAdmin):
-    pass
+    list_display = ('pk', 'title', 'added')
+    list_display_links = ('title', )

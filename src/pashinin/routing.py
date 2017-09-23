@@ -36,20 +36,26 @@ when defining CHANNEL_LAYERS:
 from channels.routing import route, route_class
 from channels.generic.websockets import WebsocketDemultiplexer
 from .consumers import (
-    Default,
-    Celery,
+    # Default,
+    # Celery,
     send_lead,
     send_lead_course
 )
 # from .models import CourseBinding
 from .bindings import CourseBinding
+from articles.bindings import ArticleBinding
+from core.bindings import UserBinding
 
 
 # WebsocketDemultiplexer doesn't work with class-based consumers
 class Demultiplexer(WebsocketDemultiplexer):
+    http_user = True
+
     # stream -> Consumer
     consumers = {
         "courses": CourseBinding.consumer,
+        "articles": ArticleBinding.consumer,
+        "users": UserBinding.consumer,
     }
     groups = ["binding.values"]
 
@@ -67,8 +73,7 @@ class Demultiplexer(WebsocketDemultiplexer):
 # =======
 # Channel -> Consumer
 channel_routing = [
-    # route_class(Demultiplexer),
-    route_class(Celery, path=r"^/admin/celery$"),
+    # route_class(Celery, path=r"^/admin/celery$"),
 
     # route_class(Demultiplexer, path='^/stream/?$'),
     route_class(Demultiplexer),

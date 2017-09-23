@@ -1,18 +1,14 @@
 from __future__ import absolute_import  # Python 2 only
 
 from django.contrib.staticfiles.storage import staticfiles_storage
-# from django.core.urlresolvers import reverse
-# from django_hosts.resolvers import reverse
-from . import reverse
+from . import reverse, now
 from django.utils.translation import gettext_lazy as _
 from jinja2 import Environment
-from datetime import datetime
 from jinja2 import nodes
 from jinja2.ext import Extension
 import re
 from django.utils.formats import date_format
-
-now = datetime.now()
+from django.utils.timezone import localtime
 
 
 class SpacelessExtension(Extension):
@@ -70,28 +66,23 @@ def environment(**options):
         ]
     })
     env = Environment(**options)
-    env.globals.update(
-        {
-            'static': staticfiles_storage.url,
-            'url': reverse,
-            '_': _,
-            'file': get_file,
-            'round': round,
-            'css': css,
-            'min': min,
-            'len': len,
-            'date_format': date_format,
-            'now': datetime.now,
-        },
-    )
+    env.globals.update({
+        'static': staticfiles_storage.url,
+        'url': reverse,
+        '_': _,
+        'file': get_file,
+        'round': round,
+        'css': css,
+        'min': min,
+        'len': len,
+        'date_format': date_format,
+        'now': now,
+        'localtime': localtime,
+    })
     env.filters['djrender'] = djrender
 
     # Timezone
-    from django.utils.timezone import template_localtime
     env.filters.update({
-        'localtime': template_localtime,
-    })
-    env.globals.update({
-        'localtime': template_localtime,
+        'localtime': localtime,
     })
     return env
