@@ -1,33 +1,4 @@
-/* global alert, fetch, moment */
-
-function closest(el, selector) {
-  const matchesSelector = el.matches || el.webkitMatchesSelector ||
-        el.mozMatchesSelector || el.msMatchesSelector;
-  let e = el;
-  while (e) {
-    if (!matchesSelector.call(e, selector)) {
-      e = e.parentElement;
-    } else {
-      return e;
-    }
-  }
-  return null;
-}
-
-// // String.format()     "{1} text ... {2}".format()
-// if (!String.prototype.hasOwnProperty('format')) {
-//   String.prototype.format = function() {
-//     let args = arguments;
-//     return this.replace(/{(\d+)}/g, function(match, number) {
-//       return typeof args[number] !== 'undefined'
-//                 ? args[number]
-//                 : match;
-//     });
-//   };
-// }
-// String.prototype.isEmpty = function() {
-//   return (this.length === 0 || !this.trim());
-// };
+/* global alert, fetch, moment, getCookie */
 
 window.urlParams = () => {
   const res = {};
@@ -48,10 +19,10 @@ window.getURLParameter = name => decodeURIComponent((new RegExp(`[?|&]${name}=([
 // 3 following blocks are taken from django's docs to fix csrf errors
 // https://docs.djangoproject.com/en/dev/ref/csrf/
 // https://learn.javascript.ru/cookie#%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F-getcookie-name
-function getCookie(name) {
+window.getCookie = (name) => {
   const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1')}=([^;]*)`));
   return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+};
 
 // these HTTP methods do not require CSRF protection
 window.csrfSafeMethod = method => (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -149,7 +120,8 @@ window.showFormErrors = (errors, form, showtext = false) => {
 
     // hide any menu when clicked somewhere but not in menu
     document.addEventListener('click', (e) => {
-      if (!closest(e.target, '.popup')) {
+      // if (!closest(e.target, '.popup')) {
+      if (!e.target.closest('.popup')) {
         if (document.getElementById('profile')) {
           document.getElementById('profile').classList.remove('pressed');
         }
