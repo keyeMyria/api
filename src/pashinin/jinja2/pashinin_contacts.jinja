@@ -37,15 +37,15 @@ div.contacts_block{color:#000;border-top:1px solid #e7e8ec;margin-bottom:1.8em}
 
 {% block css %}
 {{super()}}
-<link rel="stylesheet" href="{{ static("photoswipe4.1.2/photoswipe.css") }}">
-<link rel="stylesheet" href="{{ static("photoswipe4.1.2/default-skin/default-skin.css") }}">
+<link rel="stylesheet" href="{{ static("js/libs/photoswipe/photoswipe.css") }}">
+<link rel="stylesheet" href="{{ static("js/libs/photoswipe/default-skin/default-skin.css") }}">
 {% endblock %}
 
 
 {% block head %}
 {{super()}}
-<script defer src="{{ static("photoswipe4.1.2/photoswipe.mini.js") }}"></script>
-<script defer src="{{ static("photoswipe4.1.2/photoswipe-ui-default.mini.js") }}"></script>
+<script defer src="{{ static("js/libs/photoswipe/photoswipe.min.js") }}"></script>
+<script defer src="{{ static("js/libs/photoswipe/photoswipe-ui-default.min.js") }}"></script>
 <script defer src="{{ static("pashinin_contacts.min.js") }}"></script>
 {% endblock %}
 

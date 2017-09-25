@@ -20,6 +20,7 @@ docker-compose=export UID; docker-compose -f docker/docker-compose.yml
 dockermanage.py = docker exec --user user -it $(container) python ./manage.py
 docker_run = $(docker-compose) run --rm django
 uglifyjs = ./node_modules/uglify-es/bin/uglifyjs
+sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
@@ -206,9 +207,7 @@ update:
 	sudo -H -u www-data make configs
 	sudo -H -u www-data make css
 	sudo -H -u www-data make links
-	sudo -H -u www-data make babel-js
-	sudo -H -u www-data make api
-	sudo -H -u www-data make minify-js
+	sudo -H -u www-data make js
 	sudo -H -u www-data make collectstatic
 	(cd configs; make ln_nginx)
 	(cd src; `python ../configs/makeve.py` manage.py migrate)
@@ -272,17 +271,14 @@ collectstatic-dev:
 #
 # sass --help
 # --sourcemap=TYPE   [auto(default),none]
-css: sass
-	find . -type f -name "*.scss" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
--print | parallel --no-notice sass --cache-location /tmp/sass --style compressed --sourcemap=none {} {.}.css
+# ./node_modules/node-sass/bin/node-sass
+css:
+	find . -type f -name "*.scss" -not -name "_*" -not -path "*/js/libs/*" -not -path "./node_modules/*" -not -path "./static/*" \
+-print | parallel --no-notice $(sass) -q --cache-location /tmp/sass --output-style compressed --sourcemap=none {} {.}.css
 
 typescript:
 	find ./src -type f -name "*.ts" -not -name "_*" -not -path "./node_modules/*" -not -path "./static/*" \
 -print | parallel --no-notice tsc --lib es6,dom {}
-# {.}.min.js
-
-sass:
-	sass -v > /dev/null || sudo su -c "gem install sass"
 
 shell:
 	$(docker-compose) run --rm django python manage.py shell_plus
@@ -342,7 +338,11 @@ files:
 
 
 # Javascript
-js_files = find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.mini.js" -print | parallel --no-notice
+js_files = find ./src -type f -name "*.js" -not -name "*.min.js" -not -path "*/js/libs/*" -not -name "*.mini.js" -print | parallel --no-notice
+
+# 2 step. Will fix require is not defined
+browserify-js:
+	$(js_files) ./node_modules/browserify/bin/cmd.js {.}.min.js -o {.}.min.js
 
 # For ES5 (2009): sudo npm install -g uglify-js
 # For ES6 (2015): sudo npm install -g uglify-es
@@ -352,8 +352,21 @@ js_files = find ./src -type f -name "*.js" -not -name "*.min.js" -not -name "*.m
 minify-js:
 	$(js_files) ./node_modules/uglify-es/bin/uglifyjs {.}.min.js -m -o {.}.min.js
 
+# 1 step. ES6 -> ES5 (imports -> require)
+# --minified --no-comments
 babel-js:
-	$(js_files) ./node_modules/babel-cli/bin/babel.js {} --minified --no-comments -o {.}.min.js
+	$(js_files) ./node_modules/babel-cli/bin/babel.js {} -o {.}.min.js
+
+js:
+	make babel-js       # ES6 -> ES5
+	make browserify-js  # require is not defined
+	make minify-js
+
+js-print:
+	$(js_files) echo {}
+
+js-dev:
+	gulp js
 
 
 # Tests
@@ -380,3 +393,6 @@ links:
 	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
 	$(uglifyjs) node_modules/dropzone/dist/dropzone.js -m -o src/core/static/js/libs/dropzone.min.js
 	$(uglifyjs) node_modules/whatwg-fetch/fetch.js -m -o src/core/static/js/libs/fetch.min.js
+
+	cp -rf node_modules/photoswipe/dist src/core/static/js/libs/photoswipe
+	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/

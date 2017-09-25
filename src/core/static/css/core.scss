@@ -1,7 +1,4 @@
-// compile
-@import "variables.scss";
-// @import url("/_s/css/fontello.ttf");
-
+@import "_variables.scss";
 @import "primer-buttons/index.scss";
 @import "primer-navigation/index.scss";
 
@@ -214,13 +211,6 @@ $pad: 1em;
 			flex-basis: 0;
 		}
 	}
-
-	// &>*:first-child{
-	// 	margin-left:0;
-	// }
-	// &>*:last-child{
-	// 	margin-right:0;
-	// }
 
 	&.col-if-less-w500{
 		@media only screen and (max-width: 500px) {
@@ -702,10 +692,6 @@ div.lside{
 		display: block;
 		padding-top:.1rem;
 		padding-bottom:.1rem;
-
-		// &:hover{
-		// 	background-color:#eef;
-		// }
 	}
 }
 
@@ -930,4 +916,3 @@ div#index{
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
 	filter: alpha(opacity=20);
 }
-// End of dragula.js css part
