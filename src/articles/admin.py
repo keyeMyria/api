@@ -10,3 +10,4 @@ from .models import Article
 class ArticleModelAdmin(VersionAdmin):
     list_display = ('pk', 'title', 'added')
     list_display_links = ('title', )
+    raw_id_fields = ('author',)
