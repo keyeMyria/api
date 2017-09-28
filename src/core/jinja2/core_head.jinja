@@ -1,9 +1,28 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="alternate" hreflang="ru" href="https://pashinin.com{{request.path}}" />
 <link rel="shortcut icon" href="{{ static("favicon.ico") }}" />
-{# {% if ravenjs %} #}
-<script defer src="{{ static("js/libs/raven.min.js") }}"></script>
-{# {% endif %} #}
+{% if not DEBUG %}
+<script src="{{ static("js/libs/raven.min.js") }}"></script>
+<script>
+// configure the SDK as you normally would
+Raven.config('https://{{RAVEN_PUBLIC}}@sentry.pashinin.com/2').install();
+
+/**
+ * Report a routing error to Sentry and show a feedback dialog to
+ * the user.
+ *
+ * > try {
+ * >   renderRoute()
+ * > } catch (err) {
+ * >   handleRouteError(err);
+ * > }
+ */
+function handleRouteError(err) {
+  Raven.captureException(err);
+  // Raven.showReportDialog();
+};
+</script>
+{% endif %}
 
 {# https://github.com/github/fetch #}
 <script type="text/javascript">
