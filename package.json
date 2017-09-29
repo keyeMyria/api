@@ -62,7 +62,8 @@
               "last 3 Firefox versions",
               "last 2 ChromeAndroid versions",
               "last 2 FirefoxAndroid versions",
-              "last 2 iOS versions"
+              "last 2 iOS versions",
+              "safari >= 8"
             ]
           }
         }
