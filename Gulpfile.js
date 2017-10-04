@@ -80,8 +80,8 @@ gulp.task('css', () => {
       // ], { parser: syntax }))
     ]))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('.', { ext: '.css' }));
-  // .pipe(livereload());
+    .pipe(gulp.dest('.', { ext: '.css' }))
+    .pipe(livereload());
 });
 
 // Reload when changing Jinja templates
@@ -114,7 +114,7 @@ const processJS = (file) => {
 
 // Watching .js
 // https://stackoverflow.com/questions/23247642/modify-file-in-place-same-dest-using-gulp-js-and-a-globbing-pattern
-const jsFiles = ['src/**/*.js', '!src/**/*.min.*', '!src/**/*.mini.js'];
+const jsFiles = ['src/**/*.js', '!src/**/*.min.*', '!src/**/*.mini.js', '!src/**/js/libs/**/*.js'];
 gulp.task('watch:js', () => {
   // gulp.watch(['src/**/*.js', '!src/**/*.min.*'], ['scripts']);
   gulp.watch(jsFiles, { read: false }).on('change', processJS);

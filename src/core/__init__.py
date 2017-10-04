@@ -1,15 +1,26 @@
 import os
 import sys
 import datetime
-import pymorphy2
 from django.utils.timezone import utc
+from django.contrib import sitemaps
+import logging
+log = logging.getLogger(__name__)
 
-from django_hosts.resolvers import reverse as reverse_hosts
-reverse = reverse_hosts
-# from django.core.urlresolvers import reverse as reverse_django
-# reverse = reverse_django
+try:
+    import pymorphy2
+    morph = pymorphy2.MorphAnalyzer()
+except:
+    log.error('install pymorphy2')
 
-morph = pymorphy2.MorphAnalyzer()
+
+try:
+    from django_hosts.resolvers import reverse as reverse_hosts
+    reverse = reverse_hosts
+    # from django.core.urlresolvers import reverse as reverse_django
+    # reverse = reverse_django
+except:
+    log.error('install django_hosts')
+
 
 default_app_config = 'core.apps.CoreConfig'
 

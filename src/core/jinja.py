@@ -75,6 +75,7 @@ def environment(**options):
         'css': css,
         'min': min,
         'len': len,
+        'int': int,
         'date_format': date_format,
         'now': now,
         'localtime': localtime,

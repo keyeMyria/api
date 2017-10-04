@@ -403,19 +403,11 @@ server {
     server_name     apt.{{domain}};
     error_log       /var/log/nginx/{{domain}}.err.log   error;
 
-    # root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
-    #index index.html;
-
     location / {
-        # alias "/var/spool/apt-mirror/mirror/archive.ubuntu.com/";
-        # alias "/var/spool/apt-mirror/mirror/mirror.yandex.ru/";
         alias "/var/spool/apt-mirror/mirror/";
         charset utf-8;
         autoindex on;
         autoindex_exact_size off;
-
-        # root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
-        # index  index.html;
 
         allow   10.254.239.0/24;
         deny    all;
