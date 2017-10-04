@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import RootSitemap
 from core.views import Login
 from .views import (
     Baumanka,
@@ -10,7 +12,14 @@ from .views import (
 )
 
 
+sitemaps = {
+    'static': RootSitemap,
+}
+
 urlpatterns = [
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
+
     url(r'^$',  Baumanka.as_view(), name="index"),
     url(r'^(?P<F>\w+?)(?P<K>\d+)/$', Kafedra.as_view(), name="kafedra"),
     url(r'^(?P<F>\w+?)(?P<K>\d+)/practice$',
