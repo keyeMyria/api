@@ -181,6 +181,7 @@ STATICFILES_FINDERS = (
 #
 # Default: 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'core.static_storage.StaticStorage'
 if DEBUG or TESTING:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 

@@ -374,6 +374,8 @@ links:
 	cp -f node_modules/moment/locale/ru.js src/core/static/js/libs/moment.ru.min.js
 	cp -f node_modules/moment-timezone/builds/moment-timezone-with-data.min.js src/core/static/js/libs/
 	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
+	cp -f node_modules/raven-js/dist/raven.min.js.map src/core/static/js/libs/
+
 	$(uglifyjs) node_modules/dropzone/dist/dropzone.js -m -o src/core/static/js/libs/dropzone.min.js
 	$(uglifyjs) node_modules/whatwg-fetch/fetch.js -m -o src/core/static/js/libs/fetch.min.js
 
