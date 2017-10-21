@@ -96,7 +96,7 @@ server {
     # }
 
     location /_s {
-        alias "{{repo}}/static";
+        alias "{{{repo}}}/static";
         expires 7d;
     }
 
@@ -143,7 +143,7 @@ server {
 
     location /_file {
         internal;
-        alias {{FILES_ROOT}};
+        alias {{{FILES_ROOT}}};
         expires 7d;
     }
 }
@@ -201,13 +201,13 @@ server {
 	}
 
     location /_s {
-        alias "{{repo}}/static";
+        alias "{{{repo}}}/static";
         expires 7d;
     }
 
     location /_file {
         internal;
-        alias {{FILES_ROOT}};
+        alias {{{FILES_ROOT}}};
         expires 7d;
     }
 }
@@ -265,13 +265,13 @@ server {
 	}
 
     location /_s {
-        alias "{{repo}}/static";
+        alias "{{{repo}}}/static";
         expires 7d;
     }
 
     location /_file {
         internal;
-        alias {{FILES_ROOT}};
+        alias {{{FILES_ROOT}}};
         expires 7d;
     }
 }

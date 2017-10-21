@@ -9,10 +9,10 @@
 #               [--root-path ROOT_PATH]
 #               channel_layer
 #
-# command={{vebin}}/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
-command={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
+# command={{{vebin}}}/daphne pashinin.asgi:channel_layer --port 8080 -b 127.0.0.1
+command={{{vebin}}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
 
-directory={{repo}}/src
+directory={{{repo}}}/src
 user={{wwwdata}}
 autostart=true
 autorestart=false

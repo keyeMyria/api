@@ -24,8 +24,8 @@
 # Got channels from being twice as slow as old Django runserver to being
 # almost twice as fast with one weird trick (don't use threads).
 
-command={{vebin}}/python ./manage.py runworker --exclude-channels=root.*
-directory={{repo}}/src
+command={{{vebin}}}/python ./manage.py runworker --exclude-channels=root.*
+directory={{{repo}}}/src
 user=www-data
 autostart=true
 autorestart=false
