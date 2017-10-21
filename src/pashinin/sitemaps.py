@@ -1,21 +1,23 @@
-from django.contrib import sitemaps
-from django.core.urlresolvers import reverse
+from core import reverse, Sitemap
 
 
 # example.org
-class RootSitemap(sitemaps.Sitemap):
+class RootSitemap(Sitemap):
     priority = 1
     changefreq = 'daily'
-    location = '/'
+    # location = '/'
     protocol = 'https'
     # i18n = True
 
     def items(self):
+        # return {'location': 'asd'}
         return [
             'index',
             'faq',
             'contacts',
         ]
 
+    # https://testserver//pashinin.com/ - when "make test"
+    # https://example.org//pashinin.com/ - when in browser
     def location(self, item):
         return reverse(item)

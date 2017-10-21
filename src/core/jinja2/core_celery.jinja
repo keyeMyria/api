@@ -1,5 +1,9 @@
 {% extends "pashinin_base.jinja" %}
 
+
+{% block title %}Celery{% endblock %}
+
+
 {% block head %}
 {{super()}}
 <script defer src="{{ static("js/core_celery.min.js") }}"></script>
@@ -9,7 +13,8 @@
   {{super()}}
 
 <div class="w pad-sm">
-  <img class="left marr" alt="Celery" width="64px"
+  <img class="left marr" alt="Celery"
+	   style="width:64px"
 	   src="{{file("beec0e35eb960de1b0159276c7d5f4026145aa5d")}}"/>
   <h1>Celery</h1>
   {% if not celery_is_running %}
@@ -49,7 +54,7 @@
   <div>
 	<a id="run_celery" href="{{url("core:celery")}}">Run Celery</a>
 
-	<textarea cols="30" id="log" name="" rows="10"></textarea>
+	<textarea cols="30" id="log" rows="10"></textarea>
   </div>
 </div>
 {% endblock %}

@@ -10,35 +10,36 @@ supervisor_confd = /etc/supervisor/conf.d
 output = tmp
 dir = `realpath $(output)`
 domain = `python config.py -p domain secret-example.json secret.json`
+mustache = ../node_modules/mustache/bin/mustache $(S)
 
 templates:
 	mkdir -p $(output)
-	# used "python3.6" command here
+
+# create conf.json
 	python config.py secret-example.json secret.json
-	# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
-	mustache $(S) worker.conf.mustache > $(output)/worker.conf
-	mustache $(S) supervisor/celery.conf.mustache > $(output)/celery.conf
-	mustache $(S) supervisor/celerybeat.conf.mustache > $(output)/celerybeat.conf
-	mustache $(S) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
+
+# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
+	$(mustache) worker.conf.mustache > $(output)/worker.conf
+	$(mustache) supervisor/celery.conf.mustache > $(output)/celery.conf
+	$(mustache) supervisor/celerybeat.conf.mustache > $(output)/celerybeat.conf
+	$(mustache) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
 	(cd ../src; $(python) -c 'from core.tasks.update import generate_settings;generate_settings()')
-	mustache $(S) nginx.conf.mustache > $(output)/nginx.conf
+	$(mustache) nginx.conf.mustache > $(output)/nginx.conf
 
-	# remove this chown in future
-	sudo chown www-data $(dir)/$(domain).zone
-	mustache $(S) bind.zone.mustache > $(output)/$(domain).zone
+	$(mustache) bind.zone.mustache > $(output)/$(domain).zone
 
-	mustache $(S) phpfpm_params.mustache > $(output)/phpfpm_params
-	mustache $(S) nginx-site.conf.mustache > $(output)/$(domain).conf
-	mustache $(S) dbinit.sql.template > $(output)/dbinit.sql
+	$(mustache) phpfpm_params.mustache > $(output)/phpfpm_params
+	$(mustache) nginx-site.conf.mustache > $(output)/$(domain).conf
+	$(mustache) dbinit.sql.template > $(output)/dbinit.sql
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
 
-	# Realy need to copy! No symlinks! Bind does not read symlinks
+# Realy need to copy! No symlinks! Bind does not read symlinks
 	sudo cp -f $(dir)/$(domain).zone /etc/bind/$(domain).zone
 	sudo chown bind /etc/bind/$(domain).zone
 
-	# Link Celery beat
+# Link Celery beat
 	sudo ln -sf $(dir)/celerybeat.conf $(supervisor_confd)/celerybeat-$(domain).conf
 
 ln_nginxmain:

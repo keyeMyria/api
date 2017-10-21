@@ -3,9 +3,6 @@ from reversion.admin import VersionAdmin
 from .models import Article
 
 
-# admin.site.register(Article)
-
-
 @admin.register(Article)
 class ArticleModelAdmin(VersionAdmin):
     list_display = ('pk', 'title', 'added')

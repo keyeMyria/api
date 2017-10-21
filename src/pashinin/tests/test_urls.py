@@ -1,23 +1,36 @@
 import pytest
-from subprocess import Popen, PIPE
+# import subprocess
+import requests
+import gzip
+# import itertools
+# from tidylib import tidy_document
+# from subprocess import Popen, PIPE
+from io import BytesIO
 
 
-# alpine /etc/apk/repositories
-@pytest.mark.skip(reason='alpine 3.4 is used, tidy is in 3.5')
-@pytest.mark.urls('pashinin.urls')
-def test_urls_tidy(admin_client):
-    urls = ['/', '/contacts', '/faq', '/articles/']
-    for url in urls:
-        r = admin_client.get(url)
-        # p1 = Popen(cmd1, stdout=PIPE)
-        p = Popen(
-            ['tidy', '-config', 'configs/tidy.conf'],
-            stdin=PIPE,
-            stdout=PIPE
-        )
-        # p.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
-        output, err = p.communicate(input=r.content)
-        assert p.returncode == 0
+def validate_html(html, content_type):
+    'node_modules/vnu-jar/build/dist/vnu.jar'
+    vnu_url = 'http://vnu:8888'
+    with BytesIO() as buf:
+        with gzip.GzipFile(fileobj=buf, mode='wb') as gzipper:
+            gzipper.write(html)
+        gzippeddata = buf.getvalue()
+
+    r = requests.post(
+        vnu_url,
+        params={
+            'out': 'gnu',
+            'level': 'error',
+        },
+        headers={
+            'Content-Type': content_type,
+            'Accept-Encoding': 'gzip',
+            'Content-Encoding': 'gzip',
+            'Content-Length': str(len(gzippeddata)),
+        },
+        data=gzippeddata
+    )
+    return r.text.strip()
 
 
 @pytest.mark.urls('pashinin.urls')

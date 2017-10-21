@@ -1,0 +1,90 @@
+{% extends "pashinin_base.jinja" %}
+
+{% block title %}Оплата{% endblock %}
+
+
+{% block header2 %}<h1>Оплата</h1>{% endblock %}
+
+
+{% block content %}
+
+  <h2>Стоимость</h2>
+
+  <table style="border-spacing: 10px;
+				border-collapse: separate;
+				border:1px solid #eee;
+				">
+	<tr>
+      <th>Длительность</th>
+      <th>Стоимость</th>
+	</tr>
+	<tr>
+      <td>45мин</td>
+      <td></td>
+	</tr>
+	<tr>
+      <td>1ч</td>
+      <td>{{price}}р</td>
+	</tr>
+	<tr>
+      <td>1,5ч</td>
+      <td>{{int(price*1.5)}}р</td>
+	</tr>
+	<tr>
+      <td>2ч</td>
+      <td>{{price*2}}р</td>
+	</tr>
+  </table>
+  <br/>
+
+  <h2>Способы оплаты</h2>
+
+  <div class="flex equal col-if-less-w500">
+	<div class="">
+	  <img alt="При встрече" src="{{file("c204399abd1e5440d3ce5d3a5896867ebfd3ea6f")}}" style="max-height:60px"/>
+	  <p>При встрече</p>
+	</div>
+	<div class="">
+	  <img alt="Сбербанк" src="{{file("812d93a3f5226eb848faa922b28f12fdd7273d40")}}" style=""/>
+	  <p>Сбербанк <br/>
+		<span style="color:#999">4276 3801 6222 4047</span> <br/>
+		<span style="color:#999">{{phone}}</span></p>
+	</div>
+	<div class="">
+	  <img alt="Яндекс Деньги" src="{{file("cfb2b878c84b7eed89293d607ea0c917add954fb")}}" style="max-height:60px"/>
+	  <p>Яндекс деньги <br/> <span style="color:#999">41001259536194</span></p>
+	</div>
+  </div>
+  {# <a href="https://money.yandex.ru">Яндекс.Деньги</a> (41001259536194) #}
+  {# Paypal ​https://www.paypal.com - ​sergey@pashinin.com #}
+  {# Webmoney R129230658226  #}
+  {# bitcoin #}
+
+
+
+  {# <ul> #}
+  {# 	<li>{{price45}}р/45мин</li> #}
+  {# 	<li>{{price}}р/60мин</li> #}
+  {# </ul> #}
+
+<p>Как Вам удобно - лично/онлайн - за одно/несколько занятий вперед.</p>
+
+<h2>По поводу пропусков!</h2>
+
+<p>
+  Коротко: я все буду понимать и входить в Ваше положение... но
+  только за Ваш счет.
+</p>
+
+<p>
+  Если получится так, что Вы просто не пришли в назначенное время - Вы
+  забрали его у меня, извольте заплатить.
+</p>
+
+<p>
+  Тем не менее, всякое может случиться, назначили время, но не смогли
+  придти, предупредили, понимаю - можем в течение недели выбрать
+  дополнительно время (если оно еще у меня будет).
+</p>
+
+{% endblock %}

@@ -17,7 +17,8 @@ cache:
     - $HOME/.yarn-cache
 
 python:
-  - "3.5"
+  # - "3.5"  # using isoformat(timespec=...), py3.6 only
+  - "3.6"
   # - "nightly" # currently points to 3.7-dev
   # - "pypy3"
 
@@ -33,6 +34,10 @@ matrix:
 
 addons:
   postgresql: "9.6"
+
+  apt:
+    packages:
+      - oracle-java8-set-default  # required by vnu.jar (for html validator)
 
   # Travis CI will automatically configure the hostnames in /etc/hosts
   # and resolve them to 127.0.0.1.

@@ -2,11 +2,6 @@
 
 {% block title %}{% endblock %}
 
-{% block head %}
-{{super()}}
-{# <script defer src="{{ static("s.js") }}"></script> #}
-{% endblock %}
-
 
 {% block css %}
   {{super()}}
@@ -44,26 +39,25 @@
 
 
 {% block main %}
-{% block maintop %}{% endblock %}
-<div class="w flex">
-  {% if self.left() %}
-	<aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
-  {% endif %}
+  <div class="w flex pad" style="background-color:#fff;box-shadow: 0 0 3px rgba(0,0,0,0.3);">
+	{% if self.left() %}
+	  <aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
+	{% endif %}
 
-  {% if self.content() %}
-	<div style="position:relative;padding-top:0px">
-	  <div>
-		{% if self.breadcrumb() %}
-		  <div class="pad-sm" style="border-bottom:0px solid #ddd">
-			{% block breadcrumb %}{% endblock %}
-		  </div>
-		{% endif %}
-		{% block content %}{% endblock %}
+	{% if self.content() %}
+	  <div style="position:relative;padding-top:0px">
+		<div>
+		  {# {% if self.breadcrumb() %} #}
+		  {# 	<div class="pad-sm" style="border-bottom:0px solid #ddd"> #}
+		  {# 	  {% block breadcrumb %}{% endblock %} #}
+		  {# 	</div> #}
+		  {# {% endif %} #}
+		  {% block content %}{% endblock %}
+		</div>
 	  </div>
-	</div>
-  {% endif %}
-  {% if self.right() %}
-	<aside class="noprint grow0 pad-sm" style="max-width:30%;{# background-color:#edeef0 #}">{% block right %}{% endblock %}</aside>
-  {% endif %}
-</div>
+	{% endif %}
+	{% if self.right() %}
+	  <aside class="noprint grow0 pad-sm" style="max-width:30%;{# background-color:#edeef0 #}">{% block right %}{% endblock %}</aside>
+	{% endif %}
+  </div>
 {% endblock %}

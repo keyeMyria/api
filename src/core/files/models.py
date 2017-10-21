@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from core import now
 import hashlib
+import re
 # from raven.contrib.django.raven_compat.models import client
 import shutil
 from dirtyfields import DirtyFieldsMixin
@@ -12,6 +13,8 @@ from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import (TemporaryUploadedFile,
                                             InMemoryUploadedFile)
 from . import CT_CHOICES
+import logging
+log = logging.getLogger(__name__)
 
 
 class BaseFile(DirtyFieldsMixin, AddedChanged):
@@ -149,7 +152,17 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
     def from_url(cls, url):
         "Add a file to our archive from an URL."
 
-        # Download to a temporary file...
+        # check if already have this file
+        # https://pashinin.com/_/files/{}
+        m = re.fullmatch('https://pashinin.com/_/files/(?P<sha1>.{40})', url)
+        try:
+            f = cls.objects.get(sha1=m['sha1'])
+            log.debug('Cached: {}'.format(m['sha1']))
+            return f
+        except (cls.DoesNotExist, KeyError):
+            log.debug('Downloading {}'.format(url))
+
+        # Have no such file => download it to a temporary file...
         import tempfile
         import urllib
         with tempfile.NamedTemporaryFile() as f:

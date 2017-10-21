@@ -197,13 +197,17 @@ $pad: 1em;
 	display:flex;
 	&>*{
 		flex-grow:1;
+		// flex-basis: auto;
+		// flex: 0 0 auto;
 		&.grow0{
 			flex-grow:0 !important;
+			// flex-shrink: 0;
 		}
 	}
 	&.grow0{
 		&>*{
 			flex-grow:0 !important;
+			// flex-shrink: 0;
 		}
 	}
 	&.equal{
@@ -729,7 +733,7 @@ h6 {
 
 h1 {
 	@media (max-width: 600px){font-size:1.8em}
-	@media (min-width: 600px){font-size:2.1em}
+	@media (min-width: 600px){font-size:2.3em}
 }
 
 
@@ -885,7 +889,7 @@ div#index{
 		padding-bottom:0;
 	}
 	@media (min-width: 800px){
-		padding-top:10vh;
+		padding-top:8vh;
 		padding-bottom:10vh;
 	}
 	color:#fff;

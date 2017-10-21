@@ -1,15 +1,26 @@
 import os
 import sys
 import datetime
-import pymorphy2
 from django.utils.timezone import utc
+from django.contrib import sitemaps
+import logging
+log = logging.getLogger(__name__)
 
-from django_hosts.resolvers import reverse as reverse_hosts
-reverse = reverse_hosts
-# from django.core.urlresolvers import reverse as reverse_django
-# reverse = reverse_django
+try:
+    import pymorphy2
+    morph = pymorphy2.MorphAnalyzer()
+except:
+    log.error('install pymorphy2')
 
-morph = pymorphy2.MorphAnalyzer()
+
+try:
+    from django_hosts.resolvers import reverse as reverse_hosts
+    reverse = reverse_hosts
+    # from django.core.urlresolvers import reverse as reverse_django
+    # reverse = reverse_django
+except:
+    log.error('install django_hosts')
+
 
 default_app_config = 'core.apps.CoreConfig'
 
@@ -62,6 +73,33 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR', '')
     return ip
+
+
+class Sitemap(sitemaps.Sitemap):
+    def _urls(self, page, protocol, domain):
+        urls = []
+        latest_lastmod = None
+        all_items_lastmod = True  # track if all items have a lastmod
+        for item in self.paginator.page(page).object_list:
+            loc = "{}:{}".format(protocol, self.__get('location', item))
+            priority = self.__get('priority', item)
+            lastmod = self.__get('lastmod', item)
+            if all_items_lastmod:
+                all_items_lastmod = lastmod is not None
+                if (all_items_lastmod and
+                        (latest_lastmod is None or lastmod > latest_lastmod)):
+                    latest_lastmod = lastmod
+            url_info = {
+                'item': item,
+                'location': loc,
+                'lastmod': lastmod,
+                'changefreq': self.__get('changefreq', item),
+                'priority': str(priority if priority is not None else ''),
+            }
+            urls.append(url_info)
+        if all_items_lastmod and latest_lastmod:
+            self.latest_lastmod = latest_lastmod
+        return urls
 
 
 # Detecting mobile device

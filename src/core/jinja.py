@@ -9,6 +9,7 @@ from jinja2.ext import Extension
 import re
 from django.utils.formats import date_format
 from django.utils.timezone import localtime
+from rparser import article_render
 
 
 class SpacelessExtension(Extension):
@@ -55,6 +56,11 @@ def css(f):
 <noscript><link rel="stylesheet" href="{0}"></noscript>'''.format(f)
 
 
+def render(src):
+    html, b = article_render(src)
+    return html
+
+
 def environment(**options):
     # env = Environment(**options)
     # env = Environment(trim_blocks=False, **options)
@@ -75,6 +81,8 @@ def environment(**options):
         'css': css,
         'min': min,
         'len': len,
+        'int': int,
+        'render': render,
         'date_format': date_format,
         'now': now,
         'localtime': localtime,

@@ -7,6 +7,9 @@ vm:
 rebuild-main:
 	docker build -t pashinin.com -f Dockerfile .
 
+rebuild-vnu:
+	docker build -t vnu -f Dockerfile-vnu .
+
 rebuild-db:
 	docker build -t db -f Dockerfile-postgres .
 
@@ -21,3 +24,7 @@ push-main:
 push-gulp:
 	docker tag gulp pashinin/gulp
 	docker push pashinin/gulp
+
+push-vnu:
+	docker tag vnu pashinin/vnu
+	docker push pashinin/vnu

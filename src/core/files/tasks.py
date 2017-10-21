@@ -5,7 +5,7 @@ from celery import shared_task
 from django.conf import settings
 from raven.contrib.django.raven_compat.models import client
 # from tempfile import mkstemp, mkdtemp
-from . import CT_CHOICES_REVERSED
+from . import CT_CHOICES_REVERSED, files_used_in_this_repo
 
 
 class FileSystemNotReady(Exception):
@@ -96,3 +96,13 @@ def move_upload_to_files(upload):
     # if f.content_type_string in ('image/jpeg', ):
     #     f.publish()
     return f
+
+
+@shared_task
+def download_core_files():
+    ensure_fs_ready()
+
+    files = files_used_in_this_repo()  # sha1 list
+    for f in files:
+        url = 'https://pashinin.com/_/files/{}'.format(f)
+        BaseFile.from_url(url)

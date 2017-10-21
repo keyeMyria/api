@@ -67,7 +67,7 @@ skype: sergey-pashinin
 
 
 {% block content %}
-  <div class="pad-sm padt2 padb marb" style="position:relative;" itemscope itemtype="http://schema.org/Person">
+  <div class="padb marb" style="position:relative;" itemscope itemtype="http://schema.org/Person">
 	<div class="flex">
 	  <div class="flex0" style="flex:0 0 150px;position:relative">
 		<img itemprop="image" class="ib photo" alt="Сергей Пашинин"
@@ -75,13 +75,15 @@ skype: sergey-pashinin
 			 src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}"
 			 style="
 			 max-width:150px;
+			 width:150px;
+			 height:150px;
 			 border: 1px solid #999;
 			 border-radius:3px;
 			 "/>
 	  </div>
 	  <div class="padl " style="position:relative">
 		{# <span class="title" style="font-size:1.5rem" itemprop="telephone">{{phone}}</span> #}
-		<p style="font-size:1.5rem" itemprop="name">Пашинин Сергей Александрович</p>
+		<h2 style="padding-top:5px;margin:0" itemprop="name">Пашинин Сергей Александрович</h2>
 		<p>
 		  <img itemprop="image" class="left" alt="МГТУ им. Баумана" src="{{ file("cb5766f0333ebeb9f3cdb0efad36e141566fa67f") }}"
 			   style="left:0px;bottom:0;right:0;margin-right:0.5rem"/>
@@ -100,7 +102,7 @@ skype: sergey-pashinin
   </div>
 
 
-  <div class="pad-sm">
+  <div class="">
 	<div class="contacts_block">
 	  <div class="contacts_header">
 		<span class="ch_title">Основные контакты</span>
@@ -108,10 +110,8 @@ skype: sergey-pashinin
 	  <div class="clearfix">
 		<div class="info_left">Моб. телефон</div>
 		<div class="info_right">
-		  {{phone}} <span style="color:#888;font-size:0.9em">(Теле2 Москва)</span>
-
+		  {{phone}}
 		</div>
-		{# <h3><b>{{phone}}</b> <span style="font-size:1rem">(Москва, Теле2)</span></h3> #}
 		{# <p>Звоните до 21:00 по московскому времени. Сейчас в Москве {{'%02d' % now.hour}}:{{ '%02d' % now.minute }}.</p> #}
 	  </div>
 
@@ -153,21 +153,6 @@ skype: sergey-pashinin
 	  {# </div> #}
 	</div>
 
-
-	{# Skype #}
-	{# <div class="c pad flex grow0" style="color:#000"> #}
-	{#   <div class="marr pad-sm padl"> #}
-	{# 	<img style="max-width:60px" alt="Skype" src="{{ file("14a6ee6b082c752332121ef9e91a0a56141edb35") }}"/> #}
-	{#   </div> #}
-	{#   <div> #}
-	{# 	<h3>Skype</h3> #}
-	{# 	<span style="color:#777">sergey-pashinin</span> #}
-	{# 	<a target="_blank" href="https://skype.com/">Скачать</a> #}
-	{# 	<p>Cкоро не останется причин использовать эту поделку.</p> #}
-	{#   </div> #}
-	{# </div> #}
-
-
 	{# <div class="c flex equal soc"> #}
 	{#   {\# <div> #\} #}
 	{# 	{\#   <a href="https://facebook.com/pashinin"><img style="max-width:60px" alt="Facebook" src="{{ static("facebook.png") }}"/> #\} #}
@@ -196,8 +181,8 @@ skype: sergey-pashinin
 		  Москва, СЗАО, ул. Туристская 19к1
 		  <p>
 			<a target="_blank" href="https://yandex.ru/maps/-/CZgObT-1"><img alt="Яндекс карты" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> на Яндекс.Картах</a> <br/>
-			<a target="_blank" href="https://yandex.ru/maps/213/moscow/?ll=37.423959%2C55.850292&z=16&l=stv%2Csta&panorama%5Bpoint%5D=37.422127%2C55.851877&panorama%5Bdirection%5D=277.054704%2C12.745488&panorama%5Bspan%5D=120.000000%2C64.684224">
-			  <img alt="Панорама" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Панорама</a>
+			{# <a target="_blank" href="https://yandex.ru/maps/213/moscow/?ll=37.423959%2C55.850292&z=16&l=stv%2Csta&panorama%5Bpoint%5D=37.422127%2C55.851877&panorama%5Bdirection%5D=277.054704%2C12.745488&panorama%5Bspan%5D=120.000000%2C64.684224"> #}
+			{#   <img alt="Панорама" src="{{file("eb6302d5959354c3ca29aedd140287bc4b685ce0")}}"/> Панорама</a> #}
 		  </p>
 		</div>
 	  </div>
@@ -262,11 +247,8 @@ skype: sergey-pashinin
                 <div class="pswp__counter"></div>
 
                 <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
                 <button class="pswp__button pswp__button--share" title="Share"></button>
-
                 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
                 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
@@ -299,9 +281,7 @@ skype: sergey-pashinin
     </div>
 </div>
 
-
-
-<div class="my-gallery pad-sm" itemscope itemtype="http://schema.org/ImageGallery">
+<div class="my-gallery mart" itemscope itemtype="http://schema.org/ImageGallery">
   <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     <a href="{{file("6d31596ca529c2e9ec02ea01e23f74a499cabd32")}}" itemprop="contentUrl" data-size="1000x667">
       <img src="{{file("6d31596ca529c2e9ec02ea01e23f74a499cabd32")}}" itemprop="thumbnail" alt="Image description" />
@@ -329,18 +309,12 @@ skype: sergey-pashinin
     </a>
     <figcaption itemprop="caption description">Москва, ул. Туристская 19к1</figcaption>
   </figure>
-
-  {# <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> #}
-  {#   <a href="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}" itemprop="contentUrl" data-size="500x500"> #}
-  {#     <img src="{{file("f513372f7cd59f8e63e7753d0a3ca44c2c67beb7")}}" itemprop="thumbnail" alt="Image description" /> #}
-  {#   </a> #}
-  {#   <figcaption itemprop="caption description">Image caption 2</figcaption> #}
-  {# </figure> #}
-
-
-
-
 </div>
+
+{# map #}
+{# <div style="width: 100%; height: 350px;"> #}
+{#   <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3AWGDNCEBr4vlTjO5gaK_CVKvNS9eaUlWA&amp;width=100%25&amp;height=338&amp;lang=ru_RU&amp;scroll=true"></script> #}
+{# </div> #}
 
 
 {% endblock %}

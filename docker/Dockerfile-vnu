@@ -1,0 +1,7 @@
+FROM openjdk:8-alpine
+RUN mkdir -p /var/www/project
+WORKDIR /var/www/project
+# EXPOSE 8888
+
+# java -cp node_modules/vnu-jar/build/dist/vnu.jar nu.validator.servlet.Main 8888
+CMD ["java", "-Dnu.validator.client.level=error", "-cp", "node_modules/vnu-jar/build/dist/vnu.jar", "nu.validator.servlet.Main", "8888"]

@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Lesson, Course, CourseLead
+from .models import Lesson, Course, CourseLead, QA
 # from django.utils.translation import ugettext_lazy as _
+from ordered_model.admin import OrderedModelAdmin
 from core.models import User
 # from adminfilters.models import Species, Breed
 
@@ -36,4 +37,15 @@ class CourseLeadAdmin(admin.ModelAdmin):
     )
     list_filter = ('status', )
     ordering = ['status']
-    # ordering = ['id']
+
+
+@admin.register(QA)
+class QAAdmin(OrderedModelAdmin):
+    list_display = (
+        'order',
+        'question',
+        'move_up_down_links',
+    )
+    # list_filter = ('status', )
+    list_display_links = ('question', )
+    ordering = ['order']

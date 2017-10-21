@@ -17,14 +17,20 @@ codename = `lsb_release -cs`
 settings=pashinin.settings
 # docker-compose=cd docker;export UID; docker-compose
 docker-compose=export UID; docker-compose -f docker/docker-compose.yml
-dockermanage.py = docker exec --user user -it $(container) python ./manage.py
+# dockermanage.py = docker exec --user user -it $(container) python ./manage.py
+dockermanage.py = $(docker-compose) run --rm django python ./manage.py
 docker_run = $(docker-compose) run --rm django
 uglifyjs = ./node_modules/uglify-es/bin/uglifyjs
 sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 
+
+# Errors that can happen:
+# ERROR: for db  Cannot start service db: oci runtime error: container_linux.go:265: starting container process caused "process_linux.go:284: applying cgroup configuration for process caused \"failed to write 15422 to cgroup.procs: write /sys/fs/cgroup/cpu,cpuacct/docker/eae4198a69bfa819781cc2e833a3f91a63097dce833e6240c9911df28ee83f0f/cgroup.procs: invalid argument\""
+
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	$(docker-compose) up -d redis db django || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	$(docker-compose) up -d redis db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	gulp
 # (cd docker;export UID; docker-compose up gulp)
 
 
@@ -80,8 +86,6 @@ configs:
 dev: dev_pkgs
 
 # $(manage) collectstatic --noinput -i *.scss -i *.sass -i *.less -i *.coffee -i *.map
-
-start: docker
 
 bash:
 	$(docker_run) bash
@@ -179,10 +183,6 @@ rparser:
 	ln -sf ../rparser/rparser src/rparser
 	(cd ../rparser/rparser; ln -sf ../build/lib/rparser/librparser.so librparser.so)
 	$(docker-compose) restart django
-# (cd docker;export UID; docker-compose run --rm django ls)
-# (cd docker;export UID; docker-compose run --rm django ln -sf ../../rparser/build/lib/rparser/librparser.so ../../rparser/rparser/librparser.so)
-# (cd docker;export UID; docker-compose up -d django)
-# (cd docker;export UID; docker-compose run --rm django python manage.py shell)
 
 requirements:
 	pip install -r docker/requirements.txt
@@ -281,18 +281,8 @@ typescript:
 -print | parallel --no-notice tsc --lib es6,dom {}
 
 shell:
-	$(docker-compose) run --rm django python manage.py shell_plus
-# sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
-
-shell-docker:
-	docker run --env DJANGO_SETTINGS_MODULE='pashinin.settings' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container) ./manage.py shell
-# docker exec --user user -it $(vm) ./manage.py shell
-
-python-docker:
-	$(docker_run) ipython
-
-ege:
-	docker exec --user www-data --env DJANGO_SETTINGS_MODULE='ege.settings_ege' -it $(vm) ./manage.py runserver 0.0.0.0:8001
+	if [[ "$(DISPLAY)" == "" ]] ; then sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell; fi;
+	if [[ "$(DISPLAY)" != "" ]] ; then $(dockermanage.py) shell_plus; fi;
 
 locale-docker:
 	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
@@ -302,9 +292,6 @@ localecompile-docker:
 
 localecompile:
 	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py compilemessages
-
-py:
-	$(python)
 
 flake8: install_flake8
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
@@ -316,9 +303,6 @@ install_flake8:
 install_docker:
 	(cd src; python3 -c 'from core.tasks import install;install("docker")')
 
-tidy:
-	curl https://pashinin.com | tidy -config configs/tidy.conf
-
 render:
 	mkdir -p configs/tmp
 	(cd configs;./config.py secret-example.json secret.json)
@@ -328,7 +312,6 @@ render:
 # docker kill $(docker ps -q)
 clean:
 	docker rm `docker ps --no-trunc -aq`
-
 
 hosts:
 	(cd configs; sudo python hosts.py)

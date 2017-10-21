@@ -5,12 +5,8 @@ services:
     # --cap-add SYS_ADMIN --device /dev/fuse
     # trying this:
 
-    # either "build" or "image"
     image: pashinin/pashinin.com:latest
-
-    # for debugging (locally built docker image):
     # image: pashinin.com
-    # build: .
 
     container_name: django
 
@@ -49,6 +45,7 @@ services:
     links:
       - db
       - redis
+      - vnu
       # - gulp
       # - "db:database"
 
@@ -124,6 +121,16 @@ services:
   #   #   - db
   #   depends_on:
   #     - dbinit
+
+  vnu:
+    image: pashinin/vnu:latest
+    # image: vnu
+    container_name: vnu
+    user: $UID
+    restart: always
+
+    volumes:
+      - ../:/var/www/project
 
 
 # restart: on-failure:10

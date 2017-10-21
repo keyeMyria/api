@@ -299,6 +299,7 @@ INSTALLED_APPS = (
     'channels',
     'channels_api',
 
+    'ordered_model',
     'cacheops',
     'corsheaders',
     'django.contrib.auth',
@@ -396,8 +397,9 @@ CHANNEL_LAYERS = {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
             'hosts': [('{{redis_server}}', 6379)],
-            # "prefix" is needed when you have several "Django channels"
-            # powered projects on the same host (same redis db)
+            # "prefix" is needed when you have several "Django
+            # channels"-powered projects on the same host (same redis
+            # db)
             "prefix": app+"."+DOMAIN+str(SITE_ID)
         },
         'ROUTING': app+'.routing.channel_routing',
@@ -726,11 +728,13 @@ LAZYSIGNUP_USER_AGENT_BLACKLIST = (
     'ahrefsBot',
     'baiduspider',
     'bingbot',
+    'coccocbot',
     'crawler',
     'duckduckgo-favicons-bot',
     'go-http-client',
     'google favicon',
     'googlebot',
+    'java/1.8.0_101',
     'libwww-perl',
     'linkdexbot',
     'mail.ru_bot',
@@ -739,8 +743,14 @@ LAZYSIGNUP_USER_AGENT_BLACKLIST = (
     'netcraftSurveyAgent',
     'panscient.com',
     'scanbot',
+    'semrushBot',
     'sentry',
     'slurp',
+    'sogou web spider',
+    'statdom.ru/Bot',
+    'vkShare',
+    'wget',
+    'winHTTP',
     'yandex',
 )
 

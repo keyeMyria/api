@@ -5,7 +5,7 @@ pip>=9.0.1
 #greenlet
 # eventlet
 
-# beautifulsoup4
+beautifulsoup4
 
 # https://pypi.python.org/pypi/bleach
 # >>> bleach.clean('an <script>evil()</script> example')
@@ -76,7 +76,7 @@ flower
 #guess_language-spirit
 guess_language
 iptools
-ipython>=2.3.0
+ipython==5.5.0
 pillow
 # ply
 # psycopg2           # this one is not working with PyPy
@@ -191,8 +191,8 @@ rparser>=0.1.19
 psutil   # view system processes
 
 # склонение слов в русском языке
-pymorphy2
-# pymorphy2[fast]  # need "dawg" pkg to install (cannot install with PyPy)
+# pymorphy2
+pymorphy2[fast]  # need "dawg" pkg to install (cannot install with PyPy)
 pymorphy2-dicts-ru
 
 # for python lxml lib
@@ -223,3 +223,6 @@ django-reversion
 
 # for generating data in tests
 factory_boy
+
+# try to order models
+django-ordered-model

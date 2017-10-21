@@ -6,8 +6,9 @@ from django.utils.timezone import now, localtime
 from core import reverse
 from django.http import HttpResponse, Http404
 from .forms import Enroll, AddStudent, CourseEnrollForm
-from .models import Lesson, CourseLead, Course
+from .models import Lesson, CourseLead, Course, QA
 from django.utils.decorators import method_decorator
+# from django.contrib.staticfiles.storage import staticfiles_storage
 from lazysignup.decorators import allow_lazy_user
 from raven.contrib.django.raven_compat.models import client
 from channels import Channel
@@ -18,9 +19,9 @@ from pymorphy2.shapes import restore_capitalization
 from core import morph
 from django.conf import settings
 
+
 log = logging.getLogger(__name__)
 User = get_user_model()
-
 
 cities = {
     'moskva': 'Москва',
@@ -66,6 +67,7 @@ class Base(BaseView):
             [
                 ('index', {
                     'title': 'Главная',
+                    # 'img': staticfiles_storage.url('favicon.png'),
                     'url': reverse('index'),
                 }),
                 ('articles', {
@@ -75,6 +77,10 @@ class Base(BaseView):
                 ('faq', {
                     'title': 'Вопросы',
                     'url': reverse('faq'),
+                }),
+                ('pay', {
+                    'title': 'Оплата',
+                    'url': reverse('pay'),
                 }),
                 ('contacts', {
                     'title': 'Контакты',
@@ -507,4 +513,10 @@ class FAQ(Base):
         c = super(FAQ, self).get_context_data(**kwargs)
         c["exp"] = datetime.datetime.now() - datetime.datetime(2013, 1, 1)
         c["menu"].current = 'faq'
+        c['questions'] = QA.objects.filter()
+        # .order_by('order')
         return c
+
+
+class PayView(Base):
+    template_name = "pashinin_payment.jinja"
