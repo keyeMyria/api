@@ -1,14 +1,14 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="{% block metadescription %}{% endblock %}">
 <title>{% block title %}{% endblock %}</title>{% block og %}{% endblock %}
 <style>
 {% block style %}
 .abs{position:absolute}.w100{width:100%;box-sizing:border-box}.h100{height:100%}
-header{flex-basis:auto}
-html{height:100%;font-family:"Trebuchet MS",Helvetica,sans-serif;font-size:15px;line-height:150%;margin: 0;padding: 0;background:#f7f7f7;}
-body{color:#333;margin:0;padding:0;background:#fff;display:flex;flex-direction:column;height:100%;}
-main{background:#fff;}
+header{flex-basis:auto;background:#fff;}
+html{height:100%;font-family:Roboto, Arial, sans-serif;font-size:15px;line-height:150%;margin: 0;padding: 0;background:#f7f7f7;}
+body{color:#333;margin:0;padding:0;background:#eee;display:flex;flex-direction:column;height:100%;}
+main{background:#eee;}
 .hidden{visibility: hidden;}.hide{display:none !important;}
 a{color:#295989;}
 .flex{display:flex}
@@ -66,7 +66,27 @@ fetch('/_/files/download_core', {
 }
 </script>
 {% endif %}
-</head><body>
+</head><body id="body">
+	{# <div id="overlay" #}
+	{# 	 style="position: absolute; #}
+	{# 			visibility: hidden; #}
+	{# 			left: 0px; #}
+	{# 			top: 0px; #}
+	{# 			width:100%; #}
+	{# 			height:100%; #}
+	{# 			{\# text-align:center; #\} #}
+	{# 			background-color:rgba(0,0,0, 0.9); #}
+	{# 			{\# color:#fff; #\} #}
+	{# 			z-index: 1000;"> #}
+	{#   <div id="overlay-content" class="w pad" style="background-color:#fff"> #}
+	{# 	<h1>Выберите город</h1> #}
+	{# 	{% for c in cities %} #}
+	{# 	  <p><a href="//{{c.url}}">{{c.name}}</a></p> #}
+	{# 	{% endfor %} #}
+	{# 	<hr/> #}
+	{# 	<p class="padt"><a href="//{{DOMAIN}}">Вся Россия</a></p> #}
+	{#   </div> #}
+	{# </div> #}
 {% if FIRST_RUN and DEBUG %}
   <div style="background-color:#507299;color:#fff">
 	<div class="w pad-sm">
@@ -76,30 +96,47 @@ fetch('/_/files/download_core', {
   </div>
 {% endif %}
 {% block prebody %}{% endblock %}
-<div class="flex01a flex 0 col">
-<header style="border-bottom: 1px solid rgba(0,0,0,0.075);">
-{% block header %}{% endblock %}
-</header>
-<main class="flex">{% block main %}{% endblock %}</main>
-{% block mainbot %}{% endblock %}
+
+<div class="flex01a flex 0 col" style="background:#eee;">
+{% if self.header() %}
+  <header style="border-bottom: 1px solid rgba(0,0,0,0.075);z-index:100;">{% block header %}{% endblock %}</header>
+{% endif %}
+{% block beforemain %}{% endblock %}
+<main class="flex mart marb">{% block main %}{% endblock %}</main>
+{% block aftermain %}{% endblock %}
 </div>
+
 <footer class="padtb" style="background:#242729;color:#aaa">{% block footer %}
-<div class="w noprint pad-sm">
+<div class="w noprint pad-sm flex equal">
   {% block footer_content %}
-	{% if user.is_superuser %}<span class="right">{{ip}}</span>{% endif %}
-	<a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
-	<a href="{{url("kafedra", host="baumanka", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
-	{% if user.is_superuser %}
-	  <br/><a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
-	  <br/><a href="{{url("index", host="oge")}}">ОГЭ (9кл)</a>
+	<div>
+	  <a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
+	  <a href="{{url("kafedra", host="baumanka", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
+	  <br/>
+	  {% if user.is_superuser %}
+		<a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
+		<br/>
+		<a href="{{url("index", host="oge")}}">ОГЭ (9кл)</a>
+	  {% endif %}
+	  <div class="padt" style="color:#555;font-size:.8rem">
+		<p>© {{CURRENTYEAR}} Сергей Пашинин</p>
+	  </div>
+	</div>
+	{%- if user.is_superuser -%}
+	  <div>
+		<span>{{ip}}</span>
+		<br/>
+		{{rparser_version}}
+	  </div>
 	{% endif %}
+	<div style="text-align:right">
+	  <a target="_blank" href="https://github.com/pashinin-com/pashinin.com">Github</a>
+	</div>
   {% endblock %}
 </div>
 
-<div class="w">
-  <div class="pad-sm" style="color:#555;font-size:.8rem">
-	© {{year}} {{_("Sergey Pashinin")}}
-  </div>
+<div class="w center">
+
 </div>
 {% endblock %}
 </footer>

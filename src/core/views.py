@@ -57,12 +57,15 @@ class BaseView(TemplateView):
         nofiles = len(os.listdir(settings.FILES_ROOT)) < 4
         c['FIRST_RUN'] = nodir or nofiles
 
+        import rparser
+        c['rparser_version'] = rparser.__version__
+
         # c['utcnow'] = datetime.datetime.utcnow()
         # c['now'] = datetime.datetime.now()
         c['utcnow'] = now()
         c['now'] = now()
 
-        c['year'] = date.today().year
+        c['CURRENTYEAR'] = date.today().year
         c['user'] = self.request.user
         c['ip'] = get_client_ip(self.request)
 

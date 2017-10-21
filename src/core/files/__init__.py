@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+
 default_app_config = 'core.files.apps.FilesConfig'
 
 #
@@ -50,3 +53,30 @@ CT_CHOICES_REVERSED = {
     'text': CT_TEXT,
     'video': CT_VIDEO
 }
+
+
+def iter_files(path, ending):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith(ending):
+                yield os.path.join(root, name)
+        # for name in dirs:
+        #     print(os.path.join(root, name))
+
+
+def files_used_in_this_repo():
+    """Return a list of SHA1 hashes of used files.
+
+    Files are used in jinja templates like this:
+
+        {{file("sha1-hash")}}
+    """
+    import re
+    files = []
+    for filename in iter_files(settings.REPO_PATH, '.jinja'):
+        with open(filename, 'r') as f:
+            data = f.read()
+            for sha1 in re.findall('[a-z0-9]{40}', data):
+                if sha1 not in files:
+                    files.append(sha1)
+    return files

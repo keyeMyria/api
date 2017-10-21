@@ -8,10 +8,10 @@
 
 
 {% block header %}
-{{super()}}
-<div class="pad-sm padt w">
-  {% if article %}<h1>{{article.title}}</h1>{% endif %}
-</div>
+  {{super()}}
+  <div class="pad padt w">
+	{% if article %}<h1>{{article.title}}</h1>{% endif %}
+  </div>
 {% endblock %}
 
 
@@ -42,7 +42,7 @@
 
 {% block content %}
   {% if article %}
-	<div class="pad-sm">
+	<div>
 	  {{article.html|safe}}
 	</div>
 	{% if DEBUG %}

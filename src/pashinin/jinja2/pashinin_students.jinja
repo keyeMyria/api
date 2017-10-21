@@ -26,7 +26,7 @@
 
 
 
-{% block main %}
+{% block content %}
   <div class="w">
 	<div>
 	  <i class="icon icon-spin1" style="animation: spin 2s infinite linear;font-size:3em;">&#xE830;</i>
@@ -60,9 +60,9 @@
 			  {# {{localtime(lesson.start)}} <br/> #}
 			  {# {{localtime(lesson.end)}} #}
 			  {# <br/> #}
-			  <span title="{{localtime(lesson.start)}}" class="start">{{date_format(localtime(lesson.start), 'H:i')}}</span>
+			  <span title="{{lesson.start.isoformat(timespec='milliseconds')}}" class="start">{{date_format(localtime(lesson.start), 'H:i')}}</span>
 			  -
-			  <span title="{{localtime(lesson.end)}}" class="end">{{date_format(localtime(lesson.end), 'H:i')}}</span>
+			  <span title="{{lesson.end.isoformat(timespec='milliseconds')}}" class="end">{{date_format(localtime(lesson.end), 'H:i')}}</span>
 			  <span class="student">{{lesson.student}}</span>
 			</div>
 		  {% endfor %}
@@ -103,7 +103,7 @@
 		  <div class="lesson pad-sm{% if lesson.student %} busy{% endif %}"
 			   style="height:{{round(hour_px * lesson.mins / 60)}}px;"
 			   >
-			<form action="" class="hide">
+			<form action="#" class="hide">
 			  {% if lesson.student %}
 				<input name="student_id" type="hidden" value="{{lesson.student.id}}"/>
 			  {% endif %}
@@ -114,7 +114,7 @@
 			{{localtime(lesson.end).hour}}:{{"%02d" % lesson.end.minute}}
 
 			{# {{lesson.start.time()}} - {{lesson.end.time()}} #}
-			<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>
+			{# <time class="timeago" datetime="{{localtime(lesson.start).isoformat(timespec='milliseconds')}}">{{lesson.start.isoformat()}}</time> #}
 			{# (<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>) #}
 			<br/>
 
@@ -157,7 +157,7 @@
 		  {% for day in days %}
 			{% set is_today = localtime(utcnow).date() == localtime(day.date).date() %}
 			<div
-			  class="day padlr-sm {% if is_today %}class="bred"{% endif %}"
+			  class="day padlr-sm {% if is_today %}bred{% endif %}"
 			  style="{% if is_today %}border-left:3px solid red{% endif %}"
 			  {# style="background-color:rgba({{255-min((day-utcnow).days, 7)/7*100}},255,255,1)" #}
 			  >
@@ -182,7 +182,7 @@
 				<div class="lesson pad-sm{% if lesson.student %} busy{% endif %}"
 					 style="height:{{round(hour_px * lesson.mins / 60)}}px;"
 					 >
-				  <form action="" class="hide">
+				  <form action="#" class="hide">
 					{% if lesson.student %}
 					  <input name="student_id" type="hidden" value="{{lesson.student.id}}"/>
 					{% endif %}
@@ -193,7 +193,7 @@
 				  {{localtime(lesson.end).hour}}:{{"%02d" % lesson.end.minute}}
 
 				  {# {{lesson.start.time()}} - {{lesson.end.time()}} #}
-				  <time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>
+				  {# <time class="timeago" datetime="{{localtime(lesson.start).isoformat(timespec='milliseconds')}}">{{lesson.start.isoformat()}}</time> #}
 				  {# (<time class="timeago" datetime="{{localtime(lesson.start).isoformat()}}">{{lesson.start.isoformat()}}</time>) #}
 				  <br/>
 
@@ -240,13 +240,13 @@
 		<div class="">
 		  <div class="">
 			{# <div class="grow0 padlr"> #}
-			  {# 	<input id="new_student_btn" class="btn btn-primary btn-large" type="submit" name="" value="Новый ученик" /> #}
+			  {# 	<input id="new_student_btn" class="btn btn-primary btn-large" type="submit" value="Новый ученик" /> #}
 			  {# </div> #}
 			<div class="pad">
 			  <div id="edit_lesson" class="hide" style="max-width:500px">
 				<h2 class="title">Новый ученик</h2>
 				<form id="new_student_form" action="{{url("students", host=host.name)}}">
-				  <textarea cols="30" id="" name="problem" rows="2" placeholder="ЕГЭ / Python / C++ / C# / другое"></textarea>
+				  <textarea cols="30" name="problem" rows="2" placeholder="ЕГЭ / Python / C++ / C# / другое"></textarea>
 				  <div class="flex">
 					<input name="name" type="text" value="" placeholder="Имя" style="width:170px"/>
 					<input class="marl" name="contact" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
@@ -258,29 +258,29 @@
 						<option>{{day}}</option>
 					  {% endfor %}
 					</select>
-					с <input name="" type="text" value="" placeholder="12:00" style="width:100px"/>
+					с <input type="text" value="" placeholder="12:00" style="width:100px"/>
 					до
-					<input name="" type="text" value="" placeholder="13:00" style="width:100px"/>
+					<input type="text" value="" placeholder="13:00" style="width:100px"/>
 					<br/>
 					{# Предыдущего занятия нет #}
 					После занятия: свободное время (1ч)
 				  </div>
 
-				  <input name="" type="text" value="" placeholder="Возраст (класс, курс)"/>
-				  <input name="" type="text" value="" placeholder="Город" style="width:200px"/>
+				  <input name="age" type="text" value="" placeholder="Возраст (класс, курс)"/>
+				  <input name="city" type="text" value="" placeholder="Город" style="width:200px"/>
 
 				  <div class="flex">
-					<input name="" type="text" value="" placeholder="Мама" style="width:170px"/>
-					<input class="marl" name="" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
+					<input name="mom" type="text" value="" placeholder="Мама" style="width:170px"/>
+					<input class="marl" name="momphone" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
 				  </div>
 				  <div class="flex">
-					<input name="" type="text" value="" placeholder="Папа" style="width:170px"/>
-					<input class="marl" name="" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
+					<input name="pop" type="text" value="" placeholder="Папа" style="width:170px"/>
+					<input class="marl" name="popphone" type="text" value="" placeholder="Телефон / Email / Skype / Discord"/>
 				  </div>
 
-				  <textarea cols="30" id="" name="" rows="2" placeholder="Комментарий"></textarea>
+				  <textarea cols="30" name="comment" rows="2" placeholder="Комментарий"></textarea>
 
-				  <input id="add_new_student" class="btn btn-primary btn-large" type="submit" name="" value="Добавить" />
+				  <input id="add_new_student" class="btn btn-primary btn-large" type="submit" value="Добавить" />
 				</form>
 			  </div>
 			</div>

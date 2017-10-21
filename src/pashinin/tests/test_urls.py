@@ -2,9 +2,9 @@ import pytest
 # import subprocess
 import requests
 import gzip
-import itertools
+# import itertools
 # from tidylib import tidy_document
-from subprocess import Popen, PIPE
+# from subprocess import Popen, PIPE
 from io import BytesIO
 
 
@@ -44,7 +44,6 @@ def test_urls_as_admin(admin_client):
     for url in urls:
         r = admin_client.get(url)
         assert r.status_code == 200
-
 
 
 @pytest.mark.ci

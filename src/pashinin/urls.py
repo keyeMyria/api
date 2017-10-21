@@ -9,7 +9,8 @@ from .views import (
     FAQ,
     Contacts,
     Students,
-    CourseView
+    CourseView,
+    PayView
 )
 
 
@@ -58,6 +59,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     url(r'^$', Index.as_view(), name="index"),
     # url(r'^$', Index.as_view(), name="lazysignup_convert"),
+    url(r'^pay$', PayView.as_view(), name='pay'),
     url(r'^contacts$', Contacts.as_view(), name='contacts'),
     url(r'^students$', Students.as_view(), name='students'),
     url(r'^faq$', FAQ.as_view(), name="faq"),

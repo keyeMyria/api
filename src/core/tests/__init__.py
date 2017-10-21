@@ -27,12 +27,13 @@ def validate_html(html, content_type):
     )
     return r.text.strip()
 
+
 def validate_process(res, html):
     # t = validate_html(html, ct)
     if res == '':
         return
 
-    print(t)
+    # print(t)
     print('- - - - -')
     res = ''
     errors = res.split('\n')
