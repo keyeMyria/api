@@ -78,22 +78,14 @@ header{
 	z-index:2;
 
 	nav {
-		// display: table-cell;
-		// vertical-align: middle;
-
 		a{
 			$col: #535a60;
 			display: inline-block;
 			color: $col;
 			height: 50px;
-			// height: 100%;
-			// text-decoration:none;
-			min-width: 50px;
 			line-height:50px;
-			// padding:0 0.5rem 0 0.5rem;
+			min-width: 50px;
 			padding:0 0.5rem;
-			// margin: 0 auto;
-			// margin: 10px auto;
 
 			&.pressed{
 				background:rgba(0,0,0,0.15);

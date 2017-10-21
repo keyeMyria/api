@@ -8,6 +8,11 @@
 
 			{# <span class="{\# hide-if-more-800 #\}"> </span> #}
 
+
+			{# {% if loop.index==1 %}<i class="icon icon-menu">&#61641; </i>{% endif %} #}
+			{# {% if v.img %} #}
+			{#   <img alt="" src="{{v.img}}" style="max-width:30px;max-height:30px;"/> #}
+			{# {% endif %} #}
 			{% spaceless %}
 			  {% for k, v in menu.items() %}
 				{% if v %}
@@ -21,13 +26,7 @@
 					   {% if v.title %}padding-left:35px;{% endif %}
 					   background-repeat: no-repeat;"
 					 {% endif %}
-					 >
-					 {# {% if loop.index==1 %}<i class="icon icon-menu">&#61641; </i>{% endif %} #}
-					 {# {% if v.img %} #}
-					 {#   <img alt="" src="{{v.img}}" style="max-width:30px;max-height:30px;"/> #}
-					 {# {% endif %} #}
-					 {{v.title}}
-				  </a>
+					 >{% if v.title %}{{v.title}}{% else %}&nbsp;{% endif %}</a>
 				{% endif %}
 			  {% endfor %}
 			{% endspaceless %}
