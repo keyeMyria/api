@@ -223,3 +223,6 @@ django-reversion
 
 # for generating data in tests
 factory_boy
+
+# try to order models
+django-ordered-model

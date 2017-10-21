@@ -299,6 +299,7 @@ INSTALLED_APPS = (
     'channels',
     'channels_api',
 
+    'ordered_model',
     'cacheops',
     'corsheaders',
     'django.contrib.auth',
@@ -396,8 +397,9 @@ CHANNEL_LAYERS = {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
             'hosts': [('{{redis_server}}', 6379)],
-            # "prefix" is needed when you have several "Django channels"
-            # powered projects on the same host (same redis db)
+            # "prefix" is needed when you have several "Django
+            # channels"-powered projects on the same host (same redis
+            # db)
             "prefix": app+"."+DOMAIN+str(SITE_ID)
         },
         'ROUTING': app+'.routing.channel_routing',
