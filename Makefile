@@ -23,6 +23,10 @@ docker_run = $(docker-compose) run --rm django
 uglifyjs = ./node_modules/uglify-es/bin/uglifyjs
 sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 
+
+# Errors that can happen:
+# ERROR: for db  Cannot start service db: oci runtime error: container_linux.go:265: starting container process caused "process_linux.go:284: applying cgroup configuration for process caused \"failed to write 15422 to cgroup.procs: write /sys/fs/cgroup/cpu,cpuacct/docker/eae4198a69bfa819781cc2e833a3f91a63097dce833e6240c9911df28ee83f0f/cgroup.procs: invalid argument\""
+
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
 	$(docker-compose) up -d redis db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"

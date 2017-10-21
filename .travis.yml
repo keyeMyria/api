@@ -17,7 +17,7 @@ cache:
     - $HOME/.yarn-cache
 
 python:
-  - "3.5"
+  # - "3.5"  # using isoformat(timespec=...), py3.6 only
   - "3.6"
   # - "nightly" # currently points to 3.7-dev
   # - "pypy3"
