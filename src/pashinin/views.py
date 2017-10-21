@@ -520,3 +520,8 @@ class FAQ(Base):
 
 class PayView(Base):
     template_name = "pashinin_payment.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(PayView, self).get_context_data(**kwargs)
+        c["menu"].current = 'pay'
+        return c
