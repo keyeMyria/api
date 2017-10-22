@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
+from os.path import dirname, abspath, isfile
 import sys
 import subprocess
 
-repo_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+repo_path = dirname(abspath(dirname(__file__)))
 
 if __name__ == "__main__":
     # ERROR: virtualenv is not compatible with this system or executable
@@ -17,18 +18,18 @@ if __name__ == "__main__":
         print(sys.executable, end="")
         sys.exit(0)
 
-    # path to virtualenv
-    ve = os.path.abspath(os.path.join(
+    # path to virtualenv: /repo/tmp/ve
+    ve = abspath(os.path.join(
         repo_path,
         "tmp",
         "ve"
     ))
-    pythonbin = os.path.abspath(os.path.join(
+    pythonbin = abspath(os.path.join(
         ve,
         "bin",
         "python"
     ))
-    if os.path.isfile(pythonbin):
+    if isfile(pythonbin):
         print(pythonbin, end="")
         sys.exit(0)
 

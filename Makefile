@@ -306,7 +306,7 @@ install_docker:
 render:
 	mkdir -p configs/tmp
 	(cd configs;./config.py secret-example.json secret.json)
-	(cd configs/; ./render.py)
+	$(python) configs/render.py
 	(cd src; python3 -c 'from core.tasks import generate_settings;generate_settings()')
 
 # docker kill $(docker ps -q)
