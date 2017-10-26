@@ -40,6 +40,12 @@ class Article(AddedChanged):
         max_length=765,
         verbose_name=_("Title")
     )
+    description = models.TextField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text="og:description. 2–4 предложения (300 символов)."
+    )
     src = models.TextField(
         default=None,
         null=True,
@@ -57,7 +63,7 @@ class Article(AddedChanged):
         null=True,
         editable=False,
         blank=True,
-        help_text="/articles/.../how-to-install-linux"
+        help_text="Use in URLs like: /articles/.../how-to-install-linux"
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -69,6 +75,9 @@ class Article(AddedChanged):
         default=False,
         db_index=True,
     )
+    # og:image
+    # Facebook recommends: 1200×630
+    # Better: 968×504
 
     class Meta:
         verbose_name = _('Article')
@@ -77,7 +86,6 @@ class Article(AddedChanged):
         # index_together = [["name", "domain"], ]
 
     def get_absolute_url(self):
-        # print(get_current_site(request))
         # not all sites have "/article/..." in urls
         # if settings.SITE_ID == 1:  # pashinin.com
         return reverse("articles:article", kwargs={
@@ -105,7 +113,7 @@ class Article(AddedChanged):
                         article = Article.objects.get(slug=slug)
                         set_links[missing_page] = article.get_absolute_url()
                     except:
-                        print("no page:", slug)
+                        log.debug(f"no page: {slug}")
             return html
         except Exception as e:
             # TODO

@@ -12,7 +12,8 @@ class Course(models.Model):
     slug = models.SlugField(
         max_length=60,
         unique=True,
-        blank=False, null=False
+        blank=False, null=False,
+        help_text="python-base, ege-inf, lpic-1, ...",
     )
     name = models.CharField(
         max_length=150,
@@ -23,6 +24,7 @@ class Course(models.Model):
     prereq = models.TextField(blank=True, null=True)
     program = models.TextField(blank=True, null=True)
     time_cost = models.TextField(blank=True, null=True)
+    published = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

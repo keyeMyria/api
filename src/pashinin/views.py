@@ -331,8 +331,12 @@ class CourseView(Base):
     def get_context_data(self, **kwargs):
         c = super(CourseView, self).get_context_data(**kwargs)
         try:
-            c['course'] = Course.objects.get(slug=c['slug'])
+            course = Course.objects.get(slug=c['slug'])
+            c['course'] = course
         except:
+            raise Http404
+
+        if not course.published and not c['user'].is_superuser:
             raise Http404
 
         user = c['user'] if c['user'].is_authenticated else None

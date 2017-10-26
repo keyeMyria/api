@@ -125,7 +125,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
                 hasher.update(chunk)
         else:
             raise ValueError(
-                "Don't know how to get SHA1 from: {}".format(type(f)))
+                f"Don't know how to get SHA1 from: {type(f)}")
 
         return hasher.hexdigest()
     # client.captureException()
@@ -157,10 +157,10 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         m = re.fullmatch('https://pashinin.com/_/files/(?P<sha1>.{40})', url)
         try:
             f = cls.objects.get(sha1=m['sha1'])
-            log.debug('Cached: {}'.format(m['sha1']))
+            log.debug(f'Cached: {m["sha1"]}')
             return f
         except (cls.DoesNotExist, KeyError):
-            log.debug('Downloading {}'.format(url))
+            log.debug(f'Downloading {url}')
 
         # Have no such file => download it to a temporary file...
         import tempfile
