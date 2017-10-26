@@ -22,7 +22,7 @@ class LessonAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
+    list_display = ('name', 'slug', 'published', )
     ordering = ['id']
 
 
