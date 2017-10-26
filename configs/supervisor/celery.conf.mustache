@@ -6,10 +6,10 @@
 #
 [program:celery]
 # [program:daphne-{{domain}}]
-command={{vebin}}/celery -A pashinin worker -q --loglevel=ERROR --pidfile={{repo}}/tmp/celery.pid
+command={{{vebin}}}/celery -A pashinin worker -q --loglevel=ERROR --pidfile={{{repo}}}/tmp/celery.pid
 # -q argument now disables the startup banner
 
-directory={{repo}}/src
+directory={{{repo}}}/src
 user=www-data
 numprocs=1
 stderr_logfile=/var/log/supervisor/celery-{{domain}}.err.log

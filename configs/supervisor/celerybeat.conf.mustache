@@ -4,9 +4,9 @@
 #command=celery beat -A myapp --schedule /var/lib/celery/beat.db --loglevel=INFO
 # remove the -A myapp argument if you are not using an app instance
 # environment=CELERYD_PID_FILE=/tmp/celerybeat.pid
-environment=CELERYD_PID_FILE={{repo}}/tmp/celery.pid
+environment=CELERYD_PID_FILE={{{repo}}}/tmp/celery.pid
 
-command={{vebin}}/celery beat -A pashinin --loglevel=ERROR --pidfile={{repo}}/tmp/celerybeat.pid --scheduler django_celery_beat.schedulers:DatabaseScheduler
+command={{{vebin}}}/celery beat -A pashinin --loglevel=ERROR --pidfile={{{repo}}}/tmp/celerybeat.pid --scheduler django_celery_beat.schedulers:DatabaseScheduler
 # --loglevel=  DEBUG, INFO, WARNING, ERROR, CRITICAL, or FATAL.
 #
 #
@@ -18,7 +18,7 @@ command={{vebin}}/celery beat -A pashinin --loglevel=ERROR --pidfile={{repo}}/tm
 
 
 
-directory={{repo}}/src
+directory={{{repo}}}/src
 user=www-data
 numprocs=1
 stdout_logfile=/var/log/celery_beat.log
