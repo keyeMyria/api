@@ -17,11 +17,13 @@ ol li{margin-top:1em}
   <h1>{{course.name}}</h1>
   <table>
     <tr>
-      <td>
-		<img alt="" src="{{static("python_sh-340x340.png")}}" style="max-width:150px; max-height:150px"/>
-	  </td>
+	  {% if course.logo_sha1 %}
+		<td>
+		  <img alt="" src="{{file(course.logo_sha1)}}" style="max-width:150px; max-height:150px"/>
+		</td>
+	  {% endif %}
       <td class="padl" style="vertical-align:top">
-		{{course.desc}}
+		{{render(course.desc)|safe}}
 		{# <br/> #}
 		{# <a class="btn btn-primary btn-large mart" href="#enroll">Записаться</a> #}
 	  </td>
@@ -34,7 +36,7 @@ ol li{margin-top:1em}
   <div class="pad-sm">
 	{% if course.results %}
 	  <h2>По окончании курса</h2>
-	  {{course.results}}
+	  {{render(course.results)|safe}}
 	{# {% elif user.is_superuser %} #}
 	{#   <div> #}
 	{# 	<form action=""> #}
@@ -46,18 +48,18 @@ ol li{margin-top:1em}
 
 	{% if course.prereq %}
 	  <h2>Предварительная подготовка</h2>
-	  {{course.prereq}}
+	  {{render(course.prereq) | safe}}
 	{% endif %}
 
 	{% if course.program %}
 	  <h2>Программа курса</h2>
-	  {{course.program}}
+	  {{render(course.program) | safe}}
 	{% endif %}
 
 
 	<h2>Время</h2>
 
-	{{course.time_cost | safe}}
+	{{render(course.time_cost) | safe}}
 
   </div>
 {% endblock %}

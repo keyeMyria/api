@@ -1,3 +1,4 @@
+from core import reverse
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 # from django.db.models.signals import pre_save
@@ -9,6 +10,11 @@ from django.conf import settings
 
 
 class Course(models.Model):
+    logo_sha1 = models.CharField(
+        max_length=40,
+        blank=True, null=True,
+        default=None
+    )
     slug = models.SlugField(
         max_length=60,
         unique=True,
@@ -28,6 +34,13 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        # not all sites have "/article/..." in urls
+        # if settings.SITE_ID == 1:  # pashinin.com
+        return reverse("courses:course", kwargs={
+            'slug': self.slug
+        })
 
 
 class CourseBinding(WebsocketBinding):
