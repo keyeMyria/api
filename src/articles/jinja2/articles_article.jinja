@@ -16,6 +16,23 @@
 
 
 
+{% block metadescription %}{% if article %}{{article.description}}{% endif %}{% endblock %}
+{% block meta %}
+  {% spaceless %}
+	{% if article %}
+	  <meta itemprop="name" content="{{article.title}}"/>
+      {# <meta itemprop="image" content="self.description"/>', #}
+
+	  <meta property="og:url" content="{{request.scheme}}:{{article.get_absolute_url()}}"/>
+	  <meta property="og:type" content="article"/>
+	  <meta property="og:title" content="{{article.title}}"/>
+	  <meta property="og:description" content="{{article.description}}"/>
+	  {# <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/> #}
+	{% endif %}
+  {% endspaceless %}
+{% endblock %}
+
+
 {# {% block controls %} #}
 {# <div class="left"> #}
 {# <time class="timeago" title="Modification date" datetime="{{article.changed_on}}">{{article.changed_on}}</time> #}

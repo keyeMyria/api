@@ -6,6 +6,8 @@ from django.conf import settings
 from raven.contrib.django.raven_compat.models import client
 # from tempfile import mkstemp, mkdtemp
 from . import CT_CHOICES_REVERSED, files_used_in_this_repo
+import logging
+log = logging.getLogger(__name__)
 
 
 class FileSystemNotReady(Exception):
@@ -100,9 +102,21 @@ def move_upload_to_files(upload):
 
 @shared_task
 def download_core_files():
+    "Return sha1 hashes iterator of files used in this git repo."
     ensure_fs_ready()
 
-    files = files_used_in_this_repo()  # sha1 list
-    for f in files:
-        url = 'https://pashinin.com/_/files/{}'.format(f)
+    def files():
+        for sha1 in files_used_in_this_repo():
+            yield sha1
+
+        try:
+            from pashinin.models import Course
+            for c in Course.objects.all():
+                if c.logo_sha1:
+                    yield c.logo_sha1
+        except Exception as e:
+            log.debug(str(e))
+
+    for sha1 in files():
+        url = 'https://pashinin.com/_/files/{}'.format(sha1)
         BaseFile.from_url(url)
