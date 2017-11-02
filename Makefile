@@ -30,12 +30,13 @@ sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
 	$(docker-compose) up -d redis db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
-	gulp
+	[ ! -f tmp/run-migrations ] || (make migrate && make loaddata && rm -f tmp/run-migrations)
+#	gulp
 # (cd docker;export UID; docker-compose up gulp)
 
 
 install-docker-compose:
-	which docker-compose || sudo pip install docker-compose
+	which docker-compose || sudo -H pip install docker-compose
 
 install-docker:
 	which docker || \
@@ -48,7 +49,7 @@ install-docker-ubuntu:
 $(codename) \
 stable"
 	sudo apt-get update
-	sudo apt-get install docker-ce
+	sudo apt-get -y install docker-ce
 	sudo gpasswd -a `whoami` docker
 	echo "You were added to the docker group. Log out and log in again!!!"
 	sudo systemctl restart docker
@@ -130,26 +131,31 @@ migrate:
 # (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=$(settings))
 
 loaddata:
-	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=$(settings) initial_data.json articles_examples.json ege_subjects.json ege_exam.json ege_tasks.json categories.json tasks.json)
-	# (cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings )
+	$(docker-compose) run --rm django ./manage.py loaddata --settings=$(settings) \
+initial_data.json
+# initial_data.json articles_examples.json ege_subjects.json ege_exam.json ege_tasks.json categories.json tasks.json
+#	(cd docker;docker-compose run --rm django ./manage.py loaddata --settings=pashinin.settings )
 
 vm:
 	(cd docker; make vm)
 
 psql:
-	export UID; docker-compose -f docker/docker-compose.yml run --rm db psql -h db -U pashinin
+	$(docker-compose) run --rm db psql -h db -U pashinin  # need user here (or will be "root")
 
 stop:
 	$(docker-compose) stop
 
-restart-gulp:
-	$(docker-compose) stop gulp
-	$(docker-compose) start gulp
+removedb:
+	docker stop db || true && docker rm db || true
+#	[ "$(docker ps -a | grep db)" ] && docker container stop db
+#	[ "$(docker ps -a | grep db)" ] && docker container rm db
 
-recreate-db:
-	docker container stop db
-	docker container rm db
-	($(docker-compose) up -d redis db django gulp)
+recreate-db: removedb
+	chmod 777 tmp
+	$(docker-compose) up db  # running NOT as daemon to see log and errors
+
+db-up:
+	$(docker-compose) up db
 
 tmux:
 	export LANG=en_US.UTF-8
@@ -382,3 +388,7 @@ links:
 
 	cp -rf node_modules/photoswipe/dist src/core/static/js/libs/photoswipe
 	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
+
+
+# get IP of a container
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id

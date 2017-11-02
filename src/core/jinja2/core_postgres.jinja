@@ -1,0 +1,26 @@
+{% extends "pashinin_base.jinja" %}
+
+
+{% block title %}Postgres{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  {# <script defer src="{{ static("js/core_nginx.js") }}"></script> #}
+{% endblock %}
+
+
+{% block header %}
+  {{super()}}
+  <div class="w pad-sm">
+	<h1>Postgres</h1>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+  <p>Cluster:</p>
+  {% for node in pgcluster %}
+	<p>{{node}}</p>
+  {% endfor %}
+{% endblock %}

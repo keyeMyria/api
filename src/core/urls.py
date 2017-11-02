@@ -5,7 +5,8 @@ from .views import (
     Nginx,
     Updates,
     Login,
-    Logout
+    Logout,
+    Postgres,
 )
 
 # These urls go under "core" namespace url: /_/
@@ -15,6 +16,7 @@ urlpatterns = [
     url(r'files/', include('core.files.urls', namespace='files')),
     url(r'django/', include(admin.site.urls)),
     url(r'^nginx$', Nginx.as_view(), name='nginx'),
+    url(r'^postgres$', Postgres.as_view(), name='postgres'),
     url(r'^updates$', Updates.as_view(), name='updates'),
     url(r'^login$', Login.as_view(), name='login'),
     url(r'^logout$', Logout.as_view(), name='logout'),

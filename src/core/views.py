@@ -241,10 +241,40 @@ class Nginx(views.LoginRequiredMixin,
             views.SuperuserRequiredMixin,
             BaseView):
     template_name = "core_nginx.jinja"
-    # only_superuser = True
 
     def get_context_data(self, **kwargs):
         c = super(Nginx, self).get_context_data(**kwargs)
+        try:
+            p = Popen(['nginx', '-V'], stdout=PIPE, stderr=PIPE)
+            out, err = p.communicate()
+            nginxv = err.decode('utf8')  # WTF? but this is in err, really
+        except Exception as e:
+            nginxv = str(e)
+
+        from .tasks.geoip import versions_file
+        try:
+            versions = json.load(open(versions_file, 'r'))
+        except:
+            versions = {}
+            c['city_version'] = versions.get('city', '')
+            c['country_version'] = versions.get('country', '')
+
+        c['modules'] = {
+            'geoip': '--with-http_geoip_module' in nginxv
+        }
+
+        c["nginxv"] = nginxv
+        c["arguments"] = nginxv
+        return c
+
+
+class Postgres(views.LoginRequiredMixin,
+            views.SuperuserRequiredMixin,
+            BaseView):
+    template_name = "core_postgres.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super(Postgres, self).get_context_data(**kwargs)
         try:
             p = Popen(['nginx', '-V'], stdout=PIPE, stderr=PIPE)
             out, err = p.communicate()
