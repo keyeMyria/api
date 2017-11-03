@@ -19,8 +19,25 @@
 
 
 {% block content %}
+  <p>Postgres databases, {% if len(db_all)==len(db_pg) %}{{len(db_pg)}}{% else %}({{len(db_pg)}}/{{len(db_all)}}){% endif %}:</p>
+  <ol>
+	{% for db in db_pg %}
+	  <li>{{db}}</li>
+	{% endfor %}
+  </ol>
+
+
+  <p>Postgres hosts:</p>
+  <ol>
+	{% for host, port in pg_locations %}
+	  <li>{{host}}:{{port}}</li>
+	{% endfor %}
+  </ol>
+
   <p>Cluster:</p>
   {% for node in pgcluster %}
 	<p>{{node}}</p>
   {% endfor %}
+
+  Consul is not installed.
 {% endblock %}

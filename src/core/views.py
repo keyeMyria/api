@@ -275,6 +275,16 @@ class Postgres(views.LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         c = super(Postgres, self).get_context_data(**kwargs)
+        c['db_all'] = dbs = settings.DATABASES
+        c['pg_locations'] = set()
+        for db in dbs:
+            c['pg_locations'].add((dbs[db]['HOST'], dbs[db]['PORT']))
+
+        c['db_pg'] = [
+            db for db in dbs
+            if dbs[db]['ENGINE'] in (
+                    'django.db.backends.postgresql_psycopg2',
+            )]
         try:
             p = Popen(['nginx', '-V'], stdout=PIPE, stderr=PIPE)
             out, err = p.communicate()
