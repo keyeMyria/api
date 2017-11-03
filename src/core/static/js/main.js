@@ -126,7 +126,7 @@ window.showFormErrors = (errors, form, showtext = false) => {
           document.getElementById('profile').classList.remove('pressed');
         }
         if (document.getElementById('siteSwitch')) {
-          document.getElementById('profile').classList.remove('pressed');
+          document.getElementById('siteSwitch').classList.remove('pressed');
         }
 
         Array.from(document.getElementsByClassName('popup')).forEach((el) => {
