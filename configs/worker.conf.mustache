@@ -28,6 +28,6 @@ command={{{vebin}}}/python ./manage.py runworker --exclude-channels=root.*
 directory={{{repo}}}/src
 user=www-data
 autostart=true
-autorestart=false
+autorestart=true
 stderr_logfile=/var/log/supervisor/worker-{{domain}}.err.log
 stdout_logfile=/var/log/supervisor/worker-{{domain}}.out.log

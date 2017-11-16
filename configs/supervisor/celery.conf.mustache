@@ -16,7 +16,10 @@ stderr_logfile=/var/log/supervisor/celery-{{domain}}.err.log
 stdout_logfile=/var/log/supervisor/celery-{{domain}}.out.log
 autostart=true
 autorestart=true
-startsecs=10
+
+startsecs=5
+# default 1
+
 # Need to wait for currently executing tasks to finish at shutdown.
 # Increase this if you have very long running tasks.
 stopwaitsecs = 10
