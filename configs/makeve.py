@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-"""
-If in Travis build - return python executable path.
-Ex.:
+"""Always returns path to a VE python exec file.
 
-Creates Python environment in "tmp/ve" path or returns .
+If in Travis build - just return python executable path.
+
+Otherwise create Python environment in "tmp/ve" path.
+
 """
 
 from __future__ import print_function

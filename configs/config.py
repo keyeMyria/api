@@ -54,10 +54,10 @@ if __name__ == "__main__":
     data['repo'] = repo_path
     data['wwwdata'] = 'travis' if os.getenv('TRAVIS') else 'www-data'
 
-    if (sys.version_info >= (3, 5)):
-        data['vebin'] = os.path.dirname(sys.executable)
-    else:
-        data['vebin'] = os.path.dirname(pythonbin)
+    # if (sys.version_info >= (3, 5)):
+    #     data['vebin'] = os.path.dirname(sys.executable)
+    # else:
+    data['vebin'] = os.path.dirname(pythonbin)
 
     # if asked for 1 param - return it and exit
     if args.param:

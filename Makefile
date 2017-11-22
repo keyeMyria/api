@@ -193,7 +193,7 @@ rparser:
 	$(docker-compose) restart django
 
 requirements:
-	pip install -r docker/requirements.txt
+	$(vebin)/pip install -r docker/requirements.txt
 	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" == "pypy3" ]] ; then pip install psycopg2cffi; fi;
 	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" != "pypy3" ]] ; then pip install psycopg2; fi;
 
@@ -212,6 +212,7 @@ pull:
 # Must run as www-data user (sudo -H -u www-data make prepare)
 prepare:
 	make ve
+	make requirements
 	yarn install
 	make configs
 	make css
