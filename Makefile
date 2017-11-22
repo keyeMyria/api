@@ -205,6 +205,12 @@ pip-docker:
 pull:
 	sudo -H -u www-data git pull
 
+# Rebuild and prepare all configs locally (inside current folder)
+# Also update npm packages, css and js files
+prepare:
+	sudo -H -u www-data yarn install
+	sudo -H -u www-data make configs
+	sudo -H -u www-data make css
 
 update:
 	sudo -H -u www-data git pull
