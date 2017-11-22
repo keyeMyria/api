@@ -107,7 +107,7 @@ npm:
 					 gulp-typescript typescript gulp-buffer
 
 gulp:
-	gulp
+	./node_modules/gulp/bin/gulp.js
 #$(docker-compose) run gulp
 
 
@@ -207,10 +207,11 @@ pull:
 
 # Rebuild and prepare all configs locally (inside current folder)
 # Also update npm packages, css and js files
+# Must run as www-data user (sudo -H -u www-data make prepare)
 prepare:
-	sudo -H -u www-data yarn install
-	sudo -H -u www-data make configs
-	sudo -H -u www-data make css
+	yarn install
+	make configs
+	make css
 
 update:
 	sudo -H -u www-data git pull
