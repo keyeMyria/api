@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+"""
+If in Travis build - return python executable path.
+Ex.:
+
+Creates Python environment in "tmp/ve" path or returns .
+"""
+
 from __future__ import print_function
 import os
 from os.path import dirname, abspath, isfile
@@ -11,14 +18,19 @@ if __name__ == "__main__":
     # ERROR: virtualenv is not compatible with this system or executable
     # TODO: pip install --upgrade virtualenv
 
-    if (
-            sys.version_info >= (3, 6) and
-            not sys.executable == "/usr/local/bin/python"
-    ):
+    # Travis
+    if os.getenv('TRAVIS'):
         print(sys.executable, end="")
         sys.exit(0)
 
-    # path to virtualenv: /repo/tmp/ve
+    # if (
+    #         sys.version_info >= (3, 6) and
+    #         not sys.executable == "/usr/local/bin/python"
+    # ):
+    #     print(sys.executable, end="")
+    #     sys.exit(0)
+
+    # path of our virtualenv - repo/tmp/ve
     ve = abspath(os.path.join(
         repo_path,
         "tmp",
@@ -29,17 +41,19 @@ if __name__ == "__main__":
         "bin",
         "python"
     ))
+
+    # If python executable exists - return full path to it
     if isfile(pythonbin):
         print(pythonbin, end="")
         sys.exit(0)
 
+    # Else - create a virtualenv:
+    # remove ve first
     if os.path.isdir(ve):
         import shutil
         shutil.rmtree(ve)
-        # virtualenv -p /usr/bin/python3 $(ve_path)
-        #     	$(vecmd)
-        # $(pip) install -r $(requirements)
-    # ln -sf /var/www/xdev/src/cms $(ve_path)/lib/python3.5/site-packages/cms
+
+    # and create a new one
     os.makedirs(ve)
 
     # create ve

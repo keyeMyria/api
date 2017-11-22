@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 '''
 Renders templates to tmp/ folder.
 

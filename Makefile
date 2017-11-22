@@ -177,8 +177,10 @@ worker1:
 worker2:
 	docker exec -it $(vm) ./manage.py runworker --only-channels=root.*
 
+# Create a virtualenv if it doesn't exist
+# Do not do it if we are in Travis build
 ve:
-	./configs/makeve.py
+	./configs/makeve.py  # always prints a path to python executable
 # TODO: upgrade pip
 
 link_debug_parser:
@@ -209,6 +211,7 @@ pull:
 # Also update npm packages, css and js files
 # Must run as www-data user (sudo -H -u www-data make prepare)
 prepare:
+	make ve
 	yarn install
 	make configs
 	make css
