@@ -1,0 +1,106 @@
+version: '3'
+services:
+  django:
+    # hostname: django
+    # fixes: cannot open /dev/fuse (Operation not permitted)
+    # --cap-add SYS_ADMIN --device /dev/fuse
+    # trying this:
+
+    # image: pashinin/pashinin.com:latest
+    # image: pashinin.com
+    build: docker/
+    # container_name: django
+
+    privileged: true
+    # with these not working yet:
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+
+    # command: sleep infinity
+    command: python manage.py runserver 0.0.0.0:8000
+
+    # these 2 are for getting output from commands like djangos debug server
+    stdin_open: true
+    tty: true
+
+    user: $UID
+    restart: always
+
+    ports:
+      - "8000:8000"
+      - "81:8001"
+      # - "35729:35729"
+    volumes:
+      - ./:/var/www/project
+      - ../rparser:/var/www/rparser
+      - ./tmp/files:/mnt/files
+    depends_on:
+      - redis
+      - db
+
+    links:
+      - db
+      - redis
+      - vnu
+
+    extra_hosts:
+      - "pashinin.com:10.254.239.1"
+
+    environment:
+      DJANGO_SETTINGS_MODULE: pashinin.settings
+      IPYTHONDIR: /var/www/project/.ipython
+      DOCKER: "true"
+
+
+  # # https://hub.docker.com/_/rabbitmq/
+  # rabbit:
+  #   # hostname: rabbit  # we must specify a const name for RabbitMQ (see docker page)
+  #   image: rabbitmq:latest
+  #   ports:
+  #     - 5672  # we forward this port because it's useful for debugging
+  #     - 15672  # here, we can access rabbitmq management plugin
+  #   environment:
+  #     RABBITMQ_DEFAULT_VHOST: pashinincom
+  #     # RABBITMQ_DEFAULT_USER: admin
+  #     # RABBITMQ_DEFAULT_PASS: mypass
+  #     RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit log_levels [{connection,error}]"
+
+  # https://store.docker.com/images/redis
+  redis:
+    image: redis:latest
+    # image: redis:4
+    # image: leifg/docker-redis-cluster
+    ports:
+      - 6379
+      - 7000-7007
+    # restart: always
+
+  # https://hub.docker.com/_/postgres/
+  db:
+    # image: postgres:10
+    image: postgres:10-alpine
+    restart: always
+    volumes:
+      - ./:/var/www/project
+      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: pashinin
+      POSTGRES_PASSWORD: superpass
+      POSTGRES_DB: pashinin
+
+      PGCONNECT_TIMEOUT: 3
+      PGPASSWORD: superpass
+
+  vnu:
+    image: pashinin/vnu:latest
+    # image: vnu
+    user: $UID
+    restart: always
+
+    volumes:
+      - ./:/var/www/project
+
+
+# restart: on-failure:10
