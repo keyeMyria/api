@@ -57,10 +57,19 @@ django-nose
 
 django-mptt               # git+https://github.com/django-mptt/django-mptt.git
 django-optimizations
-django-redis-cache
+
+# django-redis-cache vs django-redis?
+# django-redis is in active development and django-redis-cache is not
+#
+#  ! django-redis !
+# Docs: http://niwinz.github.io/django-redis/latest/
+# django-redis-cache
+django-redis
 
 # https://github.com/martinrusev/django-redis-sessions
-django-redis-sessions==0.5.6
+# django-redis-sessions==0.5.6
+# Instead of django-redis-sessions just use:
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # django-sendfile           # https://github.com/johnsensible/django-sendfile
 #django-polymorphic>=v0.6   # https://github.com/chrisglass/django_polymorphic
@@ -176,10 +185,13 @@ unidecode
 
 
 
-# channels (NOT django-channels!)
+# "channels", not "django-channels"!
 channels>=1.1.8
-asgi_redis
+asgi_redis>=1.4.3  # Redis cluster sucks (but can be done with dynomite)
+asgi_rabbitmq      # Can't make RabbitMQ work
 channels_api
+
+# kafka-python   # I use Redis so far
 
 
 # Telegram bot
