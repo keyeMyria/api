@@ -1,6 +1,7 @@
 version: '3'
 services:
   django:
+    restart: on-failure
     # hostname: django
     # fixes: cannot open /dev/fuse (Operation not permitted)
     # --cap-add SYS_ADMIN --device /dev/fuse
@@ -26,7 +27,6 @@ services:
     tty: true
 
     user: $UID
-    restart: always
 
     ports:
       - "8000:8000"
