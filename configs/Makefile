@@ -32,6 +32,11 @@ templates:
 	$(mustache) nginx-site.conf.mustache > $(output)/$(domain).conf
 	$(mustache) dbinit.sql.template > $(output)/dbinit.sql
 
+# Must run as root (sudo ...)
+somelinks:
+# Nginx config (current domain)
+	ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
+
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
 

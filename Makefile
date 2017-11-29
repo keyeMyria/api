@@ -4,20 +4,14 @@ SHELL := /bin/bash
 python = `./configs/makeve.py`
 vebin = `./configs/config.py -p vebin configs/secret-example.json configs/secret.json`
 d = `pwd`
-# vm = docker_web_1
-# vm = pashinin.com:latest
 vm = pashinin/pashinin.com:latest
 container = pashinin/pashinin.com:latest
-# container = pashinin.com
 manage = $(python) src/manage.py
-# docker_run = docker-compose run --rm --env DJANGO_SETTINGS_MODULE='pashinin.settings' --env LD_LIBRARY_PATH='/var/www/pashinin.com/tmp/ve/lib' --volume `pwd`:/var/www/pashinin.com -w /var/www/pashinin.com/src -it $(container)
-
 os = `lsb_release -i | cut -zb 17-`
 codename = `lsb_release -cs`
 settings=pashinin.settings
-# docker-compose=cd docker;export UID; docker-compose
-docker-compose=export UID; docker-compose -f docker/docker-compose.yml
-# dockermanage.py = docker exec --user user -it $(container) python ./manage.py
+# docker-compose=export UID; docker-compose -f docker/docker-compose.yml
+docker-compose=export UID; docker-compose
 dockermanage.py = $(docker-compose) run --rm django python ./manage.py
 docker_run = $(docker-compose) run --rm django
 uglifyjs = ./node_modules/uglify-es/bin/uglifyjs
@@ -29,7 +23,7 @@ sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	$(docker-compose) up -d redis db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	$(docker-compose) up -d db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
 	[ ! -f tmp/run-migrations ] || (make migrate && make loaddata && rm -f tmp/run-migrations)
 #	gulp
 # (cd docker;export UID; docker-compose up gulp)
@@ -144,6 +138,10 @@ psql:
 
 stop:
 	$(docker-compose) stop
+#	docker update --restart=no 0fed1e862c2c
+
+stop-redis-1:
+	$(docker-compose) stop redis_1
 
 removedb:
 	docker stop db || true && docker rm db || true
@@ -216,6 +214,12 @@ prepare:
 	yarn install
 	make configs
 	make css
+	make jslibs
+	make js
+	make collectstatic
+
+config-links:
+	(cd configs; sudo make somelinks)
 
 update:
 	sudo -H -u www-data git pull
@@ -223,7 +227,7 @@ update:
 	sudo -H -u www-data yarn install
 	sudo -H -u www-data make configs
 	sudo -H -u www-data make css
-	sudo -H -u www-data make links
+	sudo -H -u www-data make jslibs
 	sudo -H -u www-data make js
 	sudo -H -u www-data make collectstatic
 	(cd configs; make ln_nginx)
@@ -300,6 +304,10 @@ typescript:
 shell:
 	if [[ "$(DISPLAY)" == "" ]] ; then sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell; fi;
 	if [[ "$(DISPLAY)" != "" ]] ; then $(dockermanage.py) shell_plus; fi;
+
+redis-cli:
+	if [[ "$(DISPLAY)" != "" ]] ; then $(docker-compose) run --rm redis_1 redis-cli -h redis_1 -p 6379; fi;
+#	docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
 
 locale-docker:
 	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
@@ -386,7 +394,7 @@ test:
 api:
 	./node_modules/browserify/bin/cmd.js src/core/static/js/api.min.js -t --outfile  src/core/static/js/api.min.js
 
-links:
+jslibs:
 	cp -f node_modules/moment/min/moment.min.js src/core/static/js/libs/
 	cp -f node_modules/moment/locale/ru.js src/core/static/js/libs/moment.ru.min.js
 	cp -f node_modules/moment-timezone/builds/moment-timezone-with-data.min.js src/core/static/js/libs/
@@ -403,3 +411,6 @@ links:
 
 # get IP of a container
 # docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+
+rabbit-status:
+	$(docker-compose) run --rm rabbit rabbitmqctl status

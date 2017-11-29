@@ -38,10 +38,15 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 DOMAIN = "{{domain}}"
+SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
+DEFAULT_HOST = 'pashinin'
+HOST_PORT = ''
 if DEBUG:
     DOMAIN = "example.org"
-
-SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
+    # The port to append to host names during reversing,
+    # https://django-hosts.readthedocs.io/en/latest/#django.conf.settings.HOST_PORT
+    HOST_PORT = '8000'
+PARENT_HOST = DOMAIN
 
 # Databases
 #
@@ -244,8 +249,6 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1'
 )
 
-PARENT_HOST = DOMAIN
-DEFAULT_HOST = 'pashinin'
 ROOT_HOSTCONF = 'pashinin.hosts'  # django-hosts parameter (for subdomains)
 ROOT_URLCONF = app+'.urls'
 
@@ -284,18 +287,76 @@ TEMPLATES = [
 ]
 
 
+# REDIS_PORT = {{redis_port}}
+REDIS_PORT = 6379
+REDIS_SERVER = '{{redis_server}}'
+
 # Celery settings
-# BROKER_URL = 'amqp://guest:guest@localhost//'
-BROKER_URL = 'redis://{{redis_server}}:6379/0'
+BROKER_URL = f'redis://{REDIS_SERVER}:{REDIS_PORT}/0'
+# BROKER_URL = "amqp://admin:mypass@rabbit:5672/%2F"
+
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
-from pashinin.celeryconfig import *
+
+# from pashinin.celeryconfig import *
+#
+# This file is a part of Django's settings.py. It is included withing
+# it.
+#
+# from celery.schedules import crontab
+# from datetime import timedelta
+# from django.conf import settings
+
+# Register our serializer methods into kombu
+# from kombu.serialization import register
+# from core.json import my_dumps, my_loads
+# register('myjson', my_dumps, my_loads,
+#          content_type='application/json',
+#          content_encoding='utf-8')
+
+
+# CELERY_RESULT_BACKEND = 'redis://'
+# CELERY_RESULT_BACKEND = 'redis://{{redis_server}}:6379/0'
+CELERY_RESULT_BACKEND = BROKER_URL
+
+# Add a one-minute timeout to all Celery tasks.
+CELERYD_TASK_SOFT_TIME_LIMIT = 60
+
+# Tell celery to use your new serializer:
+# CELERY_ACCEPT_CONTENT = ['myjson']
+# CELERY_TASK_SERIALIZER = 'myjson'
+# CELERY_RESULT_SERIALIZER = 'myjson'
+
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+
+CELERYD_POOL_RESTARTS = True
+CELERY_SEND_EVENTS = True
+CELERY_SEND_TASK_SENT_EVENT = True
+EMAIL_HOST = "10.254.239.1"
+
+
+# Problems if have TZ = TZ from Django project settings file
+# 1. https://github.com/celery/celery/issues/4184
+# 2. https://github.com/celery/celery/issues/4177
+# 3. https://github.com/celery/celery/issues/4169
+# CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
+
+
+# Please do not touch (and change) my logger, Celery!
+# If Sentry logging in Django/Celery stopped working use:
+CELERYD_HIJACK_ROOT_LOGGER = False
 
 
 
 INSTALLED_APPS = (
     'django_hosts',  # for subdomains
-    'redis_cache',                 # pip install django-redis-cache
+    # 'redis_cache',                 # pip install django-redis-cache
+    'django_redis',
 
     'channels',
     'channels_api',
@@ -333,6 +394,7 @@ INSTALLED_APPS = (
 
 
     'core',
+    # 'core.asgi_kafka',
     'core.files',
     'baumanka',
     'articles',
@@ -395,15 +457,45 @@ WEBSOCKET_URL = '/_/ws/'
 # channels
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'ROUTING': app+'.routing.channel_routing',
+        # "BACKEND": "core.asgi_kafka.KafkaChannelLayer",
+        # "CONFIG": {
+        #     "url": "amqp://kafka:9092/pashinincom",
+        # },
+
+        # RabbitMQ
+        # "BACKEND": "asgi_rabbitmq.RabbitmqChannelLayer",
+        # "CONFIG": {
+        #     "url": "amqp://guest:guest@rabbit:5672/pashinincom?heartbeat_interval=15",
+        # },
+
+
+        # "BACKEND": "asgi_redis.RedisSentinelChannelLayer",  # HA: Redis + Slave + Slave + Sentinel
+        'BACKEND': 'asgi_redis.RedisChannelLayer',  # Single Redis server
+
         'CONFIG': {
-            'hosts': [('{{redis_server}}', 6379)],
+            'hosts': [(REDIS_SERVER, REDIS_PORT)],
+
+            # "hosts": [("10.254.239.1", 26379), ("10.254.239.2", 26379), ("10.254.239.3", 26379)],
+
+            # "hosts": [
+            #     ("sentinel", 26379),
+            #     {% for redis_address in redis_addresses %}
+            #     # ("{{redis_address}}", 6379),
+            #     {% endfor %}
+            #     # ("10.254.239.1", 26339),
+            #     # ("10.254.239.2", 26379),
+            #     # ("10.254.239.3", 26379)
+            # ],
+            # "services": ["shard1", "shard2", "shard3"],
+            # "services": ["mymaster"],
+            # 'sentinel_refresh_interval': 5,
+
             # "prefix" is needed when you have several "Django
             # channels"-powered projects on the same host (same redis
             # db)
             "prefix": app+"."+DOMAIN+str(SITE_ID)
         },
-        'ROUTING': app+'.routing.channel_routing',
     },
 }
 
@@ -532,28 +624,38 @@ MIGRATION_MODULES = {
     # 'scaffold_templates': None,
 }
 
-SESSION_ENGINE = 'redis_sessions.session'
-SESSION_REDIS_HOST = '{{redis_server}}'
-# For new version:
-# SESSION_REDIS = {
-#     'host': '{{redis_server}}',
-#     # 'port': 6379,
-#     # 'db': 0,
-#     # 'password': 'password',
-#     # 'prefix': 'session',
-#     # 'socket_timeout': 1
-# }
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
+SESSION_REDIS_HOST = '{{redis_server}}'
+SESSION_REDIS_PORT = REDIS_PORT
 
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.RedisCache',
+        # 'BACKEND': 'redis_cache.RedisCache',  # django-redis-cache
+        'BACKEND': 'django_redis.cache.RedisCache',  # django-redis  (active development)
+
         # 'LOCATION': '/var/run/redis/redis-server.pid',
-        'LOCATION': ['{{redis_server}}:6379'],
+        # "LOCATION": [
+        #     # f"redis://{REDIS_SERVER}:{REDIS_PORT}/1",
+        #     {% for redis_address in redis_addresses %}
+        #     "redis://{{redis_address}}:6379/0",
+        #     {% endfor %}
+        # ],
+        'LOCATION': [
+            f'{REDIS_SERVER}:{REDIS_PORT}'
+            # 'redis:6379'
+        ],
         'KEY_PREFIX': 't' if TESTING else '',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SOCKET_CONNECT_TIMEOUT": 5,  # in seconds
+            "SOCKET_TIMEOUT": 5,  # in seconds
+        }
     }
 }
-if DEBUG and False:
+# if DEBUG and False:
+if DEBUG:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -621,7 +723,10 @@ LOGGING = {
         #     'propagate': True,
         # },
 
-        # "catch-all" logger
+        # About "catch-all" logger:
+        # 1. This is ultra-slow and buggy with RabbitMQ as channels broker (for example)
+        # 2. It will output any debug messages from any 3rd party library
+        # log.debug() calls
         '': {
             'handlers': ['console'],
             'level': 'DEBUG',
@@ -630,10 +735,27 @@ LOGGING = {
     }
 }
 
+# Whether to store the CSRF token in the user’s session instead of in a cookie.
+# It requires the use of django.contrib.sessions.
+#
+# Storing the CSRF token in a cookie (Django’s default) is safe,
+# but storing it in the session is common practice in other web frameworks
+# and therefore sometimes demanded by security auditors.
+# CSRF_USE_SESSIONS = True
+
+try:
+    # pika is a RabbitMQ stuff.
+    # With our "catch-all" logger it prints LOTS of messages
+    # logging.getLogger("pika").setLevel(logging.WARNING)
+    logging.getLogger("pika").setLevel(logging.INFO)
+except:
+    pass
+
+
 ddt = False
 try:
     import redis
-    r = redis.StrictRedis(host='{{redis_server}}', port=6379, db=0)
+    r = redis.StrictRedis(host='{{redis_server}}', port=REDIS_PORT, db=0)
     ddt = r.get('ddt')==b'True'
 except Exception as e:
     print(e)
@@ -673,8 +795,11 @@ APPEND_SLASH = True
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*1024*3
 
 
+if DEBUG:
+    CACHEOPS_ENABLED = False
+
 CACHEOPS_REDIS = {
-    'host': '{{redis_server}}',  # redis-server is on same machine
+    'host': REDIS_SERVER,  # redis-server is on same machine
     'port': 6379,            # default redis port
     'db': 0,                 # SELECT non-default redis database
                              # using separate redis db or redis instance
@@ -720,8 +845,7 @@ SHELL_PLUS_PRE_IMPORTS = [
     ('django.core.management', ('call_command', ))
 ]
 
-if DEBUG:
-    CACHEOPS_ENABLED = False
+
 
 
 # Do not create temporary users for these "browsers":
