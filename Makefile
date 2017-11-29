@@ -193,7 +193,8 @@ rparser:
 requirements:
 	$(vebin)/pip install -r docker/requirements.txt
 	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" == "pypy3" ]] ; then pip install psycopg2cffi; fi;
-	if [[ "$(TRAVIS_PYTHON_VERSION)" != "pypy3" ]] ; then pip install psycopg2; fi;
+	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" != "pypy3" ]] ; then pip install psycopg2; fi;
+	if [[ "$(TRAVIS)" == "" ]] ; then $(vebin)/pip install psycopg2; fi;
 
 pip:
 	$(vebin)/pip3 install -r docker/requirements.txt
