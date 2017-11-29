@@ -215,7 +215,7 @@ cssselect
 coverage
 
 # for subdomains handling
-django-hosts
+django-hosts>=3.0
 
 
 # CAS is an enterprise Single Sign-On solution for web services
