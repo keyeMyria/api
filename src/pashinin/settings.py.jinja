@@ -12,6 +12,7 @@ TESTING = os.getenv('TRAVIS') or (
     '--reuse-db' in sys.argv or
     '--durations=3' in sys.argv
 )
+DOCKER = os.getenv('DOCKER') == 'true'
 
 {% if DEBUG %}
 DEBUG = True
@@ -289,7 +290,7 @@ TEMPLATES = [
 
 # REDIS_PORT = {{redis_port}}
 REDIS_PORT = 6379
-REDIS_SERVER = '{{redis_server}}'
+REDIS_SERVER = 'redis' if DOCKER else '{{redis_server}}'
 
 # Celery settings
 BROKER_URL = f'redis://{REDIS_SERVER}:{REDIS_PORT}/0'
