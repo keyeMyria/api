@@ -3,6 +3,7 @@ import re
 import os
 import json
 import redis
+from os.path import abspath
 from celery import shared_task
 from celery import chain
 from subprocess import call, Popen, PIPE
@@ -198,7 +199,14 @@ def update_finish(sha1, *args):
 
 
 @shared_task
-def render_jinja_file(filename, data, outdir=None):
+def render_jinja_file(filename, data=None, outdir=None):
+    """
+    Output filename is the same without .ext part:
+
+        settings.py.jinja -> settings.py
+    """
+    if data is None:
+        data = get_variables()
     full = os.path.abspath(filename)
     d = os.path.dirname(full)
     base, ext = os.path.splitext(os.path.basename(full))
@@ -212,25 +220,42 @@ def render_jinja_file(filename, data, outdir=None):
         f.write(Environment().from_string(input).render(**data))
 
 
-@shared_task
-def generate_settings():
-    """Scans all apps and (re)generates settings.py files.
-
-    It looks for 'settings.py.mustache' files and runs mustache command
-    to render a file.
-
-    """
-    from os.path import abspath
+def get_variables():
+    """Return configs/tmp/conf.json variables as a dict."""
     conf = os.path.join(
         get_git_root(abspath(__file__)),
         "configs",
         "tmp",
         "conf.json"
     )
-    data = json.load(open(conf, 'r'))
+    return json.load(open(conf, 'r'))
+
+
+@shared_task
+def render_configs():
+    """"""
+    path = configs_path = os.path.join(
+        get_git_root(abspath(__file__)),
+        "configs"
+    )
+    templates = [os.path.join(path, f) for f in os.listdir(path)
+                 if re.match(r'.*\.jinja', f)]
+    for template in templates:
+        print(template)
+        render_jinja_file(template, outdir=os.path.join(path, 'tmp'))
+
+
+@shared_task
+def generate_settings():
+    """Scans all apps and (re)generates settings.py files.
+
+    It looks for 'settings*.jinja' files and runs render_jinja_file
+    to render a file.
+
+    """
     for app, path in apps():
         templates = [os.path.join(path, f) for f in os.listdir(path)
                      if re.match(r'settings.*\.jinja', f)]
         for template in templates:
             print(template)
-            render_jinja_file(template, data)
+            render_jinja_file(template)

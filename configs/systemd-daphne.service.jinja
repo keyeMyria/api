@@ -1,0 +1,27 @@
+# -*- mode: conf -*-
+#
+# usage: daphne [-h] [-p PORT] [-b HOST] [-u UNIX_SOCKET] [--fd FILE_DESCRIPTOR]
+#               [-v VERBOSITY] [-t HTTP_TIMEOUT] [--access-log ACCESS_LOG]
+#               [--ping-interval PING_INTERVAL] [--ping-timeout PING_TIMEOUT]
+#               [--ws-protocol [WS_PROTOCOLS [WS_PROTOCOLS ...]]]
+#               [--root-path ROOT_PATH]
+#               channel_layer
+
+# autostart=true
+# autorestart=false
+# stderr_logfile=/var/log/supervisor/daphne-{{domain}}.err.log
+# stdout_logfile=/var/log/supervisor/daphne-{{domain}}.out.log
+[Unit]
+Description=Daphne (Django)
+After=network.target
+
+[Service]
+# EnvironmentFile=/var/www/gglobal/.envvars
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory={{repo}}/src
+ExecStart={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
+
+[Install]
+WantedBy=multi-user.target

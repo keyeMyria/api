@@ -18,12 +18,13 @@ templates:
 # create conf.json
 	python config.py secret-example.json secret.json
 
-# mustache $(S) daphne.conf.mustache > $(output)/daphne.conf
+# $(mustache) daphne.conf.mustache > $(output)/daphne.conf
 	$(mustache) worker.conf.mustache > $(output)/worker.conf
 	$(mustache) supervisor/celery.conf.mustache > $(output)/celery.conf
 	$(mustache) supervisor/celerybeat.conf.mustache > $(output)/celerybeat.conf
 	$(mustache) supervisor/celery_flower.conf.mustache > $(output)/celery_flower.conf
 	(cd ../src; $(python) -c 'from core.tasks.update import generate_settings;generate_settings()')
+	(cd ../src; $(python) -c 'from core.tasks.update import render_configs;render_configs()')
 	$(mustache) nginx.conf.mustache > $(output)/nginx.conf
 
 	$(mustache) bind.zone.mustache > $(output)/$(domain).zone
@@ -32,10 +33,13 @@ templates:
 	$(mustache) nginx-site.conf.mustache > $(output)/$(domain).conf
 	$(mustache) dbinit.sql.template > $(output)/dbinit.sql
 
-# Must run as root (sudo ...)
+# Must run as root (sudo make somelinks)
 somelinks:
-# Nginx config (current domain)
+# Nginx config (current domain):
 	ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
+# Worker:
+#	ln -sf $(dir)/worker.conf $(supervisor_confd)/worker-$(domain).conf
+	ln -sf $(dir)/systemd-daphne.service /etc/systemd/system/daphne.service
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
