@@ -1,7 +1,7 @@
 ; -*- mode:dns -*-
 $TTL    604800
 @   IN  SOA ns0.{{domain}}. sergey.{{domain}}. (
-            25        ; Serial
+            32        ; Serial
             604800   ; Refresh
             86400    ; Retry
             2419200  ; Expire
@@ -9,6 +9,8 @@ $TTL    604800
 
          NS  ns0.{{domain}}.
          NS  ns1.{{domain}}.
+
+		IN	MX 10	{{domain}}.
 
 ns0		IN	A   {{ip}}
 ns1		IN	A   {{ip}}
