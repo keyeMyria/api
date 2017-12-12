@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-12 10:09+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../update.rst:2
+msgid "Update process"
+msgstr ""
+
+#: ../../update.rst:4
+msgid "Commit -> Github -> Travis"
+msgstr ""
+
+#: ../../update.rst:6
+msgid ""
+"When travis build is OK Travis sends info to a webhook (see travis.yml_)."
+" The hook URL is:"
+msgstr ""
+
+#: ../../update.rst:15
+msgid ""
+"Request is signed - so there is `a way <https://docs.travis-"
+"ci.com/user/notifications#Verifying-Webhook-requests>`_ to check it is "
+"really Travis connecting to us."
+msgstr ""
+
+#: ../../update.rst:22
+msgid ""
+"Tasks that do update process are defined in `core/tasks.py`_ (clone repo,"
+" create css, collect static, restart server). Code that runs an update "
+"process:"
+msgstr ""
+
+#: ../../update.rst:32
+msgid "To run it manually:"
+msgstr ""
+

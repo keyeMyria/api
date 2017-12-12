@@ -18,32 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
 
-#: ../../static.rst:2
-msgid "Javascript, CSS"
+#: ../../parser.rst:2
+msgid "Parser"
 msgstr ""
 
-#: ../../static.rst:4
-msgid ""
-"Javascript styles: Google, AirBnB, Standard. I use AirBnB, really cool. "
-"Google style for example also requires jsdoc strings for every function "
-"and class (like Emacs)."
+#: ../../parser.rst:8
+msgid "Download rparser repo"
 msgstr ""
 
-#: ../../static.rst:8
-msgid ""
-"All common static files like javascript libraries are located under "
-"`core/static`."
+#: ../../parser.rst:9
+msgid "Compile"
 msgstr ""
 
-#: ../../static.rst:11
-msgid "To minify a javascript file (fetch.js_ for example) use uglifyjs_:"
-msgstr ""
-
-#: ../../static.rst:24
-msgid "Javascript libraries"
-msgstr ""
-
-#: ../../static.rst:26
-msgid "Dropzone_ - file uploads, `core/static/dropzone/`"
+#: ../../parser.rst:10
+msgid "Restart django container"
 msgstr ""
 

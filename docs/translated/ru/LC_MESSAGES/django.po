@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-12 10:18+0300\n"
+"PO-Revision-Date: 2017-12-12 10:27+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../django.rst:2
+msgid "Django"
+msgstr ""
+
+#: ../../django.rst:5
+msgid "Shell"
+msgstr ""
+
+#: ../../django.rst:7
+msgid "To enter Django shell (:code:`shell_plus` actually) enter:"
+msgstr "Зайти в Django shell (:code:`shell_plus` на самом деле):"
+
+#: ../../django.rst:25
+msgid "ORM tree models"
+msgstr ""
+
+#: ../../django.rst:29
+msgid ""
+"django-mptt or `django-treebeard <https://github.com/django-treebeard"
+"/django-treebeard>`_?"
+msgstr ""
+
+#: ../../django.rst:32
+msgid ""
+"django-treebeard can do more but django-mptt has a nicer API and better "
+"docs"
+msgstr ""
+
+#: ../../django.rst:35
+msgid ""
+"When converting a model to a tree (while making a migration) set "
+":code:`level`, :code:`lft` and :code:`rght` to :code:`0`."
+msgstr ""
+
+#: ../../django.rst:38
+msgid "Then run :code:`manage.py shell` and run:"
+msgstr ""
+
+#: ../../django.rst:47
+msgid "Migrations"
+msgstr ""
+
+#: ../../django.rst:62
+msgid "Fixtures"
+msgstr ""
+
+#: ../../django.rst:64
+msgid "Fixtures are example records that are inserted into a database."
+msgstr ""
+
+#: ../../django.rst:68
+msgid "Fixtures may cause pain."
+msgstr ""
+
+#: ../../django.rst:70
+msgid ""
+"`factory_boy <https://github.com/FactoryBoy/factory_boy>`_ is a fixtures "
+"replacement."
+msgstr ""
+
+#: ../../django.rst:75
+msgid "Create fixture"
+msgstr ""
+
+#: ../../django.rst:77
+msgid "Go to or create `src/<app>/fixtures/<any_filename>.json`"
+msgstr ""
+
+#: ../../django.rst:96
+msgid "Load fixture"
+msgstr ""
+
+#: ../../django.rst:98
+msgid "Run :code:`make shell` and then:"
+msgstr ""
+
+#: ../../django.rst:106
+msgid ""
+"Some fixtures are loaded automatically when you start :code:`db` "
+"container. (See :code:`docker/db_init.sh` file)"
+msgstr ""
+
+#: ../../django.rst:114
+msgid "Model (objects) history"
+msgstr ""
+
+#: ../../django.rst:118
+msgid "Need this for article history or any other object history."
+msgstr ""
+
+#: ../../django.rst:121
+msgid ""
+"`django-reversion <https://django-"
+"reversion.readthedocs.io/en/stable/commands.html>`_"
+msgstr ""
+
+#: ../../django.rst:125
+msgid "Permissions"
+msgstr ""
+
+#: ../../django.rst:129
+msgid ""
+"Using permissions in a database is kinda slow. Django default permission "
+"system is kinda shit (uses database, doesn't have row-level permissions)."
+msgstr ""
+
+#: ../../django.rst:133
+msgid "django-guardian uses DB. django-rules uses functions (all in memory)."
+msgstr ""
+
+#: ../../django.rst:135
+msgid ""
+"Rules will search for rules.py in each app when added autodiscover in "
+"settings.py:"
+msgstr ""
+
+#: ../../django.rst:146
+msgid "For a model set :code:`default_permissions` to empty tuple:"
+msgstr ""
+
+#~ msgid ""
+#~ "`factory_boy <https://github.com/FactoryBoy/factory_boy>`_ "
+#~ "is a fixtures replacement. F ixtures "
+#~ "are example records that are inserted"
+#~ " into a database."
+#~ msgstr ""
+

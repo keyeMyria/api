@@ -15,7 +15,8 @@ with docs and run :code:`make html`:
 .. code-block:: bash
 
    # install Sphinx
-   sudo pip install sphinx sphinx_rtd_theme
+   sudo -H pip install pip -U
+   sudo -H pip install sphinx sphinx-intl sphinx_rtd_theme pyOpenSSL -U
 
    # compile docs to HTML
    cd docs/en
@@ -35,3 +36,16 @@ with docs and run :code:`make html`:
 
 
 Then open :code:`/docs/en/_build/html/index.html`
+
+
+Translations
+------------
+
+To update translations:
+
+.. code-block:: bash
+
+   cd docs/en
+   make locale
+
+.. _travis.yml: https://github.com/pashinin-com/pashinin.com/blob/master/.travis.yml#L105-L106

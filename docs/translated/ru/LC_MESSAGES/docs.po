@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-12 10:15+0300\n"
+"PO-Revision-Date: 2017-12-12 10:25+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../docs.rst:2
+msgid "Documentation"
+msgstr "Документация"
+
+#: ../../docs.rst:4
+msgid ""
+"Documentation is written in ReStructured (.rst) format in 2 languages: "
+"english and russian."
+msgstr ""
+
+#: ../../docs.rst:8
+msgid ""
+"RST format is used in many projects of different size. So this is really "
+"worth learning. Official help on .rst fromat is `here "
+"<http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html>`_."
+msgstr ""
+
+#: ../../docs.rst:12
+msgid ""
+"To compile docs from .rst format to HTML install Sphinx, enter directory "
+"with docs and run :code:`make html`:"
+msgstr ""
+
+#: ../../docs.rst:38
+msgid "Then open :code:`/docs/en/_build/html/index.html`"
+msgstr ""
+
+#: ../../docs.rst:42
+msgid "Translations"
+msgstr "Переводы"
+
+#: ../../docs.rst:44
+msgid "To update translations:"
+msgstr "Чтобы обновить переводы:"
+

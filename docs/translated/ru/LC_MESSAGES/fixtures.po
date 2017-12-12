@@ -18,32 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
 
-#: ../../static.rst:2
-msgid "Javascript, CSS"
+#: ../../fixtures.rst:2
+msgid "Fixtures"
 msgstr ""
 
-#: ../../static.rst:4
+#: ../../fixtures.rst:4
+msgid "Fixtures are example records that are inserted into a database."
+msgstr ""
+
+#: ../../fixtures.rst:8
+msgid "Create fixture"
+msgstr ""
+
+#: ../../fixtures.rst:10
+msgid "Go to or create `src/<app>/fixtures/<any_filename>.json`"
+msgstr ""
+
+#: ../../fixtures.rst:29
+msgid "Load fixture"
+msgstr ""
+
+#: ../../fixtures.rst:31
+msgid "Run :code:`make shell` and then:"
+msgstr ""
+
+#: ../../fixtures.rst:39
 msgid ""
-"Javascript styles: Google, AirBnB, Standard. I use AirBnB, really cool. "
-"Google style for example also requires jsdoc strings for every function "
-"and class (like Emacs)."
-msgstr ""
-
-#: ../../static.rst:8
-msgid ""
-"All common static files like javascript libraries are located under "
-"`core/static`."
-msgstr ""
-
-#: ../../static.rst:11
-msgid "To minify a javascript file (fetch.js_ for example) use uglifyjs_:"
-msgstr ""
-
-#: ../../static.rst:24
-msgid "Javascript libraries"
-msgstr ""
-
-#: ../../static.rst:26
-msgid "Dropzone_ - file uploads, `core/static/dropzone/`"
+"Some fixtures are loaded automatically when you start :code:`db` "
+"container. (See :code:`docker/db_init.sh` file)"
 msgstr ""
 

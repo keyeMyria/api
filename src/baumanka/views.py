@@ -12,7 +12,7 @@ from raven.contrib.django.raven_compat.models import client
 # from .models import EduMaterial
 
 
-baumanka_dir = '/mnt/files/baumanka/'
+baumanka_dir = os.path.join(settings.FILES_ROOT, 'baumanka')
 
 
 class Base(B):

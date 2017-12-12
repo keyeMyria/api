@@ -1,0 +1,80 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Sergey Pashinin
+# This file is distributed under the same license as the pashinin.com
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pashinin.com \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-12 10:09+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../postgresql.rst:2
+msgid "PostgreSQL"
+msgstr ""
+
+#: ../../postgresql.rst:4
+msgid "To start db container separately:"
+msgstr ""
+
+#: ../../postgresql.rst:12
+msgid "Postgres in a Docker container (dev)"
+msgstr ""
+
+#: ../../postgresql.rst:14
+msgid "Postgres v10 is used currently in a docker container."
+msgstr ""
+
+#: ../../postgresql.rst:17
+msgid "Django migrations"
+msgstr ""
+
+#: ../../postgresql.rst:19
+msgid ""
+"Migrations run after you first start a database container. Postgres "
+"container executes everything in :code:`docker/docker-entrypoint-"
+"initdb.d` which is only touching a file :code:`tmp/run-migrations`."
+msgstr ""
+
+#: ../../postgresql.rst:24
+msgid ""
+"If this files exists :code:`make` will run migrations after containers "
+"were started (and then remove :code:`tmp/run-migrations` file)."
+msgstr ""
+
+#: ../../postgresql.rst:27
+msgid ""
+"There is no way to do this in :code:`docker-entrypoint-initdb.d/...` "
+"script because Postgres container does not have anything but Postgres, "
+"even :code:`python` command."
+msgstr ""
+
+#: ../../postgresql.rst:32
+msgid "Switching to a new Postgres version in a container"
+msgstr ""
+
+#: ../../postgresql.rst:34
+msgid "When writing in :code:`docker-compose.yml`"
+msgstr ""
+
+#: ../../postgresql.rst:41
+msgid "container will not start with an error:"
+msgstr ""
+
+#: ../../postgresql.rst:48
+msgid "In this case just recreate a database:"
+msgstr ""
+
+#: ../../postgresql.rst:54
+msgid "And start containers again:"
+msgstr ""
+

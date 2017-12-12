@@ -66,7 +66,6 @@ How to start?
 
 
 .. _core/tasks.py: https://github.com/pashinin-com/pashinin.com/blob/master/src/core/tasks.py
-.. _travis_secret_settings: https://github.com/pashinin-com/pashinin.com/blob/master/configs/settings.py.mustache#L334
 .. _travis.yml: https://github.com/pashinin-com/pashinin.com/blob/master/.travis.yml#L105-L106
 .. _Docker: https://www.docker.com/
 .. _Linux: https://www.ubuntu.com/

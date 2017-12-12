@@ -3,18 +3,18 @@ Update process
 
 Commit -> Github -> Travis
 
-When travis build is OK Travis sends info to a webhook (see travis.yml_). URL is:
+When travis build is OK Travis sends info to a webhook (see
+travis.yml_). The hook URL is:
 
 
 .. code-block:: text
 
-   https://pashinin.com/_hooks/travis/<SECRET>
+   https://pashinin.com/_hooks/travis
 
 
-Secret part is defined in travis_secret_settings_ `settings.py` and is
-for being sure only Travis can contact us. TODO: See `Travis notes about
-making it secure
-<https://docs.travis-ci.com/user/notifications#Verifying-Webhook-requests>`_.
+Request is signed - so there is `a way
+<https://docs.travis-ci.com/user/notifications#Verifying-Webhook-requests>`_
+to check it is really Travis connecting to us.
 
 ..
    travis encrypt "<account>:<token>#channel"
