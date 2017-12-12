@@ -9,7 +9,7 @@ import re
 import shutil
 from dirtyfields import DirtyFieldsMixin
 from core.models import AddedChanged
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.uploadedfile import (TemporaryUploadedFile,
                                             InMemoryUploadedFile)
 from . import CT_CHOICES
@@ -104,7 +104,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
                     hasher.update(buf)
                     buf = f.read(blocksize)
                 return hasher.hexdigest()
-        except:
+        except Exception:
             return None
 
     @classmethod
@@ -256,6 +256,7 @@ class File(AddedChanged):
     basefile = models.ForeignKey(
         BaseFile,
         null=True, blank=True,
+        on_delete=models.SET_NULL,
     )
     # groups = models.ManyToManyField(Group)
 
@@ -279,7 +280,8 @@ class UploadedFile(models.Model):
         default=None,
         null=True,
         blank=True,
-        db_column='uploader'
+        db_column='uploader',
+        on_delete=models.SET_NULL,
     )
     date_uploaded = models.DateTimeField(default=now)
     sha1 = models.CharField(

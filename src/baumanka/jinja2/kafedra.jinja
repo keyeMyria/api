@@ -25,7 +25,7 @@ div.k{padding-top:1rem}
 	<div class="w pad-sm">
   	  <a href="{{url("index", host=host.name)}}">Бауманка</a>
 	  &gt;
-	  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}}</a>
+	  <a href="{{url("kafedra", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra})}}">{{kafname}}</a>
 	</div>
   </div>
 {% endblock %}
@@ -44,7 +44,7 @@ div.k{padding-top:1rem}
 {% if kaf %}
 {% for sem in sems %}
   {% if sem.have_data %}
-	<p><a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem.i})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>
+	<p><a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem.i, 'path':'/'})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>
   {% else %}
 	{% if DEBUG %}
 	  <p>DEBUG: no such dir: {{ sem.semdir }}</p>

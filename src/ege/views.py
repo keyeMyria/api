@@ -49,7 +49,9 @@ class Base(
                 'url': reverse(
                     'subject:index',
                     host=c['host'].name,
-                    kwargs={'subj': subj.slug}
+                    kwargs={
+                        'subj': subj.slug,
+                    }
                 ),
             }
         # c['menu'] = Menu(

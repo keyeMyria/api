@@ -2,7 +2,8 @@
 from pashinin.views import Base
 from .models import Article  # Revision, ArticleCategory
 # from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from core import reverse
 # from raven.contrib.django.raven_compat.models import client
 from braces import views
 from django.http import Http404

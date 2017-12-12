@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from .views import Articles, ArticleView
 
+app_name = 'articles'
 urlpatterns = [
     url(r'^$', Articles.as_view(), name="index"),
     # url(r'^drafts$', DraftsView.as_view(), name="drafts"),

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import RootSitemap
@@ -14,11 +14,11 @@ from .views import (
 )
 
 
-courses_urls = [
-    url(r'^(?P<slug>.+)$', CourseView.as_view(), name="course"),
-    # url(r'^$', include('core.urls', namespace='core')),
-    # url(r'^articles/', include('articles.urls', namespace='articles')),
-]
+courses_urls = ([
+    path('<slug>', CourseView.as_view(), name="course"),
+    # path(r'^$', include('core.urls', namespace='core')),
+    # path(r'^articles/', include('articles.urls', namespace='articles')),
+], 'courses')
 
 # Error handlers
 #
@@ -47,32 +47,35 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'),
-    url(r'^articles/', include('articles.urls', namespace='articles')),
-    url(r'^api/', include(api_urls, namespace='api')),
-    url(r'^courses/', include(courses_urls, namespace='courses')),
-    # url(r'^baumanka/', include('baumanka.urls', namespace='baumanka')),
-    url(r'^_/', include('core.urls', namespace='core')),
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'
+    ),
+    path('articles/', include('articles.urls', namespace='articles')),
+    path('api/', include(api_urls, namespace='api')),
+    path('courses/', include(courses_urls, namespace='courses')),
+    path('_/', include('core.urls', namespace='core')),
 ]
 
 urlpatterns += i18n_patterns(
-    url(r'^$', Index.as_view(), name="index"),
-    # url(r'^$', Index.as_view(), name="lazysignup_convert"),
-    url(r'^pay$', PayView.as_view(), name='pay'),
-    url(r'^contacts$', Contacts.as_view(), name='contacts'),
-    url(r'^students$', Students.as_view(), name='students'),
-    url(r'^faq$', FAQ.as_view(), name="faq"),
-    # url(r'^login$', Login.as_view(), name='login'),
+    path('', Index.as_view(), name="index"),
+    # path(r'^$', Index.as_view(), name="lazysignup_convert"),
+    path('pay', PayView.as_view(), name='pay'),
+    path('contacts', Contacts.as_view(), name='contacts'),
+    path('students', Students.as_view(), name='students'),
+    path('faq', FAQ.as_view(), name="faq"),
+    # path('login', Login.as_view(), name='login'),
 
     # This really needs to be here, not just in 'core' urls.py.
     # Because admin templates are getting reverse urls with "admin:..."
     # So if you wrap admin inside some app - reverse will throw an error
-    url(r'^_/django/', include(admin.site.urls)),
+    path('_/django/', admin.site.urls),
 
     prefix_default_language=False
 )
 
 # urlpatterns += [
-#     url(r'^cas/', include('mama_cas.urls'))
+#     path(r'^cas/', include('mama_cas.urls'))
 # ]

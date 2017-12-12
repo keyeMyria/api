@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls import include, url
+from django.urls import include, path
 from .views import (
     Celery,
     Nginx,
@@ -9,16 +9,18 @@ from .views import (
     Postgres,
 )
 
+app_name = 'core'
+
 # These urls go under "core" namespace url: /_/
 urlpatterns = [
-    url(r'^celery$', Celery.as_view(), name='celery'),
-    url(r'hooks/', include('core.hooks.urls', namespace='hooks')),
-    url(r'files/', include('core.files.urls', namespace='files')),
-    url(r'django/', include(admin.site.urls)),
-    url(r'^nginx$', Nginx.as_view(), name='nginx'),
-    url(r'^postgres$', Postgres.as_view(), name='postgres'),
-    url(r'^updates$', Updates.as_view(), name='updates'),
-    url(r'^login$', Login.as_view(), name='login'),
-    url(r'^logout$', Logout.as_view(), name='logout'),
-    # url(r'convert/', include('lazysignup.urls')),
+    path('celery', Celery.as_view(), name='celery'),
+    path('hooks/', include('core.hooks.urls', namespace='hooks')),
+    path('files/', include('core.files.urls', namespace='files')),
+    path('django/', admin.site.urls),
+    path('nginx', Nginx.as_view(), name='nginx'),
+    path('postgres', Postgres.as_view(), name='postgres'),
+    path('updates', Updates.as_view(), name='updates'),
+    path('login', Login.as_view(), name='login'),
+    path('logout', Logout.as_view(), name='logout'),
+    # path('convert/', include('lazysignup.urls')),
 ]

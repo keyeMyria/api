@@ -57,7 +57,7 @@ def get(url, charset='utf-8', force=False):
             cookies=load_cookies(cookies),
             headers=headers
         )
-    except:
+    except Exception:
         r = requests.get(url, headers=headers)
 
     save_cookies(r.cookies, cookies)
@@ -73,7 +73,7 @@ def get(url, charset='utf-8', force=False):
             if charset:
                 try:
                     html = r.content.decode(charset)
-                except:
+                except Exception:
                     # client.captureException()
                     pass
         cache.set(key, html, 3600, version=url_get_version)
@@ -134,13 +134,13 @@ def configure_docker():
     cli = docker.from_env()
     try:
         cli.images.get('ubuntu:17.04')
-    except:
+    except Exception:
         print('Getting Ubuntu image...')
         cli.images.pull('ubuntu:17.04')
 
     try:
         cli.images.get('postgres:latest')
-    except:
+    except Exception:
         print('Getting Postgres image...')
         cli.images.pull('postgres:latest')
 
@@ -171,7 +171,7 @@ def install(program):
             try:
                 import docker
                 docker.from_env()
-            except:
+            except Exception:
                 print('Installing docker via pip')
                 p = Popen(['sudo', 'pip', 'install', 'docker'])
                 p.communicate()

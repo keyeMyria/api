@@ -51,7 +51,7 @@ def test_get_subj_sections():
     assert len(res) == 11
 
 
-def test_process_sections(settings):
+def test_process_sections(settings, db):
     settings.CELERY_ALWAYS_EAGER = True
     # process_sections([
     #     # ('русский язык', 'http://85.142.162.119/os11/xmodules/qprint/' +

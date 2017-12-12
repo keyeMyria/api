@@ -26,7 +26,7 @@ chardet                # encoding detection
 # solid_i18n
 # django-admin-bootstrapped
 # django-bootstrap3
-django>=1.11
+django>=2.0
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
 
@@ -110,7 +110,10 @@ pyinotify               # signals instead of polling (to reload dev server)
 
 
 pytest
-pytest-django>=3.1.2           # "--reuse-db"
+
+git+git://github.com/pytest-dev/pytest-django@94cccb956435dd7a719606744ee7608397e1eafb
+# pytest-django>=3.1.2           # "--reuse-db"
+
 pytest-cov
 pytest-xdist
 pytest-pythonpath

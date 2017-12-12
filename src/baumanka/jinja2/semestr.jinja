@@ -20,25 +20,25 @@ div.k{padding-top:1rem}
 	<div class="w pad-sm">
 	  <h1 class="nomar">
 		{# {{kafname}} - #}
-		{# <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a> #}
+		{# <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a> #}
 		{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}
 	  </h1>
 	</div>
 	<div class="w pad-sm">
 	  {% if levels|length > 0 %}
-		{# <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
+		{# <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
 	  {% else %}
 		{# {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %} #}
 	  {% endif %}
 
 	  <a href="{{url("index", host=host.name)}}">Бауманка</a>
 	  &gt;
-	  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}}</a>
+	  <a href="{{url("kafedra", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra})}}">{{kafname}}</a>
 	  &gt;
-	  <a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem})}}">сем. {{sem}}</a>
+	  <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem, 'path':'/'})}}">сем. {{sem}}</a>
 	  {% if levels %} &gt; {% endif %}
 	  {% for level in levels %}
-		<a href="{{url("sem", host=host.name, kwargs={'F':F, 'K':K, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
+		<a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
 		{% if not loop.last %}
 		  &gt;
 		{% endif %}

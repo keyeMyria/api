@@ -1,6 +1,15 @@
 Django
 ******
 
+Default admin user/password:
+
+.. code-block:: text
+
+   admin@example.org
+   admin
+
+
+
 Shell
 =====
 

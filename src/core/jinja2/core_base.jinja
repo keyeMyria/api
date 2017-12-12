@@ -112,7 +112,7 @@ fetch('/_/files/download_core', {
   {% block footer_content %}
 	<div>
 	  <a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
-	  <a href="{{url("kafedra", host="baumanka", kwargs={'F':'IU', 'K':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
+	  <a href="{{url("kafedra", host="baumanka", kwargs={'faculty':'IU', 'kafedra':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
 	  <br/>
 	  {% if user.is_superuser %}
 		<a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>

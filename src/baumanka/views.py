@@ -38,7 +38,7 @@ class Base(B):
                 'url': reverse(
                     'kafedra',
                     host=c['host'].name,
-                    kwargs={'F': 'IU', 'K': 2}
+                    kwargs={'faculty': 'IU', 'kafedra': 2}
                 ),
             }
         c['menu']['bmt1'] = {
@@ -46,7 +46,7 @@ class Base(B):
             'url': reverse(
                 'kafedra',
                 host=c['host'].name,
-                kwargs={'F': 'BMT', 'K': 1}
+                kwargs={'faculty': 'BMT', 'kafedra': 1}
             ),
         }
         c['menu']['iu4'] = {
@@ -54,7 +54,7 @@ class Base(B):
             'url': reverse(
                 'kafedra',
                 host=c['host'].name,
-                kwargs={'F': 'IU', 'K': 4}
+                kwargs={'faculty': 'IU', 'kafedra': 4}
             ),
         }
         return c
@@ -76,21 +76,24 @@ class Kafedra(Base):
         c = super(Kafedra, self).get_context_data(**kwargs)
         # c["comments"] = Comment.objects.all()
 
-        if kwargs.get('F') != kwargs.get('F').upper():
+        if kwargs.get('faculty') != kwargs.get('faculty').upper():
             pass
 
+        faculty = kwargs.get('faculty')
+        kafedra = kwargs.get('kafedra')
+
         try:
-            F = faculties[kwargs.get('F')]
-            c["kafname"] = F['code']+kwargs.get('K')
-            c["kafurl"] = kwargs.get('F')+kwargs.get('K')
-            c["kaf"] = F[int(kwargs.get('K'))]
+            F = faculties[kwargs.get('faculty')]
+            c["kafname"] = F['code'] + str(kafedra)
+            c["kafurl"] = faculty + str(kafedra)
+            c["kaf"] = F[kafedra]
 
             # c['menu']['iu2'] = {
             #     'title': 'ИУ-2',
             #     'url': reverse(
             #         'kafedra',
             #         host=c['host'].name,
-            #         kwargs={'F': 'IU', 'K': 2}
+            #         kwargs={'faculty: 'IU', 'kafedra: 2}
             #     ),
             # }
             # c['menu']['bmt1'] = {
@@ -98,7 +101,7 @@ class Kafedra(Base):
             #     'url': reverse(
             #         'kafedra',
             #         host=c['host'].name,
-            #         kwargs={'F': 'BMT', 'K': 1}
+            #         kwargs={'faculty: 'BMT', 'kafedra: 1}
             #     ),
             # }
             # c['menu']['iu4'] = {
@@ -106,13 +109,13 @@ class Kafedra(Base):
             #     'url': reverse(
             #         'kafedra',
             #         host=c['host'].name,
-            #         kwargs={'F': 'IU', 'K': 4}
+            #         kwargs={'faculty: 'IU', 'kafedra: 4}
             #     ),
             # }
             try:
-                c['menu'].current = kwargs.get('F').lower() + kwargs.get('K')
-            except:
-                pass
+                c['menu'].current = faculty.lower() + str(kafedra)
+            except Exception:
+                client.captureException()
 
             # All 12 sems items
             # If there is no such dir - 'have_data' is False
@@ -145,13 +148,15 @@ class Kafedra(Base):
 
 class Sem(Kafedra, DirView):
     template_name = "semestr.jinja"
-    d = os.path.join(settings.FILES_ROOT, 'baumanka')
+    d = baumanka_dir
 
     def get_context_data(self, **kwargs):
         # self.dir is a path for DirView
         self.dir = os.path.join(
             self.d,
-            kwargs.get('F')+kwargs.get('K'), 'sem'+kwargs.get('sem'))
+            kwargs.get('faculty')+str(kwargs.get('kafedra')),
+            'sem'+str(kwargs.get('sem'))
+        )
         c = super(Sem, self).get_context_data(**kwargs)
 
         c['dropzone'] = True
@@ -163,8 +168,8 @@ class Sem(Kafedra, DirView):
                         'kafedra',
                         host=c['host'].name,
                         kwargs={
-                            'F': kwargs.get('F'),
-                            'K': kwargs.get('K')
+                            'faculty': kwargs.get('faculty'),
+                            'kafedra': kwargs.get('kafedra')
                         }
                     ),
                 })
@@ -185,8 +190,8 @@ class Sem(Kafedra, DirView):
                     'kafedra',
                     host=c['host'].name,
                     kwargs={
-                        'F': kwargs.get('F'),
-                        'K': kwargs.get('K')
+                        'faculty': kwargs.get('faculty'),
+                        'kafedra': kwargs.get('kafedra')
                     }
                 ),
             })
@@ -198,13 +203,14 @@ class Sem(Kafedra, DirView):
                     'sem',
                     host=c['host'].name,
                     kwargs={
-                        'F': kwargs.get('F'),
-                        'K': kwargs.get('K'),
+                        'faculty': kwargs.get('faculty'),
+                        'kafedra': kwargs.get('kafedra'),
                         'sem': i,
+                        'path': '/'
                     }
                 ),
             }
-        c['menu'].current = 'sem'+kwargs.get('sem')
+        c['menu'].current = 'sem'+str(kwargs.get('sem'))
         # c['subjects'] = EduMaterial.objects.all()
         return c
 

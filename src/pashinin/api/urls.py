@@ -6,4 +6,5 @@ router = DefaultRouter(trailing_slash=False)
 router.register(r'students', StudentViewSet, 'student')
 router.register(r'schedule', ScheduleViewSet, 'schedule')
 
-urlpatterns = router.urls
+app_name = 'api'
+urlpatterns = (router.urls, 'api')

@@ -234,7 +234,7 @@ def get_variables():
 @shared_task
 def render_configs():
     """"""
-    path = configs_path = os.path.join(
+    path = os.path.join(
         get_git_root(abspath(__file__)),
         "configs"
     )

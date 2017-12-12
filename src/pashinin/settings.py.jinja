@@ -42,12 +42,16 @@ DOMAIN = "{{domain}}"
 SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
 DEFAULT_HOST = 'pashinin'
 HOST_PORT = ''
-if DEBUG:
+if DOCKER:
     DOMAIN = "example.org"
+
+    # django_hosts
+    #
     # The port to append to host names during reversing,
     # https://django-hosts.readthedocs.io/en/latest/#django.conf.settings.HOST_PORT
     HOST_PORT = '8000'
-PARENT_HOST = DOMAIN
+
+PARENT_HOST = DOMAIN  # django_hosts
 
 # Databases
 #
@@ -205,28 +209,30 @@ SESSION_COOKIE_NAME = 'session'
 
 LOGIN_URL = '/_/login'
 
-
-MIDDLEWARE_CLASSES = (
+# MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django_hosts.middleware.HostsRequestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+
+    # Before any middleware that may change the response (it sets the
+    # Content-Length header). A middleware that appears before
+    # CommonMiddleware and changes the response must reset
+    # Content-Length.
     'django.middleware.common.CommonMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
 
     # Auth
+    #
+    # After SessionMiddleware: uses session storage.
     #
     # AuthenticationMiddleware on Github:
     # https://github.com/django/django/blob/master/django/contrib/auth/middleware.py
     #
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'core.auth.AuthenticationMiddleware',
-    # 'django.contrib.auth.middleware.RemoteUserMiddleware',
-
-    # SessionAuthenticationMiddleware allows a user's sessions to be
-    # invalidated when their password changes. Must be after
-    # AuthenticationMiddleware
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
 
     # Wrap the every request that isn’t GET, HEAD or OPTIONS in a
     # revision block:
@@ -240,7 +246,7 @@ MIDDLEWARE_CLASSES = (
     # 'django_pdb.middleware.PdbMiddleware',
 
     'django_hosts.middleware.HostsResponseMiddleware',
-)
+]
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -388,7 +394,7 @@ INSTALLED_APPS = (
     'django_nose',
     'mptt',
     'raven.contrib.django.raven_compat',
-    'lazysignup',
+    # 'lazysignup',
     'reversion',
     # 'social.apps.django_app.default',
 
@@ -403,8 +409,8 @@ INSTALLED_APPS = (
     'ege',
     'pashinin',
 
-    'mama_cas',
-    'django_cas_ng',
+    # 'mama_cas',
+    # 'django_cas_ng',
 )
 if not app in INSTALLED_APPS:
     INSTALLED_APPS += (app, )
@@ -513,7 +519,7 @@ dsn_prefix = "sync+" if DEBUG else "threaded+"
 # Transport selection via DSN is deprecated. You should explicitly pass
 # the transport class to Client() instead.
 # import raven
-if not TESTING:
+if not TESTING and not DEBUG:
     RAVEN_CONFIG = {
         'dsn': 'https://{{raven_public}}:{{raven_secret}}@sentry.{{domain}}/2',
         # If you are using git, you can also automatically configure the
@@ -542,15 +548,15 @@ if TESTING:
 #
 # Authentication
 #
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     # 'rules.permissions.ObjectPermissionBackend',
 
     # ModelBackend on Github:
     # https://github.com/django/django/blob/master/django/contrib/auth/backends.py
     'django.contrib.auth.backends.ModelBackend',
     # 'core.backends.EmailBackend',
-    'lazysignup.backends.LazySignupBackend',  # for anons to interact as users
-    'django_cas_ng.backends.CASBackend',
+    # 'lazysignup.backends.LazySignupBackend',  # for anons to interact as users
+    # 'django_cas_ng.backends.CASBackend',
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.google.GoogleOAuth2',
@@ -558,7 +564,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.vk.VKOAuth2',
     # 'social.backends.github.GithubOAuth2',
     # 'allauth.account.auth_backends.AuthenticationBackend',
-)
+]
 SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 CAS_SERVER_URL = '//'+DOMAIN+'/cas/'
@@ -626,6 +632,8 @@ MIGRATION_MODULES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
+# SESSION_COOKIE_AGE =
+
 SESSION_REDIS_HOST = '{{redis_server}}'
 SESSION_REDIS_PORT = REDIS_PORT
 
@@ -641,10 +649,11 @@ CACHES = {
         #     "redis://{{redis_address}}:6379/0",
         #     {% endfor %}
         # ],
-        'LOCATION': [
-            f'{REDIS_SERVER}:{REDIS_PORT}'
-            # 'redis:6379'
-        ],
+        # 'LOCATION': [
+        #     # f'{REDIS_SERVER}:{REDIS_PORT}'
+        #     'redis:6379'
+        # ],
+        "LOCATION": f'redis://{REDIS_SERVER}:{REDIS_PORT}/0',
         'KEY_PREFIX': 't' if TESTING else '',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -653,8 +662,9 @@ CACHES = {
         }
     }
 }
-# if DEBUG and False:
-if DEBUG:
+
+if DEBUG and False:
+# if DEBUG:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -760,7 +770,7 @@ except Exception as e:
     print(e)
 
 if ddt and DEBUG:
-    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
     INSTALLED_APPS += ('debug_toolbar',)
     INTERNAL_IPS = ('127.0.0.1', '10.254.239.2', '10.92.209.1')
     DEBUG_TOOLBAR_CONFIG = {

@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
@@ -17,25 +17,25 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
 
-    url(r'^$',  Baumanka.as_view(), name="index"),
-    url(r'^(?P<F>\w+?)(?P<K>\d+)/$', Kafedra.as_view(), name="kafedra"),
-    url(r'^(?P<F>\w+?)(?P<K>\d+)/practice$',
-        Practice.as_view(), name="practice"),
-    # url(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/$',
+    path('',  Baumanka.as_view(), name="index"),
+    path('<faculty><int:kafedra>/', Kafedra.as_view(), name="kafedra"),
+    path('<faculty><int:kafedra>/practice',
+         Practice.as_view(), name="practice"),
+    # path(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/$',
     #  Sem.as_view(), name="sem"),
-    url(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/(?:(?P<path>.*)/?)?$',
-        Sem.as_view(), name="sem"),
-    # url(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls,
+    path('<faculty><int:kafedra>/sem<int:sem><path:path>',
+         Sem.as_view(), name="sem"),
+    # path(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls,
     #                                        namespace='faculty')),
-    url(r'^_/', include('core.urls', namespace='core')),
+    path('_/', include('core.urls', namespace='core')),
 ]
 
 urlpatterns += i18n_patterns(
-    url(r'^login$', Login.as_view(), name='login'),
+    path('login', Login.as_view(), name='login'),
 
-    url(r'^_/django/', include(admin.site.urls)),
+    path('_/django/', admin.site.urls),
     prefix_default_language=False
 )

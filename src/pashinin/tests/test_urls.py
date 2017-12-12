@@ -110,6 +110,7 @@ def test_login_logout(admin_client, settings):
     assert r.status_code == 200
 
 
+@pytest.mark.ci
 @pytest.mark.urls('pashinin.urls')
 def test_enroll_from_main_page(client, db):
     r = client.post('/', {

@@ -140,7 +140,7 @@ class ScheduleViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         try:
             date = datetime.datetime.strptime(pk, "%Y-%m-%d").date()
-        except:
+        except Exception:
             return Response("failed to get date object from: {}".format(pk))
 
         serializer = ScheduleSerializer(Day(date))

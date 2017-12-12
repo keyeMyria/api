@@ -323,7 +323,9 @@ flake8: install_flake8
 	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 install_flake8:
-	(cd src; python3 -c 'from core.tasks import install;install("flake8")')
+	$(python) -c 'import flake8' || $(vebin)/pip install flake8
+#	which flake8 || sudo -H pip install flake8
+#	(cd src; $(python) -c 'from core.tasks import install;install("flake8")')
 # sudo apt-get install python-flake8
 
 install_docker:
@@ -383,8 +385,8 @@ js-dev:
 test-js-style:
 	./node_modules/eslint/bin/eslint.js ./src
 
-test-python-style:
-	flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
+test-python-style: install_flake8
+	$(python) -m flake8 src --exclude=*/migrations/*,__pycache__,settings*.py
 
 testcmd = pytest -vv --durations=3
 test:

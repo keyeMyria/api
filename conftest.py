@@ -23,7 +23,7 @@ def _django_set_host(request):
     if marker:
         skip_if_no_django()
         import django.conf
-        from django.core.urlresolvers import clear_url_caches, set_urlconf
+        from django.urls import clear_url_caches, set_urlconf
         from django_hosts.resolvers import clear_host_caches
         # clear_host_caches
 

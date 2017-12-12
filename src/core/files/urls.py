@@ -6,6 +6,8 @@ from .views import (
     FileView,
 )
 
+app_name = 'files'
+
 # In pashinin/urls.py
 #
 # /_/file/

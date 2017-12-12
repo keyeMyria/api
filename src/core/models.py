@@ -14,7 +14,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from netfields import InetAddressField, NetManager
 from django_gravatar.helpers import get_gravatar_url
 from . import now
-from lazysignup.utils import is_lazy_user
+# from lazysignup.utils import is_lazy_user
 
 
 # Travis payload format:
@@ -200,7 +200,8 @@ key for temporary users")
 
     @property
     def is_lazy(self):
-        return is_lazy_user(self)
+        return True
+        # return is_lazy_user(self)
 
     def get_full_name(self):
         "Used in Admin. Dajngo wants this to be defined."
@@ -211,8 +212,8 @@ key for temporary users")
         return self.email
 
     def __str__(self):
-        if self.is_lazy:
-            return "{}".format(_('Anonymous'))
+        # if self.is_lazy:
+        #     return "{}".format(_('Anonymous'))
 
         if self.first_name:
             return self.first_name
@@ -233,7 +234,8 @@ class Tree(MPTTModel):
         # related_name="%(app_label)s_%(class)s_parent",
         # related_name="%(app_label)s_%(class)s_children",
         related_name='children',
-        verbose_name=_("Parent element")
+        verbose_name=_("Parent element"),
+        on_delete=models.SET_NULL,
     )
 
     class Meta:
@@ -245,7 +247,8 @@ class Comment(Tree):
         'core.User',
         default=None,
         null=True,
-        blank=True
+        blank=True,
+        on_delete=models.SET_NULL,
     )
     src = models.TextField()
 

@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 try:
     import pymorphy2
     morph = pymorphy2.MorphAnalyzer()
-except:
+except Exception:
     log.error('install pymorphy2')
 
 
@@ -18,7 +18,7 @@ try:
     reverse = reverse_hosts
     # from django.core.urlresolvers import reverse as reverse_django
     # reverse = reverse_django
-except:
+except Exception:
     log.error('install django_hosts')
 
 
@@ -28,7 +28,7 @@ default_app_config = 'core.apps.CoreConfig'
 def get_git_root(path):
     try:
         import git
-    except:
+    except Exception:
         import pip
         pip.main(['install', '--user', 'gitpython'])
         import git

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls import url, include
+from django.urls import path, include
 from .views import (
     YearView,
     SubjectView,
@@ -12,36 +12,41 @@ from .views import (
 
 
 # /subj(/year)?/tasks/
-tasks_patterns = [
-    url(r'^$', SubjectTasks.as_view(), name="index"),
-    url(r'^(?P<id>\d+)$', ExamTaskView.as_view(), name='task'),
-]
+tasks_patterns = ([
+    path('', SubjectTasks.as_view(), name="index"),
+    path('<id>', ExamTaskView.as_view(), name='task'),
+], 'tasks')
 
 
 # /subj(/year)?/
-subject_patterns = [
-    url(r'^$', SubjectView.as_view(), name="index"),
-    url(r'^tasks/', include(tasks_patterns, namespace='tasks')),
-    url(r'^theory$', SubjectTheoryView.as_view(), name='theory'),
-    url(r'^(?P<year>\d+)$', SubjectView.as_view(), name="year"),
-    # url(r'^(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
-]
+subject_patterns = ([
+    path('', SubjectView.as_view(), name="index"),
+    path('tasks/', include(tasks_patterns, namespace='tasks')),
+    path('theory', SubjectTheoryView.as_view(), name='theory'),
+    path('<int:year>', SubjectView.as_view(), name="year"),
+    # path(r'^(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
+], 'subject')
 
 # Main urls in "ege.example.org"
 urlpatterns = [
-    url(r'^$', Index.as_view(), name='index'),
-    # url(r'^task/(?P<id>\d+)/(?P<slug>.+)$', TaskView.as_view(), name='task'),
+    path('', Index.as_view(), name='index'),
+
+    # path(
+    #     r'^task/(?P<id>\d+)/(?P<slug>.+)$',
+    #     TaskView.as_view(),
+    #     name='task'
+    # ),
 
     # /yyyy - all subjects by year
-    url(r'^(?P<year>\d{4})$', YearView.as_view(), name="year"),
-    # url(r'^(?P<year>\d+)(/(?P<subj>\w+))?/$',
+    path('<int:year>', YearView.as_view(), name="year"),
+    # path(r'^(?P<year>\d+)(/(?P<subj>\w+))?/$',
     #     SubjectView.as_view(), name="subject"),
 
     # /subject[/yyyy]
-    url(r'^(?P<subj>[a-z]([a-z]|\-)*)/',
-        include(subject_patterns, namespace='subject')),
+    path('<subj>/',
+         include(subject_patterns, namespace='subject')),
 
 
-    url(r'^_/', include('core.urls', namespace='core')),
-    url(r'^_/django/', include(admin.site.urls)),
+    path('_/', include('core.urls', namespace='core')),
+    path('_/django/', admin.site.urls),
 ]

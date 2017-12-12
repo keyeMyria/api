@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 # from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.postgres.fields import JSONField
 from core.models import Tree
@@ -98,22 +98,6 @@ class Task(models.Model):
     text = models.TextField(
         verbose_name=_('Task')
     )
-    # no_short_answer = models.BooleanField(
-    #     db_index=True,
-    #     blank=True,
-    # )
-    # answer = models.CharField(
-    #     max_length=50,
-    #     null=True,
-    #     blank=True,
-    #     help_text=_("Short answer (if possible)")
-    # )
-    # answer2 = models.CharField(
-    #     max_length=20,
-    #     null=True,
-    #     blank=True,
-    #     help_text=_("If there is more than 1 answer")
-    # )
     solution = models.TextField(
         verbose_name=_('Solution'),
         blank=True, null=True,
@@ -183,3 +167,18 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# class University(models.Model):
+#     title = models.CharField(
+#         max_length=130,
+#         verbose_name=_('Comment'),
+#         blank=True, null=True,
+#         help_text="ВУЗ, факультет, экзамен / рубежный контроль",
+#     )
+#     comment = models.CharField(
+#         max_length=130,
+#         verbose_name=_('Comment'),
+#         blank=True, null=True,
+#         help_text="ВУЗ, факультет, экзамен / рубежный контроль",
+#     )

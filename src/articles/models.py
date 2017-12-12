@@ -69,7 +69,8 @@ class Article(AddedChanged):
         settings.AUTH_USER_MODEL,
         # default=None,
         # null=True,
-        # blank=True
+        # blank=True,
+        on_delete=models.CASCADE,
     )
     published = models.BooleanField(
         default=False,
@@ -112,7 +113,7 @@ class Article(AddedChanged):
                     try:
                         article = Article.objects.get(slug=slug)
                         set_links[missing_page] = article.get_absolute_url()
-                    except:
+                    except Exception:
                         log.debug(f"no page: {slug}")
             return html
         except Exception as e:

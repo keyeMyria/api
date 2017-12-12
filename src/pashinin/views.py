@@ -7,9 +7,9 @@ from core import reverse
 from django.http import HttpResponse, Http404
 from .forms import Enroll, AddStudent, CourseEnrollForm
 from .models import Lesson, CourseLead, Course, QA
-from django.utils.decorators import method_decorator
+# from django.utils.decorators import method_decorator
 # from django.contrib.staticfiles.storage import staticfiles_storage
-from lazysignup.decorators import allow_lazy_user
+# from lazysignup.decorators import allow_lazy_user
 from raven.contrib.django.raven_compat.models import client
 from channels import Channel
 from braces import views
@@ -324,7 +324,7 @@ class Day:
         return str(self.date)
 
 
-@method_decorator(allow_lazy_user, name='dispatch')
+# @method_decorator(allow_lazy_user, name='dispatch')
 class CourseView(Base):
     template_name = "pashinin_course.jinja"
 
@@ -333,7 +333,7 @@ class CourseView(Base):
         try:
             course = Course.objects.get(slug=c['slug'])
             c['course'] = course
-        except:
+        except Exception:
             raise Http404
 
         if not course.published and not c['user'].is_superuser:

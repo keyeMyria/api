@@ -53,7 +53,7 @@ class MyEncoder(json.JSONEncoder):
         else:
             try:
                 return json.JSONEncoder.default(self, obj)
-            except:
+            except Exception:
                 client.captureException()
 
 
@@ -86,7 +86,7 @@ def my_loads(obj):
         if isinstance(obj, six.binary_type):
             obj = obj.decode('utf-8')
         return json.loads(obj, object_hook=my_decoder)
-    except:
+    except Exception:
         client.captureException()
         return []
 

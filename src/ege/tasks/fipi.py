@@ -49,7 +49,7 @@ def ege_subjects_and_urls(*args):
         create_subjects(*subjects)
         # TODO: message if len(res) <> 15  (15 now)
         return res
-    except:
+    except Exception:
         client.captureException()
         return []
 
@@ -66,7 +66,7 @@ def create_subjects(*args):
                 name=title,
                 slug=slug
             )
-    except:
+    except Exception:
         client.captureException()
 
 
@@ -157,7 +157,7 @@ def process_sections(sections, *args):
 
             # print(total_pages)
             break
-    except:
+    except Exception:
         client.captureException()
 
 
@@ -411,5 +411,5 @@ def get_inf():
             process_sections.s(),
             # process_tasks.s(),
         )()
-    except:
+    except Exception:
         client.captureException()

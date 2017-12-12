@@ -1,7 +1,7 @@
 version: '3'
 services:
   django:
-    restart: on-failure
+    restart: on-failure:2
     # hostname: django
     # fixes: cannot open /dev/fuse (Operation not permitted)
     # --cap-add SYS_ADMIN --device /dev/fuse

@@ -63,7 +63,8 @@
 		</nav>
 
 		<div id="loginbox" class="hide popup" style="top:50px">
-		  {% if user.is_authenticated and not user.is_lazy %}
+		  {% if user.is_authenticated %}
+			 {# and not user.is_lazy #}
 			{# Add some superuser menu items: #}
 			{% if user.is_superuser %}
 			  <a class="padlr" href="{{url("index", host=host.name)}}">Main page</a>
@@ -76,9 +77,9 @@
 
 			<a id="exit" class="padlr" href="{{url("core:logout", host=host.name)}}">Выход</a>
 		  {% else %} {# user is not authenticated or is lazy #}
-			{% if user.is_lazy %}
-			  <p class="padlr">Временный аккаунт</p>
-			{% endif %}
+			{# {% if user.is_lazy %} #}
+			{#   <p class="padlr">Временный аккаунт</p> #}
+			{# {% endif %} #}
 			<a class="padlr" href="{{url("core:login", host=host.name)}}?next={{request.get_full_path()}}">Войти</a>
 		  {% endif %}
 		</div>

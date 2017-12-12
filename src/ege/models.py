@@ -2,7 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.core.urlresolvers import reverse
+# from django.urls import reverse
+from core import reverse
 
 
 class Exam(models.Model):
@@ -28,7 +29,10 @@ class Exam(models.Model):
         null=True,
         help_text=_("Отведённое время, мин")
     )
-    subject = models.ForeignKey('Subject')
+    subject = models.ForeignKey(
+        'Subject',
+        on_delete=models.CASCADE,
+    )
     info = models.TextField(
         blank=True,
         null=True,
@@ -105,6 +109,7 @@ class Subject(models.Model):
         unique_together = ("name", "slug")
 
     def get_absolute_url(self):
+        return ''
         return reverse('subject:index', kwargs={'subj': self.slug})
 
     def __str__(self):

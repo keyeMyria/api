@@ -28,7 +28,7 @@ from . import now
 from .menu import Menu
 from braces import views
 from raven.contrib.django.raven_compat.models import client
-from lazysignup.decorators import allow_lazy_user
+# from lazysignup.decorators import allow_lazy_user
 # from django.utils.timezone import now
 
 log = logging.getLogger(__name__)
@@ -45,13 +45,18 @@ class EnsureCsrfCookieMixin(object):
         return super(EnsureCsrfCookieMixin, self).dispatch(*args, **kwargs)
 
 
-# class Base(EnsureCsrfCookieMixin, TemplateView):
-@method_decorator(allow_lazy_user, name='dispatch')
-class BaseView(TemplateView):
+# @method_decorator(allow_lazy_user, name='dispatch')
+class BaseView(
+        # EnsureCsrfCookieMixin,
+        TemplateView,
+):
     def get_context_data(self, **kwargs):
         c = super(BaseView, self).get_context_data(**kwargs)
         c["domain"] = settings.DOMAIN
+
+        # Added by django_hosts middleware:
         c["host"] = self.request.host
+        # c["host"] = self.request.get_host().split(':')[0]
 
         nodir = not os.path.isdir(settings.FILES_ROOT)
         nofiles = len(os.listdir(settings.FILES_ROOT)) < 4
@@ -64,19 +69,19 @@ class BaseView(TemplateView):
         # c['now'] = datetime.datetime.now()
         c['utcnow'] = now()
         c['now'] = now()
-
         c['CURRENTYEAR'] = date.today().year
         c['user'] = self.request.user
         c['ip'] = get_client_ip(self.request)
 
         if c['user'].is_authenticated:
-            if c['user'].is_lazy and not c['user'].browser_on_creation:
-                c['user'].browser_on_creation = self.request.META.get(
-                    'HTTP_USER_AGENT', None
-                )
-                c['user'].save()
+            # if c['user'].is_lazy and not c['user'].browser_on_creation:
+            #     c['user'].browser_on_creation = self.request.META.get(
+            #         'HTTP_USER_AGENT', None
+            #     )
+            #     c['user'].save()
             try:
-                if c['user'].is_lazy and not c['user'].created_from_ip:
+                # if c['user'].is_lazy and not c['user'].created_from_ip:
+                if not c['user'].created_from_ip:
                     c['user'].created_from_ip = c['ip']
                     c['user'].save()
             except Exception:
@@ -143,7 +148,7 @@ class Celery(views.LoginRequiredMixin,
             try:
                 if p.cmdline() != ['']:
                     c['plist'] += [p.cmdline()]
-            except:
+            except Exception:
                 pass
             try:
                 if p.cmdline()[1] == c['celery_exe']:
@@ -254,7 +259,7 @@ class Nginx(views.LoginRequiredMixin,
         from .tasks.geoip import versions_file
         try:
             versions = json.load(open(versions_file, 'r'))
-        except:
+        except Exception:
             versions = {}
             c['city_version'] = versions.get('city', '')
             c['country_version'] = versions.get('country', '')
@@ -268,9 +273,11 @@ class Nginx(views.LoginRequiredMixin,
         return c
 
 
-class Postgres(views.LoginRequiredMixin,
-            views.SuperuserRequiredMixin,
-            BaseView):
+class Postgres(
+        views.LoginRequiredMixin,
+        views.SuperuserRequiredMixin,
+        BaseView
+):
     template_name = "core_postgres.jinja"
 
     def get_context_data(self, **kwargs):
@@ -295,7 +302,7 @@ class Postgres(views.LoginRequiredMixin,
         from .tasks.geoip import versions_file
         try:
             versions = json.load(open(versions_file, 'r'))
-        except:
+        except Exception:
             versions = {}
             c['city_version'] = versions.get('city', '')
             c['country_version'] = versions.get('country', '')
@@ -310,7 +317,10 @@ class Postgres(views.LoginRequiredMixin,
 
 
 # @method_decorator(ensure_csrf_cookie, name='dispatch')
-class Login(EnsureCsrfCookieMixin, BaseView):
+class Login(
+        # EnsureCsrfCookieMixin,
+        BaseView,
+):
     template_name = "core_login.jinja"
 
     def get_context_data(self, **kwargs):
@@ -321,15 +331,13 @@ class Login(EnsureCsrfCookieMixin, BaseView):
 
     def get(self, request, **kwargs):
         c = self.get_context_data(**kwargs)
-        if request.user.is_authenticated and not request.user.is_lazy:
+        if request.user.is_authenticated:  # and not request.user.is_lazy:
             return HttpResponseRedirect(reverse("index", host=c['host'].name))
         else:
             return self.render_to_response(c, status=c['status'])
 
     def post(self, request, **kwargs):
         f = LoginForm(request.POST)
-        # request.GET.get('redirect')
-        # Check form input data (email and password)
         if f.is_valid():
             login(request, f.cleaned_data['user'])
             return JsonResponse({'code': 0})
@@ -338,8 +346,10 @@ class Login(EnsureCsrfCookieMixin, BaseView):
             return JsonResponse({'errors': f.errors})
 
 
-# class Logout(APIView):
-class Logout(EnsureCsrfCookieMixin, BaseView):
+class Logout(
+        # EnsureCsrfCookieMixin,
+        BaseView,
+):
     def get(self, request, **kwargs):
         c = self.get_context_data(**kwargs)
         logout(request)

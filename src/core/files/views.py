@@ -13,6 +13,8 @@ from django.conf import settings
 # from django.core.urlresolvers import reverse
 from os.path import isfile, isdir, join
 from . import files_used_in_this_repo
+import logging
+log = logging.getLogger(__name__)
 
 
 class FileView(BaseView):
@@ -172,9 +174,10 @@ class DirView(BaseView):
         if path is None:
             path = ''
 
+        path = path.strip('/')
         # levels - ['path', 'to', 'dir']
         # paths - ['path', 'path/to', 'path/to/dir']
-        c['levels'] = path.strip('/').split('/')
+        c['levels'] = path.split('/')
         c['paths'] = list(c['levels'])
         try:
             c['levels'].remove('')
@@ -185,6 +188,7 @@ class DirView(BaseView):
             c['paths'][ind] = os.path.join(*sublist)
 
         j = os.path.join(self.dir, path)
+        # log.debug((self.dir, path))
         d = c['dir'] = os.path.realpath(j)
 
         if self.dir is None or \
