@@ -1,6 +1,7 @@
 import os
 import sys
 import datetime
+import distutils
 from django.utils.timezone import utc
 from django.contrib import sitemaps
 import logging
@@ -100,6 +101,40 @@ class Sitemap(sitemaps.Sitemap):
         if all_items_lastmod and latest_lastmod:
             self.latest_lastmod = latest_lastmod
         return urls
+
+
+def confirm(question, default="y"):
+    """Ask a yes/no question via input() and return answer.
+
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits <Enter>.
+        It must be "yes" (the default), "no" or None (meaning
+        an answer is required of the user).
+
+    The "answer" return value is True for "yes" or False for "no".
+    """
+    # distutils.util.strtobool(val)
+    valid = {"yes": True, "y": True, "ye": True,
+             "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default in ('yes', 'y'):
+        prompt = " [Y/n] "
+    elif default in ('no', 'n'):
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = input().lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' "
+                             "(or 'y' or 'n').\n")
 
 
 # Detecting mobile device

@@ -5,6 +5,8 @@ pip>=9.0.1
 #greenlet
 # eventlet
 
+# https://launchpad.net/python-distutils-extra/trunk/2.39/+download/python-distutils-extra-2.39.tar.gz
+# python-apt
 beautifulsoup4
 
 # https://pypi.python.org/pypi/bleach
@@ -22,6 +24,8 @@ bleach
 
 
 chardet                # encoding detection
+
+deb-pkg-tools  # get info from .deb file
 
 # solid_i18n
 # django-admin-bootstrapped
@@ -99,6 +103,9 @@ pillow
 # pyenchant
 
 pytz
+
+
+paramiko  # working with SSH
 
 # Use Redis instead of Memcache
 # python3-memcached
@@ -241,3 +248,7 @@ factory_boy
 
 # try to order models
 django-ordered-model
+
+# sh
+# https://amoffat.github.io/sh/
+sh>=1.12.13

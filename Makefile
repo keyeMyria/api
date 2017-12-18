@@ -417,3 +417,7 @@ jslibs:
 
 rabbit-status:
 	$(docker-compose) run --rm rabbit rabbitmqctl status
+
+
+install:
+	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_project_locally;install_project_locally()')
