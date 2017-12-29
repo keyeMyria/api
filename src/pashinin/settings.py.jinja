@@ -315,7 +315,7 @@ TEMPLATES = [
 REDIS_PORT = 6379
 REDIS_SERVER = 'redis' if DOCKER else '{{redis_server}}'
 
-DYNOMITE_PORT = 8102 if DOCKER else 6379
+DYNOMITE_PORT = 6379 if DOCKER else 8102
 DYNOMITE_SERVER = 'redis' if DOCKER else '127.0.0.1'
 
 # Celery settings
