@@ -58,9 +58,12 @@ class BaseView(
         c["host"] = self.request.host
         # c["host"] = self.request.get_host().split(':')[0]
 
-        nodir = not os.path.isdir(settings.FILES_ROOT)
-        nofiles = len(os.listdir(settings.FILES_ROOT)) < 4
-        c['FIRST_RUN'] = nodir or nofiles
+        try:
+            nodir = not os.path.isdir(settings.FILES_ROOT)
+            nofiles = len(os.listdir(settings.FILES_ROOT)) < 4
+            c['FIRST_RUN'] = nodir or nofiles
+        except Exception:
+            client.captureException()
 
         import rparser
         c['rparser_version'] = rparser.__version__

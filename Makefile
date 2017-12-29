@@ -48,21 +48,6 @@ stable"
 	echo "You were added to the docker group. Log out and log in again!!!"
 	sudo systemctl restart docker
 
-# docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-
-
-# docker run -ti -v `pwd`:/var/www/pashinin.com pashinin.com
-# docker run -p 80:80 -d -v `pwd`:/var/www/pashinin.com pashinin.com
-# All Docker VMs are described in docker/docker-compose.yml
-docker: configs
-	(cd docker; docker-compose up -d redis db)
-	sleep 4
-	(cd docker; docker-compose up dbinit)
-	sleep 2
-	(cd docker; docker-compose up migration)
-	(cd docker; docker-compose up -d web)
-	docker exec -it $(container) adduser user --uid `id -u` --quiet --disabled-password --gecos ""
-
 docker-rebuild:
 	docker build -t pashinin.com docker/
 
@@ -258,9 +243,6 @@ prod: pull
 # cd initial
 # sudo -H -u www-data make prod
 
-dbinit-docker:
-	docker exec -it $(container) psql -a -f ../configs/tmp/dbinit.sql -U postgres -p 5432 -h db
-
 #  Static files
 #
 # --noinput     Do NOT prompt the user for input of any kind
@@ -411,13 +393,16 @@ jslibs:
 	cp -rf node_modules/photoswipe/dist src/core/static/js/libs/photoswipe
 	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
 
-
-# get IP of a container
-# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
-
-rabbit-status:
-	$(docker-compose) run --rm rabbit rabbitmqctl status
-
+# systemd:
+#	sudo ln -sf $(d)/configs/tmp/systemd-daphne.service /etc/systemd/system/daphne.service
 
 install:
-	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_project_locally;install_project_locally()')
+#	make prepare
+#	make config-links
+#	TODO: Install Sentry (make it highly available too)
+#	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_project_locally;install_project_locally()')
+#	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_vault;install_vault()')
+	(cd src; ../tmp/ve/bin/python -c 'from core.install import stolon;stolon.install()')
+
+docs:
+	echo 1

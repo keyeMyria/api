@@ -40,6 +40,7 @@ somelinks:
 # Worker:
 #	ln -sf $(dir)/worker.conf $(supervisor_confd)/worker-$(domain).conf
 	ln -sf $(dir)/systemd-daphne.service /etc/systemd/system/daphne.service
+	ln -sf $(dir)/systemd-worker.service /etc/systemd/system/worker.service
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf

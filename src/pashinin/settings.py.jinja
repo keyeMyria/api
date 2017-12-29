@@ -7,6 +7,7 @@ from os.path import dirname, abspath, basename
 
 PYPY = platform.python_implementation() == 'PyPy'
 
+TRAVIS = os.getenv('TRAVIS') == 'true'
 TESTING = os.getenv('TRAVIS') or (
     'test' in sys.argv or
     '--reuse-db' in sys.argv or
@@ -14,13 +15,20 @@ TESTING = os.getenv('TRAVIS') or (
 )
 DOCKER = os.getenv('DOCKER') == 'true'
 
-{% if DEBUG %}
-DEBUG = True
-if TESTING:
-    DEBUG = False
-{% else %}
-DEBUG = False
-{% endif %}
+if TRAVIS:
+    DEBUG = os.getenv('DEBUG') == 'true'
+else:
+    DEBUG = DOCKER
+    if TESTING:
+        DEBUG = False
+
+# {% if DEBUG %}
+# DEBUG = True
+# if TESTING:
+#     DEBUG = False
+# {% else %}
+# DEBUG = False
+# {% endif %}
 
 SETTINGS_PATH = dirname(abspath(__file__))
 app = basename(SETTINGS_PATH)
@@ -31,7 +39,11 @@ VEBIN = os.path.join(REPO_PATH, "tmp", "ve", "bin")
 VEPYTHON = os.path.join(REPO_PATH, "tmp", "ve", "bin", "python")
 
 
-EMAIL_HOST = '10.254.239.1'
+EMAIL_HOST = '10.254.239.4'
+# EMAIL_TIMEOUT = 5  # in seconds
+EMAIL_PORT = 25
+# EMAIL_USE_SSL = True
+
 
 # If you have a mail server - error messages are posted to admins
 ADMINS = (
@@ -39,7 +51,7 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 DOMAIN = "{{domain}}"
-SERVER_EMAIL = 'Error <robot@{{domain}}>'      # "From" field
+SERVER_EMAIL = f'Error <robot@{DOMAIN}>'      # "From" field
 DEFAULT_HOST = 'pashinin'
 HOST_PORT = ''
 if DOCKER:
@@ -61,18 +73,20 @@ PARENT_HOST = DOMAIN  # django_hosts
 try:
     import psycopg2
 except ImportError:
-    # Fall back to psycopg2cffi
+    # Fall back to psycopg2cffi (for PyPy)
     from psycopg2cffi import compat
     compat.register()
 DB_ENGINE = 'django.db.backends.postgresql_psycopg2'
+DB_HOST = 'db' if DOCKER else '127.0.0.1'
+DB_PORT = '5432' if DOCKER else '25432'  # Stolon
 DATABASES = {
     'default': {
         'ENGINE': DB_ENGINE,
         'NAME': "{{dbname}}",
         'USER': "{{dbuser}}",
         'PASSWORD': "{{dbpass}}",
-        'HOST': "{{dbhost}}",
-        'PORT': '{{dbport}}',
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
         # PORT
         # 5432 - postgres
         # 6432 - pgbouncer
@@ -82,14 +96,18 @@ DATABASES = {
         'NAME': "sentry",
         'USER': "{{dbuser}}",
         'PASSWORD': "{{dbpass}}",
-        'HOST': "{{dbhost}}",
-        'PORT': '{{dbport}}',
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     },
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["*"]
+# See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = [
+    f'.{DOMAIN}',
+    '.example.org',
+    # "*",
+]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -294,9 +312,11 @@ TEMPLATES = [
 ]
 
 
-# REDIS_PORT = {{redis_port}}
 REDIS_PORT = 6379
 REDIS_SERVER = 'redis' if DOCKER else '{{redis_server}}'
+
+DYNOMITE_PORT = 8102 if DOCKER else 6379
+DYNOMITE_SERVER = 'redis' if DOCKER else '127.0.0.1'
 
 # Celery settings
 BROKER_URL = f'redis://{REDIS_SERVER}:{REDIS_PORT}/0'
@@ -342,7 +362,6 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERYD_POOL_RESTARTS = True
 CELERY_SEND_EVENTS = True
 CELERY_SEND_TASK_SENT_EVENT = True
-EMAIL_HOST = "10.254.239.1"
 
 
 # Problems if have TZ = TZ from Django project settings file
@@ -479,24 +498,8 @@ CHANNEL_LAYERS = {
 
         # "BACKEND": "asgi_redis.RedisSentinelChannelLayer",  # HA: Redis + Slave + Slave + Sentinel
         'BACKEND': 'asgi_redis.RedisChannelLayer',  # Single Redis server
-
         'CONFIG': {
             'hosts': [(REDIS_SERVER, REDIS_PORT)],
-
-            # "hosts": [("10.254.239.1", 26379), ("10.254.239.2", 26379), ("10.254.239.3", 26379)],
-
-            # "hosts": [
-            #     ("sentinel", 26379),
-            #     {% for redis_address in redis_addresses %}
-            #     # ("{{redis_address}}", 6379),
-            #     {% endfor %}
-            #     # ("10.254.239.1", 26339),
-            #     # ("10.254.239.2", 26379),
-            #     # ("10.254.239.3", 26379)
-            # ],
-            # "services": ["shard1", "shard2", "shard3"],
-            # "services": ["mymaster"],
-            # 'sentinel_refresh_interval': 5,
 
             # "prefix" is needed when you have several "Django
             # channels"-powered projects on the same host (same redis
@@ -634,26 +637,14 @@ SESSION_CACHE_ALIAS = "default"
 
 # SESSION_COOKIE_AGE =
 
-SESSION_REDIS_HOST = '{{redis_server}}'
-SESSION_REDIS_PORT = REDIS_PORT
+SESSION_REDIS_HOST = DYNOMITE_SERVER
+SESSION_REDIS_PORT = DYNOMITE_PORT
 
 CACHES = {
     'default': {
         # 'BACKEND': 'redis_cache.RedisCache',  # django-redis-cache
         'BACKEND': 'django_redis.cache.RedisCache',  # django-redis  (active development)
-
-        # 'LOCATION': '/var/run/redis/redis-server.pid',
-        # "LOCATION": [
-        #     # f"redis://{REDIS_SERVER}:{REDIS_PORT}/1",
-        #     {% for redis_address in redis_addresses %}
-        #     "redis://{{redis_address}}:6379/0",
-        #     {% endfor %}
-        # ],
-        # 'LOCATION': [
-        #     # f'{REDIS_SERVER}:{REDIS_PORT}'
-        #     'redis:6379'
-        # ],
-        "LOCATION": f'redis://{REDIS_SERVER}:{REDIS_PORT}/0',
+        "LOCATION": f'redis://{DYNOMITE_SERVER}:{DYNOMITE_PORT}/0',
         'KEY_PREFIX': 't' if TESTING else '',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -662,14 +653,6 @@ CACHES = {
         }
     }
 }
-
-if DEBUG and False:
-# if DEBUG:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
-    }
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
@@ -733,9 +716,10 @@ LOGGING = {
         # },
 
         # About "catch-all" logger:
-        # 1. This is ultra-slow and buggy with RabbitMQ as channels broker (for example)
-        # 2. It will output any debug messages from any 3rd party library
-        # log.debug() calls
+        # 1. This is ultra-slow and buggy with RabbitMQ as channels broker
+        #    (for example)
+        # 2. It will output any debug messages (log.debug() calls) from any
+        #    3rd party library
         '': {
             'handlers': ['console'],
             'level': 'DEBUG',
@@ -762,12 +746,12 @@ except:
 
 
 ddt = False
-try:
-    import redis
-    r = redis.StrictRedis(host='{{redis_server}}', port=REDIS_PORT, db=0)
-    ddt = r.get('ddt')==b'True'
-except Exception as e:
-    print(e)
+# try:
+#     import redis
+#     r = redis.StrictRedis(host='{{redis_server}}', port=REDIS_PORT, db=0)
+#     ddt = r.get('ddt')==b'True'
+# except Exception as e:
+#     print(e)
 
 if ddt and DEBUG:
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
@@ -804,8 +788,8 @@ APPEND_SLASH = True
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*1024*3
 
 
-if DEBUG:
-    CACHEOPS_ENABLED = False
+# if DEBUG:
+#     CACHEOPS_ENABLED = False
 
 CACHEOPS_REDIS = {
     'host': REDIS_SERVER,  # redis-server is on same machine

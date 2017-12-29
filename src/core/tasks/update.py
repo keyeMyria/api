@@ -217,7 +217,11 @@ def render_jinja_file(filename, data=None, outdir=None):
     input = open(full, 'r').read()
     from jinja2 import Environment
     with open(output, 'w') as f:
-        f.write(Environment().from_string(input).render(**data))
+        try:
+            f.write(Environment().from_string(input).render(**data))
+        except Exception:
+            print('FAILED rendering: ', filename)
+            raise
 
 
 def get_variables():

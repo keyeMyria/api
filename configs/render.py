@@ -26,18 +26,21 @@ config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 def render(filename, data, outdir=None):
     print(f'Rendering {os.path.basename(filename)}...', end='')
-    full = os.path.abspath(filename)
-    d = os.path.dirname(full)
-    base, ext = os.path.splitext(os.path.basename(full))
-    output = os.path.join(d, base)
-    if outdir is not None:
-        output = os.path.join(outdir, base)
+    try:
+        full = os.path.abspath(filename)
+        d = os.path.dirname(full)
+        base, ext = os.path.splitext(os.path.basename(full))
+        output = os.path.join(d, base)
+        if outdir is not None:
+            output = os.path.join(outdir, base)
 
-    input = open(full, 'r').read()
-    from jinja2 import Environment
-    with open(output, 'w') as f:
-        f.write(Environment().from_string(input).render(**data))
-    print('OK')
+        input = open(full, 'r').read()
+        from jinja2 import Environment
+        with open(output, 'w') as f:
+            f.write(Environment().from_string(input).render(**data))
+        print('OK')
+    except Exception:
+        print('FAILED: ', filename)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import os
 import sys
 import datetime
-import distutils
+# import distutils
 from django.utils.timezone import utc
 from django.contrib import sitemaps
 import logging
@@ -26,7 +26,9 @@ except Exception:
 default_app_config = 'core.apps.CoreConfig'
 
 
-def get_git_root(path):
+def get_git_root(path=None):
+    if path is None:
+        path = os.getcwd()
     try:
         import git
     except Exception:

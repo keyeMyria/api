@@ -53,8 +53,10 @@ Message
 
 import datetime
 import subprocess
+import traceback
 from django.core.mail import send_mail
 from core.consumers import JsonWebsocketConsumer, SuperuserConsumer
+from raven.contrib.django.raven_compat.models import client
 import logging
 log = logging.getLogger(__name__)
 
@@ -85,21 +87,25 @@ def send_lead(f):
     f["name"] - user name
     f["phone"] - user phone
     f["message"] - additional message"""
-    body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
-        datetime.datetime.now(),
-        f['name'],
-        f['phone'],
-        f['message']
-    )
-    send_mail(
-        "Заявка от {}, тел.: {}".format(
+    try:
+        body = "{}\nИмя: {}\nТелефон: {}\n\n{}".format(
+            datetime.datetime.now(),
             f['name'],
-            f['phone']
-        ),
-        body,
-        "{} <ROBOT@pashinin.com>".format(f['name']),
-        ["sergey@pashinin.com"]
-    )
+            f['phone'],
+            f['message']
+        )
+        send_mail(
+            "Заявка от {}, тел.: {}".format(
+                f['name'],
+                f['phone']
+            ),
+            body,
+            "{} <ROBOT@pashinin.com>".format(f['name']),
+            ["sergey@pashinin.com"]
+        )
+    except Exception:
+        log.error("Can't send email to me: {}".format(traceback.format_exc()))
+        client.captureException()
 
 
 def execute(cmd):
