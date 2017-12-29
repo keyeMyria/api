@@ -50,6 +50,7 @@ How to start?
    :caption: Contents:
 
    how_to_start
+   deploy
    docs
    static
    long-running-tasks
