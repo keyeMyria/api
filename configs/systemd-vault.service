@@ -1,0 +1,15 @@
+# -*- mode: conf -*-
+[Unit]
+Description=vault server
+Requires=network-online.target
+# After=network-online.target consul.service
+After=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/vault
+Restart=on-failure
+ExecStart=/usr/local/bin/vault server $OPTIONS -config=/etc/vault.d
+ExecStop=/usr/local/bin/vault step-down
+
+[Install]
+WantedBy=multi-user.target

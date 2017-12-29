@@ -1,10 +1,11 @@
 import os
 import sys
 import urllib
-import paramiko
+# import paramiko
 from . import apt, remote
 from celery import shared_task
-from core import confirm
+from core import confirm, get_git_root
+# from django.conf import settings
 import logging
 log = logging.getLogger(__name__)
 
@@ -185,8 +186,8 @@ def install_ElasticSearch(host=None):
     tty = sys.stdout.isatty()
     url = 'https://artifacts.elastic.co/downloads/' \
           'elasticsearch/elasticsearch-6.0.1.deb'
-    sha = 'fa92bf63d32712dc166ab7c21e460cb6b424d4b8ae839a0fe0c8ee6167b981c' \
-          'e53902f51088cbdbc9ae8fc0e31e621e3dfa878de0b88e11f7a23aea13e6d6fa3'  # noqa
+    # sha = 'fa92bf63d32712dc166ab7c21e460cb6b424d4b8ae839a0fe0c8ee6167b981c' \
+    #       'e53902f51088cbdbc9ae8fc0e31e621e3dfa878de0b88e11f7a23aea13e6d6fa3'  # noqa
     if apt.installed('elasticsearch', host=host):
         if host:
             print(f'ElasticSearch is already installed on {host}.')
@@ -290,10 +291,10 @@ def install_grafana(host=None):
 
 @shared_task
 def install_Logstash(host=None):
-    tty = sys.stdout.isatty()
+    # tty = sys.stdout.isatty()
     url = 'https://artifacts.elastic.co/downloads/logstash/logstash-6.1.0.deb'
-    sha = 'fa92bf63d32712dc166ab7c21e460cb6b424d4b8ae839a0fe0c8ee6167b981c' \
-          'e53902f51088cbdbc9ae8fc0e31e621e3dfa878de0b88e11f7a23aea13e6d6fa3'  # noqa
+    # sha = 'fa92bf63d32712dc166ab7c21e460cb6b424d4b8ae839a0fe0c8ee6167b981c' \
+    #       'e53902f51088cbdbc9ae8fc0e31e621e3dfa878de0b88e11f7a23aea13e6d6fa3'  # noqa
 
     install_java8(host=host)
     apt.install_from_url(url, host)
@@ -313,6 +314,69 @@ def install_Logstash(host=None):
 
 
 @shared_task
+def install_vault():
+    hosts = (
+        '10.254.239.2',  # desktop
+        '10.254.239.3',  # student
+        '10.254.239.4',  # balancer
+    )
+    url = 'https://releases.hashicorp.com/vault/0.9.0/' \
+          'vault_0.9.0_linux_amd64.zip'
+    basename = os.path.basename(url)
+    filename = os.path.join('/tmp', basename)
+
+    # c = None
+    # if c is None:
+    #     c = remote.create_connection(host)
+
+    for host in hosts:
+        c = remote.create_connection(host)
+
+        # install vault binary
+        if remote.file_exists('/usr/local/bin/vault', host, c=c):
+            print(f'Vault is already installed on {host}')
+        else:
+            if remote.file_exists(filename, host, c=c):
+                print(f'{filename} exists on {host}')
+            else:
+                print(f'Going to download {basename} on {host}...')
+                filename = remote.download(url, host, c=c)
+
+            res = remote.extract_zip(
+                filename,
+                '/usr/local/bin/',
+                host=host,
+                c=c
+            )
+            print(res['out'], res['err'])
+            # install(filename, host=host, c=c)
+
+        # systemd: copy vault.service file
+        REPO_PATH = get_git_root()
+        f = os.path.join(REPO_PATH, 'configs', 'systemd-vault.service')
+        r = '/etc/systemd/system/vault.service'
+        # print(f, r)
+        print('Copy vault.service file...', end='')
+        ftp = c.open_sftp()
+        ftp.put(f, r)
+        ftp.close()
+        print('OK')
+
+        # create configs dir
+        remote.mkdirs('/etc/vault.d', host=host, c=c)
+
+        # Vault config
+        f = os.path.join(REPO_PATH, 'configs', 'vault.config.hcl')
+        r = '/etc/vault.d/config.hcl'
+        # print(f, r)
+        print('Copy Vault config file...', end='')
+        ftp = c.open_sftp()
+        ftp.put(f, r)
+        ftp.close()
+        print('OK')
+
+
+@shared_task
 def install_project_locally():
     # import pip
     # pip.main(['install', 'python-distutils-extra'])
@@ -329,7 +393,7 @@ def install_project_locally():
     # ve
     # requirements
     #
-    tty = sys.stdout.isatty()
+    # tty = sys.stdout.isatty()
 
     # ES
     for host in [

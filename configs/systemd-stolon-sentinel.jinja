@@ -1,0 +1,16 @@
+# -*- mode: conf -*-
+#
+
+[Unit]
+Description=Stolon sentinel
+After=network.target
+
+[Service]
+User=postgres
+Group=postgres
+Restart=on-failure
+WorkingDirectory=/var/lib/stolon
+ExecStart=/usr/local/bin/stolon-sentinel --cluster-name mycluster --store-backend consul --log-level warn
+
+[Install]
+WantedBy=multi-user.target

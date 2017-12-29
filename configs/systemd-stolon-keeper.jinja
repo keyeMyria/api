@@ -1,0 +1,17 @@
+# -*- mode: conf -*-
+#
+
+[Unit]
+Description=Stolon keeper
+After=network.target
+
+[Service]
+User=postgres
+Group=postgres
+Restart=on-failure
+WorkingDirectory=/var/lib/stolon
+# uid=postgres2   # just a "stolon" name of a keeper
+ExecStart=/usr/local/bin/stolon-keeper --data-dir /var/lib/stolon --uid {{uid}} --cluster-name mycluster --pg-su-password 123 --pg-repl-username repluser --store-backend consul --pg-listen-address {{host}} --pg-repl-password abc --pg-bin-path /usr/lib/postgresql/10/bin --log-level warn
+
+[Install]
+WantedBy=multi-user.target

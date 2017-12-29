@@ -1,0 +1,17 @@
+# -*- mode: conf -*-
+#
+
+[Unit]
+Description=Worker (Django)
+After=network.target
+
+[Service]
+# EnvironmentFile=/var/www/gglobal/.envvars
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory={{repo}}/src
+ExecStart={{vebin}}/python ./manage.py runworker --exclude-channels=root.*
+
+[Install]
+WantedBy=multi-user.target

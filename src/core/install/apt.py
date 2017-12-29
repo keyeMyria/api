@@ -1,8 +1,6 @@
 import os
 import subprocess
-import paramiko
-from os.path import expanduser
-from .remote import file_exists
+# import paramiko
 from . import remote
 import logging
 log = logging.getLogger(__name__)
@@ -32,7 +30,7 @@ def get_deb_pkg_name(filename, host=None, c=None):
         return stdout.read().decode('utf-8').strip()
     else:
         from deb_pkg_tools.package import inspect_package_fields
-        meta_info = inspect_package_fields(pkg)
+        meta_info = inspect_package_fields(filename)
         pkg_name = meta_info.get('Package')
         return pkg_name
 
@@ -205,7 +203,7 @@ def ppa(name, host=None, c=None):
             c = remote.create_connection(host)
 
         res = remote.get_output(
-            f'grep -q "^deb .*{name}" ' \
+            f'grep -q "^deb .*{name}" '
             '/etc/apt/sources.list /etc/apt/sources.list.d/*',
             host=host,
             c=c
