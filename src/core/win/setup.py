@@ -38,18 +38,26 @@ except Exception as e:
 
 # generate conf file
 try:
-    subprocess.Popen(['python', 'config.py', 'secret-example.json', 'secret.json'],
-                     cwd='configs').wait()
+    subprocess.Popen(
+        [
+            'python', 'config.py',
+            'secret-example.json', 'secret.json'
+        ],
+        cwd='configs'
+    ).wait()
 except Exception as e:
     print(e)
 
 
 # python3 -c 'from core.tasks import generate_settings;generate_settings()'
-# subprocess.Popen([docker_compose, '-f', 'docker/docker-compose.yml', 'pull']).wait()
+# subprocess.Popen([docker_compose, '-f',
+# 'docker/docker-compose.yml', 'pull']).wait()
 
-# os.execute("docker-compose -f docker/docker-compose.yml run --rm --workdir=/var/www/project/configs django make templates")
+# os.execute("docker-compose -f docker/docker-compose.yml
+# run --rm --workdir=/var/www/project/configs django make templates")
 # os.execute("docker-compose -f docker/docker-compose.yml up")
-# p = subprocess.Popen([docker_compose, '-f', 'docker/docker-compose.yml', 'up']).wait()
+# p = subprocess.Popen([docker_compose, '-f',
+# 'docker/docker-compose.yml', 'up']).wait()
 
 if __name__ == '__main__':
     print('Generating settings.py...', end='')
@@ -58,7 +66,8 @@ if __name__ == '__main__':
         print(os.getcwd())
         generate_settings()
         # p = subprocess.Popen(
-        #     ['python', '-c', "'from core.tasks import generate_settings;generate_settings()'"],
+        #     ['python', '-c', "'from core.tasks import
+        # generate_settings;generate_settings()'"],
         #     cwd='src',
         #     stdout=subprocess.PIPE, stderr=subprocess.PIPE
         # )
