@@ -78,7 +78,7 @@ except ImportError:
     compat.register()
 DB_ENGINE = 'django.db.backends.postgresql_psycopg2'
 DB_HOST = 'db' if DOCKER else '127.0.0.1'
-DB_PORT = '5432' if DOCKER else '25432'  # Stolon
+DB_PORT = '5432' if DOCKER or TRAVIS else '25432'  # Stolon
 DATABASES = {
     'default': {
         'ENGINE': DB_ENGINE,
