@@ -252,3 +252,7 @@ django-ordered-model
 # sh
 # https://amoffat.github.io/sh/
 sh>=1.12.13
+
+
+# Hashicorp Vault
+hvac
