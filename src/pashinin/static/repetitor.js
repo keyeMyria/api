@@ -20,6 +20,9 @@
           if ('errors' in data) {
             showFormErrors(data.errors, document.getElementById('enrollform'));
           } else {
+            if (window.yaCounter35428125) {
+              window.yaCounter35428125.reachGoal('order');
+            }
             alert('Спасибо, я перезвоню Вам как только освобожусь.');
           }
         });
