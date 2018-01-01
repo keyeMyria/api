@@ -397,12 +397,18 @@ jslibs:
 #	sudo ln -sf $(d)/configs/tmp/systemd-daphne.service /etc/systemd/system/daphne.service
 
 install:
-#	make prepare
-#	make config-links
+	make prepare
+	make config-links
 #	TODO: Install Sentry (make it highly available too)
 #	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_project_locally;install_project_locally()')
 #	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_vault;install_vault()')
-	(cd src; ../tmp/ve/bin/python -c 'from core.install import stolon;stolon.install()')
+#	(cd src; ../tmp/ve/bin/python -c 'from core.install import stolon;stolon.install()')
+	sudo systemctl daemon-reload
+	sudo systemctl stop worker.service
+	sudo systemctl start worker.service
+	sudo systemctl stop daphne.service
+	sudo systemctl start daphne.service
+	sudo service nginx reload
 
 docs:
 	echo 1

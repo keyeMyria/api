@@ -1,3 +1,9 @@
+"""
+
+Where this file is used? - In __init__.py in this app
+
+"""
+
 # from __future__ import absolute_import
 import os
 import celery

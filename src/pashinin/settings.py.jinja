@@ -4,6 +4,14 @@ import sys
 import platform
 from os.path import dirname, abspath, basename
 
+SETTINGS_PATH = dirname(abspath(__file__))
+app = basename(SETTINGS_PATH)
+GIT_PATH = dirname(dirname(SETTINGS_PATH))
+REPO_PATH = GIT_PATH
+REPOS_PATH = dirname(REPO_PATH)
+VEBIN = os.path.join(REPO_PATH, "tmp", "ve", "bin")
+VEPYTHON = os.path.join(REPO_PATH, "tmp", "ve", "bin", "python")
+
 
 PYPY = platform.python_implementation() == 'PyPy'
 
@@ -22,21 +30,30 @@ else:
     if TESTING:
         DEBUG = False
 
-# {% if DEBUG %}
-# DEBUG = True
-# if TESTING:
-#     DEBUG = False
-# {% else %}
-# DEBUG = False
-# {% endif %}
 
-SETTINGS_PATH = dirname(abspath(__file__))
-app = basename(SETTINGS_PATH)
-GIT_PATH = dirname(dirname(SETTINGS_PATH))
-REPO_PATH = GIT_PATH
-REPOS_PATH = dirname(REPO_PATH)
-VEBIN = os.path.join(REPO_PATH, "tmp", "ve", "bin")
-VEPYTHON = os.path.join(REPO_PATH, "tmp", "ve", "bin", "python")
+# Vault's data
+secret = {}
+if not (DEBUG or TRAVIS or DOCKER):
+    try:
+        role_id = os.getenv('ROLE_ID')
+        if not role_id:
+            role_id = open(os.path.join(
+                REPO_PATH,
+                'tmp',
+                'role'
+            )).read()
+        secret_id = os.getenv('SECRET_ID')
+        import hvac
+        vault = hvac.Client(url='http://vault.service.consul:8200')
+        # App Role
+        vault.auth_approle(role_id, secret_id)
+        secret = vault.read('secret/pashinin.com')['data']
+    except Exception as e:
+        print(e)
+        # raise
+
+
+
 
 
 EMAIL_HOST = '10.254.239.4'
@@ -50,7 +67,7 @@ ADMINS = (
     ('Admin', '{{email}}'),
 )
 MANAGERS = ADMINS
-DOMAIN = "{{domain}}"
+DOMAIN = "pashinin.com"
 SERVER_EMAIL = f'Error <robot@{DOMAIN}>'      # "From" field
 DEFAULT_HOST = 'pashinin'
 HOST_PORT = ''
@@ -82,26 +99,26 @@ DB_PORT = '5432' if DOCKER or TRAVIS else '25432'  # Stolon
 DATABASES = {
     'default': {
         'ENGINE': DB_ENGINE,
-        'NAME': "{{dbname}}",
-        'USER': "{{dbuser}}",
-        'PASSWORD': "{{dbpass}}",
+        'NAME': "pashinin" if DOCKER else secret.get('dbname'),
+        'USER': "pashinin" if DOCKER else secret.get('dbuser'),
+        'PASSWORD': "superpass" if DOCKER else secret.get('dbpass'),
         'HOST': DB_HOST,
         'PORT': DB_PORT,
         # PORT
         # 5432 - postgres
         # 6432 - pgbouncer
 
-        CONN_MAX_AGE: 0 if DEBUG else None,  # persistent DB connections
+        'CONN_MAX_AGE': 0 if DEBUG else None,  # persistent DB connections
     },
     'sentry': {
         'ENGINE': DB_ENGINE,
         'NAME': "sentry",
-        'USER': "{{dbuser}}",
-        'PASSWORD': "{{dbpass}}",
+        'USER': "pashinin" if DOCKER else secret.get('dbuser'),
+        'PASSWORD': "superpass" if DOCKER else secret.get('dbpass'),
         'HOST': DB_HOST,
         'PORT': DB_PORT,
 
-        CONN_MAX_AGE: 0 if DEBUG else None,  # persistent DB connections
+        'CONN_MAX_AGE': 0 if DEBUG else None,  # persistent DB connections
     },
 }
 
@@ -109,7 +126,6 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     f'.{DOMAIN}',
-    '.example.org',
     # "*",
 ]
 
@@ -171,19 +187,27 @@ MEDIA_URL = '/_sp/uploads/'
 STATIC_ROOT = os.path.join(REPO_PATH, "static")
 
 
-FILES_ROOT = "{{FILES_ROOT}}"
+# FILES_ROOT = "{{FILES_ROOT}}"
+FILES_ROOT = [
+    "/mnt/ceph/files",
+    "{{FILES_ROOT}}",
+]
+
+
 # if not os.path.isdir(FILES_ROOT) and TESTING:
 #     FILES_ROOT = os.path.join(REPO_PATH, 'tmp', 'files')
 #     if not os.path.isdir(FILES_ROOT):
 #         os.makedirs(FILES_ROOT, exist_ok=True)
-if TESTING:
-    FILES_ROOT = os.path.join(REPO_PATH, 'tmp', 'files')
+if TESTING or DEBUG:
+    FILES_ROOT = [os.path.join(REPO_PATH, 'tmp', 'files')]
 
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(FILES_ROOT, 'uploads/')
-
+if isinstance(FILES_ROOT, str):
+    MEDIA_ROOT = os.path.join(FILES_ROOT, 'uploads/')
+else:
+    MEDIA_ROOT = os.path.join(FILES_ROOT[0], 'uploads/')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -219,7 +243,7 @@ if DEBUG or TESTING:
 
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '{{SECRET_KEY}}'
+SECRET_KEY = 'a' if DOCKER else secret.get('SECRET_KEY')
 
 # Auth once on all subdomains
 SESSION_COOKIE_DOMAIN = '.'+DOMAIN
@@ -329,8 +353,8 @@ BROKER_URL = f'redis://{REDIS_SERVER}:{REDIS_PORT}/0'
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
 
-# from pashinin.celeryconfig import *
-#
+
+# ------------ Celery --------------
 # This file is a part of Django's settings.py. It is included withing
 # it.
 #
@@ -380,6 +404,7 @@ CELERY_ENABLE_UTC = True
 # Please do not touch (and change) my logger, Celery!
 # If Sentry logging in Django/Celery stopped working use:
 CELERYD_HIJACK_ROOT_LOGGER = False
+# ------------ end Celery --------------
 
 
 
@@ -421,8 +446,10 @@ INSTALLED_APPS = (
     'reversion',
     # 'social.apps.django_app.default',
 
-
-
+    # 'mama_cas',
+    # 'django_cas_ng',
+)
+MY_APPS = (
     'core',
     # 'core.asgi_kafka',
     'core.files',
@@ -431,10 +458,8 @@ INSTALLED_APPS = (
     'edu',
     'ege',
     'pashinin',
-
-    # 'mama_cas',
-    # 'django_cas_ng',
 )
+INSTALLED_APPS += MY_APPS
 if not app in INSTALLED_APPS:
     INSTALLED_APPS += (app, )
 
@@ -723,14 +748,21 @@ LOGGING = {
         # 1. This is ultra-slow and buggy with RabbitMQ as channels broker
         #    (for example)
         # 2. It will output any debug messages (log.debug() calls) from any
-        #    3rd party library
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        #    3rd party library like: rabbitmq, daphne, ... anything else
+        # => Disabled it
+        # '': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
     }
 }
+for app in MY_APPS:
+    LOGGING['loggers'][app] = {
+        'handlers': ['console'] if DEBUG else ['mail_admins'],
+        'level': 'DEBUG' if DEBUG else 'WARNING',
+        'propagate': True,
+    }
 
 # Whether to store the CSRF token in the user’s session instead of in a cookie.
 # It requires the use of django.contrib.sessions.
@@ -785,7 +817,7 @@ if ddt and DEBUG:
 # FILE_UPLOAD_TEMP_DIR = os.path.join(REPO_PATH, "tmp", "uploads")
 max_download_size = 1024*1024*4
 
-SENDFILE_ROOT = FILES_ROOT
+SENDFILE_ROOT = FILES_ROOT[0]
 SENDFILE_URL = '/_file'
 SENDFILE_BACKEND = 'sendfile.backends.nginx'
 APPEND_SLASH = True
@@ -880,3 +912,8 @@ LAZYSIGNUP_USER_AGENT_BLACKLIST = (
 CHANNELS_API = {
   'DEFAULT_PAGE_SIZE': 5
 }
+
+try:
+    del secret
+except Exception:
+    pass

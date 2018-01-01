@@ -23,14 +23,15 @@ import re
 
 tld = 'example.org'
 
-add = [
-    tld,
-    'baumanka.'+tld,
-    'ege.'+tld,
-    'oge.'+tld,
-    'moskva.'+tld,
-    'spb.'+tld,
+subs = [
+    'baumanka',
+    'ege',
+    'oge',
+    'moskva',
+    'spb',
+    'tasks',
 ]
+add = [tld] + [sub+'.'+tld for sub in subs]
 
 
 hosts = {}
