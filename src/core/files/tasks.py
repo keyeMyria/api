@@ -1,5 +1,5 @@
 import os
-from os.path import isfile
+from os.path import isfile, isdir
 from .models import BaseFile, UploadedFile
 from celery import shared_task
 from django.conf import settings
@@ -17,16 +17,19 @@ class FileSystemNotReady(Exception):
 
 
 def ensure_fs_ready():
+    root = settings.FILES_ROOT[0]
     if settings.TESTING:
-        if not os.path.isdir(settings.FILES_ROOT):
-            os.makedirs(settings.FILES_ROOT, exist_ok=True)
+        if not isdir(root):
+            os.makedirs(root, exist_ok=True)
     else:
         if settings.DEBUG:
-            if not os.path.isdir(settings.FILES_ROOT):
-                raise FileSystemNotReady(settings.FILES_ROOT)
+            if not isdir(root):
+                raise FileSystemNotReady(root)
         else:
-            if not os.path.ismount(settings.FILES_ROOT):
-                raise FileSystemNotReady(settings.FILES_ROOT)
+            if not isdir(root):
+                raise FileSystemNotReady(root)
+            # if not os.path.ismount(settings.FILES_ROOT):
+            #     raise FileSystemNotReady(settings.FILES_ROOT)
 
 
 v = 1  # version of algorithm

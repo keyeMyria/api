@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.conf import settings
 # from django.utils.translation import gettext_lazy as _
 # from django.core.urlresolvers import reverse
+from braces import views
 from os.path import isfile, isdir, join
 from . import files_used_in_this_repo
 import logging
@@ -18,27 +19,42 @@ log = logging.getLogger(__name__)
 
 
 class FileView(BaseView):
+    """Return a file with permission checking"""
+
     def get(self, request, **kwargs):
-        download = 'd' in self.request.GET  # Download or display in a browser
+        """If "d" is present in query string - make an attachment (always
+        download, not view in browser)
+
+        """
+        is_attachment = 'd' in self.request.GET
         sha1 = kwargs.get('sha1', None)
         try:
             f = File.objects.get(sha1=sha1)
-            return send_file(f, attachment=download)
+            return send_file(f, attachment=is_attachment)
         except File.DoesNotExist:
             #
             # If there is no info in a DB about this file return file
             # anyway (if exists) and then run a task to process file and
             # add to DB.
             #
-            filename = os.path.join(
-                settings.FILES_ROOT,
-                sha1[:3],
-                sha1[3:6],
-                sha1[6:]
-            )
-            if os.path.isfile(filename):
-                # TODO: run task to add file info to DB
-                return send_file(filename, attachment=download)
+            roots = settings.FILES_ROOT
+            if isinstance(roots, str):
+                roots = [settings.FILES_ROOT]
+
+            for root in roots:
+                filename = os.path.join(
+                    root,
+                    sha1[:3],
+                    sha1[3:6],
+                    sha1[6:]
+                )
+                if os.path.isfile(filename):
+                    # TODO: run task to add file info to DB
+                    return send_file(filename, attachment=is_attachment)
+                # else:
+                #     return HttpResponseNotFound(
+                #         "No such file {}".format(
+                #             filename if settings.DEBUG else ""))
             else:
                 return HttpResponseNotFound(
                     "No such file {}".format(
@@ -49,7 +65,11 @@ class FileView(BaseView):
 #             null_position=Count('date_uploaded')).order_by('-null_position',
 #             '-date_uploaded')
 
-class DownloadCore(BaseView):
+class DownloadCore(
+        views.LoginRequiredMixin,
+        views.SuperuserRequiredMixin,
+        BaseView,
+):
     def post(self, request, **kwargs):
         if not settings.DEBUG:
             return HttpResponse('[]', content_type='application/json')
@@ -140,7 +160,12 @@ class Upload(BaseView):
         return HttpResponse(json.dumps({'url': upload.url}))
 
 
-class Files(BaseView):
+class Files(
+        views.LoginRequiredMixin,
+        views.SuperuserRequiredMixin,
+        BaseView
+):
+    """Files management (admin view)"""
     template_name = "core_files.jinja"
 
     def get_context_data(self, **kwargs):
@@ -192,10 +217,11 @@ class DirView(BaseView):
         d = c['dir'] = os.path.realpath(j)
 
         if self.dir is None or \
-           not os.path.isdir(self.dir):
+           not isdir(self.dir):
+            log.error('DirView: No dir {}'.format(self.dir))
             return c
 
-        if os.path.isdir(d):
+        if isdir(d):
             L = os.listdir(d)
             c['dirs'] = sorted([f for f in L if isdir(join(d, f))])
             c['files'] = sorted([f for f in L if isfile(join(d, f))])
@@ -208,5 +234,6 @@ class DirView(BaseView):
         elif os.path.isfile(d):
             c['f'] = d
         else:
+            log.error('DirView 404: No dir {}'.format(d))
             c['status'] = 404
         return c

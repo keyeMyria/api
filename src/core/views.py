@@ -59,8 +59,8 @@ class BaseView(
         # c["host"] = self.request.get_host().split(':')[0]
 
         try:
-            nodir = not os.path.isdir(settings.FILES_ROOT)
-            nofiles = len(os.listdir(settings.FILES_ROOT)) < 4
+            nodir = not os.path.isdir(settings.FILES_ROOT[0])
+            nofiles = nodir or len(os.listdir(settings.FILES_ROOT[0])) < 4
             c['FIRST_RUN'] = nodir or nofiles
         except Exception:
             client.captureException()

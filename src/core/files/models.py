@@ -82,7 +82,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         if 'sha1' in kwargs:
             sha1 = kwargs['sha1']
             return os.path.join(
-                settings.FILES_ROOT,
+                settings.FILES_ROOT[0],
                 sha1[:3],
                 sha1[3:6],
                 sha1[6:]
@@ -135,7 +135,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         """Copy a file to our archive, return a File model"""
         # fname = os.path.abspath(fname)
         sha1 = cls.get_sha1(filename)
-        d = os.path.join(settings.FILES_ROOT, sha1[:3], sha1[3:6])
+        d = os.path.join(settings.FILES_ROOT[0], sha1[:3], sha1[3:6])
         dst = os.path.join(d, sha1[6:])
         if not os.path.isfile(dst):
             if not os.path.isdir(d):

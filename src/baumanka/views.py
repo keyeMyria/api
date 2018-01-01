@@ -12,7 +12,10 @@ from raven.contrib.django.raven_compat.models import client
 # from .models import EduMaterial
 
 
-baumanka_dir = os.path.join(settings.FILES_ROOT, 'baumanka')
+if isinstance(settings.FILES_ROOT, str):
+    baumanka_dir = os.path.join(settings.FILES_ROOT, 'baumanka')
+else:
+    baumanka_dir = os.path.join(settings.FILES_ROOT[0], 'baumanka')
 
 
 class Base(B):
