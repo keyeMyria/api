@@ -45,7 +45,8 @@ def start_containers(**kwargs):
         if 'Couldn\'t connect to Docker daemon' in stderr and \
            kwargs.get('start', True):
             print('Docker is not started? Starting...', flush=True)
-            Popen('sudo service docker start'.split()).communicate()
+            # Popen('sudo service docker start'.split()).communicate()
+            run('sudo service docker start')
             print('Docker service started!')
             start_containers(**{**kwargs, 'start': False})
     except FileNotFoundError:
