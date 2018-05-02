@@ -12,8 +12,11 @@ try:
     ARGCOMPLETE = True
 except ImportError:
     ARGCOMPLETE = False
-    subprocess.Popen('sudo -H pip2 install argcomplete'.split())
-    print('sudo activate-global-python-argcomplete')
+    print('Install argcomplete with:')
+    print('    sudo -H pip2 install argcomplete')
+    # subprocess.Popen('sudo -H pip2 install argcomplete'.split())
+    print('Then run:')
+    print('    sudo activate-global-python-argcomplete')
 
 
 def run(cmd):
@@ -53,18 +56,14 @@ def start_containers(**kwargs):
             # print('    ')
             # start_containers(**{**kwargs, 'start': False})
     except FileNotFoundError:
-        print('No docker-compose?', flush=True)
-        if kwargs.get('install', True):
-            print('Installing Docker...', flush=True)
-            Popen('sudo apt -y install docker-compose'.split()).communicate()
-            print('docker-compose installed!')
-            print('**********************************************************')
-            print('LOG OUT AND THEN LOG IN. Otherwise Docker can have errors!')
-            print('**********************************************************')
-            # start_containers(install=False)
-            # start_containers(**{**kwargs, 'install': False})
-        else:
-            raise
+        print('No docker-compose? Run:')
+        print('sudo apt -y install docker-compose')
+        sys.exit(0)
+        # print('**********************************************************')
+        # print('LOG OUT AND THEN LOG IN. Otherwise Docker can have errors!')
+        # print('**********************************************************')
+        # start_containers(install=False)
+        # start_containers(**{**kwargs, 'install': False})
 
 
 def deploy():
