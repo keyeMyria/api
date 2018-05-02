@@ -15,13 +15,13 @@ except ImportError:
     print('sudo activate-global-python-argcomplete')
 
 
-def run(cmd, **kwargs):
-    p = subprocess.Popen(
+def run(cmd):
+    process = subprocess.Popen(
         cmd.split(),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
-    out, err = p.communicate()
+    out, err = process.communicate()
     return out.decode('utf-8').strip(), err.decode('utf-8').strip()
 
 def docker_ps():
@@ -38,7 +38,9 @@ def start_containers(**kwargs):
     try:
         stderr = Popen(
             'docker-compose up -d db django vnu celery'.split(),
-            env=my_env
+            env=my_env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
         ).communicate()[1].decode('utf-8').strip()
         if 'Couldn\'t connect to Docker daemon' in stderr and \
            kwargs.get('start', True):
