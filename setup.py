@@ -36,17 +36,27 @@ def start_containers(**kwargs):
     my_env = os.environ.copy()
     my_env["UID"] = str(os.getuid())
     try:
-        Popen(
+        stderr = Popen(
             'docker-compose up -d db django vnu celery'.split(),
             env=my_env
-        ).communicate()
+        ).communicate()[1].decode('utf-8').strip()
+        if 'Couldn\'t connect to Docker daemon' in stderr and \
+           kwargs.get('start', True):
+            print('Docker is not started? Starting...', flush=True)
+            Popen('sudo service docker start'.split()).communicate()
+            print('Docker service started!')
+            start_containers(**{**kwargs, 'start': False})
     except FileNotFoundError:
         print('No docker-compose?', flush=True)
         if kwargs.get('install', True):
             print('Installing Docker...', flush=True)
             Popen('sudo apt -y install docker-compose'.split()).communicate()
             print('docker-compose installed!')
-            start_containers(install=False)
+            print('**********************************************************')
+            print('LOG OUT AND THEN LOG IN. Otherwise Docker can have errors!')
+            print('**********************************************************')
+            # start_containers(install=False)
+            # start_containers(**{**kwargs, 'install': False})
         else:
             raise
 
@@ -55,5 +65,5 @@ def deploy():
     pass
 
 
-print('Checking running images...')
+print('Starting Docker images...')
 start_containers()
