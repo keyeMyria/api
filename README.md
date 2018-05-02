@@ -9,7 +9,9 @@
 ## Linux
 
 ```bash
-make
+# Fork first, then
+# git clone git@github.com:USERNAME/api.git
+git clone git@github.com:pashinin-com/api.git
 ```
 
 <!-- ## tmux help -->
