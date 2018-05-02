@@ -1,6 +1,5 @@
 {% extends "pashinin_base.jinja" %}
-
-
+{% set wide = True %}
 {% set hour_px = 40 %}
 
 
@@ -18,7 +17,9 @@
 
 {% block head %}
   {{super()}}
-  <script defer src="{{ static("pashinin_students.min.js") }}?v=1"></script>
+  <script defer src="{{ static("js/exams.min.js") }}"></script>
+  <script defer src="{{ static("pashinin_students.min.js") }}"></script>
+  <script defer src="{{ static("mystudents.min.js") }}"></script>
 {% endblock %}
 
 
@@ -27,13 +28,15 @@
 
 
 {% block content %}
-  <div class="w">
-	<div>
-	  <i class="icon icon-spin1" style="animation: spin 2s infinite linear;font-size:3em;">&#xE830;</i>
-	</div>
+  <h2>{{exam}}</h2>
 
-	<div class="flex equal">
-	  <div id="today" class="pad-sm mart bred" style="min-width:400px">
+  <div class="">
+	{# <div> #}
+	{#   <i class="icon icon-spin1" style="animation: spin 2s infinite linear;font-size:3em;">&#xE830;</i> #}
+	{# </div> #}
+
+	<div class="flex equal hide">
+	  <div id="today" class="pad-sm bred" style="min-width:400px">
 		{# <span class="hide date">{{date_format(today.date, 'Y-m-d')}}</span> #}
 		<span class="hide date">{{today.date}}</span>
 		<div class="flex">
@@ -289,5 +292,15 @@
 		</div>
 	  </div>
 	</div>
+  </div>
+{% endblock %}
+
+
+
+{% block left %}
+  <div class="pad-sm" style="width:200px">
+	{% for exam in ege_exams %}
+	  <div>{{exam}}</div>
+	{% endfor %}
   </div>
 {% endblock %}

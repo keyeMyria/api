@@ -21,25 +21,26 @@
 {% block header %}
   <div id="notification" {% if self.notification() %}class="pad-sm"{% endif %}
 	   style="border-top:2px solid #F48024;">
-	<div class="w">
+	<div class="">
 	  {% block notification %}{% endblock %}
 	</div>
   </div>
   {% include 'core_top_menu.jinja' %}
   {% if self.header2() %}
-	<div class="pa" style="overflow:visible;border-bottom: 1px solid rgba(0,0,0,0.075);">
+	<div class="pa" style="overflow:visible;border-bottom: 0px solid rgba(0,0,0,0.075);">
   	  <div class="w" style="overflow:visible">
-  		<div class="pad-sm">
+  		<div class="pad">
 		  {% block header2 %}{% endblock %}
   		</div>
   	  </div>
 	</div>
   {% endif %}
+  {% block midheader %}{% endblock %}
 {% endblock %}
 
 
 {% block main %}
-  <div class="w flex pad" style="background-color:#fff;box-shadow: 0 0 3px rgba(0,0,0,0.3);">
+  <div class="w wide flex pad" style="background-color:#fff;box-shadow: 0 0 0px rgba(0,0,0,0.3);">
 	{% if self.left() %}
 	  <aside class="l hide padtb lside padl noprint" style="width:200px;flex-grow:0;position:relative;">{% block left %}{% endblock %}</aside>
 	{% endif %}
@@ -55,9 +56,6 @@
 		  {% block content %}{% endblock %}
 		</div>
 	  </div>
-	{% endif %}
-	{% if self.right() %}
-	  <aside class="noprint grow0 pad-sm" style="max-width:30%;{# background-color:#edeef0 #}">{% block right %}{% endblock %}</aside>
 	{% endif %}
   </div>
 {% endblock %}

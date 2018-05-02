@@ -5,42 +5,52 @@
 div.k{padding-top:1rem}
 {% endblock %}
 
-{% block title %}{{kafname}} - {% if sem == '12' %}Диплом{% else %}ботва за {{sem}} семестр{% endif %}{% for level in levels %} - {{level}}{% endfor %}{% endblock %}
 
-{% block metadescription %}Лекции, РК, чертежи, экзамены за {{sem}} семестр для {{kafname}}.{% endblock %}
+{% block head %}
+  {{super()}}
+  {# <script defer src="{{ static("js/baumanka_dropzone.min.js") }}"></script> #}
+  <script defer src="{{ static("js/semestr.min.js") }}"></script>
+{% endblock %}
+
+
+{% block title %}{{department.code}} - {% if period %}{{period.name}}{% else %}404 :({% endif %}{% for level in levels %} - {{level}}{% endfor %}{% endblock %}
+
+{% block metadescription %}Лекции, РК, чертежи, экзамены за {{sem}} семестр для {{department.code}}.{% endblock %}
 
 {% block nav1 %}
-  <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}} - {{kaf.title}}</a>
+  {# <a href="{{url("kafedra", host=host.name, kwargs={'F':F, 'K':K})}}">{{kafname}} - {{kaf.title}}</a> #}
 {% endblock %}
 
 
 {% block header %}
   {{super()}}
-  <div class="">
-	<div class="w pad-sm">
+  <div class="w pad">
+	<div class="">
 	  <h1 class="nomar">
-		{# {{kafname}} - #}
-		{# <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}</a> #}
-		{% if sem == '12' %}Диплом{% else %}Семестр {{sem}}{% endif %}
+		{% if period %}{{period.name}}{% else %}404{% endif %}
 	  </h1>
 	</div>
-	<div class="w pad-sm">
-	  {% if levels|length > 0 %}
-		{# <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem})}}">{% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %}</a> - #}
+	<div class="padt">
+	  <a href="{{url("index", host=host.name)}}">{{ org }}</a>
+	  /
+	  <a href="{{url("kafedra", host=host.name, kwargs={'dpt_code':dpt_code})}}">{{department.code}}</a>
+	  /
+	  {% if levels %}
+		{% if period %}
+		  <a href="{{url("sem", host=host.name, kwargs={'dpt_code':dpt_code, 'period_code':period_code, 'path':'/'})}}">{{period.name}}</a>
+		{% else %}
+		  ---
+		{% endif %}
+		/
 	  {% else %}
-		{# {% if sem == '12' %}Диплом{% else %}семестр {{sem}}{% endif %} #}
+		{% if period %}{{period.name}}{% else %}мифический семестр{% endif %}
 	  {% endif %}
-
-	  <a href="{{url("index", host=host.name)}}">Бауманка</a>
-	  &gt;
-	  <a href="{{url("kafedra", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra})}}">{{kafname}}</a>
-	  &gt;
-	  <a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem, 'path':'/'})}}">сем. {{sem}}</a>
-	  {% if levels %} &gt; {% endif %}
 	  {% for level in levels %}
-		<a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem, 'path':paths[loop.index0]})}}">{{level}}</a>
 		{% if not loop.last %}
-		  &gt;
+		  <a href="{{url("sem", host=host.name, kwargs={'dpt_code':dpt_code, 'period_code':period_code, 'path':paths[loop.index0]})}}">{{level}}</a>
+		  /
+		{% else %}
+		  {{level}}
 		{% endif %}
 	  {% endfor %}
 	</div>
@@ -49,34 +59,47 @@ div.k{padding-top:1rem}
 
 
 {% block content %}
-<div class="pad-sm">
-{% if not dirs and not files %}
-No files {% if DEBUG %}in {{dir}}{% endif %}
-{% endif %}
-{% for d in dirs %}
-<a href="{{d}}/">{{d}}/</a><br/>
-{% else %}
-{% endfor %}
 
-{% for f in files %}
-<a href="{{f.name}}">{{f.name}}</a> ({{f.size|filesizeformat}})<br/>
-{% else %}
-{% endfor %}
+  {# subjects in current semestr #}
+  {# <div class="marb padb" style="border-bottom:1px dashed #aaa"> #}
+  {# 	<div id="subject-list" class="upload noprint" style="border-bottom:0px dashed #aaa"> #}
+  {# 	  {% for s in subjects %} #}
+  {# 		<div> #}
+  {# 		  {{s}} #}
+  {# 		</div> #}
+  {# 	  {% endfor %} #}
+  {# 	</div> #}
+  {# 	<p> #}
+  {# 	  <a href="#" onclick="addSubjectButton();return false;">Добавить предмет</a> #}
+  {# 	</p> #}
+  {# 	<template id="new_subject"> #}
+  {# 	  <input name="" type="text" value="" placeholder="Новый предмет: Физика / Сопротивление материалов / ..." #}
+  {# 			 class="r5" /> #}
+  {# 	</template> #}
+  {# </div> #}
+
+  {# files: #}
+  {% if not dirs and not files %}
+	No files {% if DEBUG %}in {{dir}}{% endif %}
+  {% endif %}
+  {% for d in dirs %}
+	<a href="{{d}}/">{{d}}/</a><br/>
+  {% else %}
+  {% endfor %}
+
+  {% for f in files %}
+	<a href="{{f.name}}">{{f.name}}</a> ({{f.size|filesizeformat}})<br/>
+  {% else %}
+  {% endfor %}
+
+  {# <div class="mart"> #}
+  {# 	<div class="pad bred upload-drop mart" style="font-size:1.3rem"> #}
+  {# 	  Добавить файл в {{sem}} семестр #}
+  {# 	  <form action=""> #}
+
+  {# 	  </form> #}
+  {# 	</div> #}
+  {# </div> #}
 
 
-
-{# <div class="upload noprint padt" style=""> #}
-{#   <div> #}
-{# 	Предметы в {{sem}} семетсре: #}
-{#   </div> #}
-{#   {% for s in subjects %} #}
-{# 	{{s}} #}
-{#   {% else %} #}
-{# 	Добавить предмет #}
-{#   {% endfor %} #}
-{#   <form action=""> #}
-{#   </form> #}
-{# </div> #}
-
-</div>
 {% endblock %}

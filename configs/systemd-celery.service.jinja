@@ -1,0 +1,17 @@
+# -*- mode: conf -*-
+
+[Unit]
+Description=Celery (www-data)
+After=network.target
+
+[Service]
+# EnvironmentFile=/var/www/gglobal/.envvars
+User=www-data
+Group=www-data
+Restart=on-failure
+RestartSec=5
+WorkingDirectory={{repo}}/src
+ExecStart={{vebin}}/celery -A pashinin worker -q --loglevel=ERROR --pidfile={{repo}}/tmp/celery.pid
+
+[Install]
+WantedBy=multi-user.target

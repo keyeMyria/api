@@ -1,3 +1,4 @@
+import os
 import pickle
 import hashlib
 import requests
@@ -11,6 +12,7 @@ from django.core.cache import cache
 # from datetime import datetime
 # from django.conf import settings
 from .update import *  # noqa
+from .letsencrypt import *  # noqa
 
 
 def save_cookies(requests_cookiejar, filename):
@@ -79,3 +81,12 @@ def get(url, charset='utf-8', force=False):
         return html, {'r': r}
     else:
         return r.text, {'r': r}
+
+
+# @app.task(bind=True)
+@shared_task
+def user_test():
+    from core import notify
+    uid = os.getuid()
+    notify.superusers(f'Hi from "{uid}"!')
+    # print('Request: {0!r}'.format(self.request))

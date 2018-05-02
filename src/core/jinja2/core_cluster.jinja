@@ -1,0 +1,40 @@
+{% extends "core_template.jinja" %}
+{% set wide = True %}
+{% set hour_px = 40 %}
+
+
+{% block style %}
+{{super()}}
+  #week{transition: all 0.1s linear;}
+  .day{}
+  .lesson{cursor:pointer;overflow:hidden;border:1px solid transparent}
+  .lesson:hover{background-color:rgba(0,0,0,0.04);}
+  .busy{background-color:rgba(255,0,0,0.05);}
+  .lesson.selected{border-color:blue; background-color:rgba(0,0,255,0.05);}
+{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("js/exams.min.js") }}"></script>
+  <script defer src="{{ static("pashinin_students.min.js") }}"></script>
+  <script defer src="{{ static("mystudents.min.js") }}"></script>
+{% endblock %}
+
+
+{% block title %}Cluster{% endblock %}
+
+
+{% block content %}
+asd
+{% endblock %}
+
+
+
+{% block left %}
+  <div class="pad-sm" style="width:200px">
+	{% for exam in ege_exams %}
+	  <div>{{exam}}</div>
+	{% endfor %}
+  </div>
+{% endblock %}

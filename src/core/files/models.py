@@ -229,7 +229,7 @@ class BaseFile(DirtyFieldsMixin, AddedChanged):
         return send_file(self.filename, attachment=True)
 
     def get_absolute_url(self):
-        return reverse("core:files:file", kwargs={
+        return reverse("files:file", kwargs={
             'sha1': self.sha1,
         })
 
@@ -264,6 +264,33 @@ class File(AddedChanged):
         default_permissions = ()  # Defaults to ('add', 'change', 'delete')
 
 
+class FileSet(AddedChanged):
+    files = models.ManyToManyField(File)
+    dirs = models.ManyToManyField("self")
+
+    @classmethod
+    def create(cls, files=[], dirs=[], **kwargs):
+        '''Creates a FileSet.
+
+        Can create from a list of files and dirs or from "path" argument
+        scanning a filesystem.
+
+        kwargs:
+
+        path - string
+          A directory to add
+
+        recursive - bool
+          Scan path recursively
+
+        '''
+        r = cls()
+        return r
+
+    def __str__(self):
+        return str(0)
+
+
 class UpToDateFileSet(AddedChanged):
     files = models.ManyToManyField(BaseFile)
 
@@ -274,7 +301,10 @@ class UpToDateFileSet(AddedChanged):
 class UploadedFile(models.Model):
     """File uploaded to FILES_ROOT/uploads/<date>/filename"""
 
-    file = models.FileField(upload_to='%Y/%m/%d')
+    file = models.FileField(
+        upload_to='%Y/%m/%d',
+        # allow_empty_file=True
+    )
     uploader = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         default=None,

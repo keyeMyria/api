@@ -6,7 +6,13 @@ div.k{padding-top:1rem}
 {% endblock %}
 
 
-{% block title %}Бауманка{% endblock %}
+{% block title %}{{ org }}{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("js/university.min.js") }}"></script>
+{% endblock %}
 
 
 {% block metadescription %}Лекции, РК, чертежи, экзамены - вся ботва для разных кафедр и факультетов.
@@ -17,34 +23,53 @@ div.k{padding-top:1rem}
 
 
 {% block header %}
-{{super()}}
-<div class="pad-sm w flex padt">
-  <div>
-	<h1 style="margin-top:0;padding-top:0">МГТУ им. Баумана</h1>
-	<span style="color:#777">Россия, Москва</span>
+  {{super()}}
+  <div class="pad w flex padt">
+	<div>
+	  <h1 id="org_name" class="nomar nopad2" style="">{{ org }}</h1>
+	  <span style="color:#777">{{org.location_str}}</span>
+	  <a class="right" href="#" onclick="university.editNewFaculty();return false;">Новый факультет</a>
+	</div>
   </div>
-  {# <div style="text-align:right"> #}
-  {# 	<input class="btn btn-primary btn-large" type="submit" name="" value="+ Добавить факультет" />  #}
-  {# </div> #}
-</div>
 {% endblock %}
 
 
 {% block content %}
-<div class="pad-sm">
-  {% for F in ['IU', 'RL', 'RK', 'BMT'] %}
-	<div{% if not loop.first %} class="padt"{% endif %}>
-	  <h2 class="nomar">Факультет {{FS[F].code}}</h2>
-	  <div><h3>{{FS[F].title}}</h3></div>
-	  <div class="padt">
-		{% for K in FS[F].get('kafs', []) %}
-		  <a href="{{url("kafedra", host=host.name, kwargs={'faculty':F, 'kafedra':K})}}">{{FS[F].code}}{{K}} - {{FS[F][K].title}}</a><br/>
-		{% endfor %}
+  <div id="faculty-list" class="">
+	{% for faculty in faculties.order_by('code') %}
+	  <div class="{% if not loop.first %}padt{% endif %} {% if not loop.last %}padb{% endif %}"
+		   {% if not loop.last %}style="border-bottom:1px dashed #bbb"{% endif %}>
+		   <h2 class="nomar">{{faculty.code}}</h2>
+		   <span class="desc" style="color:#666;font-size:1.2em">{{faculty.title}}</span>
+
+		   <div class="padt">
+		   	 {% for department in faculty.departments.order_by('code', 'title') %}
+			   <p>
+				 {% if department.code %}
+				   <b>{{department.code}}</b>
+				 {% endif %}
+				 <a href="{{url("kafedra", host=host.name, kwargs={'dpt_code':department.code_slug})}}">{{department.title}}</a>
+			   </p>
+		   	   {# <a href="{{url("kafedra", host=host.name, kwargs={'dpt_code':K})}}"> <b>{{FS[F].code}}{{K}}</b> {{FS[F][K].title}}</a><br/>  #}
+		   	 {% endfor %}
+		   </div>
 	  </div>
-	</div>
-	{% if not loop.last %}
-	  {# <hr/> #}
-	{% endif %}
-  {% endfor %}
-</div>
+	{% endfor %}
+
+	<template id="new_faculty">
+	  <div class="padb marb" style="border-bottom:1px dashed #bbb">
+		<form class="new_faculty" action="" onsubmit="university.addNewFaculty(this);return false;">
+		  {{ csrf_input }}
+		  {{ AddFacultyForm }}
+		  {# <input name="code" type="text" value="" placeholder="Код факультета: ИУ / БМТ / ..." /> #}
+		  {# <input name="title" type="text" value="" placeholder="Название: Информатика и системы управления / ..." /> #}
+		  <div class="mart">
+			<input class="btn btn-primary send" type="submit" value="Добавить" />
+			<input class="btn cancel" type="button" value="Отмена"
+				   onclick="university.cancelNewFaculty();return false;"/>
+		  </div>
+		</form>
+	  </div>
+	</template>
+  </div>
 {% endblock %}

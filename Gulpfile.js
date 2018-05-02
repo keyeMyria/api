@@ -70,83 +70,11 @@ gulp.task('watch-secrets', () => {
 
 // ./config.py secret-example.json secret.json
 
-// Processing CSS
-gulp.task('css', () => {
-  return gulp.src('src/**/[^_]*.scss', { base: './' })
-    .pipe(sourcemaps.init())
-    .pipe(sass({
-      includePaths: ['./node_modules'],
-    }).on('error', sass.logError))
-    .pipe(postcss([
-      postcssimport,
-      postcssnested,
-      // csswring,
-      // ], { parser: syntax }))
-    ]))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('.', { ext: '.css' }))
-    .pipe(livereload());
-});
-
-// Reload when changing Jinja templates
-gulp.watch('src/**/jinja2/*.jinja').on('change', livereload.changed);
-
-// Watching .scss
-gulp.task('watch:css', () => {
-  gulp.watch('src/**/*.scss', ['css']);
-});
-
-
-const processJS = (file) => {
-  console.log(`Compiling JS File: ${file.path}`);
-  // if (file.path.endsWith('api.js')) {
-  // const output = `${file.path.substr(0, file.path.lastIndexOf('.'))}.min.js`;
-  browserify([file.path], { debug: true })
-    .transform('babelify')
-    .bundle()
-    .pipe(source(file.path))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
-  // .pipe(babel())
-  // .pipe(uglify())
-    .pipe(sourcemaps.write())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('./'))
-    .pipe(livereload());
-};
-
-
-// Watching .js
-// https://stackoverflow.com/questions/23247642/modify-file-in-place-same-dest-using-gulp-js-and-a-globbing-pattern
-const jsFiles = ['src/**/*.js', '!src/**/*.min.*', '!src/**/*.mini.js', '!src/**/js/libs/**/*.js'];
-gulp.task('watch:js', () => {
-  // gulp.watch(['src/**/*.js', '!src/**/*.min.*'], ['scripts']);
-  gulp.watch(jsFiles, { read: false }).on('change', processJS);
-});
-// if (info.path.endsWith('.min.js') || info.path.endsWith('.mini.js')) return;
-
-// gulp js
-// Compile JS in dev-mode (with source maps)
-gulp.task('js', () => {
-  gulp.src(jsFiles, { read: false })
-    .pipe(foreach((stream, file) => {
-      processJS(file);
-      // console.log(file);
-      return stream;
-    }));
-});
-
-// Start livereload server
-gulp.task('livereload', () => {
-  livereload.listen();
-});
 
 // The default task (called when you run `gulp` from cli)
 // gulp.task('default', ['watch', 'scripts', 'images']);
 gulp.task('default', [
   'livereload',
-  'watch:css',
-  'watch:js',
   'settings',
   'watch-secrets',
 ]);

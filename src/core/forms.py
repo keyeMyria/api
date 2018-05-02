@@ -13,14 +13,14 @@ from django.contrib.auth import authenticate
 #     )
 
 #     def save(self, commit=True):
-#         m = super(URLAddForm, self).save(commit=False)
+#         m = super().save(commit=False)
 #         url = self.cleaned_data.get('URL', None)
 #         #print(url)
 #         # ...do something with extra_field here...
 #         return URL.from_string(url)
 #         #formset.save(commit=False)
 #         #formset.save_m2m()
-#         #return super(URLAddForm, self).save(commit=commit)
+#         #return super().save(commit=commit)
 
 #     def clean(self):
 #         url = self.cleaned_data.get('URL', None)
@@ -43,7 +43,7 @@ from django.contrib.auth import authenticate
 #     def save(self, commit=True):
 #         #extra_field = self.cleaned_data.get('extra_field', None)
 #         # ...do something with extra_field here...
-#         return super(URLForm, self).save(commit=commit)
+#         return super().save(commit=commit)
 
 #     class Meta:
 #         model = URL
@@ -65,7 +65,7 @@ class Login(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        super(Login, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field in self.fields.values():
             # field.error_messages = {'required':'Обязательное поле'}
             field.error_messages = {
@@ -73,7 +73,7 @@ class Login(forms.Form):
                     fieldname=field.label)}
 
     def clean(self):
-        cleaned_data = super(Login, self).clean()
+        cleaned_data = super().clean()
         username = cleaned_data.get("username")
         password = cleaned_data.get("password")
 

@@ -33,40 +33,91 @@ when defining CHANNEL_LAYERS:
 
 """
 
+# Channels v1
 from channels.routing import route, route_class
 from channels.generic.websockets import WebsocketDemultiplexer
+
+from django.conf.urls import url
+from django.urls import path
+
+# Channels v2
+# from channels.routing import ProtocolTypeRouter, URLRouter
+# from channels.auth import AuthMiddlewareStack
+# from channels.generic.websocket import (
+#     WebsocketMultiplexer,
+#     AsyncWebsocketConsumer
+# )
+# from channels.generic.websocket.multiplex import \
+#     WebsocketMultiplexerApplication
+
+
 from .consumers import (
     # Default,
     # Celery,
+    # AdminConsumer,
+    # MyConsumer,
     send_lead,
     send_lead_course
 )
-# from .models import CourseBinding
-from .bindings import CourseBinding
+from .models import CourseBinding
+from .bindings import CourseBinding, StudentBinding
 from articles.bindings import ArticleBinding
+from edu.bindings import UniversityBinding, FacultyBinding, TaskBinding
+from ege.bindings import ExamBinding
 from core.bindings import UserBinding
 
 
-# WebsocketDemultiplexer doesn't work with class-based consumers
 class Demultiplexer(WebsocketDemultiplexer):
     http_user = True
 
-    # stream -> Consumer
+    # Stream name -> Consumer
     consumers = {
         "courses": CourseBinding.consumer,
         "articles": ArticleBinding.consumer,
+        "university": UniversityBinding.consumer,
+        "faculty": FacultyBinding.consumer,
         "users": UserBinding.consumer,
+        "tasks": TaskBinding.consumer,
+        "root": TaskBinding.consumer,
+        "celery": TaskBinding.consumer,
+        "exams": ExamBinding.consumer,
+        "students": StudentBinding.consumer,
     }
     groups = ["binding.values"]
 
-    # Mapping
-    # stream -> channel
-    # mapping = {
-    #     "mystream": Default,
-    #     # "0": "websocket",
-    #     # "intval": "binding.intval",
-    #     # "stats": "internal.stats",
-    # }
+
+# class EchoConsumer(AsyncWebsocketConsumer):
+#     """
+#     Basic echo consumer for testing.
+#     """
+
+#     results = {}
+
+#     async def connect(self):
+#         self.results["connected"] = True
+#         await self.accept()
+
+#     async def receive(self, text_data=None, bytes_data=None):
+#         await self.send(text_data=text_data, bytes_data=bytes_data)
+
+#     async def disconnect(self, code):
+#         self.results["disconnected"] = True
+
+
+# text_multiplexer = WebsocketMultiplexer({
+#     "echo": EchoConsumer,
+# })
+
+
+# class RootDemultiplexer(WebsocketDemultiplexer):
+#     http_user = True
+
+#     # Stream name -> Consumer
+#     consumers = {
+#         "courses": CourseBinding.consumer,
+#         "root.std": CourseBinding.consumer,
+#     }
+#     # groups = ["binding.values"]
 
 
 # Mapping
@@ -74,15 +125,16 @@ class Demultiplexer(WebsocketDemultiplexer):
 # Channel -> Consumer
 channel_routing = [
     # route_class(Celery, path=r"^/admin/celery$"),
-
     # route_class(Demultiplexer, path='^/stream/?$'),
-    route_class(Demultiplexer),
 
-    # default at the end
     # route_class(Default),
+    route_class(Demultiplexer),  # default at the end
+
+    # route("root.std", AdminConsumer),
+    # route("root.std", CourseBinding.consumer),
+    #
 
     # route("websocket.connect", ws_connect),
-
     # Called when WebSockets get sent a data frame
     # route("websocket.receive", ws_receive),
 
@@ -103,3 +155,47 @@ channel_routing = [
     route('send-me-lead', send_lead),
     route('course-enroll', send_lead_course),
 ]
+
+
+# Channels v2
+# application = ProtocolTypeRouter({
+#     # http->django views is added by default
+
+#     # "websocket": WebsocketMultiplexer({
+#     #     "echo": EchoConsumer,
+#     # }),
+
+#     # "websocket": URLRouter([
+#     #     url("^$", text_multiplexer({
+#     #         "type": "websocket",
+#     #         "path": '/',
+#     #         "query_string": '',
+#     #         "headers": [],
+#     #         "subprotocols": [],
+#     #     })),
+#     # ]),
+#     "websocket": AuthMiddlewareStack(
+#         URLRouter([
+#             # url("^front(end)/$", MyConsumer),
+#             url("^$", EchoConsumer),
+#             # url("^$", text_multiplexer),
+#             # path('', MyConsumer),
+#             # path('', text_multiplexer),
+#         ])
+#     ),
+#     # "websocket": URLRouter([
+#     # url("^chat/admin/$", AdminChatConsumer),
+#     # url("^chat/$", PublicChatConsumer),
+#     # ]),
+
+# })
+# application = WebsocketMultiplexer({
+#     "echo": EchoConsumer,
+# })
+# application = text_multiplexer({
+#     "type": "websocket",
+#     "path": '/',
+#     "query_string": '',
+#     "headers": [],
+#     "subprotocols": [],
+# })

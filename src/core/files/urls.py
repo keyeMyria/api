@@ -10,7 +10,7 @@ app_name = 'files'
 
 # In pashinin/urls.py
 #
-# /_/file/
+# /_/files/
 urlpatterns = [
     url(r'^$', Files.as_view(), name="index"),
     url(r'^upload$', Upload.as_view(), name="upload"),

@@ -64,7 +64,7 @@ install:
 
 script:
   - make test-python-style
-  - make test-js-style
+  # - make test-js-style
   - make test
 
 after_success:

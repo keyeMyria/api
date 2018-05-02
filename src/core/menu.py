@@ -3,7 +3,7 @@ from collections import OrderedDict
 
 class Menu(OrderedDict):
     def __init__(self, data):
-        super(Menu, self).__init__(data)
+        super().__init__(data)
         self.current = None
 
     @property

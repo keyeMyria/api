@@ -11,13 +11,14 @@ from .models import Lesson, CourseLead, Course, QA
 # from django.contrib.staticfiles.storage import staticfiles_storage
 # from lazysignup.decorators import allow_lazy_user
 from raven.contrib.django.raven_compat.models import client
-from channels import Channel
+# from channels import Channel
 from braces import views
 from django.contrib.auth import get_user_model
 import logging
 from pymorphy2.shapes import restore_capitalization
 from core import morph
 from django.conf import settings
+from django.http import JsonResponse
 
 
 log = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ cities = {
 
 class Base(BaseView):
     def get_context_data(self, **kwargs):
-        c = super(Base, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c["phone"] = '+7 (977) 801-25-41'
         c["email"] = 'sergey@pashinin.com'
         c["price"] = 1000
@@ -82,6 +83,10 @@ class Base(BaseView):
                     'title': 'Оплата',
                     'url': reverse('pay'),
                 }),
+                # ('agreement', {
+                #     'title': 'Правила',
+                #     'url': reverse('agreement'),
+                # }),
                 ('contacts', {
                     'title': 'Контакты',
                     'url': reverse('contacts'),
@@ -99,33 +104,34 @@ class Index(Base):
     template_name = "pashinin_index.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(Index, self).get_context_data(**kwargs)
-        # c["menu_id"] = "index"
+        c = super().get_context_data(**kwargs)
         c["menu"].current = 'index'
         return c
 
     def post(self, request, **kwargs):
         f = Enroll(request.POST)
         if f.is_valid():
-            Channel('send-me-lead').send(f.json())
+            # Channel('send-me-lead').send(f.json())
             return HttpResponse(
                 json.dumps({'code': 0}),
                 content_type='application/json'
             )
         else:
-            return HttpResponse(
-                json.dumps({
-                    'errors': f.errors,
-                }),
-                content_type='application/json'
-            )
+            from core.tasks import user_test
+            user_test.apply_async(queue='root')
+            # add.apply_async(queue='priority.high')
+            # task.delay(arg1, arg2, kwarg1='x', kwarg2='y')
+
+            return JsonResponse({
+                'errors': f.errors,
+            })
 
 
 class Contacts(Base):
     template_name = "pashinin_contacts.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(Contacts, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c["menu_id"] = "contacts"
         c["menu"].current = 'contacts'
         return c
@@ -211,7 +217,7 @@ class Day:
         # Iterate over created or scheduled lessons
         lessons = list(self.lessons)
         lessons.sort(key=lambda x: x.start.time())
-        log.debug(lessons)
+        # log.debug(lessons)
         for i, lesson in enumerate(lessons):
             lesson.start = lesson.start.replace(
                 year=self.date.year,
@@ -229,7 +235,7 @@ class Day:
 
             # before first lesson
             if localtime(lesson.start).time() > Day.start_time and first:
-                log.debug(lesson)
+                # log.debug(lesson)
                 L = Lesson(
                     start=self.start,
                     # end=localtime(lesson.start) - Day.pause,
@@ -317,7 +323,7 @@ class Day:
         #     scheduled=True,
         #     start__week_day=self.date.weekday()+2
         # ))
-        log.debug(a)
+        # log.debug(a)
         return a
 
     def __str__(self):
@@ -329,7 +335,7 @@ class CourseView(Base):
     template_name = "pashinin_course.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(CourseView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         try:
             course = Course.objects.get(slug=c['slug'])
             c['course'] = course
@@ -405,7 +411,8 @@ class CourseView(Base):
             lead.contact = data['contact']
             lead.comment = data['comment']
             if new_lead:
-                Channel('course-enroll').send(data)
+                # Channel('course-enroll').send(data)
+                pass
             else:
                 if lead.status != 0:
                     lead.status = 0
@@ -427,11 +434,45 @@ class Students(views.LoginRequiredMixin,
     last_lesson_period = datetime.timedelta(days=8)
 
     def get_context_data(self, **kwargs):
-        c = super(Students, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         utcnow = localtime(now())
         c["momentjs"] = True
         c['timeago'] = True
         c['dragula'] = True
+
+        c['menu'] = Menu(
+            [
+                # ('index', {
+                #     'title': 'Главная',
+                #     # 'img': staticfiles_storage.url('favicon.png'),
+                #     'url': reverse('index'),
+                # }),
+                # ('articles', {
+                #     'title': 'Статьи',
+                #     'url': reverse('articles:index'),
+                # } if c['user'].is_superuser else None),
+                # ('faq', {
+                #     'title': 'Вопросы',
+                #     'url': reverse('faq'),
+                # }),
+                # ('pay', {
+                #     'title': 'Оплата',
+                #     'url': reverse('pay'),
+                # }),
+                # # ('agreement', {
+                # #     'title': 'Правила',
+                # #     'url': reverse('agreement'),
+                # # }),
+                # ('contacts', {
+                #     'title': 'Контакты',
+                #     'url': reverse('contacts'),
+                # }),
+                ('prepare', {
+                    'title': 'Подготовка',
+                    'url': reverse('students'),
+                }),
+            ]
+        )
 
         c['students'] = {
             'active': User.objects.filter(
@@ -444,8 +485,13 @@ class Students(views.LoginRequiredMixin,
                 lessons__start__lte=utcnow-self.last_lesson_period
             )
         }
+
+        from ege.models import Exam
+        c['ege_exams'] = Exam.objects.all()
+        c['exam'] = Exam.objects.filter()[0]
+
         c['pause_mins'] = Day.pause.seconds // 60
-        c["menu"].current = 'students'
+        c["menu"].current = 'prepare'
         # utcnow = datetime.datetime.utcnow()
 
         # django.utils.timezone.now()
@@ -514,18 +560,49 @@ class FAQ(Base):
     template_name = "pashinin_faq.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(FAQ, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c["exp"] = datetime.datetime.now() - datetime.datetime(2013, 1, 1)
         c["menu"].current = 'faq'
         c['questions'] = QA.objects.filter()
+
+        # log.debug(self.request.session['socialaccount_state'])
+        self.request.session['socialaccount_state'] = (
+            {
+                'next': '/',
+                'process': 'login',
+                'scope': 'email',
+                'auth_params': '',
+            },
+            'test'
+        )
+        from allauth.socialaccount.models import SocialLogin, SocialToken
+        state = SocialLogin.stash_state(self.request)
+        self.request.session.modified = True
+        self.request.session.save()
+        log.debug(self.request.session['socialaccount_state'])
+
         # .order_by('order')
         return c
+
+
+class Agreement(Base):
+    template_name = "pashinin_agreement.jinja"
 
 
 class PayView(Base):
     template_name = "pashinin_payment.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(PayView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
+        c["menu"].current = 'pay'
+        return c
+
+
+class TestCallback(Base):
+    template_name = "pashinin_payment.jinja"
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        log.debug(self.request.GET)
         c["menu"].current = 'pay'
         return c

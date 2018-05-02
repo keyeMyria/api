@@ -1,24 +1,23 @@
 import mptt
 from django.contrib import admin
-from .models import Task, Category
+from .models import (
+    Task, Category, Organization, Faculty,
+    Department, Period
+)
 from .forms import TaskChangeForm
 from django.forms import TextInput
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-def make_published(modeladmin, request, queryset):
-    queryset.update(published=True)
-    make_published.short_description = _("Published")
+def publish(modeladmin, request, queryset):
+    queryset.invalidated_update(published=True)
+    publish.short_description = "Publish"
 
 
 def unpublish(modeladmin, request, queryset):
-    queryset.update(published=False)
-    make_published.short_description = _("Hide")+" (published=False)"
-
-
-# admin.site.register(Tag)
-# class TaskAdmin(admin.ModelAdmin):
+    queryset.invalidated_update(published=False)
+    unpublish.short_description = "Unpublish"
 
 
 @admin.register(Task)
@@ -27,7 +26,7 @@ class TaskAdmin(admin.ModelAdmin):
 
     save_on_top = True
     list_display = ('title', 'taken_from', 'comment')
-    actions = [unpublish, make_published]
+    actions = [unpublish, publish]
     ordering = ['published', '-added']
     list_filter = ('published', 'solution_status', 'added')
     search_fields = ['text', 'comment']
@@ -62,3 +61,35 @@ class CategoryAdmin(mptt.admin.DraggableMPTTAdmin):
     #     'level',
     # )
     search_fields = ('name', )
+
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    readonly_fields = ('id', )
+
+
+@admin.register(Faculty)
+class FacultyAdmin(admin.ModelAdmin):
+    list_display = ('code', 'title', 'published', 'university', 'added')
+    list_filter = ('university__title', )
+    ordering = ['code', '-added', 'university']
+    search_fields = ['code', 'title', 'university__title']
+    actions = [unpublish, publish]
+
+
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('code', 'title', 'faculty', 'university')
+    readonly_fields = ('code_slug', )
+    list_filter = (
+        'university__title',
+        'faculty__code',
+    )
+
+
+@admin.register(Period)
+class PeriodAdmin(admin.ModelAdmin):
+    list_filter = (
+        'department__university__title',
+        'department__code',
+    )

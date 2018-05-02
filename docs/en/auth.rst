@@ -1,5 +1,23 @@
-Auth
-====
+Authentication and Authorization
+================================
+
+Authentication
+--------------
+
+`JSON Web Tokens (JWT) <https://jwt.io>`_ are used for
+authentication.
+
+api/auth/jwt/ - obtain JWT here using POST request with payload: {email,
+password}.
+
+`django-rest-framework-jwt
+<https://github.com/GetBlimp/django-rest-framework-jwt>`_ is responsible
+for this (`docs
+<http://getblimp.github.io/django-rest-framework-jwt/>`_). It relies on
+https://pyjwt.readthedocs.io/en/latest/index.html
+
+JWT is "bad" see https://paseto.io/
+
 
 For Single Sing On (SSO) on **different domains** (not subdomains) use CAS.
 
@@ -19,8 +37,8 @@ When using **subdomains only** it's enough to just set 2 variables:
 
 
 
-Permissions
------------
+Authorization (permissions)
+---------------------------
 
 https://djangopackages.org/grids/g/perms/
 

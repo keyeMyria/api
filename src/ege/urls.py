@@ -1,3 +1,4 @@
+import core
 from django.contrib import admin
 from django.urls import path, include
 from .views import (
@@ -29,6 +30,7 @@ subject_patterns = ([
 
 # Main urls in "ege.example.org"
 urlpatterns = [
+    *core.urls.urlpatterns,
     path('', Index.as_view(), name='index'),
 
     # path(
@@ -45,8 +47,4 @@ urlpatterns = [
     # /subject[/yyyy]
     path('<subj>/',
          include(subject_patterns, namespace='subject')),
-
-
-    path('_/', include('core.urls', namespace='core')),
-    path('_/django/', admin.site.urls),
 ]

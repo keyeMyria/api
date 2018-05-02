@@ -1,3 +1,5 @@
+import core
+from core.urls import urls_base
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
@@ -10,7 +12,9 @@ from .views import (
     Contacts,
     Students,
     CourseView,
-    PayView
+    PayView,
+    Agreement,
+    TestCallback,
 )
 
 
@@ -47,6 +51,9 @@ sitemaps = {
 }
 
 urlpatterns = [
+    *core.urls.urlpatterns,
+    path('accounts/', include('allauth.urls')),
+    # path('accounts/vk/login/callback/', TestCallback.as_view(), name='cb'),
     path(
         'sitemap.xml',
         sitemap,
@@ -56,7 +63,6 @@ urlpatterns = [
     path('articles/', include('articles.urls', namespace='articles')),
     path('api/', include(api_urls, namespace='api')),
     path('courses/', include(courses_urls, namespace='courses')),
-    path('_/', include('core.urls', namespace='core')),
 ]
 
 urlpatterns += i18n_patterns(
@@ -66,12 +72,13 @@ urlpatterns += i18n_patterns(
     path('contacts', Contacts.as_view(), name='contacts'),
     path('students', Students.as_view(), name='students'),
     path('faq', FAQ.as_view(), name="faq"),
+    path('agreement', Agreement.as_view(), name="agreement"),
     # path('login', Login.as_view(), name='login'),
 
     # This really needs to be here, not just in 'core' urls.py.
     # Because admin templates are getting reverse urls with "admin:..."
     # So if you wrap admin inside some app - reverse will throw an error
-    path('_/django/', admin.site.urls),
+    # path('_/django/', admin.site.urls),
 
     prefix_default_language=False
 )

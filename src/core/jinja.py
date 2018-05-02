@@ -48,7 +48,7 @@ def djrender(value):
 
 
 def get_file(hash):
-    return reverse('core:files:file', kwargs={'sha1': hash})
+    return reverse('files:file', kwargs={'sha1': hash})
 
 
 def css(f):
@@ -82,6 +82,7 @@ def environment(**options):
         'min': min,
         'len': len,
         'int': int,
+        'str': str,
         'render': render,
         'date_format': date_format,
         'now': now,

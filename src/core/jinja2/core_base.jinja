@@ -1,49 +1,57 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{% block metadescription %}{% endblock %}">
-{% block meta %}{% endblock %}
-<title>{% block title %}{% endblock %}</title>
-<style>
-{% block style %}
-.abs{position:absolute}.w100{width:100%;box-sizing:border-box}.h100{height:100%}
-header{flex-basis:auto;background:#fff;}
-html{height:100%;font-family:Roboto, Arial, sans-serif;font-size:15px;line-height:150%;margin: 0;padding: 0;background:#f7f7f7;}
-body{color:#333;margin:0;padding:0;background:#eee;display:flex;flex-direction:column;height:100%;}
-main{background:#eee;}
-.hidden{visibility: hidden;}.hide{display:none !important;}
-a{color:#295989;}
-.flex{display:flex}
-.flex01a{flex:1 0 auto}
-.flex0{flex-grow: 0 !important;}
-.w{margin-left:auto;margin-right:auto;overflow:auto}
-nav>*{white-space:nowrap;border-left:0px solid #d94410;flex:0 0 auto;text-align:center;}
-nav>a{color:#3c4146}
-nav>a:visited{color:#3c4146}
-nav>a:hover{color:#000}
-nav>:last-child{border-right:0px solid #d94410}
-nav>*.parent{background:#e95420;font-weight:bold}
-nav>*:hover{color:#000}
-nav{overflow: visible;margin-top:0em;font-size:1.1em;}
-{% endblock %}
-</style>
-<style media="only screen and (max-width : 900px)">
-.w{max-width: 100%;flex-basis: 100%}
-.marginw{margin:3px 0px 3px 0px}
-{% block css_small %}{% endblock %}
-</style>
-<style media="only screen and (min-width : 900px)">
-.w{max-width: 900px;flex-basis: 900px}
-.marginw{margin:3px 3px 3px 3px}
-</style>
-<style media="print">.noprint, .noprint *{display: none !important;}</style>
-{% include "core_head.jinja" %}
-{% block head %}{% endblock %}
-{% if FIRST_RUN and DEBUG %}
-<script type="text/javascript">
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="{% block metadescription %}{% endblock %}">
+	{% block meta %}{% endblock %}
+	<title>{% block title %}{% endblock %}</title>
+	<style>
+	  {% block style %}
+		.abs{position:absolute}.w100{width:100%}.h100{height:100%}
+		header{flex-basis:auto;}
+		html{height:100%;font-family:Roboto, Arial, sans-serif;font-size:15px;line-height:150%;margin: 0;padding: 0;background:#f7f7f7;}
+		body{color:#222;margin:0;padding:0;background:#eee;display:flex;flex-direction:column;height:100%;}
+		main{background:#eee;}
+		.hidden{visibility: hidden;}.hide{display:none !important;}
+		a{color:#295989;}
+		.flex{display:flex}
+		.flex01a{flex:1 0 auto}
+		.flex0{flex-grow: 0 !important;}
+		.w{margin-left:auto;margin-right:auto;overflow:auto}
+		nav>*{white-space:nowrap;border-left:0px solid #d94410;flex:0 0 auto;text-align:center;}
+		nav>a{color:#3c4146}
+		nav>a:visited{color:#3c4146}
+		nav>a:hover{color:#000}
+		nav>:last-child{border-right:0px solid #d94410}
+		nav>*.parent{background:#e95420;font-weight:bold}
+		nav>*:hover{color:#000}
+		nav{overflow: visible;margin-top:0em;font-size:1.1em;}
+	  {% endblock %}
+	</style>
+	<style media="only screen and (max-width : 900px)">
+	  .w{max-width: 100%;flex-basis: 100%}
+	  .wmax{width: 100%;flex-basis: 100%}
+	  {# .marginw{margin:3px 0px 3px 0px} #}
+	  {% block css_small %}{% endblock %}
+	</style>
+	<style media="only screen and (min-width : 900px)">
+	  .w{max-width: 900px;flex-basis: 900px}
+	  .wmax{width: 900px;flex-basis: 900px}
+
+	  .wide .wmax{width: 100%;flex-basis: 100%}
+	  .wide .w{max-width: 100%;}
+	  {# .marginw{margin:3px 3px 3px 3px} #}
+	</style>
+	<style media="print">.noprint, .noprint *{display: none !important;}</style>
+	{% include "core_head.jinja" %}
+	{% block head %}{% endblock %}
+	{% if FIRST_RUN and DEBUG %}
+	  <script type="text/javascript">
 {let ready=function(e){
 	document.getElementById("download_project_files").addEventListener("click", function(e){
   e.preventDefault();
-fetch('/_/files/download_core', {
+fetch('/files/download_core', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -65,9 +73,10 @@ fetch('/_/files/download_core', {
 	 document.addEventListener('DOMContentLoaded', ready);
  }
 }
-</script>
-{% endif %}
-</head><body id="body">
+	  </script>
+	{% endif %}
+  </head>
+  <body id="body" class="{% if wide %}wide{% endif %}">
 	{# <div id="overlay" #}
 	{# 	 style="position: absolute; #}
 	{# 			visibility: hidden; #}
@@ -88,69 +97,123 @@ fetch('/_/files/download_core', {
 	{# 	<p class="padt"><a href="//{{DOMAIN}}">Вся Россия</a></p> #}
 	{#   </div> #}
 	{# </div> #}
-{% if FIRST_RUN and DEBUG %}
-  <div style="background-color:#507299;color:#fff">
-	<div class="w pad-sm">
-	  Файлы проекта не скачаны (поэтому нет изображений на страницах и других файлов).
-	  <a style="color:#fff" id="download_project_files" href="#">Скачать</a>
-	</div>
-  </div>
-{% endif %}
-{% block prebody %}{% endblock %}
-
-<div class="flex01a flex 0 col" style="background:#eee;">
-{% if self.header() %}
-  <header style="border-bottom: 1px solid rgba(0,0,0,0.075);z-index:100;">{% block header %}{% endblock %}</header>
-{% endif %}
-{% block beforemain %}{% endblock %}
-<main class="flex mart marb">{% block main %}{% endblock %}</main>
-{% block aftermain %}{% endblock %}
-</div>
-
-<footer class="padtb" style="background:#242729;color:#aaa">{% block footer %}
-<div class="w noprint pad-sm flex equal">
-  {% block footer_content %}
-	<div>
-	  <a href="{{url("index")}}">{{DOMAIN}}</a> <br/>
-	  <a href="{{url("kafedra", host="baumanka", kwargs={'faculty':'IU', 'kafedra':2})}}">Студентам ИУ2 МГТУ им. Баумана</a>
-	  <br/>
-	  {% if user.is_superuser %}
-		<a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
-		<br/>
-		<a href="{{url("index", host="oge")}}">ОГЭ (9кл)</a>
-	  {% endif %}
-	  <div class="padt" style="color:#555;font-size:.8rem">
-		<p>© {{CURRENTYEAR}} Сергей Пашинин</p>
-	  </div>
-	</div>
-	{%- if user.is_superuser -%}
-	  <div>
-		<span>{{ip}}</span>
-		<br/>
-		{{rparser_version}}
+	{% if FIRST_RUN and DEBUG %}
+	  <div style="background-color:#507299;color:#fff">
+		<div class="w  pad-sm">
+		  Файлы проекта не скачаны (поэтому нет изображений на страницах и других файлов).
+		  <a style="color:#fff" id="download_project_files" href="#">Скачать</a>
+		</div>
 	  </div>
 	{% endif %}
-	<div style="text-align:right">
-	  <a target="_blank" href="https://github.com/pashinin-com/pashinin.com">Github</a>
+	{% block prebody %}{% endblock %}
+
+	<div class="flex01a flex 0 col" style="background:#eee;">
+	  {% if self.header() %}
+		<header style="border-bottom: 0px solid rgba(0,0,0,0.075);z-index:100;">{% block header %}{% endblock %}</header>
+	  {% endif %}
+	  {% block beforemain %}{% endblock %}
+	  <div class="w wmax  flex flex01a" style="flex:1 0 auto">
+		{% if self.left() %}
+		  <aside class="noprint" style="flex:0;max-width:30%;border-left:1px solid #aaa;border-right:1px solid #aaa">{% block left %}{% endblock %}</aside>
+		{% endif %}
+		<main class="flex" style="">{% block main %}{% endblock %}</main>
+		{% if self.right() %}
+		  <aside class="noprint" style="flex:0;max-width:30%;border-left:1px solid #aaa;border-right:1px solid #aaa">{% block right %}{% endblock %}</aside>
+		{% endif %}
+	  </div>
+	  {% block aftermain %}{% endblock %}
 	</div>
-  {% endblock %}
-</div>
 
-<div class="w center">
+	<footer class="patb" style="background:#242729;color:#aaa">{% block footer %}
+	  <div class="w noprint pad flex equal">
+		{% block footer_content %}
+		  <div>
+			<p>
+			  <a href="{{url("index")}}">{{DOMAIN}}</a>
+			</p>
+			<p>
+			  <a href="{{url("kafedra", host="baumanka", kwargs={'dpt_code':'iu2'})}}">Студентам ИУ2 МГТУ им. Баумана</a>
+			</p>
+			{% if user.is_superuser %}
+			  <p>
+				<a href="{{url("index", host="ege")}}">ЕГЭ (11кл)</a>
+			  </p>
+			<p>
+			  <a href="{{url("index", host="oge")}}">ОГЭ (9кл)</a>
+			</p>
+			<p>
+			  <a href="{{url("index", host="tasks")}}">Задачи</a>
+			</p>
+		  {% endif %}
+		  <div class="padt" style="color:#555;font-size:.8rem">
+			<p>© {{CURRENTYEAR}} Сергей Пашинин</p>
+		  </div>
+		  </div>
+		  {%- if user.is_superuser -%}
+			<div>
+			  <span>{{ip}}</span>
+			  <br/>
+			  {{rparser_version}}
+			</div>
+		  {% endif %}
+		  <div style="text-align:right">
+			<a target="_blank" href="https://github.com/pashinin-com/pashinin.com">Github</a>
+		  </div>
+		{% endblock %}
+	  </div>
 
-</div>
-{% endblock %}
-</footer>
-{% block css %}{% endblock %}
-{% if not DEBUG %}
-<!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter35428125 = new Ya.Metrika2({ id:35428125, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/35428125" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-37941248-1', 'auto');
-  ga('send', 'pageview');
-</script>
-{% endif %}
-</body></html>
+	  <div class="w center">
+
+	  </div>
+	{% endblock %}
+	<div id=app>
+	  <router-link to="/foo">Go to Foo</router-link>
+      <router-link to="/bar">Go to Bar</router-link>
+      <p>[[ title ]]</p>
+      <ul>
+        <li v-for="day in days">
+          <h4> Day [[ day ]]</h4>
+        </li>
+      </ul>
+	  <router-view></router-view>
+	</div>
+	</footer>
+	{% block css %}{% endblock %}
+	{% if not DEBUG %}
+	  <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter35428125 = new Ya.Metrika2({ id:35428125, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/35428125" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+	  <script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-37941248-1', 'auto');
+		ga('send', 'pageview');
+	  </script>
+	{% endif %}
+	<script>
+	  const Foo = { template: '<div>foo</div>' }
+	  const Bar = { template: '<div>bar</div>' }
+	  const routes = [
+  { path: '/foo', component: Foo },
+  { path: '/bar', component: Bar }
+]
+
+// 3. Создаём экземпляр роутера с опцией `routes`
+// Можно передать и другие опции, но пока не будем усложнять
+	  const router = new VueRouter({
+	  mode: 'history',
+  routes // сокращение от `routes: routes`
+	  })
+
+      new Vue({
+	  router,
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            title: 'Welcome to My Journal',
+            days: [1, 2, 3]
+        }
+    }).$mount('#app')
+	</script>
+  </body>
+</html>

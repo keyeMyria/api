@@ -12,7 +12,7 @@
 # stderr_logfile=/var/log/supervisor/daphne-{{domain}}.err.log
 # stdout_logfile=/var/log/supervisor/daphne-{{domain}}.out.log
 [Unit]
-Description=Daphne (Django)
+Description=Daphne ({{domain}})
 After=network.target
 
 [Service]
@@ -20,8 +20,11 @@ After=network.target
 User=www-data
 Group=www-data
 Restart=on-failure
+RestartSec=5
 WorkingDirectory={{repo}}/src
 ExecStart={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:channel_layer
+# ExecStart={{vebin}}/daphne -u /var/tmp/daphne-{{domain}}.sock pashinin.asgi:application
+
 
 [Install]
 WantedBy=multi-user.target

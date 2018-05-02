@@ -1,0 +1,17 @@
+# -*- mode: conf -*-
+#
+
+[Unit]
+Description=Worker (Django, root)
+After=network.target
+
+[Service]
+# Environment=ROLE_ID=
+User=root
+Group=root
+Restart=on-failure
+WorkingDirectory={{repo}}/src
+ExecStart={{vebin}}/python ./manage.py runworker --only-channel=root.*
+
+[Install]
+WantedBy=multi-user.target

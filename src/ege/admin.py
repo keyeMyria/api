@@ -79,7 +79,7 @@ class ExamTaskInline(admin.TabularInline):
 #         """
 #         Overriding this method will allow us to always have a default value.
 #         """
-#         value = super(SubjectsListFilter, self).value()
+#         value = super().value()
 #         if value is None:
 #             if self.default_value is None:
 #                 # If there is at least one Species, return the first by name.

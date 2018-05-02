@@ -1,0 +1,32 @@
+{% extends "pashinin_base.jinja" %}
+
+
+{% block title %}{{_("Profile")}}{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  {# <script defer src="{{ static("js/core_nginx.js") }}"></script> #}
+{% endblock %}
+
+
+{% block header %}
+  {{super()}}
+  <div class="pad w flex padt">
+	<div>
+	  <h1 class="nomar nopad2" style="">{{_("Profile")}}</h1>
+	  {# <span style="color:#777">{{org.location_str}}</span> #}
+	  {# <a class="right" href="#" onclick="university.editNewFaculty();return false;">Новый факультет</a> #}
+	</div>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+  <h2>Уведомления</h2>
+  {% if user.telegram_chat_id %}
+	<p>Telegram подключен.</p>
+  {% endif %}
+  <a target="_blank" href="#" onclick="users.connectTelegram();return false;">Connect Telegram</a>
+  <a id="telegram-start-dialog" target="_blank" href="#">Start dialog</a>
+{% endblock %}

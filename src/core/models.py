@@ -70,6 +70,7 @@ class AddedChanged(models.Model):
     added = models.DateTimeField(
         auto_now_add=True,
         db_index=True,
+        # default=now,
     )
     changed = models.DateTimeField(
         auto_now=True,
@@ -149,7 +150,10 @@ key for temporary users")
         max_length=200,
         blank=True, null=True,
     )
-    last_name = models.CharField(max_length=200)
+    last_name = models.CharField(
+        max_length=200,
+        blank=True, null=True,
+    )
     date_last_pass_sent = models.DateTimeField(null=True)
     skype = models.CharField(max_length=200, blank=True, null=True)
     discord = models.CharField(max_length=200, blank=True, null=True)
@@ -183,6 +187,9 @@ key for temporary users")
         Group,
         related_name="groups",
         blank=True
+    )
+    telegram_chat_id = models.IntegerField(
+        blank=True, null=True,
     )
 
     class Meta:
@@ -251,6 +258,42 @@ class Comment(Tree):
         on_delete=models.SET_NULL,
     )
     src = models.TextField()
+
+
+class LoginAttempt(models.Model):
+    '''
+    A login attempt record (both successful and not).
+
+    If user field is set then login was successful.
+
+    Instead login and password fields are set.
+    '''
+    # https://docs.python.org/3/library/ipaddress.html
+    # inet = InetAddressField(primary_key=True)
+    ip = InetAddressField()
+    login = models.CharField(
+        max_length=260,
+        null=True, blank=True,
+    )
+    password = models.CharField(
+        max_length=260,
+        null=True, blank=True,
+    )
+    user = models.ForeignKey(
+        'core.User',
+        default=None,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    time = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        null=True, blank=True,
+    )
+    # success = models.BooleanField(default=False)
+
+    objects = NetManager()
 
 
 class Unnest(Func):
@@ -390,7 +433,7 @@ class Hostname(models.Model):
 
 # class PersonManager(models.Manager):
 #     def get_queryset(self):
-#         return super(PersonManager, self).get_queryset() \
+#         return super().get_queryset() \
 #                                          .select_related('name',
 
 # class URLScheme(models.Model):

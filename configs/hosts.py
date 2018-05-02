@@ -25,6 +25,7 @@ tld = 'example.org'
 
 subs = [
     'baumanka',
+    'edu',
     'ege',
     'oge',
     'moskva',
@@ -47,7 +48,7 @@ with open('/etc/hosts', 'r') as f:
         parts = re.findall(r"[\w'.:\-]+", line)
         try:
             ip, host, domain = parts
-        except:
+        except Exception:
             ip, domain = parts
         # print(domain)
         if domain in hosts:

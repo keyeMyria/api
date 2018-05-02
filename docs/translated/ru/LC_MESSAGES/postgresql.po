@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pashinin.com \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-12 10:09+0300\n"
+"POT-Creation-Date: 2017-12-21 00:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "To start db container separately:"
 msgstr ""
 
 #: ../../postgresql.rst:12
-msgid "Postgres in a Docker container (dev)"
+msgid "Docker container (dev)"
 msgstr ""
 
 #: ../../postgresql.rst:14
@@ -59,7 +59,7 @@ msgid ""
 msgstr ""
 
 #: ../../postgresql.rst:32
-msgid "Switching to a new Postgres version in a container"
+msgid "Upgrading to a new Postgres version"
 msgstr ""
 
 #: ../../postgresql.rst:34
@@ -77,4 +77,18 @@ msgstr ""
 #: ../../postgresql.rst:54
 msgid "And start containers again:"
 msgstr ""
+
+#: ../../postgresql.rst:62
+msgid "PostgreSQL high availability"
+msgstr ""
+
+#: ../../postgresql.rst:65
+msgid "To choose the best way for HA see `this table <postgres-ha-table>`_"
+msgstr ""
+
+#~ msgid "Postgres in a Docker container (dev)"
+#~ msgstr ""
+
+#~ msgid "Switching to a new Postgres version in a container"
+#~ msgstr ""
 

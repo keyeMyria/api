@@ -5,15 +5,31 @@
 div.k{padding-top:1rem}
 {% endblock %}
 
-{% block title %}Бауманка - {{kafname}} - Практика{% endblock %}
+{% block title %}Бауманка - {{department.code}} - Практика{% endblock %}
 
 {% block top %}<a href="{{url("baumanka:index")}}">Бауманка</a> - <a href="{{url("baumanka:kafedra", kwargs={'F':F, 'K':K})}}">{{kafname}}</a> - Практика{% endblock %}
 
 
-{% block content %}
-<div class="pad-sm">
-<h2>Практика на {{kafname}}</h2>
+{% block header %}
+  {{super()}}
+  <div class="w pad">
+	<div class="">
+	  <h1 class="nomar">Практика на {{department.code}}</h1>
+	</div>
+	<div class="padt">
+	  <a href="{{url("index", host=host.name)}}">{{ org }}</a>
+	  /
+	  <a href="{{url("kafedra", host=host.name, kwargs={'dpt_code':dpt_code})}}">{{department.code}}</a>
+	  /
+	  Практика
+	</div>
+  </div>
+{% endblock %}
 
-{% include [kafurl+'/practice.jinja', 'baumanka_no_practice.jinja'] %}
-</div>
+
+
+{% block content %}
+	{# {% include [kafurl+'/practice.jinja', 'baumanka_no_practice.jinja'] %} #}
+	{{render(department.practice_comments_text)|safe}}
+
 {% endblock %}

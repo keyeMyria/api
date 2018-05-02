@@ -8,7 +8,7 @@ from channels_api.decorators import list_action
 from rest_framework.exceptions import NotFound
 
 
-class Nobody(BasePermission):
+class SelfInfo(BasePermission):
     def has_permission(self, user, action, pk):
         if action == "info":
             return True
@@ -20,8 +20,9 @@ class UserBinding(ResourceBinding):
     stream = "users"
     serializer_class = UserSerializer
     queryset = User.objects.filter()
-
-    permission_classes = (Nobody,)
+    permission_classes = (
+        SelfInfo,
+    )
 
     @list_action()
     def info(self, data=None, **kwargs):

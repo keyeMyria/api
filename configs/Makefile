@@ -38,9 +38,24 @@ somelinks:
 # Nginx config (current domain):
 	ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf
 # Worker:
-#	ln -sf $(dir)/worker.conf $(supervisor_confd)/worker-$(domain).conf
-	ln -sf $(dir)/systemd-daphne.service /etc/systemd/system/daphne.service
-	ln -sf $(dir)/systemd-worker.service /etc/systemd/system/worker.service
+#	ln -sf $(dir)/systemd-daphne.service /etc/systemd/system/daphne.service
+	rm /etc/systemd/system/daphne.service || true
+	cp -f $(dir)/systemd-daphne.service /etc/systemd/system/daphne.service
+
+	rm /etc/systemd/system/celery.service || true
+	cp -f $(dir)/systemd-celery.service /etc/systemd/system/celery.service
+
+	rm /etc/systemd/system/celery-root.service || true
+	cp -f $(dir)/systemd-celery-root.service /etc/systemd/system/celery-root.service
+
+# Workers:
+	rm /etc/systemd/system/worker-root.service || true
+#	cp -f $(dir)/systemd-worker-root.service /etc/systemd/system/worker-root.service
+
+	rm /etc/systemd/system/worker.service || true
+	cp -f $(dir)/systemd-worker.service /etc/systemd/system/worker.service
+
+	systemctl daemon-reload
 
 ln_nginx:
 	sudo ln -sf $(dir)/$(domain).conf /etc/nginx/sites-enabled/$(domain).conf

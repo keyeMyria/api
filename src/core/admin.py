@@ -1,12 +1,21 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import User, SiteUpdate
+from .models import User, SiteUpdate, LoginAttempt
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Permission
 admin.site.register(Permission)
 # admin.site.unregister(Group)
+
+
+class MyAdminSite(AdminSite):
+    site_header = 'Monty Python administration'
+    site_url = '/django/'
+
+
+site = MyAdminSite(name='core')
 
 
 class UserCreationForm(forms.ModelForm):
@@ -37,7 +46,7 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        user = super(UserCreationForm, self).save(commit=False)
+        user = super().save(commit=False)
 
         # when password is set
         if self.cleaned_data["password1"]:
@@ -122,6 +131,11 @@ class UserAdmin(UserAdmin):
 class SiteUpdateAdmin(admin.ModelAdmin):
     list_display = ('commit_message', 'started', 'finished')
     # list_filter = ('public', )
+
+
+@admin.register(LoginAttempt)
+class LoginAttemptAdmin(admin.ModelAdmin):
+    list_display = ('ip', 'time', 'login', 'user')
 
 
 # from django.contrib import admin
@@ -221,7 +235,7 @@ class SiteUpdateAdmin(admin.ModelAdmin):
 #         if obj is None:
 #             return URLAddForm
 #         else:
-#             return super(URLAdmin, self).get_form(request, obj, **kwargs)
+#             return super().get_form(request, obj, **kwargs)
 
 
 # class URLObjAdmin(admin.ModelAdmin):

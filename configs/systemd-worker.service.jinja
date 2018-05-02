@@ -6,10 +6,11 @@ Description=Worker (Django)
 After=network.target
 
 [Service]
-# EnvironmentFile=/var/www/gglobal/.envvars
+# Environment=ROLE_ID=
 User=www-data
 Group=www-data
 Restart=on-failure
+RestartSec=5
 WorkingDirectory={{repo}}/src
 ExecStart={{vebin}}/python ./manage.py runworker --exclude-channels=root.*
 

@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 class FileSystemNotReady(Exception):
     def __init__(self, message, errors):
-        super(FileSystemNotReady, self).__init__(message)
+        super().__init__(message)
         self.errors = errors
 
 

@@ -53,6 +53,7 @@ How to start?
    deploy
    docs
    static
+   api
    long-running-tasks
    testing
    algo
@@ -60,6 +61,7 @@ How to start?
    auth
    cache
    maildb-sql
+   telegram
    update
    parser
    django

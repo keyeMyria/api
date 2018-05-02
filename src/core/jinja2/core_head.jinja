@@ -4,7 +4,6 @@
 {% if not DEBUG %}
 <script src="{{ static("js/libs/raven.min.js") }}"></script>
 <script>
-// configure the SDK as you normally would
 Raven.config('https://{{RAVEN_PUBLIC}}@sentry.pashinin.com/2').install();
 
 /**
@@ -37,12 +36,13 @@ h.appendChild(s);
 };
 </script>
 
-{# Array.from polyfill, for Chrome < 45 #}
-{# https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#Polyfill #}
-<script type="text/javascript">if(!Array.from){Array.from=function(){var toStr=Object.prototype.toString;var isCallable=function(fn){return typeof fn==="function"||toStr.call(fn)==="[object Function]"};var toInteger=function(value){var number=Number(value);if(isNaN(number)){return 0}if(number===0||!isFinite(number)){return number}return(number>0?1:-1)*Math.floor(Math.abs(number))};var maxSafeInteger=Math.pow(2,53)-1;var toLength=function(value){var len=toInteger(value);return Math.min(Math.max(len,0),maxSafeInteger)};return function from(arrayLike){var C=this;var items=Object(arrayLike);if(arrayLike==null){throw new TypeError("Array.from requires an array-like object - not null or undefined")}var mapFn=arguments.length>1?arguments[1]:void undefined;var T;if(typeof mapFn!=="undefined"){if(!isCallable(mapFn)){throw new TypeError("Array.from: when provided, the second argument must be a function")}if(arguments.length>2){T=arguments[2]}}var len=toLength(items.length);var A=isCallable(C)?Object(new C(len)):new Array(len);var k=0;var kValue;while(k<len){kValue=items[k];if(mapFn){A[k]=typeof T==="undefined"?mapFn(kValue,k):mapFn.call(T,kValue,k)}else{A[k]=kValue}k+=1}A.length=len;return A}}()}</script>
-{# .matches + .closest 2.0.1 - https://github.com/jonathantneal/closest/releases #}
-<script type="text/javascript">(function(e){if(typeof e.matches!=="function"){e.matches=e.msMatchesSelector||e.mozMatchesSelector||e.webkitMatchesSelector||function e(t){var o=this;var n=(o.document||o.ownerDocument).querySelectorAll(t);var c=0;while(n[c]&&n[c]!==o){++c}return Boolean(n[c])}}if(typeof e.closest!=="function"){e.closest=function e(t){var o=this;while(o&&o.nodeType===1){if(o.matches(t)){return o}o=o.parentNode}return null}}})(window.Element.prototype);</script>
+{% include 'polyfill_array_from.jinja' %}
+{% include 'polyfill_matches_closest.jinja' %}
 
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+{# <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> #}
 
 <script defer src="{{ static("js/serialize.min.js") }}"></script>
 
@@ -55,7 +55,14 @@ h.appendChild(s);
 {% if dragula %}
 <script defer src="{{ static("dragula/3.7.2.mini.js") }}"></script>
 {% endif %}
-{% if DEBUG %}<script src="{{static("js/livereload.mini.js")}}"></script>{% endif %}
+{% if DEBUG %}
+  <script type="text/javascript">
+	window.LiveReloadOptions = {'host': window.location.host.split(':')[0], 'port': 35729};
+  </script>
+
+  <script src="{{static("js/libs/livereload.min.js")}}"></script>
+  {# <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/_s/js/libs/livereload.min.js?snipver=1"></' + 'script>')</script> #}
+{% endif %}
 {% if timeago %}{# https://github.com/hustcc/timeago.js #}{% endif %}
 {% if user.is_superuser %}
 {# <script defer src="{{ static("SIPml-api.js") }}"></script> #}
@@ -139,13 +146,15 @@ h.appendChild(s);
 <script src="{{ static("filesize.js/3.3.0.js") }}"></script>
 {% endif %}
 
-{% if user.is_superuser %}
+{# {% if user.is_superuser %} #}
 <script defer src="{{ static("js/api.min.js") }}"></script>
-{% endif %}
+<script defer src="{{ static("js/users.min.js") }}"></script>
+{# {% endif %} #}
 
 <script defer src="{{ static("js/main.min.js") }}"></script>
+<script defer src="{{ static("core_files.min.js") }}"></script>
 {% if dropzone %}{# should be after main.js (getCookie() function) #}
-<script defer src="{{ static("js/libs/dropzone.min.js") }}"></script>
+  <script defer src="{{ static("js/libs/dropzone.min.js") }}"></script>
 {% if user.is_superuser %}
 <script defer src="{{ static("dropzones/body.min.js") }}"></script>
 {% endif %}

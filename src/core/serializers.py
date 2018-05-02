@@ -15,6 +15,28 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=200)
+    # created = serializers.DateTimeField()
+
+    def validate(self, data):
+        """Check that email and password are valid"""
+        from django.contrib.auth import authenticate
+        # if not (username and password):
+        #     raise serializers.ValidationError("Enter email and password")
+
+        user = authenticate(
+            username=data['email'],
+            password=data['password'],
+        )
+        if user is None:
+            raise serializers.ValidationError("Incorrect email or password")
+        else:
+            data['user'] = user
+        return data
+
+
 class UserSerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField()
     # url = serializers.SerializerMethodField()
@@ -23,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'email', 'is_superuser', 'timezone_str')
+        fields = ('pk', 'email', 'is_superuser', 'timezone_str', 'date_joined')
         # fields = ('id', 'first_name', 'skype', 'phone', 'schedule',
         #           'last_lessons')
         # depth = 1

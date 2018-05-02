@@ -3,10 +3,18 @@ from django import forms
 from .models import UploadedFile, BaseFile
 
 
-class UploadedFileForm(forms.ModelForm):
-    class Meta:
-        fields = ('file',)
-        model = UploadedFile
+class UploadedFileForm(forms.Form):
+    file = forms.FileField(
+        allow_empty_file=True,
+        # validators=[MimetypeValidator('application/pdf')],
+        help_text="Upload a PDF file"
+    )
+
+# class UploadedFileForm(forms.ModelForm):
+#     class Meta:
+#         fields = ('file',)
+#         model = UploadedFile
+#         # allow_empty_file = True
 
 
 class FileAddForm(forms.ModelForm):
@@ -14,10 +22,10 @@ class FileAddForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')  # , None
-        return super(FileAddForm, self).__init__(*args, **kwargs)
+        return super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
-        m = super(FileAddForm, self).save(commit=False)
+        m = super().save(commit=False)
         data = self.cleaned_data
         f = data.get('file', None)
         sha1 = BaseFile.get_sha1(f)
@@ -55,7 +63,7 @@ class FileAddForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.request = kwargs.pop('request', None)
-#         super(FileForm, self).__init__(*args, **kwargs)
+#         super().__init__(*args, **kwargs)
 
 #         obj = kwargs.get('instance')
 #         if obj:  # if changing
@@ -69,7 +77,7 @@ class FileAddForm(forms.ModelForm):
 #             #                            .objects.filter(lng=p.lng)
 
 #     def save(self, commit=True):
-#         m = super(FileForm, self).save(commit=False)
+#         m = super().save(commit=False)
 #         # data = self.cleaned_data
 #         # uploaded_files = request.session.get('uploaded_files_ids', set())
 #         # if f.multiple_chunks():  # big enough to be on disk
@@ -90,7 +98,7 @@ class FileAddForm(forms.ModelForm):
 #         return m
 
 #     def clean(self):
-#         data = super(FileForm, self).clean()
+#         data = super().clean()
 #         # title = data.get("title", "").strip()
 #         # if title:
 #         #     data["title"] = title

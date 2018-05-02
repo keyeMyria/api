@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 COPY requirements.txt /tmp/
 RUN pip install pip -U
-RUN pip install psycopg2 -U
+RUN pip install psycopg2-binary -U
 RUN pip install -r /tmp/requirements.txt --no-cache-dir && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/*

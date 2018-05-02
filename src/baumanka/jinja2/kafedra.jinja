@@ -6,10 +6,10 @@ div.k{padding-top:1rem}
 {% endblock %}
 
 {% block metadescription %}Лекции, РК, чертежи и экзамены для {{kafname}}.
-{% if kaf %}({{kaf.title}}){% endif %}
+{% if department and department.code %}({{department.code}}){% endif %}
 {% endblock %}
 
-{% block title %}Ботва для {{kafname}}{% endblock %}
+{% block title %}Ботва для {{department.code}}{% endblock %}
 
 
 {% block nav1 %}<a href="{{url("index", host=host.name)}}">МГТУ им. Баумана</a>{% endblock %}
@@ -17,15 +17,24 @@ div.k{padding-top:1rem}
 
 {% block header %}
   {{super()}}
-  <div class="">
-	<div class="w pad-sm">
-	  <h1 class="nomar" style="line-height:100%">{{kafname}} - {% if kaf %}{{kaf.title}}{% endif %}</h1>
+  <div class="w pad">
+	<div class="w">
+	  <h1 class="dpt_code bred2" style="line-height:100%;margin-bottom:0.1rem;">{{department.code}}</h1>
+	</div>
+	<div class="w">
+	  <span class="dpt_description" style="line-height:100%;color:#777;margin:0;padding:0">{% if department %}{{department.title}}{% endif %}</span>
+	  {# <p>a</p> #}
 	</div>
 
-	<div class="w pad-sm">
-  	  <a href="{{url("index", host=host.name)}}">Бауманка</a>
-	  &gt;
-	  <a href="{{url("kafedra", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra})}}">{{kafname}}</a>
+	{# path #}
+	<div class="w padt">
+  	  <a href="{{url("index", host=host.name)}}">{{ org }}</a>
+	  /
+	  {% if department.code %}
+		{{department.code}}
+	  {% else %}
+		{{department.title}}
+	  {% endif %}
 	</div>
   </div>
 {% endblock %}
@@ -40,56 +49,58 @@ div.k{padding-top:1rem}
 
 
 {% block content %}
-<div class="">
-{% if kaf %}
-{% for sem in sems %}
-  {% if sem.have_data %}
-	<p><a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem.i, 'path':'/'})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>
-  {% else %}
-	{% if DEBUG %}
-	  <p>DEBUG: no such dir: {{ sem.semdir }}</p>
+  <div class="">
+	{% for period in department.periods %}
+	  {# {% if sem.have_data %} #}
+		{# <p><a href="{{url("sem", host=host.name, kwargs={'faculty':faculty, 'kafedra':kafedra, 'sem':sem.i, 'path':'/'})}}">Семестр {{ sem.i }}{% if sem.i == 12 %} (Диплом){% endif %}</a></p>  #}
+	  <p><a href="{{url("sem", host=host.name, kwargs={'dpt_code':dpt_code, 'period_code':period.slug, 'path':'/'})}}">{{ period.name }}</a></p>
+	  {# {% else %} #}
+	  {# 	{% if DEBUG %} #}
+	  {# 	  <p>DEBUG: no such dir: {{ sem.semdir }}</p> #}
+	  {# 	{% endif %} #}
+	  {# {% endif %} #}
+	{% else %}
+	  Пусто.
+	{% endfor %}
+
+
+	{% if department.practice_comments_text %}
+	  <div class="padtb">
+		{# <h2>Практика на {{department.code}}</h2> #}
+		{# {{render(department.practice_comments_text)|safe}} #}
+		<a href="{{url("practice", host=host.name, kwargs={'dpt_code':dpt_code})}}">Практика на {{department.code}}</a>
+	  </div>
 	{% endif %}
-  {% endif %}
-{% else %}
-{% endfor %}
 
 
-<div class="padtb">
-  <a href="practice">Практика на {{kafname}}</a>
-</div>
+	{# <hr/> #}
 
+	{# <h2>А как мне открыть ... ?</h2> #}
+	{# <pre> #}
+	  {# .djvu - <a target="_blank" href="http://windjview.sourceforge.net">windjview</a> #}
+	  {# .cdw  - чертеж в КОМПАСе (torrents) #}
 
-{# <hr/> #}
+	  {# .ods \ #}
+	  {# .odt  - открывать в <a target="_blank" href="http://www.libreoffice.org/">LibreOffice</a> #}
+	  {# .odp / #}
 
-{# <h2>А как мне открыть ... ?</h2> #}
-{# <pre> #}
-{# .djvu - <a target="_blank" href="http://windjview.sourceforge.net">windjview</a> #}
-{# .cdw  - чертеж в КОМПАСе (torrents) #}
+	  {# .doc  - используйте .odt #}
+	  {# .docx - убейтесь ап стенку, используйте .odt #}
 
-{# .ods \ #}
-{# .odt  - открывать в <a target="_blank" href="http://www.libreoffice.org/">LibreOffice</a> #}
-{# .odp / #}
+	  {# .m    - файл MATLAB (обычный текст) #}
+	  {# .nb   - Mathematica #}
 
-{# .doc  - используйте .odt #}
-{# .docx - убейтесь ап стенку, используйте .odt #}
+	  {# .7z   - архив, открывать в 7zip (http://www.7-zip.org/) #}
+	  {# .zip  - не используйте этот формат (он ущербный, не вдаваясь в детали) #}
+	  {# .rar  - не используйте этот формат (он платный и на этом его достоинства закончились) #}
+	  {# </pre> #}
 
-{# .m    - файл MATLAB (обычный текст) #}
-{# .nb   - Mathematica #}
+	{% if comments_on %}
+	  <h2>Комментарии:</h2>
+	  {% for c in comments.get_descendants() %}
+		{{c}}
+	  {% endfor %}
+	{% endif %}
 
-{# .7z   - архив, открывать в 7zip (http://www.7-zip.org/) #}
-{# .zip  - не используйте этот формат (он ущербный, не вдаваясь в детали) #}
-{# .rar  - не используйте этот формат (он платный и на этом его достоинства закончились) #}
-{# </pre> #}
-
-{% if comments_on %}
-<h2>Комментарии:</h2>
-{% for c in comments.get_descendants() %}
-{{c}}
-{% endfor %}
-{% endif %}
-
-{% else %}
-Пока нету ничего. 404, все дела.
-{% endif %}
-</div>
+  </div>
 {% endblock %}

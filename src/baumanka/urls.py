@@ -1,13 +1,14 @@
+import core
+from core import admin
+from core.urls import urls_base
 from django.urls import path, include
-from django.contrib import admin
-from django.conf.urls.i18n import i18n_patterns
+# from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import RootSitemap
-from core.views import Login
 from .views import (
     Baumanka,
     Kafedra,
-    Sem,
+    PeriodView,
     Practice,
 )
 
@@ -16,26 +17,32 @@ sitemaps = {
     'static': RootSitemap,
 }
 
+
+# urlpatterns =
+# urlpatterns = core.urls.urlpatterns
 urlpatterns = [
+    *core.urls.urlpatterns,
+    # path('_/', include('core.urls', namespace='core')),
+    # path('', include('core.urls', namespace='core')),
+    # path('django/', admin.site.urls),
+
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
 
     path('',  Baumanka.as_view(), name="index"),
-    path('<faculty><int:kafedra>/', Kafedra.as_view(), name="kafedra"),
-    path('<faculty><int:kafedra>/practice',
+    # path('<faculty><int:kafedra>/', Kafedra.as_view(), name="kafedra"),
+
+    # department
+    path('<dpt_code>/', Kafedra.as_view(), name="kafedra"),
+    # path('<dpt_code>/', include('baumanka.core.urls', namespace='dpt')),
+    #
+
+    # practice
+    path('<dpt_code>/practice',
          Practice.as_view(), name="practice"),
-    # path(r'^(?P<F>\w+?)(?P<K>\d+)/sem(?P<sem>\d+)/$',
-    #  Sem.as_view(), name="sem"),
-    path('<faculty><int:kafedra>/sem<int:sem><path:path>',
-         Sem.as_view(), name="sem"),
-    # path(r'^(?P<F>.+)(?P<id>\d+)/', include(faculty.urls,
-    #                                        namespace='faculty')),
-    path('_/', include('core.urls', namespace='core')),
+
+    # sem
+    # path('<faculty><int:kafedra>/sem<int:sem><path:path>',
+    path('<dpt_code>/<period_code><path:path>',
+         PeriodView.as_view(), name="sem"),
 ]
-
-urlpatterns += i18n_patterns(
-    path('login', Login.as_view(), name='login'),
-
-    path('_/django/', admin.site.urls),
-    prefix_default_language=False
-)

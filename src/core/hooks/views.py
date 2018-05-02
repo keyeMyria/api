@@ -3,6 +3,8 @@ import urllib
 import base64
 import requests
 import logging
+import telepot
+# from telepot import Bot
 from django.http import HttpResponse
 # from django.db.models import Count
 # from django.conf import settings
@@ -11,6 +13,10 @@ from OpenSSL.crypto import verify, load_publickey, FILETYPE_PEM, X509
 from OpenSSL.crypto import Error as SignatureError
 from rest_framework.views import APIView
 from django.http import HttpResponseBadRequest  # , JsonResponse
+from django.core.cache import cache
+from django.utils.crypto import get_random_string
+from ..models import User
+from raven.contrib.django.raven_compat.models import client
 log = logging.getLogger(__name__)
 
 
@@ -141,24 +147,118 @@ class Travis(APIView):
 
 # telepot: https://github.com/nickoala/telepot
 class Telegram(APIView):
-    def post(self, request, **kwargs):
+    key = 'user-telegram-{}'
+
+    def get(self, request, **kwargs):
+        '''Makes possible to associate users's account with Telegram's account.
+
+        This method is invoked when a registered user click "Connect
+        Telegram" in his profile page.
+
+        '''
         token = kwargs.get('token', None)
+        user = self.request.user
+        if user.is_authenticated and not token:
+            token = get_random_string(length=32)
+            cache.set(
+                self.key.format(token),
+                user.pk,
+                timeout=5*60,
+            )
+            return HttpResponse(token)
+        else:
+            return HttpResponse('')
 
-        # request.body - bytes
+    def post(self, request, **kwargs):
+        # Telegram token is defined in URLs
+        token = kwargs.get('token', None)
+        bot = telepot.Bot(token)
+
+        # request.body is "bytes"
         s = request.body.decode("utf-8")  # string
-        j = json.loads(s)
-        message = j['message']
-        text = message['text']
+        msg = json.loads(s)
+        update_id = None
+        if 'update_id' in msg:
+            for key in msg:
+                if key == 'update_id':
+                    update_id = msg['update_id']
+                else:
+                    msg = msg[key]
+        # Example:
+        # {message: {chat: {}, date: 1515851945, from: {}, message_id:
+        # 174, text: H}, update_id: 185696256}
 
-        from telepot import Bot
-        bot = Bot(token)
-        bot.sendMessage(
-            message['chat']['id'],  # chat_id,
-            "echo: "+text,  # text,
-            # parse_mode=None,
-            # disable_web_page_preview=None,
-            # disable_notification=None,
-            # reply_to_message_id=None,
-            # reply_markup=None
-        )
-        return HttpResponse("ok")
+        # try:
+        #     message = j['message']
+        # except Exception:
+        #     print(j)
+        #     client.captureException()
+
+        try:
+            flavor = telepot.flavor(msg)
+        except Exception:
+            client.captureException()
+            return HttpResponse("")
+
+        # chat_id = message['chat']['id']
+
+        if flavor == 'callback_query':
+            query_id, from_id, query_data = telepot.flance(msg)[1]
+            # query_id == 6479684549687354674     (really big)
+            # query_data == "publish" / "skip" / "spam"
+            (chat_id, message_id) = telepot.origin_identifier(msg)
+            user = None
+            try:
+                user = User.objects.get(telegram_chat_id=chat_id)
+            except Exception:
+                pass
+
+            bot.answerCallbackQuery(
+                query_id,
+                text=str(user)+': '+str(query_id)
+            )
+            bot.deleteMessage(telepot.origin_identifier(msg))
+            # telepot.origin_identifier(msg)
+            # bot.sendMessage(
+            #     chat_id,
+            #     "echo2: "+text,
+            # )
+
+        # This part is invoked when a new message is received or when a
+        # user starts a chat with my bot.
+        elif flavor == 'chat':
+            content_type, chat_type, chat_id = telepot.flance(msg)[1]
+            text = msg['text']
+
+            # Someone's pressed Telegram's "/start" button:
+            if text.startswith('/start '):
+                words = text.split()
+                token = words[-1]
+                user_id = cache.get(self.key.format(token))
+                if user_id:
+                    try:
+                        user = User.objects.get(pk=user_id)
+                        user.telegram_chat_id = chat_id
+                        user.save()
+                        bot.sendMessage(
+                            chat_id,
+                            "Привет, "+str(user),
+                        )
+                    except User.DoesNotExist:
+                        client.captureException()
+                self.key.format(token)
+
+            # Any other message here. Answer the prayer:
+            else:
+                bot.sendMessage(
+                    chat_id,
+                    "echo2: "+text,
+                    # parse_mode=None,
+                    # disable_web_page_preview=None,
+                    # disable_notification=None,
+                    # reply_to_message_id=None,
+                    # reply_markup=None
+                )
+        else:
+            log.error('unknown message: '+str(msg))
+        return HttpResponse("")

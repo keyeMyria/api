@@ -1,18 +1,20 @@
 import os
 import sys
 import urllib
+import hashlib
 # import paramiko
+import json
 from . import apt, remote
 from celery import shared_task
 from core import confirm, get_git_root
 # from django.conf import settings
+from subprocess import Popen
 import logging
 log = logging.getLogger(__name__)
 
 
 @shared_task
 def install_pkg(pkg_name):
-    from subprocess import Popen
     import platform
     # import subprocess
 
@@ -44,7 +46,6 @@ def install_pkg(pkg_name):
 
 def service_is_running(service):
     # systemctl is-active sshd
-    from subprocess import Popen
     exit_code = Popen(['systemctl', '-q', 'is-active', service]).wait()
     return exit_code == 0
 
@@ -73,9 +74,56 @@ def configure_docker():
     print(cli.images.list())
 
 
+def setup_info(key, value=None):
+    root = get_git_root()
+    info_file = os.path.join(root, 'tmp', 'info.json')
+    info = {}
+    try:
+        info = json.load(open(info_file, 'r'))
+    except Exception:
+        pass
+
+    if value:
+        info[key] = value
+        with open(info_file, 'w') as outfile:
+            json.dump(info, outfile)
+    else:
+        return info.get(key)
+
+
+# This can be executed when no packages are installed yet (including
+# Celery's shared_task)
+#
+# @shared_task
+def requirements(*args):
+    """$(vebin)/pip install -r docker/requirements.txt"""
+    key = 'requirements-hash'
+    root = get_git_root()
+    reqs_file = os.path.join(root, 'docker', 'requirements.txt')
+    hasher = hashlib.sha1()
+    with open(reqs_file, "rb") as f:
+        buf = f.read(32768)
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = f.read(32768)
+    hash = hasher.hexdigest()
+
+    if setup_info(key) == hash:
+        log.warning('requirements.txt: no changes. Skipping pip install.')
+    else:
+        pip = 'tmp/ve/bin/pip'
+        p = Popen(
+            [pip, 'install', '-r', reqs_file],
+            cwd=root
+        )
+        p.communicate()
+        p.wait()
+        if p.returncode == 0:
+            setup_info(key, hash)
+
+
 def install(program):
     from shutil import which
-    from subprocess import Popen
     if which(program) is not None:
 
         if program == 'docker':

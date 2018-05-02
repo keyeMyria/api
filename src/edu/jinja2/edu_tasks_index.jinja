@@ -1,0 +1,123 @@
+{% extends "core_template.jinja" %}
+
+
+{% block title %}Задачи{% endblock %}
+
+
+{% block head %}
+  {{super()}}
+  <script defer src="{{ static("js/edu_tasks.min.js") }}"></script>
+{% endblock %}
+
+
+{% block style %}
+  {{super()}}
+  div.task{color:#000;
+  {# font-family: "Times New Roman", Times, serif; #}
+  font-size:17px;line-height:100% !important;
+  max-width:700px;
+  }
+  div.task p{line-height:110% !important;}
+  div.task table{margin: 0 auto;}
+  div.task table,th,td{border:1px solid #000;}
+  div.task td{padding: 0.5rem}
+  div.controls{font-size: 0.8em}
+{% endblock %}
+
+
+{# {% block header2 %} #}
+{#   <div class="bred2 padlr2-sm" style="height:100%"> #}
+{# 	asd #}
+{#   </div> #}
+{# {% endblock %} #}
+{# {% block midheader %}<h1>Вопросы</h1>{% endblock %} #}
+
+
+{% block content %}
+  <form class="search padb" action="{{request.path}}">
+	<input name="" type="text" value="" placeholder="Поиск задач"/>
+	<span class="search_info hide" style="font-size:0.8em;color:#777">Результатов:
+	  <span id="search_count"></span>
+	  <span class="right">Всего:
+		<span class="total"></span>
+	  </span>
+	</span>
+  </form>
+
+  <div id="task_list">
+	{# {% for task in tasks %} #}
+	{#   <div class="task flex col" style="border-bottom:1px dashed #ddd"> #}
+	{# 	<input name="pk" type="hidden" value="{{task.pk}}"/> #}
+	{# 	<div class="text font-book">{{task.as_html | safe}}</div> #}
+	{# 	<div class="editbox hide"> #}
+	{# 	  <form action=""> #}
+	{# 		<textarea id="" name="" style="width:100%;min-height:50px;margin:0"></textarea> #}
+	{# 	  </form> #}
+	{# 	</div> #}
+	{# 	{\# <div> #\} #}
+	{# 	  {\# 	{{task.debug}} #\} #}
+	{# 	  {\# </div> #\} #}
+	{# 	<div class="flex controls martb"> #}
+	{# 	  <div class="padtb bred2" style=""> #}
+	{# 		{\# {% if task.solution_status == task.NO_SOLUTION %} #\} #}
+	{# 		{% if task.solution_status == task.SOLVED %} #}
+	{# 		  <a class="hidden2" href="#">Открыть решение</a> #}
+	{# 		{% else %} #}
+	{# 		  {\# <a class="hidden2" href="#">Предложить решение</a> #\} #}
+	{# 		{% endif %} #}
+	{# 	  </div> #}
+	{# 	  <div class="bred2" style="text-align:right"> #}
+	{# 		<p> #}
+	{# 		  <a class="hidden2" href="#" onclick="window.tasks.editTask(this);return false;">Редактировать</a> #}
+	{# 		</p> #}
+	{# 	  </div> #}
+	{# 	</div> #}
+	{#   </div> #}
+	{# {% else %} #}
+	{# {% endfor %} #}
+	<template id="new_task_template">
+	  <div class="task flex col" style="border-bottom:1px dashed #999">
+		<input name="pk" type="hidden" value=""/>
+		<div class="text font-book"></div>
+		<div class="editbox hide">
+		  <form action="">
+			<textarea id="" name="" style="width:100%;min-height:50px;margin:0"></textarea>
+		  </form>
+		</div>
+		<div class="flex controls martb">
+		  <div class="bred2" style="">
+			{# {% if task.solution_status == task.NO_SOLUTION %} #}
+			{# {% if task.solution_status == task.SOLVED %} #}
+			<a class="solution hidden2" href="">Открыть решение</a>
+			{# {% else %} #}
+			{# <a class="hidden2" href="#">Предложить решение</a> #}
+			{# {% endif %} #}
+		  </div>
+		  <div class="bred2" style="text-align:right">
+			<a class="hidden2" href="#" onclick="window.tasks.editTask(this);return false;">Редактировать</a>
+		  </div>
+		</div>
+	  </div>
+	</template>
+  </div>
+  <div class="pagination BtnGroup mr-2 mart"></div>
+  <template id="pagination_button">
+	<button class="btn BtnGroup-item" type="button"></button>
+  </template>
+{% endblock %}
+
+{% block right %}
+  <div class="bredx2 pad" style="max-width:200px;min-width:150px;font-size:0.85rem">
+	<form action="">
+	  {{ csrf_input }}
+	  {% if user.is_superuser %}
+		<h4>Опубликована</h4>
+		<label><input name="published" type="radio" value=""/>Да</label> <br/>
+		<label><input name="published" type="radio" value=""/>Нет</label><br/>
+		<label><input name="published" type="radio" value=""/>Не важно</label>
+		{# <label><input name="published" type="checkbox" value=""/></label> #}
+	  {% endif %}
+
+	</form>
+  </div>
+{% endblock %}

@@ -19,7 +19,7 @@ class Base(
         BaseView):
 
     def get_context_data(self, **kwargs):
-        c = super(Base, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c['katex'] = True
 
         c['year'] = kwargs.get('year', None)
@@ -81,7 +81,7 @@ class Index(Base):
     template_name = "ege_index.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(Index, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c['subjects'] = Subject.objects.filter(published=True) \
                                        .order_by('name')
         return c
@@ -91,7 +91,7 @@ class YearView(Base):
     template_name = "ege_year.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(YearView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c['year'] = kwargs.get('year', c.get('now', now()).year)
         c['tasks'] = EDUTask.objects.filter()
         return c
@@ -101,7 +101,7 @@ class SubjectView(Base):
     template_name = "ege_subject.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(SubjectView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c['year'] = kwargs.get('year', None)
         if not c['year']:
             c['year'] = c.get('now', now()).year
@@ -150,7 +150,7 @@ class ExamTaskView(SubjectView):
     template_name = "ege_subject_exam_task.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(ExamTaskView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         id = kwargs.get('id', None)
         c['exam_task'] = Task.objects.get(pk=id)
         return c

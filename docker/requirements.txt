@@ -34,8 +34,9 @@ django>=2.0
 # https://github.com/django/django/releases
 #git+git://github.com/django/django.git@1.7
 
-django-cache-utils
-django-cacheops                # https://pypi.python.org/pypi/django-cacheops
+# django-cache-utils
+django-cacheops>=4.0.4  # https://pypi.python.org/pypi/django-cacheops
+django-pickling>=1.0  # used by Cacheops (to make serialization faster)
 django-debug-toolbar>=1.2.1    # https://pypi.python.org/pypi/django-debug-toolbar
 django-dirtyfields
 django-extensions              # https://github.com/django-extensions/django-extensions
@@ -51,7 +52,23 @@ django-cors-headers
 django-braces
 
 
+# api:
 djangorestframework
+djangorestframework_simplejwt
+
+# drf-jwt: http://getblimp.github.io/django-rest-framework-jwt
+git+git://github.com/GetBlimp/django-rest-framework-jwt@0a0bd402ec21fd6b9a5f715d114411836fbb2923
+
+
+graphene>=2.1.0  # https://github.com/graphql-python/graphene/releases
+django-filter
+# graphene-django
+git+git://github.com/graphql-python/graphene-django.git@a480a39713d3392dc3a7cee9565989a713d05856
+django-graphql-jwt
+
+# django-tastypie
+git+git://github.com/django-tastypie/django-tastypie@9879a84850d558d127e8becd0b9de574cf9be103
+
 
 
 django-jinja
@@ -128,10 +145,14 @@ pytest-pep8
 pytest-cache
 
 # What is better?
-# 1. python-social-auth
-# 2. django-allauth
+# 1. python-social-auth (updated in feb 2017)
+# 2. django-allauth (https://github.com/pennersr/django-allauth)
+# 3. django-social-auth (deprecated)
 python-social-auth
 # django-allauth
+#git+git://github.com/pennersr/django-allauth@a523e1b7522d283f97fb55b783dfd3fde33a2d49
+git+git://github.com/pashinin/django-allauth@master
+
 
 raven>=5.32.0
 requests
@@ -170,11 +191,19 @@ django-gravatar2
 jobtastic   # plugin for Celery (progress, status of a task, out of date)
 
 # django-celery-beat  # keep Celery schedule in a db
+django-celery-beat==1.1.1
 # Release v1.0.2 has problems (can't enable/disable tasks)
 # git+git://github.com/celery/django-celery-beat.git
 # git+git://github.com/DDevine/django-celery-beat@6c92cc67ca2a2494215d5557f2d5a5f3777da145#egg=django_celery_beat
-git+git://github.com/pashinin/django-celery-beat.git
-git+git://github.com/celery/celery@a20e7922b3641d03110df2b770b7480c3f32b42c#egg=celery
+# git+git://github.com/pashinin/django-celery-beat.git
+# LAST working:
+# git+git://github.com/celery/celery@a20e7922b3641d03110df2b770b7480c3f32b42c#egg=celery
+# Current:
+git+git://github.com/celery/celery@85eed30811c81be05abc19bc1660963d9d3baec2
+
+# django-celery-results
+# 4cc5f274b5d59d72f243e15d2d67c02a410b8b1d
+git+git://github.com/celery/django-celery-results@4cc5f274b5d59d72f243e15d2d67c02a410b8b1d
 
 # vine        # for celery (amqp)
 #django-celery          # err with py3
@@ -196,10 +225,14 @@ unidecode
 
 
 # "channels", not "django-channels"!
-channels>=1.1.8
+channels==1.1.8
+# channels>=2.0.2
+# git+git://github.com/django/channels.git@multiplexing
 asgi_redis>=1.4.3  # Redis cluster sucks (but can be done with dynomite)
-asgi_rabbitmq      # Can't make RabbitMQ work
-channels_api
+# asgi_rabbitmq      # Can't make RabbitMQ work
+# channels_api
+git+git://github.com/pashinin/channels-api.git
+
 
 # kafka-python   # I use Redis so far
 
@@ -256,3 +289,6 @@ sh>=1.12.13
 
 # Hashicorp Vault
 hvac
+
+# code analysis
+pylint

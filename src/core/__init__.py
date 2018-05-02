@@ -4,6 +4,7 @@ import datetime
 # import distutils
 from django.utils.timezone import utc
 from django.contrib import sitemaps
+from rest_framework.pagination import CursorPagination as CP
 import logging
 log = logging.getLogger(__name__)
 
@@ -12,6 +13,13 @@ try:
     morph = pymorphy2.MorphAnalyzer()
 except Exception:
     log.error('install pymorphy2')
+
+
+class CursorPagination(CP):
+    ordering = 'pk'
+    # ordering = '-created'
+    # ordering = 'date_joined'
+    # ordering = '-date_joined'
 
 
 try:

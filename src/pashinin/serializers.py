@@ -26,6 +26,14 @@ class StudentSerializerID(serializers.ModelSerializer):
         depth = 1
 
 
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        # fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
+        fields = ('id', 'first_name')
+        depth = 1
+
+
 class CourseSerializer(serializers.ModelSerializer):
     # schedule = serializers.SerializerMethodField()
     # last_lessons = serializers.SerializerMethodField()

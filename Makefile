@@ -9,7 +9,8 @@ container = pashinin/pashinin.com:latest
 manage = $(python) src/manage.py
 os = `lsb_release -i | cut -zb 17-`
 codename = `lsb_release -cs`
-settings=pashinin.settings
+# settings=pashinin.settings
+settings=`cat src/current_app.txt`.settings
 # docker-compose=export UID; docker-compose -f docker/docker-compose.yml
 docker-compose=export UID; docker-compose
 dockermanage.py = $(docker-compose) run --rm django python ./manage.py
@@ -23,7 +24,7 @@ sass = ./node_modules/node-sass/bin/node-sass --include-path node_modules
 
 all: install-docker-compose install-docker
 	systemctl status docker | grep Active: | grep " active " -cq || systemctl start docker
-	$(docker-compose) up -d db django vnu || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
+	$(docker-compose) up -d db django vnu celery || printf "* * * * *\n* %s\n* * * * *\n" "Have you logged out and back in after you were added to docker group?"
 	[ ! -f tmp/run-migrations ] || (make migrate && make loaddata && rm -f tmp/run-migrations)
 #	gulp
 # (cd docker;export UID; docker-compose up gulp)
@@ -50,6 +51,23 @@ stable"
 
 docker-rebuild:
 	docker build -t pashinin.com docker/
+
+local-restart:
+	sudo systemctl restart daphne
+	sudo systemctl restart worker
+#	sudo systemctl stop worker-root
+#	sudo systemctl restart worker-root
+	sudo systemctl restart nginx
+	sudo systemctl restart celery-root
+	sudo systemctl restart celery
+
+
+local-stop:
+	sudo systemctl stop daphne
+	sudo systemctl stop worker
+	sudo systemctl stop worker-root
+
+
 
 # Run "docker login" first
 docker-push:
@@ -107,7 +125,12 @@ gulp:
 migrate:
 	$(docker-compose) run --rm django ./manage.py makemigrations --settings=$(settings)
 	$(docker-compose) run --rm django ./manage.py migrate --settings=$(settings)
+# $(docker-compose) run --rm django ./manage.py migrate --settings=$(settings)
+# django_celery_results
 # (cd docker;docker-compose run --rm django ./manage.py migrate --run-syncdb --settings=$(settings))
+
+celery:
+	$(docker-compose) run --rm django celery -A pashinin worker -l info
 
 loaddata:
 	$(docker-compose) run --rm django ./manage.py loaddata --settings=$(settings) \
@@ -122,7 +145,7 @@ psql:
 	$(docker-compose) run --rm db psql -h db -U pashinin  # need user here (or will be "root")
 
 stop:
-	$(docker-compose) stop
+	$(docker-compose) stop || docker stop $(docker ps -a -q)
 #	docker update --restart=no 0fed1e862c2c
 
 stop-redis-1:
@@ -130,8 +153,6 @@ stop-redis-1:
 
 removedb:
 	docker stop db || true && docker rm db || true
-#	[ "$(docker ps -a | grep db)" ] && docker container stop db
-#	[ "$(docker ps -a | grep db)" ] && docker container rm db
 
 recreate-db: removedb
 	chmod 777 tmp
@@ -139,20 +160,6 @@ recreate-db: removedb
 
 db-up:
 	$(docker-compose) up db
-
-tmux:
-	export LANG=en_US.UTF-8
-	tmux new-session -s dev -d || echo "session created"
-	tmux select-window -t runserver || tmux new-window -n runserver
-	tmux send-keys -t runserver C-m 'make django' C-m
-	tmux select-window -t gulp || tmux new-window -n gulp
-	tmux send-keys -t gulp C-m 'gulp' C-m
-	tmux select-window -t runserver
-	tmux attach-session -t dev -d
-# tmux select-window -t worker1 || tmux new-window -n worker1
-# tmux send-keys -t worker1 C-m 'make worker1' C-m
-# tmux select-window -t worker2 || tmux new-window -n worker2
-# tmux send-keys -t worker2 C-m 'make worker2' C-m
 
 worker1:
 	docker exec --user www-data -it $(vm) ./manage.py runworker --exclude-channels=root.* --threads 4
@@ -176,7 +183,8 @@ rparser:
 	$(docker-compose) restart django
 
 requirements:
-	$(vebin)/pip install -r docker/requirements.txt
+	(cd src; ../tmp/ve/bin/python -c 'from core.install import requirements;requirements()')
+#	$(vebin)/pip install -r docker/requirements.txt
 	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" == "pypy3" ]] ; then pip install psycopg2cffi; fi;
 	if [[ "$(TRAVIS)" == "true" ]] && [[ "$(TRAVIS_PYTHON_VERSION)" != "pypy3" ]] ; then pip install psycopg2; fi;
 	if [[ "$(TRAVIS)" == "" ]] ; then $(vebin)/pip install psycopg2; fi;
@@ -288,9 +296,8 @@ shell:
 	if [[ "$(DISPLAY)" == "" ]] ; then sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell; fi;
 	if [[ "$(DISPLAY)" != "" ]] ; then $(dockermanage.py) shell_plus; fi;
 
-redis-cli:
-	if [[ "$(DISPLAY)" != "" ]] ; then $(docker-compose) run --rm redis_1 redis-cli -h redis_1 -p 6379; fi;
-#	docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
+shell-prod:
+	sudo -H -u www-data tmp/ve/bin/python ./src/manage.py shell
 
 locale-docker:
 	$(dockermanage.py) makemessages -l ru --no-obsolete --no-wrap --traceback --ignore=katex* -e jinja,py
@@ -321,7 +328,8 @@ render:
 
 # docker kill $(docker ps -q)
 clean:
-	docker rm `docker ps --no-trunc -aq`
+	docker system prune
+#	docker rm `docker ps --no-trunc -aq`
 
 hosts:
 	(cd configs; sudo python hosts.py)
@@ -333,7 +341,7 @@ files:
 # Javascript
 js_files = find ./src -type f -name "*.js" -not -name "*.min.js" -not -path "*/js/libs/*" -not -name "*.mini.js" -print | parallel --no-notice
 
-# 2 step. Will fix require is not defined
+# 2 step. Will fix "require is not defined"
 browserify-js:
 	$(js_files) ./node_modules/browserify/bin/cmd.js {.}.min.js -o {.}.min.js
 
@@ -387,6 +395,8 @@ jslibs:
 	cp -f node_modules/raven-js/dist/raven.min.js src/core/static/js/libs/
 	cp -f node_modules/raven-js/dist/raven.min.js.map src/core/static/js/libs/
 
+	cp -f node_modules/livereload-js/dist/livereload.js src/core/static/js/libs/livereload.min.js
+
 	$(uglifyjs) node_modules/dropzone/dist/dropzone.js -m -o src/core/static/js/libs/dropzone.min.js
 	$(uglifyjs) node_modules/whatwg-fetch/fetch.js -m -o src/core/static/js/libs/fetch.min.js
 
@@ -399,13 +409,18 @@ jslibs:
 install:
 	make prepare
 	make config-links
+	(cd src; `python ../configs/makeve.py` manage.py migrate)
 #	TODO: Install Sentry (make it highly available too)
 #	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_project_locally;install_project_locally()')
 #	(cd src; ../tmp/ve/bin/python -c 'from core.install import install_vault;install_vault()')
 #	(cd src; ../tmp/ve/bin/python -c 'from core.install import stolon;stolon.install()')
 	sudo systemctl daemon-reload
+
+	sudo systemctl enable worker.service
 	sudo systemctl stop worker.service
 	sudo systemctl start worker.service
+
+	sudo systemctl enable daphne.service
 	sudo systemctl stop daphne.service
 	sudo systemctl start daphne.service
 	sudo service nginx reload

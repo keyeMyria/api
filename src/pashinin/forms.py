@@ -7,7 +7,7 @@ class CourseEnrollForm(forms.Form):
     comment = forms.CharField(label='Комментарий', required=False)
 
     def __init__(self, *args, **kwargs):
-        super(CourseEnrollForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # self.fields['name'].error_messages = {
         #     'required': 'custom required message'
         # }
@@ -41,7 +41,7 @@ class Enroll(forms.Form):
     message = forms.CharField(label='Question', required=False)
 
     def __init__(self, *args, **kwargs):
-        super(Enroll, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # self.fields['name'].error_messages = {
         #     'required': 'custom required message'
         # }
@@ -75,7 +75,7 @@ class AddStudent(forms.Form):
     message = forms.CharField(label='Question', required=False)
 
     def __init__(self, *args, **kwargs):
-        super(AddStudent, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # self.fields['name'].error_messages = {
         #     'required': 'custom required message'
         # }

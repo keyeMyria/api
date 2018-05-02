@@ -1,22 +1,27 @@
 from django.core.paginator import Paginator
+
 from channels_api.bindings import ResourceBinding
 from channels_api.permissions import BasePermission
+
 from .models import Article
 from .serializers import ArticleSerializer
 from channels_api.decorators import list_action
 from rest_framework.exceptions import NotFound
 
 
-class Nobody(BasePermission):
+class IsAuthor(BasePermission):
     def has_permission(self, user, action, pk):
-        # print(action, user)
         if action == "delete":
-            a = Article.objects.get(pk=pk)
-            return a.author == user or user.is_superuser
-        return True
-        if action == "subscribe":
-            return True
-        return False
+            try:
+                article = Article.objects.get(pk=pk)
+                return article.author == user
+            except Exception:
+                return False
+        else:
+            return False
+        # if action == "subscribe":
+        #     return True
+        # return False
 
 
 class ArticleBinding(ResourceBinding):
@@ -24,15 +29,18 @@ class ArticleBinding(ResourceBinding):
     stream = "articles"
     serializer_class = ArticleSerializer
     queryset = Article.objects.filter()
-    permission_classes = (Nobody,)
+    permission_classes = (
+        # IsSuperuser,
+        IsAuthor,
+    )
 
     @list_action()
     def list(self, data, **kwargs):
         if not data:
             data = {}
         queryset = self.get_queryset().filter(published=True)
-        p = Paginator(queryset, 10)
-        data = p.page(1)
+        paginator = Paginator(queryset, 10)
+        data = paginator.page(data.get('page', 1))
         serializer = self.get_serializer(data, many=True)
         return serializer.data, 200
 
@@ -66,12 +74,3 @@ class ArticleBinding(ResourceBinding):
             'count': paginator.count,
         }, 200
         # return report, 200
-
-
-# class DraftsBinding(ResourceBinding):
-#     model = Article
-#     stream = "articles"
-#     serializer_class = ArticleSerializer
-#     queryset = Article.objects.filter(published=False)
-
-#     permission_classes = (Nobody,)

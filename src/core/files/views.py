@@ -6,7 +6,7 @@ from .models import BaseFile as File, UploadedFile
 from core import now
 from .tasks import ensure_fs_ready
 from .forms import UploadedFileForm
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 # from django.db.models import Count
 from django.conf import settings
 # from django.utils.translation import gettext_lazy as _
@@ -94,6 +94,44 @@ class Upload(BaseView):
         ctx = self.get_context_data(**kwargs)
         user = ctx['user']
         form = UploadedFileForm(request.POST, request.FILES)
+        files = []
+        for field in request.FILES:
+            log.debug(request.FILES[field])
+            new_file = UploadedFile(file=request.FILES[field])
+            # Uploader should have access to his file
+            # Save it in a session for Anons
+            if user.is_anonymous:
+                if 'files' not in request.session:
+                    # request.session['files'] = [upload_md5]
+                    pass
+                else:
+                    # request.session['files'] += [upload_md5]
+                    pass
+            else:
+                new_file.uploader = user
+
+            new_file.save()
+            from .tasks import move_upload_to_files
+            f = move_upload_to_files(new_file)
+            files.append({'sha1': f.sha1})
+
+            # 'BaseFile' object has no attribute 'uploader'
+            # if not f.uploader and user is not None and not user.is_anonymous:
+            #     f.uploader = user
+            #     f.save()
+
+            # TODO: optimize uploaded JPGs
+            #
+            # jpegtran -copy none -optimize -perfect inputimage.jpg >
+            # outputimage.jpg
+
+        # user.avatar = Image.from_file(f)
+
+        return JsonResponse({'files': files})
+
+
+        return HttpResponse(json.dumps({'errors': ['asd']}),
+                            content_type='application/json')
         if form.is_valid():
             new_file = UploadedFile(file=request.FILES['file'])
 
@@ -169,7 +207,7 @@ class Files(
     template_name = "core_files.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(Files, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
 
         c['files_count'] = File.objects.count()
         c['files'] = File.objects.filter().order_by('-added')[:10]
@@ -192,7 +230,13 @@ class DirView(BaseView):
     dir = None
 
     def get_context_data(self, **kwargs):
-        c = super(DirView, self).get_context_data(**kwargs)
+        """asd
+
+        levels - ['path', 'to', 'dir']
+        paths - ['/path', '/path/to', '/path/to/dir']
+
+        """
+        c = super().get_context_data(**kwargs)
         c['files'] = []
         c['dirs'] = []
         path = kwargs.get('path', '')
@@ -200,17 +244,20 @@ class DirView(BaseView):
             path = ''
 
         path = path.strip('/')
-        # levels - ['path', 'to', 'dir']
-        # paths - ['path', 'path/to', 'path/to/dir']
+
         c['levels'] = path.split('/')
+        # c['levels'][0] = '/'+c['levels'][0]
         c['paths'] = list(c['levels'])
+
+        print(c['paths'])
         try:
             c['levels'].remove('')
         except ValueError:
             pass
-        for ind, el in enumerate(c['levels']):
-            sublist = c['levels'][0:ind+1]
-            c['paths'][ind] = os.path.join(*sublist)
+        for i, el in enumerate(c['levels']):
+            sublist = c['levels'][0:i+1]
+            c['paths'][i] = '/'+os.path.join(*sublist)
+        # c['paths'][0] = '/'+c['paths'][0]
 
         j = os.path.join(self.dir, path)
         # log.debug((self.dir, path))

@@ -8,8 +8,8 @@ services:
     # trying this:
 
     # image: pashinin/pashinin.com:latest
-    # image: pashinin.com
-    build: docker/
+    image: pashinin.com
+    # build: docker/
     # container_name: django
 
     privileged: true
@@ -32,6 +32,42 @@ services:
       - "8000:8000"
       - "81:8001"
       # - "35729:35729"
+    volumes:
+      - ./:/var/www/project
+      - ../rparser:/var/www/rparser
+      - ./tmp/files:/mnt/files
+    depends_on:
+      - redis
+      - db
+
+    links:
+      - db
+      - redis
+      - vnu
+
+    extra_hosts:
+      - "pashinin.com:10.254.239.1"
+
+    environment:
+      # DJANGO_SETTINGS_MODULE: pashinin.settings
+      IPYTHONDIR: /var/www/project/.ipython
+      DOCKER: "true"
+
+  celery:
+    restart: on-failure:2
+    image: pashinin.com
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+
+    command: celery -A pashinin worker -l info
+
+    stdin_open: true
+    tty: true
+
+    user: $UID
     volumes:
       - ./:/var/www/project
       - ../rparser:/var/www/rparser
@@ -97,10 +133,19 @@ services:
     image: pashinin/vnu:latest
     # image: vnu
     user: $UID
-    restart: always
+    # restart: always
+    restart: on-failure:2
 
     volumes:
       - ./:/var/www/project
 
+
+  # celery:
+  #   image: pashinin.com
+  #   user: $UID
+  #   restart: on-failure:2
+
+  #   volumes:
+  #     - ./:/var/www/project
 
 # restart: on-failure:10

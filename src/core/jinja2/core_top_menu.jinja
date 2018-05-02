@@ -1,5 +1,5 @@
 <div id="top-bar" style="background-color:#fafafb;overflow:visible;box-shadow: 0 1px 0 rgba(12,13,14,0.15);z-index:2;height:50px">
-  <div class="w" style="overflow:visible;">
+  <div class="w padl3" style="overflow:visible;">
 	<div class="flex">
 	  {% if menu %}
 		<div id="top-bar-left" style="line-height:35px;overflow:hidden;flex-grow:0">
@@ -65,22 +65,25 @@
 		<div id="loginbox" class="hide popup" style="top:50px">
 		  {% if user.is_authenticated %}
 			 {# and not user.is_lazy #}
+			<a class="padlr" href="{{url("profile", host=host.name)}}">Profile</a>
+
 			{# Add some superuser menu items: #}
 			{% if user.is_superuser %}
 			  <a class="padlr" href="{{url("index", host=host.name)}}">Main page</a>
-			  <a class="padlr" href="{{url("core:admin:index", host=host.name)}}">Django admin</a>
-			  <a class="padlr" href="{{url("core:files:index", host=host.name)}}">Files</a>
-			  <a class="padlr" href="{{url("core:celery", host=host.name)}}">Celery</a>
-			  <a class="padlr" href="{{url("core:nginx", host=host.name)}}">Nginx</a>
-			  <a class="padlr" href="{{url("core:updates", host=host.name)}}">Updates</a>
+			  <a class="padlr" href="{{url("cluster", host=host.name)}}">Cluster</a>
+			  <a class="padlr" href="{{url("admin:index", host=host.name)}}">Django admin</a>
+			  <a class="padlr" href="{{url("files:index", host=host.name)}}">Files</a>
+			  <a class="padlr" href="{{url("celery", host=host.name)}}">Celery</a>
+			  <a class="padlr" href="{{url("nginx", host=host.name)}}">Nginx</a>
+			  <a class="padlr" href="{{url("updates", host=host.name)}}">Updates</a>
 			{% endif %}
 
-			<a id="exit" class="padlr" href="{{url("core:logout", host=host.name)}}">Выход</a>
+			<a id="exit" class="padlr" href="{{url("logout", host=host.name)}}">Выход</a>
 		  {% else %} {# user is not authenticated or is lazy #}
 			{# {% if user.is_lazy %} #}
 			{#   <p class="padlr">Временный аккаунт</p> #}
 			{# {% endif %} #}
-			<a class="padlr" href="{{url("core:login", host=host.name)}}?next={{request.get_full_path()}}">Войти</a>
+			<a class="padlr" href="{{url("login", host=host.name)}}?next={{request.get_full_path()}}">Войти</a>
 		  {% endif %}
 		</div>
 	  </div>

@@ -17,7 +17,7 @@ class ArticlesBase(
         Base
 ):
     def get_context_data(self, **kwargs):
-        c = super(ArticlesBase, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c["menu"].current = 'articles'
         c['timeago'] = True
         c['momentjs'] = True
@@ -28,7 +28,7 @@ class ArticleView(ArticlesBase):
     template_name = "articles_article.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(ArticleView, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         # c["search"] = True
         c["hljs"] = True
         slug = self.kwargs.get('slug', '')
@@ -77,7 +77,7 @@ class Articles(ArticlesBase):
     template_name = "articles_articles.jinja"
 
     def get_context_data(self, **kwargs):
-        c = super(Articles, self).get_context_data(**kwargs)
+        c = super().get_context_data(**kwargs)
         c['stats'] = {
             'count': Article.objects.count(),
             'drafts': Article.objects.filter(published=False).count(),
