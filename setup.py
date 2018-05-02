@@ -2,8 +2,9 @@
 # -*- mode: python -*-
 # PYTHON_ARGCOMPLETE_OK
 from __future__ import print_function
-import subprocess
 import os
+import sys
+import subprocess
 from subprocess import Popen
 
 try:
@@ -44,11 +45,13 @@ def start_containers(**kwargs):
         ).communicate()[1].decode('utf-8').strip()
         if 'Couldn\'t connect to Docker daemon' in stderr and \
            kwargs.get('start', True):
-            print('Docker is not started? Starting...', flush=True)
+            print('Docker is not started?')
             # Popen('sudo service docker start'.split()).communicate()
-            run('sudo service docker start')
-            print('Docker service started!')
-            start_containers(**{**kwargs, 'start': False})
+            # run('sudo service docker start')
+            print('Start Docker with: sudo service docker start')
+            sys.exit(0)
+            # print('    ')
+            # start_containers(**{**kwargs, 'start': False})
     except FileNotFoundError:
         print('No docker-compose?', flush=True)
         if kwargs.get('install', True):
