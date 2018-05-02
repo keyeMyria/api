@@ -37,14 +37,14 @@ def start_containers(**kwargs):
     my_env["UID"] = str(os.getuid())
     try:
         Popen(
-            'docker-compose2 up -d db django vnu celery'.split(),
+            'docker-compose up -d db django vnu celery'.split(),
             env=my_env
         ).communicate()
     except FileNotFoundError:
         print('No docker-compose?', flush=True)
         if kwargs.get('install', True):
             print('Installing Docker...', flush=True)
-            Popen('sudo apt install docker-compose'.split()).communicate()
+            Popen('sudo apt -y install docker-compose'.split()).communicate()
             print('docker-compose installed!')
             start_containers(install=False)
         else:
