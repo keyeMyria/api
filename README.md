@@ -12,6 +12,9 @@
 # Fork first, then
 # git clone git@github.com:USERNAME/api.git
 git clone git@github.com:pashinin-com/api.git
+cd api
+./setup.py
+# ...web server should start listening on 8000 port
 ```
 
 <!-- ## tmux help -->

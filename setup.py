@@ -32,13 +32,23 @@ def docker_ps():
             'name': data[-1],
         }
 
-def start_containers():
+def start_containers(**kwargs):
     my_env = os.environ.copy()
     my_env["UID"] = str(os.getuid())
-    Popen(
-        'docker-compose up -d db django vnu celery'.split(),
-        env=my_env
-    ).communicate()
+    try:
+        Popen(
+            'docker-compose2 up -d db django vnu celery'.split(),
+            env=my_env
+        ).communicate()
+    except FileNotFoundError:
+        print('No docker-compose?', flush=True)
+        if kwargs.get('install', True):
+            print('Installing Docker...', flush=True)
+            Popen('sudo apt install docker-compose'.split()).communicate()
+            print('docker-compose installed!')
+            start_containers(install=False)
+        else:
+            raise
 
 
 def deploy():
