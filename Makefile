@@ -73,10 +73,6 @@ local-stop:
 docker-push:
 	docker tag pashinin.com pashinin/pashinin.com
 	docker push pashinin/pashinin.com
-	docker tag gulp pashinin/gulp
-	docker push pashinin/gulp
-	docker tag db pashinin/db
-	docker push pashinin/db
 
 configs:
 	(cd configs; make templates)
