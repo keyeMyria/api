@@ -4,7 +4,7 @@ RUN apt-get update && \
     apt-get install -y libxslt-dev python3-dev libc-dev libxml2 libxml2-dev gcc musl-dev g++ make libffi-dev ruby nginx && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /tmp/
+COPY ../requirements.txt /tmp/
 RUN pip install pip -U
 RUN pip install psycopg2-binary -U
 RUN pip install -r /tmp/requirements.txt --no-cache-dir && \
