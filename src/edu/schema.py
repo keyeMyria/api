@@ -5,12 +5,14 @@ from graphene import relay, ObjectType
 from django_filters import OrderingFilter
 from graphene_django.types import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from graphene_django.rest_framework.mutation import SerializerMutation
+from .serializers import FacultySerializer
 # from graphene.contrib.django import DjangoNode
 # from graphene.contrib.django.filter import (
 #     GlobalIDFilter, DjangoFilterConnectionField,
 #     GlobalIDMultipleChoiceFilter
 # )
-from .models import Task, Faculty, Department, Organization
+from .models import Task, Faculty, Department, Organization, Period
 LOG = logging.getLogger(__name__)
 
 
@@ -30,6 +32,13 @@ class DepartmentFilter(django_filters.FilterSet):
     order_by = OrderingFilter(fields=('code',))
 
 
+class PeriodFilter(django_filters.FilterSet):
+    class Meta:
+        model = Period
+        fields = ['department', 'slug']
+    order_by = OrderingFilter(fields=('name',))
+
+
 class OrganizationFilter(django_filters.FilterSet):
     class Meta:
         model = Organization
@@ -39,8 +48,22 @@ class OrganizationFilter(django_filters.FilterSet):
 
 # Nodes
 
+class PeriodNode(DjangoObjectType):
+    department = DjangoFilterConnectionField(
+        lambda: DepartmentNode,
+        filterset_class=DepartmentFilter,
+    )
+    class Meta:
+        model = Period
+        interfaces = (relay.Node, )
+        filter_fields = ['slug', 'name', 'department']
+
 
 class DepartmentNode(DjangoObjectType):
+    periods = DjangoFilterConnectionField(
+        PeriodNode,  # lambda: DepartmentNode (if Node is defined later)
+        filterset_class=PeriodFilter,
+    )
     class Meta:
         model = Department
         interfaces = (relay.Node, )
@@ -119,9 +142,19 @@ class OrganizationNode(DjangoObjectType):
 #         return CreateBatchOwner(batch_owner=batch_owner, ok=ok)
 
 
+class CreateFacultyMutation(SerializerMutation):
+    class Meta:
+        serializer_class = FacultySerializer
+        model_operations = ['create', 'update']
+        lookup_field = 'id'
+
+
+# class Mutations(graphene.ObjectType):
+class Mutations(object):
+    faculty = CreateFacultyMutation.Field()
+
+
 # Query
-
-
 class Query(object):
     """Query endpoint for GraphQL API."""
     organization = relay.Node.Field(OrganizationNode)
@@ -129,17 +162,20 @@ class Query(object):
         OrganizationNode,
         filterset_class=OrganizationFilter,
     )
-
     faculty = relay.Node.Field(FacultyNode)
     faculties = DjangoFilterConnectionField(
         FacultyNode,
         filterset_class=FacultyFilter,
     )
-
     department = relay.Node.Field(DepartmentNode)
     departments = DjangoFilterConnectionField(
         DepartmentNode,
         filterset_class=DepartmentFilter,
+    )
+    period = relay.Node.Field(PeriodNode)
+    periods = DjangoFilterConnectionField(
+        PeriodNode,
+        filterset_class=PeriodFilter,
     )
 
     # all_tasks = graphene.List(TaskType)

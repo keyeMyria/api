@@ -43,7 +43,7 @@ services:
     links:
       - db
       - redis
-      - vnu
+      # - vnu
 
     extra_hosts:
       - "pashinin.com:10.254.239.1"

@@ -4,10 +4,25 @@ import graphene
 import edu.schema
 
 
-class Query(edu.schema.Query, graphene.ObjectType):
+class Query(
+        edu.schema.Query,
+        graphene.ObjectType
+):
     # This class will inherit from multiple Queries
     # as we begin to add more apps to our project
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutations(
+        edu.schema.Mutations,
+        graphene.ObjectType
+):
+    # This class will inherit from multiple Queries
+    # as we begin to add more apps to our project
+    pass
+
+
+SCHEMA = graphene.Schema(
+    query=Query,
+    mutation=Mutations
+)

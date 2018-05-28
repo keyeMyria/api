@@ -6,6 +6,7 @@ import os
 import sys
 import subprocess
 from subprocess import Popen
+from setuptools import setup
 
 try:
     import argcomplete  # noqa
@@ -45,7 +46,8 @@ def start_containers(**kwargs):
     try:
         process = Popen(
             # 'docker-compose up -d db django vnu celery'.split(),
-            'docker-compose run --service-ports django python manage.py runserver 0.0.0.0:8000'.split(),
+            'docker-compose run --service-ports django '
+            'python manage.py runserver 0.0.0.0:8000'.split(),
             env=my_env,
             # stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
@@ -84,4 +86,65 @@ def deploy():
 
 
 print('Starting Docker images...')
-start_containers()
+# start_containers()
+
+
+setup(
+    name='pashinin',
+    # version=version,
+    description='My Django API',
+    author='Sergey Pashinin',
+    author_email='sergey@pashinin.com',
+    url='https://github.com/pashinin-com/api',
+    # setup_requires=['milksnake'],
+    # install_requires=['milksnake'],
+    # milksnake_tasks=[
+    #     build_native
+    # ],
+    requires=[],
+    packages=[  # directories to include
+        # 'rparser'
+    ],
+    # distclass=RustDistribution,
+    tests_require=['nose'],
+    test_suite='nose.collector',
+    cmdclass={
+        # 'build_rust': build_rust_cmdclass(
+        #     # [('.', 'rparser')],
+        #     [('.', '.')],
+        #     extra_cargo_args=[
+        #         '--features', 'py3',
+        #     ] if PY3 else
+        #     [
+        #         "--features", 'py2',
+        #         '--no-default-features'
+        #     ]
+        # ),
+        # 'install_lib': build_install_lib_cmdclass(),
+        # 'test': PyTest,
+    },
+
+    zip_safe=False,
+
+    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=(
+        # Development Status :: 1 - Planning
+        # Development Status :: 2 - Pre-Alpha
+        # Development Status :: 3 - Alpha
+        # Development Status :: 4 - Beta
+        # Development Status :: 5 - Production/Stable
+        # Development Status :: 6 - Mature
+        # Development Status :: 7 - Inactive
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy',
+    ),
+    platforms=["Windows", "Linux", "Mac OS-X"],
+    # platforms='any',
+)

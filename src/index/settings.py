@@ -433,7 +433,7 @@ CELERYD_HIJACK_ROOT_LOGGER = False
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
 GRAPHENE = {
-    'SCHEMA': 'index.schema.schema'  # Where your Graphene schema lives
+    'SCHEMA': 'index.schema.SCHEMA'  # Where your Graphene schema lives
 }
 
 
